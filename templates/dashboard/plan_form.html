@@ -1,19 +1,116 @@
 {% extends 'dashboard/base_dashboard.html' %}
 
 {% block dashboard_content %}
-  <div class="glass-card p-6">
-    <h1 class="text-2xl font-black">{% if instance %}ویرایش پلن{% else %}ایجاد پلن{% endif %}</h1>
-    <form method="post" class="mt-6 grid gap-4 lg:grid-cols-2">
+  <div class="space-y-6" x-data="{ advancedOpen: false }">
+    {% if instance %}
+      {% include 'dashboard/_admin_page_header.html' with admin_badge='پلن' admin_context_label='ویرایش پلن' admin_meta_label='قیمت‌گذاری و فروش' admin_title='ویرایش پلن' admin_intro='این فرم برای تعریف خوانای ارزش تجاری پلن، ظرفیت واقعی و دسترسی مدل‌ها بازطراحی شده است. چیزهای ساختاری‌تر مثل JSON ویژگی‌ها جدا و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='پیش از ذخیره، از خودتان بپرسید آیا اپراتور دیگری فقط با خواندن این صفحه می‌فهمد این پلن چه می‌فروشد و چه محدودیتی دارد یا نه.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست پلن‌ها' admin_side_body='بعد از ذخیره به فهرست پلن‌ها برمی‌گردید تا قیمت‌ها و وضعیت فروش را کنار هم مرور کنید.' admin_secondary_url='/dashboard/admin-panel/plans/' admin_secondary_label='بازگشت به پلن‌ها' %}
+    {% else %}
+      {% include 'dashboard/_admin_page_header.html' with admin_badge='پلن' admin_context_label='پلن جدید' admin_meta_label='قیمت‌گذاری و فروش' admin_title='ایجاد پلن' admin_intro='این فرم برای تعریف خوانای ارزش تجاری پلن، ظرفیت واقعی و دسترسی مدل‌ها بازطراحی شده است. چیزهای ساختاری‌تر مثل JSON ویژگی‌ها جدا و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='پیش از ذخیره، از خودتان بپرسید آیا اپراتور دیگری فقط با خواندن این صفحه می‌فهمد این پلن چه می‌فروشد و چه محدودیتی دارد یا نه.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست پلن‌ها' admin_side_body='بعد از ذخیره به فهرست پلن‌ها برمی‌گردید تا قیمت‌ها و وضعیت فروش را کنار هم مرور کنید.' admin_secondary_url='/dashboard/admin-panel/plans/' admin_secondary_label='بازگشت به پلن‌ها' %}
+    {% endif %}
+
+    <form method="post" class="space-y-4">
       {% csrf_token %}
-      {% for field in form %}
-        <div class="{% if field.name == 'description' or field.name == 'allowed_models' or field.name == 'features' %}lg:col-span-2{% endif %}">
-          <label class="mb-2 block text-sm font-bold">{{ field.label }}</label>
-          {{ field }}
-          {{ field.errors }}
-        </div>
+
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
       {% endfor %}
-      <div class="lg:col-span-2">
-        <button class="btn-primary w-full sm:w-auto" type="submit">ذخیره پلن</button>
+
+      {% if form.non_field_errors %}
+        <ul class="errorlist">{{ form.non_field_errors }}</ul>
+      {% endif %}
+
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">هویت پلن</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">نام، slug و توضیح محصولی</h2>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این بخش باید به‌تنهایی توضیح بدهد این پلن برای چه نوع استفاده‌ای مناسب است.</p>
+        </div>
+
+        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+          {% for field in form %}
+            {% if field.name == 'name' or field.name == 'slug' or field.name == 'description' or field.name == 'display_order' %}
+              {% if field.name == 'description' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_class='lg:col-span-2' %}
+              {% elif field.name == 'slug' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='slug بهتر است پایدار بماند تا اشاره‌های داخلی و مسیرهای فروش به‌هم نریزند.' %}
+              {% else %}
+                {% include 'dashboard/_admin_form_field.html' with field=field %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">قیمت و ظرفیت</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">چیزی که مستقیماً روی خرید و استفاده اثر می‌گذارد</h2>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">قیمت، مدت اعتبار و سهمیه باید با هم معنا بدهند؛ نه اینکه هر کدام جداگانه و بدون زمینه تنظیم شوند.</p>
+        </div>
+
+        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+          {% for field in form %}
+            {% if field.name == 'price' or field.name == 'duration_days' or field.name == 'token_limit_per_window' or field.name == 'reset_interval_hours' or field.name == 'is_active' %}
+              {% if field.name == 'is_active' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='غیرفعال‌کردن پلن یعنی دیگر برای مسیرهای فروش و انتخاب روزمره مناسب نیست. این تغییر را آگاهانه انجام دهید.' %}
+              {% else %}
+                {% include 'dashboard/_admin_form_field.html' with field=field %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">دسترسی مدل‌ها</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">چه مدل‌هایی با این پلن عرضه می‌شوند</h2>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این بخش باید برای اپراتور روشن کند که ارزش واقعی پلن از نظر دسترسی محصولی چیست.</p>
+        </div>
+
+        <div class="mt-4 grid gap-4">
+          {% for field in form %}
+            {% if field.name == 'allowed_models' %}
+              {% include 'dashboard/_admin_form_field.html' with field=field field_note='اگر مدل‌های مجاز را تغییر می‌دهید، بهتر است متن فروش و مقایسه پلن‌ها هم با همان تصمیم هم‌راستا بمانند.' %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="rounded-[1.8rem] border border-amber-200/80 bg-amber-50/75 p-4 shadow-sm shadow-amber-100/60 dark:border-amber-500/20 dark:bg-amber-500/10 sm:p-5">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div class="min-w-0">
+            <div class="text-xs font-bold text-amber-700 dark:text-amber-300">بخش پیشرفته</div>
+            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">ویژگی‌های ساختاری و JSON</h2>
+            <p class="mt-1 text-sm leading-7 text-amber-800/90 dark:text-amber-100">این بخش برای نگهداری متادیتا یا ساختارهای فنی‌تر است و نباید با تعریف روزمره ارزش پلن قاطی شود.</p>
+          </div>
+
+          <button type="button" class="btn-secondary w-full sm:w-auto" @click="advancedOpen = !advancedOpen" :aria-expanded="advancedOpen.toString()">
+            <span x-text="advancedOpen ? 'بستن بخش پیشرفته' : 'بازکردن بخش پیشرفته'"></span>
+          </button>
+        </div>
+
+        <div class="mt-4 grid gap-4" x-show="advancedOpen" x-cloak>
+          {% for field in form %}
+            {% if field.name == 'features' %}
+              {% include 'dashboard/_admin_form_field.html' with field=field field_note='اگر این JSON مصرف frontend یا قیمت‌گذاری دارد، ساختارش را با دقت و بدون تغییرات آزمایشی ذخیره کنید.' %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <div class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-900/45">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div class="min-w-0">
+            <div class="text-sm font-black text-slate-900 dark:text-white">ذخیره پلن</div>
+            <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">قیمت، سهمیه و مدل‌های مجاز را یک‌بار دیگر کنار هم ببینید؛ اشتباه در این سه مورد مستقیماً روی خرید و استفاده اثر می‌گذارد.</p>
+          </div>
+
+          <div class="flex flex-col gap-2 sm:flex-row">
+            <a href="{% url 'dashboard:admin_plans' %}" class="btn-secondary w-full sm:w-auto">انصراف</a>
+            <button class="btn-primary w-full sm:w-auto" type="submit">ذخیره پلن</button>
+          </div>
+        </div>
       </div>
     </form>
   </div>

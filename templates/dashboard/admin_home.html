@@ -2,35 +2,122 @@
 {% load site_text %}
 
 {% block dashboard_content %}
-  <div class="glass-card p-6">
-    <h1 class="text-2xl font-black">{% site_text 'admin.home.title' 'ادمین سفارشی FaralYar' title='عنوان داشبورد ادمین' group='admin' %}</h1>
-    <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{% site_text 'admin.home.subtitle' 'از اینجا می‌توانی تنظیمات برند، متن‌های سایت، مدل‌ها، پلن‌ها و تراکنش‌ها را سریع‌تر از Django Admin روزمره مدیریت کنی.' title='زیرعنوان داشبورد ادمین' group='admin' %}</p>
+  <div class="space-y-6">
+    {% include 'dashboard/_admin_page_header.html' with admin_badge='FaralYar v1.5' admin_context_label='مرکز کنترل عملیات' admin_meta_label='کار روزانه' admin_meta_label_two='سطح سفارشی ادمین' admin_title='ادمین سفارشی FaralYar' admin_intro='این فضا برای کنترل روزانه محصول ساخته شده است: تنظیم تجربه عمومی، مدیریت متن‌ها، پلن‌ها، مدل‌ها و مرور وضعیت پرداخت‌ها. کارهای عمیق‌تر و نگهداری فنی هنوز جدا از این سطح نگه داشته می‌شوند.' admin_hint='هدف این صفحه سرعت در تصمیم‌گیری عملیاتی است، نه انبوهی از فرم‌های خام. ابتدا چیزی را که نیاز به توجه دارد ببینید، بعد سراغ بخش مناسب بروید.' admin_side_eyebrow='شروع سریع' admin_side_title='از همان کاری شروع کنید که امروز باید جلو برود' admin_side_body='اگر قرار است فقط یک کار انجام دهید، از تنظیمات، متن‌ها، پلن‌ها یا مرور تراکنش‌ها شروع کنید. لینک‌های Django Admin پایین صفحه فقط برای نگهداری عمیق‌تر هستند.' admin_primary_url='/dashboard/admin-panel/settings/' admin_primary_label='تنظیمات سایت' admin_secondary_url='/dashboard/admin-panel/transactions/' admin_secondary_label='مرور تراکنش‌ها' %}
 
-    <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-      <div class="mobile-table-card"><div class="text-sm text-slate-500">{% site_text 'admin.stats.users' 'کاربران' title='آمار کاربران در ادمین' group='admin' %}</div><div class="mt-2 text-2xl font-black">{{ user_count }}</div></div>
-      <div class="mobile-table-card"><div class="text-sm text-slate-500">{% site_text 'admin.stats.models' 'مدل‌ها' title='آمار مدل‌ها در ادمین' group='admin' %}</div><div class="mt-2 text-2xl font-black">{{ model_count }}</div></div>
-      <div class="mobile-table-card"><div class="text-sm text-slate-500">{% site_text 'admin.stats.plans' 'پلن‌ها' title='آمار پلن‌ها در ادمین' group='admin' %}</div><div class="mt-2 text-2xl font-black">{{ plan_count }}</div></div>
-      <div class="mobile-table-card"><div class="text-sm text-slate-500">{% site_text 'admin.stats.transactions' 'تراکنش‌ها' title='آمار تراکنش‌ها در ادمین' group='admin' %}</div><div class="mt-2 text-2xl font-black">{{ transaction_count }}</div></div>
-      <div class="mobile-table-card"><div class="text-sm text-slate-500">{% site_text 'admin.stats.messages' 'پیام‌های جدید' title='آمار پیام‌های جدید در ادمین' group='admin' %}</div><div class="mt-2 text-2xl font-black">{{ contact_count }}</div></div>
+    <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+      <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/85 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55">
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{% site_text 'admin.stats.users' 'کاربران' title='آمار کاربران در ادمین' group='admin' %}</div>
+        <div class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ user_count }}</div>
+        <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">نمای کلی از حجم استفاده فعال در محصول.</p>
+      </div>
+
+      <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/85 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55">
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{% site_text 'admin.stats.models' 'مدل‌ها' title='آمار مدل‌ها در ادمین' group='admin' %}</div>
+        <div class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ model_count }}</div>
+        <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">برای کنترل عرضه، ترتیب نمایش و وضعیت فعال‌بودن.</p>
+      </div>
+
+      <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/85 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55">
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{% site_text 'admin.stats.plans' 'پلن‌ها' title='آمار پلن‌ها در ادمین' group='admin' %}</div>
+        <div class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ plan_count }}</div>
+        <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">برای تصمیم‌های قیمت‌گذاری، ظرفیت و دسترسی.</p>
+      </div>
+
+      <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/85 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55">
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{% site_text 'admin.stats.transactions' 'تراکنش‌ها' title='آمار تراکنش‌ها در ادمین' group='admin' %}</div>
+        <div class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ transaction_count }}</div>
+        <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">برای اطمینان از شفاف‌بودن جریان پرداخت و پیگیری خطاها.</p>
+      </div>
+
+      <div class="rounded-[1.6rem] border border-amber-200/80 bg-amber-50/80 p-4 shadow-sm shadow-amber-100/60 dark:border-amber-500/20 dark:bg-amber-500/10">
+        <div class="text-xs font-bold text-amber-700 dark:text-amber-300">{% site_text 'admin.stats.messages' 'پیام‌های جدید' title='آمار پیام‌های جدید در ادمین' group='admin' %}</div>
+        <div class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ contact_count }}</div>
+        <p class="mt-2 text-xs leading-6 text-amber-800/90 dark:text-amber-100">چیزهایی که احتمالاً به بررسی انسانی سریع نیاز دارند.</p>
+      </div>
+    </section>
+
+    <div class="grid gap-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">کنترل‌های روزانه</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">چیزهایی که بیشترین تماس را با تجربه محصول دارند</h2>
+        </div>
+
+        <div class="mt-4 grid gap-3 md:grid-cols-2">
+          <a href="{% url 'dashboard:admin_settings' %}" class="rounded-[1.4rem] border border-slate-200/80 bg-slate-50/82 p-4 transition hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-emerald-50/60 dark:border-slate-700/70 dark:bg-slate-950/35 dark:hover:border-emerald-500/25 dark:hover:bg-emerald-500/10">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-sm font-black text-slate-900 dark:text-white">تنظیمات سایت</div>
+              {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label='برند و عملیات' %}
+            </div>
+            <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">نام‌ها، هویت برند، مسیرهای پشتیبانی، پرداخت و تنظیمات مهمی که تجربه عمومی را شکل می‌دهند.</p>
+          </a>
+
+          <a href="{% url 'dashboard:admin_texts' %}" class="rounded-[1.4rem] border border-slate-200/80 bg-slate-50/82 p-4 transition hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-emerald-50/60 dark:border-slate-700/70 dark:bg-slate-950/35 dark:hover:border-emerald-500/25 dark:hover:bg-emerald-500/10">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-sm font-black text-slate-900 dark:text-white">متن‌های سایت</div>
+              {% include 'dashboard/_admin_status_badge.html' with tone='info' label='محتوا' %}
+            </div>
+            <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">برای ویرایش متن‌های محصولی و توضیحاتی که روی صفحات زنده دیده می‌شوند.</p>
+          </a>
+
+          <a href="{% url 'dashboard:admin_models' %}" class="rounded-[1.4rem] border border-slate-200/80 bg-slate-50/82 p-4 transition hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-emerald-50/60 dark:border-slate-700/70 dark:bg-slate-950/35 dark:hover:border-emerald-500/25 dark:hover:bg-emerald-500/10">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-sm font-black text-slate-900 dark:text-white">مدیریت مدل‌ها</div>
+              {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label='عرضه و دسترسی' %}
+            </div>
+            <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">ترتیب نمایش، فعال‌بودن، قابلیت‌ها و جزئیات لازم برای عرضه کنترل‌شده مدل‌ها.</p>
+          </a>
+
+          <a href="{% url 'dashboard:admin_plans' %}" class="rounded-[1.4rem] border border-slate-200/80 bg-slate-50/82 p-4 transition hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-emerald-50/60 dark:border-slate-700/70 dark:bg-slate-950/35 dark:hover:border-emerald-500/25 dark:hover:bg-emerald-500/10">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-sm font-black text-slate-900 dark:text-white">مدیریت پلن‌ها</div>
+              {% include 'dashboard/_admin_status_badge.html' with tone='warning' label='قیمت‌گذاری' %}
+            </div>
+            <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">برای نگه‌داشتن نسبت قیمت، ظرفیت و دسترسی مدل‌ها در یک قاب روشن و قابل تصمیم‌گیری.</p>
+          </a>
+        </div>
+      </section>
+
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">نیاز به توجه</div>
+        <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">سیگنال‌هایی که بهتر است زودتر دیده شوند</h2>
+
+        <div class="mt-4 space-y-3">
+          <div class="rounded-[1.35rem] border border-amber-200/80 bg-amber-50/75 p-4 dark:border-amber-500/20 dark:bg-amber-500/10">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-sm font-black text-slate-900 dark:text-white">پیام‌های تماس بررسی‌نشده</div>
+              {% include 'dashboard/_admin_status_badge.html' with tone='warning' label=contact_count %}
+            </div>
+            <p class="mt-2 text-sm leading-7 text-amber-800/90 dark:text-amber-100">اگر این عدد بالا بماند، تجربه پشتیبانی بیرون از کنترل‌سنتر عقب می‌افتد و حس اعتماد کم می‌شود.</p>
+            <a href="/admin/core/contactmessage/" class="btn-secondary mt-3 w-full">بازکردن پیام‌های تماس در Django Admin</a>
+          </div>
+
+          <div class="rounded-[1.35rem] border border-slate-200/80 bg-slate-50/75 p-4 dark:border-slate-700/70 dark:bg-slate-950/35">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-sm font-black text-slate-900 dark:text-white">مرور تراکنش‌ها</div>
+              {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label=transaction_count %}
+            </div>
+            <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">برای تشخیص سریع وضعیت پرداخت‌ها، همین مسیر سفارشی خواناتر از مرور خام رکوردهاست.</p>
+            <a href="{% url 'dashboard:admin_transactions' %}" class="btn-primary mt-3 w-full">رفتن به تراکنش‌ها</a>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <div class="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-      <a href="{% url 'dashboard:admin_settings' %}" class="btn-secondary">{% site_text 'admin.quick.settings' 'تنظیمات سایت' title='دکمه تنظیمات سایت در ادمین' group='admin' %}</a>
-      <a href="{% url 'dashboard:admin_texts' %}" class="btn-secondary">{% site_text 'admin.quick.texts' 'متن‌های سایت' title='دکمه متن‌های سایت در ادمین' group='admin' %}</a>
-      <a href="{% url 'dashboard:admin_models' %}" class="btn-secondary">{% site_text 'admin.quick.models' 'مدیریت مدل‌ها' title='دکمه مدیریت مدل‌ها در ادمین' group='admin' %}</a>
-      <a href="{% url 'dashboard:admin_plans' %}" class="btn-secondary">{% site_text 'admin.quick.plans' 'مدیریت پلن‌ها' title='دکمه مدیریت پلن‌ها در ادمین' group='admin' %}</a>
-    </div>
+    <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+      <div class="min-w-0">
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">نگهداری عمیق</div>
+        <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">هر چیزی که بهتر است هنوز بیرون از کنترل‌سنتر روزانه بماند</h2>
+        <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این لینک‌ها عمداً در بخش جداگانه آمده‌اند تا عملیات روزانه با maintenance فنی یا مدیریتی عمیق مخلوط نشود.</p>
+      </div>
 
-    <div class="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-      <a href="{% url 'dashboard:admin_transactions' %}" class="btn-secondary">{% site_text 'admin.quick.transactions' 'تراکنش‌ها' title='دکمه تراکنش‌ها در ادمین' group='admin' %}</a>
-      <a href="/admin/accounts/user/" class="btn-secondary">{% site_text 'admin.quick.users_admin' 'کاربران در Django Admin' title='دکمه کاربران در جنگو ادمین' group='admin' %}</a>
-      <a href="/admin/blog/blogpost/" class="btn-secondary">{% site_text 'admin.quick.posts_admin' 'مقالات در Django Admin' title='دکمه مقالات در جنگو ادمین' group='admin' %}</a>
-      <a href="/admin/blog/blogcategory/" class="btn-secondary">{% site_text 'admin.quick.categories_admin' 'دسته‌بندی‌ها در Django Admin' title='دکمه دسته‌بندی‌ها در جنگو ادمین' group='admin' %}</a>
-    </div>
-
-    <div class="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-      <a href="/admin/core/contactmessage/" class="btn-secondary">{% site_text 'admin.quick.contacts_admin' 'پیام‌های تماس' title='دکمه پیام‌های تماس در ادمین' group='admin' %}</a>
-      <a href="/admin/core/textsnippet/" class="btn-secondary">{% site_text 'admin.quick.snippets_admin' 'Snippetها در Django Admin' title='دکمه اسنیپت‌ها در جنگو ادمین' group='admin' %}</a>
-    </div>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <a href="/admin/accounts/user/" class="btn-secondary w-full">کاربران در Django Admin</a>
+        <a href="/admin/blog/blogpost/" class="btn-secondary w-full">مقالات در Django Admin</a>
+        <a href="/admin/blog/blogcategory/" class="btn-secondary w-full">دسته‌بندی‌ها در Django Admin</a>
+        <a href="/admin/core/textsnippet/" class="btn-secondary w-full">Snippetها در Django Admin</a>
+      </div>
+    </section>
   </div>
 {% endblock %}

@@ -1,0 +1,29 @@
+<div class="{{ field_class|default:'' }}">
+  {% if field.field.widget.input_type == 'checkbox' %}
+    <div class="rounded-[1.35rem] border border-slate-200/80 bg-slate-50/75 p-4 dark:border-slate-700/70 dark:bg-slate-950/35">
+      <label class="flex items-start justify-between gap-4">
+        <div class="min-w-0">
+          <span class="block text-sm font-black text-slate-900 dark:text-white">{{ field.label }}</span>
+          {% if field_note %}
+            <span class="mt-1 block text-xs leading-6 text-slate-500 dark:text-slate-400">{{ field_note }}</span>
+          {% endif %}
+          {% if field.help_text %}
+            <span class="mt-1 block text-xs leading-6 text-slate-500 dark:text-slate-400">{{ field.help_text }}</span>
+          {% endif %}
+        </div>
+        <span class="shrink-0 pt-1">{{ field }}</span>
+      </label>
+      {{ field.errors }}
+    </div>
+  {% else %}
+    <label class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ field.label }}</label>
+    {{ field }}
+    {% if field_note %}
+      <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ field_note }}</p>
+    {% endif %}
+    {% if field.help_text %}
+      <p class="helptext">{{ field.help_text }}</p>
+    {% endif %}
+    {{ field.errors }}
+  {% endif %}
+</div>

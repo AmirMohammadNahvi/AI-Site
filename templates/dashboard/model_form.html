@@ -1,19 +1,124 @@
 {% extends 'dashboard/base_dashboard.html' %}
 
 {% block dashboard_content %}
-  <div class="glass-card p-6">
-    <h1 class="text-2xl font-black">{% if instance %}ویرایش مدل{% else %}ایجاد مدل{% endif %}</h1>
-    <form method="post" class="mt-6 grid gap-4 lg:grid-cols-2">
+  <div class="space-y-6" x-data="{ technicalOpen: false }">
+    {% if instance %}
+      {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل' admin_context_label='ویرایش مدل' admin_meta_label='عرضه و نگهداری' admin_title='ویرایش مدل' admin_intro='این صفحه بین کنترل عرضه و نگهداری فنی مرز می‌گذارد: اطلاعات عمومی و وضعیت مدل بالا آمده‌اند و تنظیمات اتصال فنی پایین‌تر و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='اگر فقط می‌خواهید مدل را فعال، غیرفعال یا برجسته کنید، لازم نیست سراغ بخش فنی بروید. آن بخش فقط برای اتصال واقعی runtime است.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست مدل‌ها' admin_side_body='بعد از ذخیره به فهرست مدل‌ها برمی‌گردید تا بتوانید وضعیت عرضه را در یک نگاه مرور کنید.' admin_secondary_url='/dashboard/admin-panel/models/' admin_secondary_label='بازگشت به مدل‌ها' %}
+    {% else %}
+      {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل' admin_context_label='مدل جدید' admin_meta_label='عرضه و نگهداری' admin_title='ایجاد مدل' admin_intro='این صفحه بین کنترل عرضه و نگهداری فنی مرز می‌گذارد: اطلاعات عمومی و وضعیت مدل بالا آمده‌اند و تنظیمات اتصال فنی پایین‌تر و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='اگر فقط می‌خواهید مدل را فعال، غیرفعال یا برجسته کنید، لازم نیست سراغ بخش فنی بروید. آن بخش فقط برای اتصال واقعی runtime است.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست مدل‌ها' admin_side_body='بعد از ذخیره به فهرست مدل‌ها برمی‌گردید تا بتوانید وضعیت عرضه را در یک نگاه مرور کنید.' admin_secondary_url='/dashboard/admin-panel/models/' admin_secondary_label='بازگشت به مدل‌ها' %}
+    {% endif %}
+
+    <form method="post" class="space-y-4">
       {% csrf_token %}
-      {% for field in form %}
-        <div class="{% if field.name in 'system_prompt,summary,description,limitations,headers' %}lg:col-span-2{% endif %}">
-          <label class="mb-2 block text-sm font-bold">{{ field.label }}</label>
-          {{ field }}
-          {{ field.errors }}
-        </div>
+
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
       {% endfor %}
-      <div class="lg:col-span-2">
-        <button class="btn-primary w-full sm:w-auto" type="submit">ذخیره مدل</button>
+
+      {% if form.non_field_errors %}
+        <ul class="errorlist">{{ form.non_field_errors }}</ul>
+      {% endif %}
+
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">هویت و جایگاه</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">چیزی که اپراتور برای عرضه مدل باید ببیند</h2>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">نام، ارائه‌دهنده، slug و ترتیب نمایش باید به اپراتور بگویند این مدل در فهرست محصول کجا می‌ایستد.</p>
+        </div>
+
+        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+          {% for field in form %}
+            {% if field.name == 'name' or field.name == 'slug' or field.name == 'provider_label' or field.name == 'display_order' %}
+              {% if field.name == 'slug' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='slug پایدار نگه داشته شود تا اشاره‌های داخلی و لینک‌های احتمالی بی‌دلیل نشکنند.' %}
+              {% else %}
+                {% include 'dashboard/_admin_form_field.html' with field=field %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">معرفی محصولی</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">خلاصه، توضیح و محدودیت‌ها</h2>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این متن‌ها برای تصمیم‌گیری بهتر تیم داخلی و سطوحی هستند که قرار است مدل را به زبان محصولی توضیح دهند.</p>
+        </div>
+
+        <div class="mt-4 grid gap-4">
+          {% for field in form %}
+            {% if field.name == 'summary' or field.name == 'description' or field.name == 'limitations' %}
+              {% include 'dashboard/_admin_form_field.html' with field=field %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">قابلیت‌ها و وضعیت</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">چیزی که برای اپراتور و کاربر نهایی مهم است</h2>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این بخش مشخص می‌کند مدل چه ورودی‌هایی را می‌پذیرد و آیا قرار است در سطوح محصول برجسته یا فعال باشد.</p>
+        </div>
+
+        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+          {% for field in form %}
+            {% if field.name == 'text_enabled' or field.name == 'image_enabled' or field.name == 'file_enabled' or field.name == 'is_featured' or field.name == 'is_active' %}
+              {% if field.name == 'is_active' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='غیرفعال‌کردن مدل باید آگاهانه انجام شود؛ چون می‌تواند آن را از سطوح محصول و جریان استفاده حذف کند.' %}
+              {% elif field.name == 'is_featured' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='فقط مدل‌هایی را برجسته کنید که واقعاً برای شروع یا مسیر اصلی محصول مناسب‌اند.' %}
+              {% else %}
+                {% include 'dashboard/_admin_form_field.html' with field=field %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="rounded-[1.8rem] border border-amber-200/80 bg-amber-50/75 p-4 shadow-sm shadow-amber-100/60 dark:border-amber-500/20 dark:bg-amber-500/10 sm:p-5">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div class="min-w-0">
+            <div class="text-xs font-bold text-amber-700 dark:text-amber-300">تنظیمات فنی اتصال</div>
+            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">فقط برای نگهداری runtime و mapping پاسخ</h2>
+            <p class="mt-1 text-sm leading-7 text-amber-800/90 dark:text-amber-100">این بخش عمداً جمع‌شونده است تا کنترل روزانه با maintenance فنی یکی نشود. تغییر در این فیلدها می‌تواند روی پاسخ زنده مدل اثر مستقیم بگذارد.</p>
+          </div>
+
+          <button type="button" class="btn-secondary w-full sm:w-auto" @click="technicalOpen = !technicalOpen" :aria-expanded="technicalOpen.toString()">
+            <span x-text="technicalOpen ? 'بستن تنظیمات فنی' : 'بازکردن تنظیمات فنی'"></span>
+          </button>
+        </div>
+
+        <div class="mt-4 grid gap-4 lg:grid-cols-2" x-show="technicalOpen" x-cloak>
+          {% for field in form %}
+            {% if field.name == 'endpoint_url' or field.name == 'http_method' or field.name == 'headers' or field.name == 'api_key' or field.name == 'model_identifier' or field.name == 'timeout_seconds' or field.name == 'request_format' or field.name == 'response_text_path' or field.name == 'system_prompt' %}
+              {% if field.name == 'headers' or field.name == 'system_prompt' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_class='lg:col-span-2' %}
+              {% elif field.name == 'api_key' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='قبل از ذخیره، مطمئن شوید کلید مربوط به همان endpoint و محیط درست است.' %}
+              {% elif field.name == 'response_text_path' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='اگر این مسیر نادرست باشد، پاسخ مدل در runtime خالی یا خراب دیده می‌شود.' %}
+              {% else %}
+                {% include 'dashboard/_admin_form_field.html' with field=field %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <div class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-900/45">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div class="min-w-0">
+            <div class="text-sm font-black text-slate-900 dark:text-white">ذخیره مدل</div>
+            <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">اگر فقط وضعیت عرضه را تغییر داده‌اید، بخش فنی را بازبینی اضافه نکنید. اگر بخش فنی را تغییر داده‌اید، همه مقادیر حساس را دوباره چک کنید.</p>
+          </div>
+
+          <div class="flex flex-col gap-2 sm:flex-row">
+            <a href="{% url 'dashboard:admin_models' %}" class="btn-secondary w-full sm:w-auto">انصراف</a>
+            <button class="btn-primary w-full sm:w-auto" type="submit">ذخیره مدل</button>
+          </div>
+        </div>
       </div>
     </form>
   </div>

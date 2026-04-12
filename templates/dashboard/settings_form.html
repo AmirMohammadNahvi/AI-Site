@@ -1,19 +1,122 @@
 {% extends 'dashboard/base_dashboard.html' %}
 
 {% block dashboard_content %}
-  <div class="glass-card p-6">
-    <h1 class="text-2xl font-black">تنظیمات سایت</h1>
-    <form method="post" class="mt-6 grid gap-4 lg:grid-cols-2">
+  <div class="space-y-6" x-data="{ credentialsOpen: false }">
+    {% include 'dashboard/_admin_page_header.html' with admin_badge='تنظیمات سایت' admin_context_label='برند، پشتیبانی و پرداخت' admin_meta_label='عملیات روزانه' admin_title='تنظیمات اصلی سایت' admin_intro='این صفحه باید مرجع کنترل هویت برند، متن‌های عمومی و تنظیمات عملیاتی اصلی باشد. فیلدها طوری گروه‌بندی شده‌اند که اشتباه بین چیزهای عمومی و تنظیمات حساس کمتر شود.' admin_hint='اول چیزهای عمومی و قابل مشاهده را تنظیم کنید. مقادیر حساس مثل کلیدهای سرویس و درگاه پرداخت پایین‌تر و داخل بخش محافظت‌شده نگه داشته شده‌اند.' admin_side_eyebrow='یادآوری' admin_side_title='هر تغییری اینجا می‌تواند بلافاصله روی تجربه زنده اثر بگذارد' admin_side_body='به‌خصوص مسیرهای پشتیبانی، توضیح پرداخت و کلیدهای سرویس‌ها را با دقت بازبینی کنید.' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
+
+    <form method="post" class="space-y-4">
       {% csrf_token %}
-      {% for field in form %}
-        <div class="{% if field.name in 'hero_subtitle,payment_guide_text' %}lg:col-span-2{% endif %}">
-          <label class="mb-2 block text-sm font-bold">{{ field.label }}</label>
-          {{ field }}
-          {{ field.errors }}
-        </div>
+
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
       {% endfor %}
-      <div class="lg:col-span-2">
-        <button class="btn-primary w-full sm:w-auto" type="submit">ذخیره تنظیمات</button>
+
+      {% if form.non_field_errors %}
+        <ul class="errorlist">{{ form.non_field_errors }}</ul>
+      {% endif %}
+
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">هویت عمومی</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">نام‌ها، شعار و روایت اصلی صفحه خانه</h2>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این بخش مستقیماً روی برداشت اولیه از FaralYar اثر می‌گذارد، پس خوانایی و لحن محصولی آن مهم‌تر از پرکردن تمام فیلدهاست.</p>
+        </div>
+
+        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+          {% for field in form %}
+            {% if field.name == 'site_name_fa' or field.name == 'site_name_en' or field.name == 'tagline' or field.name == 'hero_title' or field.name == 'hero_subtitle' %}
+              {% if field.name == 'hero_subtitle' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_class='lg:col-span-2' %}
+              {% else %}
+                {% include 'dashboard/_admin_form_field.html' with field=field %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">تماس و کانال‌ها</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">راه‌های رسمی ارتباط با تیم</h2>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">اگر کاربر این اطلاعات را ببیند، باید بداند از کجا پشتیبانی بگیرد و کدام کانال واقعاً فعال است.</p>
+        </div>
+
+        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+          {% for field in form %}
+            {% if field.name == 'support_email' or field.name == 'support_phone' or field.name == 'address' or field.name == 'telegram_url' or field.name == 'instagram_url' or field.name == 'linkedin_url' or field.name == 'x_url' %}
+              {% if field.name == 'address' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_class='lg:col-span-2' %}
+              {% else %}
+                {% include 'dashboard/_admin_form_field.html' with field=field %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">هویت بصری و خرید</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">دارایی‌های ظاهری و توضیح مسیر پرداخت</h2>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این قسمت برای چیزهایی است که هم روی برند دیده می‌شوند و هم به اطمینان قبل از خرید کمک می‌کنند.</p>
+        </div>
+
+        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+          {% for field in form %}
+            {% if field.name == 'light_logo' or field.name == 'dark_logo' or field.name == 'primary_color' or field.name == 'secondary_color' or field.name == 'payment_guide_text' or field.name == 'payment_guide_url' or field.name == 'free_guest_message_limit' %}
+              {% if field.name == 'payment_guide_text' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_class='lg:col-span-2' field_note='این متن باید مسیر پرداخت را روشن کند، نه اینکه کاربر را مجبور به حدس‌زدن مرحله بعدی کند.' %}
+              {% elif field.name == 'free_guest_message_limit' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='این عدد روی تجربه مهمان اثر مستقیم دارد. اگر آن را کاهش می‌دهید، بهتر است هم‌زمان متن‌های راهنما هم بازبینی شوند.' %}
+              {% else %}
+                {% include 'dashboard/_admin_form_field.html' with field=field %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="rounded-[1.8rem] border border-amber-200/80 bg-amber-50/75 p-4 shadow-sm shadow-amber-100/60 dark:border-amber-500/20 dark:bg-amber-500/10 sm:p-5">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div class="min-w-0">
+            <div class="text-xs font-bold text-amber-700 dark:text-amber-300">بخش حساس</div>
+            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">کلیدهای سرویس و تنظیمات عملیاتی زنده</h2>
+            <p class="mt-1 text-sm leading-7 text-amber-800/90 dark:text-amber-100">این مقادیر از جنس تنظیم روزمره نیستند. فقط زمانی بازشان کنید که واقعاً قرار است اتصال OTP یا پرداخت را تغییر دهید.</p>
+          </div>
+
+          <button type="button" class="btn-secondary w-full sm:w-auto" @click="credentialsOpen = !credentialsOpen" :aria-expanded="credentialsOpen.toString()">
+            <span x-text="credentialsOpen ? 'بستن تنظیمات حساس' : 'بازکردن تنظیمات حساس'"></span>
+          </button>
+        </div>
+
+        <div class="mt-4 grid gap-4 lg:grid-cols-2" x-show="credentialsOpen" x-cloak>
+          {% for field in form %}
+            {% if field.name == 'otp_provider_name' or field.name == 'otp_provider_api_key' or field.name == 'otp_provider_sender' or field.name == 'zarinpal_merchant_id' or field.name == 'zarinpal_sandbox' %}
+              {% if field.name == 'otp_provider_api_key' or field.name == 'zarinpal_merchant_id' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='قبل از ذخیره، دوباره مقدار را بررسی کنید. خطا در این فیلدها می‌تواند جریان زنده را مختل کند.' %}
+              {% elif field.name == 'zarinpal_sandbox' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_class='lg:col-span-2' field_note='روشن‌بودن sandbox یعنی پرداخت‌های تستی. قبل از تغییر، حتماً مطمئن شوید روی محیط درست هستید.' %}
+              {% else %}
+                {% include 'dashboard/_admin_form_field.html' with field=field %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <div class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-900/45">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div class="min-w-0">
+            <div class="text-sm font-black text-slate-900 dark:text-white">ذخیره تنظیمات</div>
+            <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">قبل از ذخیره، مخصوصاً مسیرهای پشتیبانی، توضیح پرداخت و بخش حساس را یک‌بار دیگر مرور کنید.</p>
+          </div>
+
+          <div class="flex flex-col gap-2 sm:flex-row">
+            <a href="{% url 'dashboard:admin_home' %}" class="btn-secondary w-full sm:w-auto">بازگشت</a>
+            <button class="btn-primary w-full sm:w-auto" type="submit">ذخیره تنظیمات</button>
+          </div>
+        </div>
       </div>
     </form>
   </div>
