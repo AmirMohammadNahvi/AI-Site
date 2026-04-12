@@ -1,16 +1,24 @@
 {% with launch_state=space_option.state|default:state|default:'available' %}
-  <article class="rounded-[1.45rem] border p-4 transition sm:p-5 {% if launch_state == 'available' %}border-slate-200/80 bg-white/88 hover:border-emerald-200 hover:bg-white dark:border-slate-700/70 dark:bg-slate-900/55 dark:hover:border-emerald-500/20{% elif launch_state == 'current' %}border-emerald-200/80 bg-emerald-50/78 dark:border-emerald-500/20 dark:bg-emerald-500/10{% elif launch_state == 'locked' %}border-sky-200/80 bg-sky-50/78 dark:border-sky-500/20 dark:bg-sky-500/10{% else %}border-slate-200/80 bg-slate-50/82 dark:border-slate-700/70 dark:bg-slate-900/55{% endif %}">
+  <article class="rounded-[1.45rem] border p-4 transition sm:p-5 {% if launch_state == 'available' %}border-slate-200/80 bg-white/88 hover:border-emerald-200 hover:bg-white dark:border-slate-700/70 dark:bg-slate-900/55 dark:hover:border-emerald-500/20{% elif launch_state == 'current' %}border-emerald-200/80 bg-emerald-50/78 dark:border-emerald-500/20 dark:bg-emerald-500/10{% elif launch_state == 'locked' or launch_state == 'upgradeable' %}border-sky-200/80 bg-sky-50/78 dark:border-sky-500/20 dark:bg-sky-500/10{% elif launch_state == 'policy' or launch_state == 'policy_restricted' or launch_state == 'workspace' or launch_state == 'restricted' %}border-rose-200/80 bg-rose-50/72 dark:border-rose-500/20 dark:bg-rose-500/10{% else %}border-slate-200/80 bg-slate-50/82 dark:border-slate-700/70 dark:bg-slate-900/55{% endif %}">
     <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div class="min-w-0">
         <div class="flex flex-wrap items-center gap-2">
           <h3 class="text-sm font-black text-slate-900 dark:text-white sm:text-base">{{ space_option.title|default:title|default:space_option.name|default:"اسپیس بدون عنوان" }}</h3>
 
           {% if launch_state == 'available' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=space_option.state_label|default:state_label|default:'قابل ورود' entitlement_note=space_option.reason|default:reason %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=space_option.state_label|default:state_label|default:'قابل استفاده در این اسپیس' entitlement_note=space_option.reason|default:reason %}
           {% elif launch_state == 'current' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=space_option.state_label|default:state_label|default:'فضای فعلی' entitlement_note=space_option.reason|default:reason %}
-          {% elif launch_state == 'locked' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=space_option.state_label|default:state_label|default:'نیازمند دسترسی' entitlement_note=space_option.reason|default:reason %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=space_option.state_label|default:state_label|default:'اسپیس فعلی' entitlement_note=space_option.reason|default:reason %}
+          {% elif launch_state == 'locked' or launch_state == 'upgradeable' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=space_option.state_label|default:state_label|default:'با ارتقا قابل استفاده' entitlement_note=space_option.reason|default:reason %}
+          {% elif launch_state == 'policy' or launch_state == 'policy_restricted' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=space_option.state_label|default:state_label|default:'با سیاست این مسیر محدود است' entitlement_note=space_option.reason|default:reason %}
+          {% elif launch_state == 'workspace' or launch_state == 'restricted' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='workspace' entitlement_tone='workspace' entitlement_label=space_option.state_label|default:state_label|default:'در این زمینه فعال نیست' entitlement_note=space_option.reason|default:reason %}
+          {% elif launch_state == 'archived' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='disabled' entitlement_tone='default' entitlement_label=space_option.state_label|default:state_label|default:'آرشیوشده' entitlement_note=space_option.reason|default:reason %}
+          {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=space_option.state_label|default:state_label|default:'منتقل‌شده از مسیر قبلی' entitlement_note=space_option.reason|default:reason %}
           {% else %}
             {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=space_option.state_label|default:state_label|default:'فعلاً در دسترس نیست' entitlement_note=space_option.reason|default:reason %}
           {% endif %}
@@ -48,22 +56,34 @@
       </div>
 
       <div class="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[12rem]">
-        {% if space_option.primary_cta_url|default:primary_cta_url and launch_state != 'unavailable' %}
-          <a href="{{ space_option.primary_cta_url|default:primary_cta_url }}" class="{% if launch_state == 'current' %}btn-secondary{% else %}btn-primary{% endif %} w-full">
+        {% if space_option.primary_cta_url|default:primary_cta_url and launch_state != 'unavailable' and launch_state != 'policy' and launch_state != 'policy_restricted' and launch_state != 'workspace' and launch_state != 'restricted' %}
+          <a href="{{ space_option.primary_cta_url|default:primary_cta_url }}" class="{% if launch_state == 'available' %}btn-primary{% else %}btn-secondary{% endif %} w-full">
             {% if space_option.primary_cta_label or primary_cta_label %}
               {{ space_option.primary_cta_label|default:primary_cta_label }}
             {% elif launch_state == 'current' %}
-              بازگشت به همین فضا
-            {% elif launch_state == 'locked' %}
-              بررسی مسیر دسترسی
+              بازگشت به این اسپیس
+            {% elif launch_state == 'locked' or launch_state == 'upgradeable' %}
+              بررسی دسترسی این اسپیس
+            {% elif launch_state == 'archived' %}
+              مشاهده در آرشیو
+            {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
+              بررسی مسیر جدید
             {% else %}
-              ورود به این فضا
+              استفاده در این اسپیس
             {% endif %}
           </a>
         {% else %}
           <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-slate-100/90 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-500">
-            {% if launch_state == 'locked' %}
+            {% if launch_state == 'locked' or launch_state == 'upgradeable' %}
               {{ space_option.primary_cta_label|default:primary_cta_label|default:"فعلاً نیازمند دسترسی بیشتر" }}
+            {% elif launch_state == 'policy' or launch_state == 'policy_restricted' %}
+              {{ space_option.primary_cta_label|default:primary_cta_label|default:"این اسپیس با سیاست این مسیر محدود است" }}
+            {% elif launch_state == 'workspace' or launch_state == 'restricted' %}
+              {{ space_option.primary_cta_label|default:primary_cta_label|default:"در این زمینه فعال نیست" }}
+            {% elif launch_state == 'archived' %}
+              {{ space_option.primary_cta_label|default:primary_cta_label|default:"این اسپیس آرشیوشده است" }}
+            {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
+              {{ space_option.primary_cta_label|default:primary_cta_label|default:"در مسیر جدید دنبال کنید" }}
             {% else %}
               {{ space_option.primary_cta_label|default:primary_cta_label|default:"فعلاً قابل ورود نیست" }}
             {% endif %}

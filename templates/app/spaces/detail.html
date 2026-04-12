@@ -16,7 +16,7 @@
         </div>
 
         <p class="mt-4 text-sm leading-8 text-slate-600 dark:text-slate-300">
-          {{ space.summary|default:"این صفحه برای آماده‌سازی context، مرور گفتگوهای اخیر و شروع سریع یک گفتگوی تازه طراحی شده است. هنوز thread اصلی اینجا نمایش داده نمی‌شود." }}
+          {{ space.summary|default:"این صفحه برای جمع‌کردن زمینه، مرور مسیرهای مرتبط و ورود به اجرای همین اسپیس است. اجرای اصلی همیشه در صفحه گفتگوی همین اسپیس ادامه پیدا می‌کند." }}
         </p>
       </div>
 
@@ -37,15 +37,15 @@
     </section>
 
     <section class="space-y-4">
-      {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="ورود به اجرای این اسپیس" body="از همین‌جا می‌توانید یک گفتگوی تازه برای این اسپیس شروع کنید یا اگر جریان فعالی دارید، به همان برگردید." helper="اسپیس جای سازمان‌دهی زمینه است و چت سطح اجرا باقی می‌ماند." new_cta_url=space_launch_url new_cta_label="شروع گفتگوی جدید" %}
+      {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="ورود به اجرای این اسپیس" body="اگر موضوع تازه‌ای دارید، گفتگوی جدید را از همین اسپیس شروع کنید. اگر thread فعالی دارید، به همان اجرای جاری برگردید." helper="اسپیس نقطه آماده‌سازی و ورود است؛ اجرای اصلی در صفحه گفتگو انجام می‌شود." new_cta_url=space_launch_url new_cta_label="شروع گفتگوی جدید" new_note="برای موضوع تازه در همین اسپیس" existing_cta_label="استفاده در این اسپیس" existing_note="برای برگشت به زمینه همین اسپیس" current_cta_label="ادامه گفتگوی فعلی" current_note="برای ادامه همان thread فعال" %}
 
       <section class="rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div class="min-w-0">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">شروع گفتگو</div>
-            <h2 class="mt-2 text-lg font-black text-slate-900 dark:text-white">لانچر گفتگو برای این اسپیس</h2>
+            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">اگر آماده اجرا هستید</div>
+            <h2 class="mt-2 text-lg font-black text-slate-900 dark:text-white">شروع گفتگوی جدید در همین اسپیس</h2>
             <p class="mt-2 max-w-3xl text-sm leading-8 text-slate-600 dark:text-slate-300">
-              موضوع را کوتاه و اجرایی بنویسید. بعد از شروع، thread کامل در مرحله بعدی روی صفحه مخصوص گفتگو نمایش داده می‌شود.
+              موضوع را کوتاه و اجرایی بنویسید. بعد از شروع، مستقیم وارد صفحه گفتگوی همین اسپیس می‌شوید و ادامه کار آنجا انجام می‌شود.
             </p>
           </div>
 
@@ -75,7 +75,7 @@
     {% endif %}
 
     <section class="space-y-4">
-      {% include 'app/_conversation_rail.html' with conversation_items=space_recent_conversations active_conversation_id=active_conversation_id archived_conversations_url=space_archived_conversations_url archived_conversation_count=space_archived_conversation_count conversation_rail_title="گفتگوهای اخیر این اسپیس" conversation_rail_caption="فقط گفتگوهای مرتبط با همین اسپیس را ببینید و از همان‌جا ادامه دهید." conversation_search_placeholder="جست‌وجو در گفتگوهای این اسپیس" conversation_rail_mobile_label="گفتگوهای اسپیس" %}
+      {% include 'app/_conversation_rail.html' with conversation_items=space_recent_conversations active_conversation_id=active_conversation_id archived_conversations_url=space_archived_conversations_url archived_conversation_count=space_archived_conversation_count conversation_rail_title="گفتگوهای اخیر این اسپیس" conversation_rail_caption="برای ادامه اجرا، فقط گفتگوهای همین اسپیس را از اینجا باز کنید." conversation_search_placeholder="جست‌وجو در گفتگوهای این اسپیس" conversation_rail_mobile_label="گفتگوهای اسپیس" %}
     </section>
   </div>
 {% endblock %}

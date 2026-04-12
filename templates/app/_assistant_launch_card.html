@@ -5,14 +5,20 @@
         <div class="flex flex-wrap items-center gap-2">
           <span class="badge">{{ assistant_launch_context.badge|default:badge|default:"مسیر استفاده" }}</span>
 
-          {% if launch_state == 'available' or launch_state == 'current' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'آماده اجرا در اسپیس' entitlement_note=assistant_launch_context.reason|default:reason %}
+          {% if launch_state == 'current' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'در زمینه فعلی قابل استفاده است' entitlement_note=assistant_launch_context.reason|default:reason %}
+          {% elif launch_state == 'available' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'قابل استفاده در مسیر اجرا' entitlement_note=assistant_launch_context.reason|default:reason %}
           {% elif launch_state == 'locked' or launch_state == 'upgradeable' %}
             {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'با ارتقا قابل استفاده' entitlement_note=assistant_launch_context.reason|default:reason %}
           {% elif launch_state == 'policy' or launch_state == 'policy_restricted' %}
             {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'محدود با سیاست دسترسی' entitlement_note=assistant_launch_context.reason|default:reason %}
           {% elif launch_state == 'workspace' or launch_state == 'restricted' %}
             {% include 'app/_entitlement_status_badge.html' with entitlement_state='workspace' entitlement_tone='workspace' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'در این فضا فعال نیست' entitlement_note=assistant_launch_context.reason|default:reason %}
+          {% elif launch_state == 'archived' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='disabled' entitlement_tone='default' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'آرشیوشده' entitlement_note=assistant_launch_context.reason|default:reason %}
+          {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'نسخه منتقل‌شده' entitlement_note=assistant_launch_context.reason|default:reason %}
           {% else %}
             {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'فعلاً در دسترس نیست' entitlement_note=assistant_launch_context.reason|default:reason %}
           {% endif %}
@@ -22,13 +28,17 @@
           {% if assistant_launch_context.title or title %}
             {{ assistant_launch_context.title|default:title }}
           {% elif launch_state == 'available' or launch_state == 'current' %}
-            برای استفاده از این دستیار، مقصد اجرا را انتخاب کنید
+            اول مقصد اجرا را انتخاب کنید
           {% elif launch_state == 'locked' or launch_state == 'upgradeable' %}
-            این دستیار شناخته شده است، اما در سطح فعلی هنوز برای اجرا باز نیست
+            این دستیار شناخته شده است، اما همه مسیرهای اجرای آن در دسترس نیست
           {% elif launch_state == 'policy' or launch_state == 'policy_restricted' %}
             این دستیار به‌خاطر سیاست دسترسی از همین مسیر قابل اجرا نیست
           {% elif launch_state == 'workspace' or launch_state == 'restricted' %}
             این دستیار در این ورک‌اسپیس یا زمینه اجرایی فعال نشده است
+          {% elif launch_state == 'archived' %}
+            این دستیار دیگر جزو مسیرهای فعال اجرا نیست
+          {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
+            این دستیار از مسیر یا نسخه قبلی به این فضا منتقل شده است
           {% else %}
             مسیر اجرای مستقیم برای این دستیار فعلاً آماده نیست
           {% endif %}
@@ -37,21 +47,29 @@
         <p class="mt-2 text-sm leading-7 {% if launch_state == 'available' or launch_state == 'current' or launch_state == 'locked' or launch_state == 'upgradeable' %}text-slate-700 dark:text-slate-200{% else %}text-slate-600 dark:text-slate-300{% endif %}">
           {% if assistant_launch_context.body or body %}
             {{ assistant_launch_context.body|default:body }}
+          {% elif launch_state == 'locked' or launch_state == 'upgradeable' %}
+            ممکن است بعضی مسیرها همچنان باز باشند، اما اجرای کامل به دسترسی بیشتری نیاز دارد. این کارت فقط روشن می‌کند از کدام مقصد می‌توانید ادامه دهید.
+          {% elif launch_state == 'policy' or launch_state == 'policy_restricted' %}
+            این محدودیت از سیاست همین مسیر می‌آید و لزوماً با ارتقا تغییر نمی‌کند. اگر راه جایگزین فعالی دارید، از همان وارد شوید.
+          {% elif launch_state == 'workspace' or launch_state == 'restricted' %}
+            این دستیار برای ورک‌اسپیس یا زمینه فعلی آماده نشده است. اگر مسیر دیگری دارید، از همان وارد شوید تا اجرا در چت همان فضا ادامه پیدا کند.
+          {% elif launch_state == 'archived' %}
+            این دستیار در مسیرهای فعال پیشنهاد نمی‌شود و بیشتر برای حفظ سابقه یا مرور وضعیت قبلی باقی مانده است.
+          {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
+            این مورد از نسخه یا مسیر قبلی آمده است. برای استفاده تازه، نسخه فعال یا مسیر جدید را ترجیح دهید.
           {% else %}
-            اجرای واقعی این دستیار داخل اسپیس و گفتگو انجام می‌شود. این کارت فقط کمک می‌کند مقصد مناسب را انتخاب کنید تا بعد از ورود، همان‌جا گفتگو را شروع یا ادامه دهید.
+            این کارت فقط مقصد مناسب را نشان می‌دهد. شروع یا ادامه واقعی گفتگو بعد از ورود، داخل اسپیس و صفحه چت همان فضا انجام می‌شود.
           {% endif %}
         </p>
 
-        <div class="mt-4 rounded-[1.25rem] border border-white/75 bg-white/82 px-4 py-3 dark:border-slate-800/60 dark:bg-slate-950/30">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">این دستیار چطور اجرا می‌شود؟</div>
-          <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">
-            {% if assistant_launch_context.helper or helper %}
+        {% if assistant_launch_context.helper or helper %}
+          <div class="mt-4 rounded-[1.25rem] border border-white/75 bg-white/82 px-4 py-3 dark:border-slate-800/60 dark:bg-slate-950/30">
+            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">بعد از انتخاب مسیر چه می‌شود؟</div>
+            <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">
               {{ assistant_launch_context.helper|default:helper }}
-            {% else %}
-              اول اسپیس یا مسیر گفتگو را انتخاب می‌کنید، بعد دستیار در همان سطح چت اجرا می‌شود. این صفحه جای تنظیم مقصد اجراست، نه خود سطح اجرا.
-            {% endif %}
-          </p>
-        </div>
+            </p>
+          </div>
+        {% endif %}
 
         {% if assistant_launch_context.note or note %}
           <p class="mt-3 text-xs leading-6 text-slate-500 dark:text-slate-400">
@@ -62,8 +80,18 @@
 
       <div class="flex w-full flex-col gap-2 lg:w-auto lg:min-w-[15rem]">
         {% if assistant_launch_context.primary_cta_url|default:primary_cta_url and launch_state != 'unavailable' and launch_state != 'policy' and launch_state != 'policy_restricted' and launch_state != 'workspace' and launch_state != 'restricted' %}
-          <a href="{{ assistant_launch_context.primary_cta_url|default:primary_cta_url }}" class="btn-primary w-full lg:w-auto">
-            {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"انتخاب مسیر استفاده" }}
+          <a href="{{ assistant_launch_context.primary_cta_url|default:primary_cta_url }}" class="{% if launch_state == 'available' %}btn-primary{% else %}btn-secondary{% endif %} w-full lg:w-auto">
+            {% if assistant_launch_context.primary_cta_label or primary_cta_label %}
+              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label }}
+            {% elif launch_state == 'locked' or launch_state == 'upgradeable' %}
+              بررسی مسیر دسترسی
+            {% elif launch_state == 'archived' %}
+              مشاهده وضعیت آرشیو
+            {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
+              بررسی مسیر جدید
+            {% else %}
+              مشاهده مسیرهای استفاده
+            {% endif %}
           </a>
         {% else %}
           <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-white/78 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-950/30 dark:text-slate-500">
@@ -73,6 +101,10 @@
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"این مسیر با سیاست دسترسی بسته است" }}
             {% elif launch_state == 'workspace' or launch_state == 'restricted' %}
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"برای این ورک‌اسپیس آماده نیست" }}
+            {% elif launch_state == 'archived' %}
+              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"این مسیر آرشیوشده است" }}
+            {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
+              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"در مسیر جدید دنبال کنید" }}
             {% else %}
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"فعلاً مسیر اجرای مستقیمی ندارد" }}
             {% endif %}

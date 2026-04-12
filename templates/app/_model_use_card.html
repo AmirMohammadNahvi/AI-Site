@@ -6,7 +6,9 @@
           <div class="flex flex-wrap items-center gap-2">
             <span class="badge">{{ model_use_context.badge|default:badge|default:"استفاده از مدل" }}</span>
 
-            {% if use_state == 'available' or use_state == 'current' %}
+            {% if use_state == 'current' %}
+              {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=model_use_context.state_label|default:state_label|default:'در زمینه فعلی قابل انتخاب است' entitlement_note=model_use_context.reason|default:reason %}
+            {% elif use_state == 'available' %}
               {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=model_use_context.state_label|default:state_label|default:'قابل انتخاب در مسیر اجرا' entitlement_note=model_use_context.reason|default:reason %}
             {% elif use_state == 'locked' or use_state == 'upgradeable' %}
               {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=model_use_context.state_label|default:state_label|default:'با ارتقا قابل انتخاب' entitlement_note=model_use_context.reason|default:reason %}
@@ -14,6 +16,10 @@
               {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=model_use_context.state_label|default:state_label|default:'محدود با سیاست دسترسی' entitlement_note=model_use_context.reason|default:reason %}
             {% elif use_state == 'workspace' or use_state == 'restricted' %}
               {% include 'app/_entitlement_status_badge.html' with entitlement_state='workspace' entitlement_tone='workspace' entitlement_label=model_use_context.state_label|default:state_label|default:'در این فضا فعال نیست' entitlement_note=model_use_context.reason|default:reason %}
+            {% elif use_state == 'archived' %}
+              {% include 'app/_entitlement_status_badge.html' with entitlement_state='disabled' entitlement_tone='default' entitlement_label=model_use_context.state_label|default:state_label|default:'آرشیوشده' entitlement_note=model_use_context.reason|default:reason %}
+            {% elif use_state == 'migrated' or use_state == 'legacy' %}
+              {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=model_use_context.state_label|default:state_label|default:'منتقل‌شده از مسیر قبلی' entitlement_note=model_use_context.reason|default:reason %}
             {% else %}
               {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=model_use_context.state_label|default:state_label|default:'فعلاً قابل انتخاب نیست' entitlement_note=model_use_context.reason|default:reason %}
             {% endif %}
@@ -26,37 +32,65 @@
               این مدل را داخل یک مسیر اجرا انتخاب کنید
             {% elif use_state == 'locked' or use_state == 'upgradeable' %}
               این مدل شناخته شده است، اما در سطح فعلی هنوز برای انتخاب آماده نیست
-            {% elif use_state == 'policy' or use_state == 'policy_restricted' %}
-              این مدل به‌خاطر سیاست دسترسی از همین مسیر قابل استفاده نیست
-            {% elif use_state == 'workspace' or use_state == 'restricted' %}
-              این مدل برای ورک‌اسپیس یا زمینه فعلی فعال نشده است
-            {% else %}
-              این مدل فعلاً مسیر انتخاب مستقیمی در این زمینه ندارد
-            {% endif %}
-          </h2>
-
-          <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-            {% if model_use_context.body or body %}
-              {{ model_use_context.body|default:body }}
-            {% else %}
-              مدل به‌تنهایی یک workflow کامل نیست. ابتدا باید وارد یک دستیار، اسپیس یا مسیر گفتگوی مناسب شوید تا این مدل در همان سطح اجرا معنا پیدا کند.
-            {% endif %}
-          </p>
-        </div>
-
-        <div class="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[14rem]">
-          {% if model_use_context.primary_cta_url|default:primary_cta_url and use_state != 'policy' and use_state != 'policy_restricted' and use_state != 'workspace' and use_state != 'restricted' and use_state != 'unavailable' %}
-            <a href="{{ model_use_context.primary_cta_url|default:primary_cta_url }}" class="btn-primary w-full">
-              {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"مشاهده مسیرهای استفاده" }}
-            </a>
+          {% elif use_state == 'policy' or use_state == 'policy_restricted' %}
+            این مدل به‌خاطر سیاست دسترسی از همین مسیر قابل استفاده نیست
+          {% elif use_state == 'workspace' or use_state == 'restricted' %}
+            این مدل برای ورک‌اسپیس یا زمینه فعلی فعال نشده است
+          {% elif use_state == 'archived' %}
+            این مدل دیگر در مسیرهای فعال این زمینه پیشنهاد نمی‌شود
+          {% elif use_state == 'migrated' or use_state == 'legacy' %}
+            این مدل از مسیر یا نسخه قبلی به این زمینه منتقل شده است
           {% else %}
-            <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-white/78 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-950/30 dark:text-slate-500">
+            این مدل فعلاً مسیر انتخاب مستقیمی در این زمینه ندارد
+          {% endif %}
+        </h2>
+
+        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+          {% if model_use_context.body or body %}
+            {{ model_use_context.body|default:body }}
+          {% elif use_state == 'locked' or use_state == 'upgradeable' %}
+            ممکن است بعضی مسیرهای استفاده همچنان باز باشند، اما انتخاب کامل این مدل به دسترسی بیشتری نیاز دارد.
+          {% elif use_state == 'policy' or use_state == 'policy_restricted' %}
+            این محدودیت از سیاست دسترسی همین مسیر می‌آید و فقط با تغییر پلن رفع نمی‌شود.
+          {% elif use_state == 'workspace' or use_state == 'restricted' %}
+            این مدل برای زمینه فعلی آماده نشده است. اگر مسیر فعالی در ورک‌اسپیس دیگری دارید، همان‌جا از آن استفاده کنید.
+          {% elif use_state == 'archived' %}
+            این مدل برای حفظ سابقه یا مرور وضعیت قبلی قابل مشاهده است، اما نقطه شروع مناسب برای اجرای تازه نیست.
+          {% elif use_state == 'migrated' or use_state == 'legacy' %}
+            این مورد از نسخه قبلی آمده است. برای کار تازه، نسخه فعال یا مسیر جدید را ترجیح دهید.
+          {% else %}
+            مدل به‌تنهایی یک workflow کامل نیست. اول باید وارد یک دستیار، اسپیس یا مسیر گفتگوی مناسب شوید تا این مدل در همان سطح اجرا معنا پیدا کند.
+          {% endif %}
+        </p>
+      </div>
+
+      <div class="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[14rem]">
+        {% if model_use_context.primary_cta_url|default:primary_cta_url and use_state != 'policy' and use_state != 'policy_restricted' and use_state != 'workspace' and use_state != 'restricted' and use_state != 'unavailable' %}
+          <a href="{{ model_use_context.primary_cta_url|default:primary_cta_url }}" class="{% if use_state == 'available' %}btn-primary{% else %}btn-secondary{% endif %} w-full">
+            {% if model_use_context.primary_cta_label or primary_cta_label %}
+              {{ model_use_context.primary_cta_label|default:primary_cta_label }}
+            {% elif use_state == 'locked' or use_state == 'upgradeable' %}
+              بررسی مسیرهای دسترسی
+            {% elif use_state == 'archived' %}
+              مشاهده وضعیت آرشیو
+            {% elif use_state == 'migrated' or use_state == 'legacy' %}
+              بررسی مسیر جدید
+            {% else %}
+              مشاهده مسیرهای استفاده
+            {% endif %}
+          </a>
+        {% else %}
+          <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-white/78 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-950/30 dark:text-slate-500">
               {% if use_state == 'locked' or use_state == 'upgradeable' %}
                 {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"نیازمند ارتقا یا دسترسی بیشتر" }}
               {% elif use_state == 'policy' or use_state == 'policy_restricted' %}
                 {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"با سیاست دسترسی محدود شده است" }}
               {% elif use_state == 'workspace' or use_state == 'restricted' %}
                 {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"در این ورک‌اسپیس فعال نیست" }}
+              {% elif use_state == 'archived' %}
+                {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"این مسیر آرشیوشده است" }}
+              {% elif use_state == 'migrated' or use_state == 'legacy' %}
+                {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"در مسیر جدید دنبال کنید" }}
               {% else %}
                 {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"فعلاً مسیر انتخاب مستقیمی ندارد" }}
               {% endif %}
