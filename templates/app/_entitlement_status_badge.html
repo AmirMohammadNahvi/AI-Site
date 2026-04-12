@@ -1,0 +1,25 @@
+{% with badge_state=entitlement_state|default:'included' badge_tone=entitlement_tone|default:entitlement_state|default:'included' %}
+  <span
+    class="inline-flex max-w-full items-center gap-2 rounded-full border px-2.5 py-1 text-[11px] font-bold leading-5 {% if badge_tone == 'included' or badge_tone == 'good' or badge_tone == 'success' %}border-emerald-200/80 bg-emerald-50/85 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300{% elif badge_tone == 'limited' or badge_tone == 'warning' %}border-amber-200/80 bg-amber-50/85 text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200{% elif badge_tone == 'upgradeable' or badge_tone == 'info' %}border-sky-200/80 bg-sky-50/85 text-sky-800 dark:border-sky-500/20 dark:bg-sky-500/10 dark:text-sky-200{% elif badge_tone == 'disabled' or badge_tone == 'policy' or badge_tone == 'workspace' or badge_tone == 'critical' %}border-rose-200/80 bg-rose-50/85 text-rose-700 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-200{% else %}border-slate-200/80 bg-slate-50/85 text-slate-700 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300{% endif %}"
+    {% if entitlement_note %}title="{{ entitlement_note }}"{% endif %}
+  >
+    <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-75"></span>
+    <span class="truncate">
+      {% if entitlement_label %}
+        {{ entitlement_label }}
+      {% elif badge_state == 'included' %}
+        شامل دسترسی
+      {% elif badge_state == 'limited' %}
+        دسترسی محدود
+      {% elif badge_state == 'upgradeable' %}
+        با ارتقا فعال می‌شود
+      {% elif badge_state == 'disabled' or badge_state == 'policy' or badge_state == 'workspace' %}
+        غیرفعال در این فضا
+      {% elif badge_state == 'unavailable' %}
+        در دسترس نیست
+      {% else %}
+        وضعیت دسترسی
+      {% endif %}
+    </span>
+  </span>
+{% endwith %}

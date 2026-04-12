@@ -1,0 +1,72 @@
+{% with note_tone=blocked_tone|default:entitlement_tone|default:entitlement_state|default:'unavailable' %}
+  <section class="rounded-[1.6rem] border p-4 shadow-sm shadow-slate-900/5 sm:p-5 {% if note_tone == 'limited' or note_tone == 'warning' %}border-amber-200/80 bg-amber-50/70 dark:border-amber-500/20 dark:bg-amber-500/10{% elif note_tone == 'disabled' or note_tone == 'policy' or note_tone == 'workspace' or note_tone == 'critical' %}border-rose-200/80 bg-rose-50/70 dark:border-rose-500/20 dark:bg-rose-500/10{% else %}border-slate-200/80 bg-slate-50/80 dark:border-slate-700/70 dark:bg-slate-900/45{% endif %}">
+    <div class="flex items-start gap-3">
+      <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[1rem] border {% if note_tone == 'limited' or note_tone == 'warning' %}border-amber-200/80 bg-white/85 text-amber-800 dark:border-amber-500/20 dark:bg-slate-950/30 dark:text-amber-200{% elif note_tone == 'disabled' or note_tone == 'policy' or note_tone == 'workspace' or note_tone == 'critical' %}border-rose-200/80 bg-white/85 text-rose-700 dark:border-rose-500/20 dark:bg-slate-950/30 dark:text-rose-200{% else %}border-slate-200/80 bg-white/85 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/30 dark:text-slate-300{% endif %}">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          {% if note_tone == 'limited' or note_tone == 'warning' %}
+            <path d="M12 8v4m0 4h.01" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="12" cy="12" r="9"></circle>
+          {% elif note_tone == 'disabled' or note_tone == 'policy' or note_tone == 'workspace' or note_tone == 'critical' %}
+            <path d="M8 8l8 8M16 8l-8 8" stroke-linecap="round"></path>
+            <circle cx="12" cy="12" r="9"></circle>
+          {% else %}
+            <path d="M12 8v4m0 4h.01" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M12 3a9 9 0 100 18 9 9 0 000-18z"></path>
+          {% endif %}
+        </svg>
+      </span>
+
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center gap-2">
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state=entitlement_state|default:note_tone entitlement_tone=note_tone entitlement_label=entitlement_label entitlement_note=blocked_reason|default:entitlement_note %}
+          {% if blocked_reason %}
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">دلیل وضعیت روشن است</span>
+          {% endif %}
+        </div>
+
+        <h2 class="mt-3 text-sm font-black text-slate-900 dark:text-white sm:text-base">
+          {% if blocked_title %}
+            {{ blocked_title }}
+          {% elif note_tone == 'limited' or note_tone == 'warning' %}
+            این بخش برای حساب فعلی با محدودیت نمایش داده می‌شود
+          {% elif note_tone == 'disabled' or note_tone == 'policy' or note_tone == 'workspace' or note_tone == 'critical' %}
+            این بخش در این ورک‌اسپیس یا سیاست دسترسی غیرفعال است
+          {% elif note_tone == 'context' or note_tone == 'not_enabled' %}
+            این قابلیت برای این زمینه فعال نشده است
+          {% else %}
+            این قابلیت در حال حاضر در دسترس نیست
+          {% endif %}
+        </h2>
+
+        <p class="mt-2 text-sm leading-7 {% if note_tone == 'limited' or note_tone == 'warning' or note_tone == 'disabled' or note_tone == 'policy' or note_tone == 'workspace' or note_tone == 'critical' %}text-slate-700 dark:text-slate-200{% else %}text-slate-600 dark:text-slate-300{% endif %}">
+          {% if blocked_body %}
+            {{ blocked_body }}
+          {% elif note_tone == 'limited' or note_tone == 'warning' %}
+            بخشی از استفاده در این سطح دسترسی محدود است. فقط گزینه‌هایی که همین‌جا فعال نشان داده می‌شوند قابل استفاده‌اند.
+          {% elif note_tone == 'disabled' or note_tone == 'policy' or note_tone == 'workspace' or note_tone == 'critical' %}
+            این وضعیت از تنظیمات مدیر یا سیاست ورک‌اسپیس می‌آید و لزوماً با ارتقا تغییر نمی‌کند.
+          {% elif note_tone == 'context' or note_tone == 'not_enabled' %}
+            ممکن است همین قابلیت در بخش یا زمینه‌ی دیگری فعال باشد، اما برای این صفحه یا این جریان استفاده آماده نشده است.
+          {% else %}
+            در حال حاضر مسیر امنی برای استفاده از این بخش در همین صفحه وجود ندارد. اگر مسیر جایگزین یا تنظیم مرتبطی تعریف شده باشد، از همان مسیر ادامه دهید.
+          {% endif %}
+        </p>
+
+        {% if blocked_reason %}
+          <div class="mt-3 rounded-[1.1rem] border border-white/75 bg-white/82 px-4 py-3 dark:border-slate-800/60 dark:bg-slate-950/30">
+            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">دلیل این وضعیت</div>
+            <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ blocked_reason }}</p>
+          </div>
+        {% endif %}
+
+        {% if blocked_cta_url %}
+          <div class="mt-4">
+            <a href="{{ blocked_cta_url }}" class="btn-secondary w-full sm:w-auto">
+              {{ blocked_cta_label|default:'مشاهده جزئیات مرتبط' }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endwith %}
