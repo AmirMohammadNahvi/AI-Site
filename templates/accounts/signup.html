@@ -1,22 +1,75 @@
 {% extends 'base.html' %}
 
 {% block title %}ثبت‌نام | {{ site_settings.site_name_fa }}{% endblock %}
+{% block meta_description %}ساخت حساب FaralYar با تمرکز روی شروع ساده و بدون شلوغی.{% endblock %}
 
 {% block content %}
-  <section class="section-shell pt-10">
-    <div class="mx-auto max-w-xl glass-card p-6 sm:p-8">
-      <h1 class="text-3xl font-black">ساخت حساب کاربری</h1>
-      <form method="post" class="mt-6 grid gap-4">
-        {% csrf_token %}
-        {% for field in form %}
-          <div>
-            <label class="mb-2 block text-sm font-bold">{{ field.label }}</label>
-            {{ field }}
-            {{ field.errors }}
+  <section class="section-shell py-8 sm:py-10">
+    <div class="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start">
+      <section class="glass-card overflow-hidden p-5 sm:p-7 lg:p-8">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="badge">شروع حساب</span>
+          <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">ثبت‌نام کوتاه</span>
+        </div>
+
+        <div class="mt-4 border-b border-slate-200/80 pb-5 dark:border-slate-700/70">
+          <h1 class="text-2xl font-black text-slate-900 dark:text-white sm:text-3xl">
+            {{ auth_title|default:'ساخت حساب FaralYar' }}
+          </h1>
+          <p class="mt-3 max-w-2xl text-sm leading-8 text-slate-600 dark:text-slate-300">
+            {{ auth_subtitle|default:'فقط اطلاعات اصلی حساب را وارد کنید. تنظیمات شخصی، نام ترجیحی و سبک پاسخ بعد از ورود و داخل فضای کاری قابل مدیریت هستند.' }}
+          </p>
+        </div>
+
+        <form method="post" class="mt-5 space-y-4" novalidate>
+          {% csrf_token %}
+
+          {% if next_url %}
+            <input type="hidden" name="next" value="{{ next_url }}">
+          {% endif %}
+
+          {% if form.non_field_errors %}
+            <ul class="errorlist">{{ form.non_field_errors }}</ul>
+          {% endif %}
+
+          {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+          {% endfor %}
+
+          <div class="grid gap-4 sm:grid-cols-2">
+            {% for field in form.visible_fields %}
+              <div class="{% if field.name == 'email' or field.name == 'password1' or field.name == 'password2' %}sm:col-span-2{% endif %}">
+                <label for="{{ field.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ field.label }}</label>
+                {{ field }}
+                {% if field.name == 'mobile' %}
+                  <p class="helptext">شماره موبایل برای ورود و بازیابی دسترسی استفاده می‌شود.</p>
+                {% elif field.name == 'password1' %}
+                  <p class="helptext">یک رمز عبور مطمئن انتخاب کنید تا ورود شما پایدار و قابل اتکا بماند.</p>
+                {% elif field.help_text %}
+                  <p class="helptext">{{ field.help_text }}</p>
+                {% endif %}
+                {{ field.errors }}
+              </div>
+            {% endfor %}
           </div>
-        {% endfor %}
-        <button class="btn-primary w-full" type="submit">ثبت‌نام</button>
-      </form>
+
+          <div class="rounded-[1.35rem] border border-emerald-200/80 bg-emerald-50/78 p-4 dark:border-emerald-500/20 dark:bg-emerald-500/10">
+            <div class="text-sm font-black text-slate-900 dark:text-white">پس از ساخت حساب چه می‌شود؟</div>
+            <p class="mt-1 text-sm leading-7 text-slate-700 dark:text-slate-200">
+              ابتدا وارد فضای اصلی می‌شوید. اگر خواستید، بعداً می‌توانید نام ترجیحی، شخصیت پاسخ و چند پیش‌فرض کوچک را جداگانه تنظیم کنید.
+            </p>
+          </div>
+
+          <button class="btn-primary w-full" type="submit">ساخت حساب</button>
+        </form>
+
+        <div class="mt-5 flex flex-col gap-3 border-t border-slate-200/80 pt-5 text-sm dark:border-slate-700/70 sm:flex-row sm:items-center sm:justify-between">
+          <p class="text-slate-600 dark:text-slate-300">قبلاً حساب ساخته‌اید؟</p>
+          <a href="{% url 'accounts:login' %}" class="font-bold text-brand-primary">ورود به حساب</a>
+        </div>
+      </section>
+
+      {% include 'accounts/_auth_intro_panel.html' with auth_intro_badge='شروع آرام' auth_intro_title='ثبت‌نام نباید شما را وارد تنظیمات طولانی کند.' auth_intro_body='در این مرحله فقط یک حساب ساخته می‌شود. ساخت ورک‌اسپیس، شخصی‌سازی دقیق و تنظیم ترجیحات قرار نیست مانع شروع شما شوند.' auth_intro_point_one_title='حداقل اطلاعات لازم' auth_intro_point_one_body='نام، ایمیل، موبایل و رمز عبور برای شروع کافی است؛ بقیه تصمیم‌ها را می‌شود بعداً گرفت.' auth_intro_point_two_title='بدون فشار فروش' auth_intro_point_two_body='این صفحه برای تصمیم‌گیری بازاری نیست. تمرکز فقط روی ساخت یک حساب پایدار و قابل اعتماد است.' auth_intro_meta_title='حریم و دسترسی' auth_intro_meta_body='اطلاعات تماس شما برای ورود، ارتباطات ضروری حساب و افزایش اطمینان دسترسی نگه‌داری می‌شود.' %}
     </div>
   </section>
 {% endblock %}

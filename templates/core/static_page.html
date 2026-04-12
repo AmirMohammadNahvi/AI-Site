@@ -4,10 +4,18 @@
 {% block meta_description %}{{ page.seo_description|default:page.title }}{% endblock %}
 
 {% block content %}
-  <section class="section-shell pt-10">
-    <article class="glass-card mx-auto max-w-4xl p-6 sm:p-8">
-      <h1 class="text-3xl font-black">{{ page.title }}</h1>
-      <div class="prose prose-slate mt-6 max-w-none leading-8 dark:prose-invert">{{ page.body|linebreaks }}</div>
-    </article>
-  </section>
+  {% url 'ai_platform:chat' as static_chat_url %}
+  {% url 'core:pricing' as static_pricing_url %}
+  {% url 'core:faq' as static_faq_url %}
+  {% url 'core:contact' as static_contact_url %}
+
+  {% include 'public/_legal_reading_shell.html' with page=page %}
+
+  {% if page.page_key == 'about' %}
+    {% include 'public/_cta_band.html' with cta_badge='آشنایی بیشتر' cta_title='اگر می‌خواهید FaralYar را در عمل ببینید، از یک تجربه واقعی شروع کنید.' cta_body='بهترین راه برای شناخت لحن، ریتم و فضای کاری محصول، شروع یک گفتگوی واقعی یا مرور شفاف پلن‌هاست.' cta_primary_url=static_chat_url cta_primary_label='شروع گفتگو' cta_secondary_url=static_pricing_url cta_secondary_label='مرور پلن‌ها' %}
+  {% elif page.page_key == 'privacy' %}
+    {% include 'public/_cta_band.html' with cta_badge='سوال درباره داده یا حساب' cta_title='اگر درباره حریم خصوصی، داده یا مسیر پیگیری ابهام دارید، از کانال درست سوال بپرسید.' cta_body='برای سوال‌های رایج، صفحه FAQ و برای ابهام‌های خاص‌تر، صفحه تماس بهترین مسیر بعدی است.' cta_primary_url=static_contact_url cta_primary_label='ارسال سوال' cta_secondary_url=static_faq_url cta_secondary_label='پرسش‌های متداول' %}
+  {% elif page.page_key == 'terms' %}
+    {% include 'public/_cta_band.html' with cta_badge='پیش از خرید یا شروع' cta_title='قوانین وقتی مفیدند که کنار توضیح روشن محصول دیده شوند.' cta_body='اگر می‌خواهید حدود استفاده، دسترسی‌ها و مسیر ادامه را بهتر درک کنید، pricing و FAQ دو نقطه مفید بعدی هستند.' cta_primary_url=static_pricing_url cta_primary_label='مرور پلن‌ها' cta_secondary_url=static_faq_url cta_secondary_label='مرور FAQ' %}
+  {% endif %}
 {% endblock %}

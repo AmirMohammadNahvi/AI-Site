@@ -1,26 +1,80 @@
 {% extends 'base.html' %}
 
 {% block title %}ورود با موبایل | {{ site_settings.site_name_fa }}{% endblock %}
+{% block meta_description %}درخواست کد تایید موبایل برای ورود سریع و روشن به FaralYar.{% endblock %}
 
 {% block content %}
-  <section class="section-shell pt-10">
-    <div class="mx-auto max-w-xl glass-card p-6 sm:p-8">
-      <h1 class="text-3xl font-black">درخواست کد تایید</h1>
-      {% if provider_ready %}
-        <form method="post" class="mt-6 grid gap-4">
-          {% csrf_token %}
-          {% for field in form %}
-            <div>
-              <label class="mb-2 block text-sm font-bold">{{ field.label }}</label>
-              {{ field }}
-              {{ field.errors }}
+  <section class="section-shell py-8 sm:py-10">
+    <div class="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start">
+      <section class="glass-card overflow-hidden p-5 sm:p-7 lg:p-8">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="badge">کد تایید</span>
+          <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">مرحله ۱ از ۲</span>
+        </div>
+
+        <div class="mt-4 flex flex-col gap-4 border-b border-slate-200/80 pb-5 dark:border-slate-700/70 sm:flex-row sm:items-start sm:justify-between">
+          <div class="min-w-0 max-w-2xl">
+            <h1 class="text-2xl font-black text-slate-900 dark:text-white sm:text-3xl">
+              {{ auth_title|default:'درخواست کد ورود' }}
+            </h1>
+            <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
+              {{ auth_subtitle|default:'شماره موبایل حساب را وارد کنید تا کد تایید برای همان شماره ارسال شود. پس از دریافت کد، در مرحله بعد آن را وارد می‌کنید.' }}
+            </p>
+          </div>
+
+          <div class="w-full sm:w-auto sm:min-w-[13rem]">
+            <a href="{% url 'accounts:login' %}" class="btn-secondary w-full">بازگشت به ورود</a>
+          </div>
+        </div>
+
+        {% if provider_ready %}
+          <form method="post" class="mt-5 space-y-4" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <ul class="errorlist">{{ form.non_field_errors }}</ul>
+            {% endif %}
+
+            {% for hidden in form.hidden_fields %}
+              {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+              <div>
+                <label for="{{ field.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ field.label }}</label>
+                {{ field }}
+                <p class="helptext">کد فقط به همین شماره ارسال می‌شود. شماره را با دقت وارد کنید.</p>
+                {{ field.errors }}
+              </div>
+            {% endfor %}
+
+            {% include 'accounts/_otp_status_note.html' with otp_note_title='بعد از ارسال کد' otp_note_body=otp_resend_note|default:'اگر پیامک با کمی تاخیر رسید، همین صفحه را نبندید. در صورت نیاز می‌توانید دوباره درخواست کد بدهید.' %}
+
+            <button class="btn-primary w-full" type="submit">ارسال کد تایید</button>
+          </form>
+
+          <div class="mt-5 grid gap-3 border-t border-slate-200/80 pt-5 dark:border-slate-700/70 sm:grid-cols-2">
+            <div class="rounded-[1.35rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-950/35">
+              <div class="text-sm font-black text-slate-900 dark:text-white">وقتی کد نرسید</div>
+              <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">ابتدا کمی صبر کنید، آنتن و پیامک‌های مسدودشده را بررسی کنید، سپس دوباره درخواست بفرستید.</p>
             </div>
-          {% endfor %}
-          <button class="btn-primary w-full" type="submit">ارسال کد</button>
-        </form>
-      {% else %}
-        <p class="mt-4 text-sm text-slate-600 dark:text-slate-400">ورود با موبایل هنوز برای این محیط فعال نشده است.</p>
-      {% endif %}
+            <div class="rounded-[1.35rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-950/35">
+              <div class="text-sm font-black text-slate-900 dark:text-white">اگر حساب تازه ساخته شود</div>
+              <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">در ورود موبایلی، اگر حسابی برای این شماره وجود نداشته باشد، پس از تایید کد به‌صورت خودکار ساخته می‌شود.</p>
+            </div>
+          </div>
+        {% else %}
+          <div class="mt-5 space-y-4">
+            {% include 'accounts/_otp_status_note.html' with otp_note_tone='warning' otp_note_title='ارسال کد فعلاً در دسترس نیست' otp_note_body='ارائه‌دهنده پیامک برای این محیط فعال نشده است. برای ادامه، از ورود معمولی استفاده کنید یا کمی بعد دوباره امتحان کنید.' %}
+            {% if otp_error_note %}
+              {% include 'accounts/_otp_status_note.html' with otp_note_tone='danger' otp_note_title='جزئیات بیشتر' otp_note_body=otp_error_note %}
+            {% endif %}
+            <a href="{% url 'accounts:login' %}" class="btn-primary w-full sm:w-auto">بازگشت به ورود معمولی</a>
+          </div>
+        {% endif %}
+      </section>
+
+      {% include 'accounts/_auth_intro_panel.html' with auth_intro_badge='ورود با موبایل' auth_intro_title='کد تایید فقط برای تایید دسترسی همین شماره است.' auth_intro_body='این مسیر برای ورود سریع طراحی شده، نه برای پرکردن فرم‌های طولانی. اول کد را درخواست می‌کنید، بعد در صفحه بعد همان کد را وارد می‌کنید.' auth_intro_point_one_title='دو مرحله روشن' auth_intro_point_one_body='درخواست کد و سپس تایید کد. هر مرحله فقط یک کار اصلی دارد تا خطا و تردید کمتر شود.' auth_intro_point_two_title='زبان خطا و انتظار روشن' auth_intro_point_two_body='اگر کد دیر برسد، نامعتبر باشد یا سرویس پیامک در دسترس نباشد، متن صفحه به‌جای ابهام، مسیر بعدی را توضیح می‌دهد.' auth_intro_meta_title='حفظ اعتماد' auth_intro_meta_body='شماره موبایل فقط برای احراز دسترسی و استفاده از ورود موبایلی به کار می‌رود.' %}
     </div>
   </section>
 {% endblock %}

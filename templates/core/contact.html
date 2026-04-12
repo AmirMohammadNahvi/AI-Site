@@ -1,34 +1,77 @@
 {% extends 'base.html' %}
-{% load site_text %}
 
 {% block title %}تماس با ما | {{ site_settings.site_name_fa }}{% endblock %}
+{% block meta_description %}صفحه تماس FaralYar برای سوال‌های تجاری، پشتیبانی، همکاری و درخواست‌های سازمانی؛ با فرم روشن و مسیرهای ارتباطی قابل‌اعتماد.{% endblock %}
 
 {% block content %}
-  <section class="section-shell pt-10">
-    <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-      <div class="glass-card p-6">
-        <h1 class="text-3xl font-black">{% site_text 'contact.title' 'تماس با تیم FaralYar' title='عنوان صفحه تماس' group='contact' %}</h1>
-        <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">{% site_text 'contact.subtitle' 'اگر سوال تجاری، پشتیبانی، پیشنهاد همکاری یا نیاز سازمانی داری، از همین صفحه پیام بفرست.' title='زیرعنوان صفحه تماس' group='contact' %}</p>
-        <div class="mt-6 space-y-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
-          {% if site_settings.support_email %}<p>{% site_text 'contact.email_label' 'ایمیل' title='برچسب ایمیل در صفحه تماس' group='contact' %}: {{ site_settings.support_email }}</p>{% endif %}
-          {% if site_settings.support_phone %}<p>{% site_text 'contact.phone_label' 'تلفن' title='برچسب تلفن در صفحه تماس' group='contact' %}: {{ site_settings.support_phone }}</p>{% endif %}
-          {% if site_settings.address %}<p>{% site_text 'contact.address_label' 'آدرس' title='برچسب آدرس در صفحه تماس' group='contact' %}: {{ site_settings.address }}</p>{% endif %}
-        </div>
-      </div>
+  {% url 'core:faq' as contact_faq_url %}
+  {% url 'core:pricing' as contact_pricing_url %}
 
-      <div class="glass-card p-6">
-        <form method="post" class="grid gap-4">
+  {% include 'public/_public_page_hero.html' with hero_badge='ارتباط با تیم' hero_secondary_badge='پشتیبانی و همکاری' hero_title='برای سوال، پشتیبانی یا همکاری، مسیر تماس باید روشن و آرام باشد.' hero_body='اگر نیاز شما درباره خرید، تجربه استفاده، همکاری یا مسئله‌ای در مسیر حساب و دسترسی است، از همین صفحه پیام بفرستید. FaralYar این بخش را برای جمع‌کردن مسیرهای ضروری نگه می‌دارد؛ نه برای ایجاد فرم‌های طولانی و گیج‌کننده.' hero_primary_url=contact_pricing_url hero_primary_label='مرور پلن‌ها' hero_secondary_url=contact_faq_url hero_secondary_label='پرسش‌های متداول' hero_note_badge='اطمینان در ارتباط' hero_note_title='پیش از ارسال پیام، بدانید این صفحه برای چه چیزی مناسب است.' hero_note_body='این فرم برای پیگیری‌های واقعی، هماهنگی و پاسخ‌گویی طراحی شده است. اگر موضوع شما به داده حساس یا جزئیات حساب مربوط است، فقط اطلاعات ضروری را ارسال کنید.' hero_note_item_one_title='برای موضوع‌های تجاری و پشتیبانی' hero_note_item_one_body='از ابهام درباره قیمت، خرید، دسترسی یا استفاده روزمره تا نیازهای سازمانی و همکاری.' hero_note_item_two_title='بدون ادعای پاسخ‌گویی نامشخص' hero_note_item_two_body='صفحه تماس باید حس پیگیری بدهد، نه قول‌های مبهمی که مسیر بعدی را نامعلوم بگذارند.' hero_note_item_three_title='حفظ حریم در پیام' hero_note_item_three_body='در متن پیام فقط اطلاعات لازم را بنویسید و از اشتراک‌گذاری داده‌های حساس غیرضروری خودداری کنید.' %}
+
+  <section class="section-shell pt-10">
+    <div class="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+      <div class="panel-soft p-6 sm:p-8">
+        <div class="max-w-2xl">
+          <span class="badge">فرم تماس</span>
+          <h2 class="mt-4 text-2xl font-black text-slate-950 dark:text-white">پیام خود را با جزئیات لازم و کوتاه بفرستید.</h2>
+          <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">اگر شماره سفارش، نام پلن یا شرح کوتاهی از مسئله را دارید، اضافه‌کردن همان‌ها معمولاً برای رسیدگی بهتر کافی است.</p>
+        </div>
+        <form method="post" class="mt-6 grid gap-4">
           {% csrf_token %}
           {% for field in form %}
             <div>
-              <label class="mb-2 block text-sm font-bold">{{ field.label }}</label>
+              <label class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ field.label }}</label>
               {{ field }}
               {{ field.errors }}
             </div>
           {% endfor %}
-          <button class="btn-primary w-full sm:w-auto" type="submit">{% site_text 'contact.submit' 'ارسال پیام' title='دکمه ارسال پیام در صفحه تماس' group='contact' %}</button>
+          <div class="rounded-[1.5rem] border border-slate-200/80 bg-white/80 p-4 text-sm leading-7 text-slate-600 dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-300">
+            این فرم برای آغاز ارتباط است. اگر ادامه پیگیری نیاز به اطلاعات بیشتری داشته باشد، از مسیر مناسب به شما اعلام می‌شود.
+          </div>
+          <button class="btn-primary w-full sm:w-auto" type="submit">ارسال پیام</button>
         </form>
       </div>
+
+      <aside class="space-y-4">
+        <div class="panel-soft p-5">
+          <div class="text-sm font-black text-slate-900 dark:text-white">راه‌های تماس ثبت‌شده</div>
+          <div class="mt-4 space-y-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+            {% if site_settings.support_email %}
+              <div class="rounded-[1.25rem] border border-slate-200/80 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-900/50">
+                <div class="font-black text-slate-900 dark:text-white">ایمیل</div>
+                <div class="mt-1 break-all">{{ site_settings.support_email }}</div>
+              </div>
+            {% endif %}
+            {% if site_settings.support_phone %}
+              <div class="rounded-[1.25rem] border border-slate-200/80 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-900/50">
+                <div class="font-black text-slate-900 dark:text-white">تلفن</div>
+                <div class="mt-1">{{ site_settings.support_phone }}</div>
+              </div>
+            {% endif %}
+            {% if site_settings.address %}
+              <div class="rounded-[1.25rem] border border-slate-200/80 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-900/50">
+                <div class="font-black text-slate-900 dark:text-white">آدرس</div>
+                <div class="mt-1">{{ site_settings.address }}</div>
+              </div>
+            {% endif %}
+            {% if not site_settings.support_email and not site_settings.support_phone and not site_settings.address %}
+              <p>هنوز کانال مستقیمی در تنظیمات سایت ثبت نشده است. در این حالت می‌توانید از همین فرم برای آغاز ارتباط استفاده کنید.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="panel-soft p-5">
+          <div class="text-sm font-black text-slate-900 dark:text-white">چه چیزهایی کمک می‌کند سریع‌تر پاسخ بگیرید؟</div>
+          <ul class="mt-3 space-y-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+            <li>موضوع پیام را روشن و کوتاه بنویسید.</li>
+            <li>اگر به خرید مربوط است، نام پلن یا شماره سفارش را اضافه کنید.</li>
+            <li>اگر به تجربه استفاده مربوط است، مسئله را با چند جمله قابل‌پیگیری توضیح دهید.</li>
+          </ul>
+        </div>
+      </aside>
     </div>
   </section>
+
+  {% include 'public/_cta_band.html' with cta_badge='پیش از ارسال پیام' cta_title='شاید پاسخ شما همین حالا در FAQ یا صفحه قیمت‌گذاری روشن‌تر شده باشد.' cta_body='اگر هنوز سوالی باقی مانده، از فرم تماس استفاده کنید. اما برای سوال‌های رایج درباره خرید و شروع، ابتدا مرور FAQ و pricing معمولاً سریع‌تر است.' cta_primary_url=contact_faq_url cta_primary_label='مرور FAQ' cta_secondary_url=contact_pricing_url cta_secondary_label='مرور پلن‌ها' %}
 {% endblock %}

@@ -3,18 +3,151 @@
 {% block title %}پروفایل | {{ site_settings.site_name_fa }}{% endblock %}
 
 {% block dashboard_content %}
-  <div class="glass-card p-6">
-    <h1 class="text-2xl font-black">پروفایل من</h1>
-    <form method="post" class="mt-6 grid gap-4">
-      {% csrf_token %}
-      {% for field in form %}
-        <div>
-          <label class="mb-2 block text-sm font-bold">{{ field.label }}</label>
-          {{ field }}
-          {{ field.errors }}
+  <div class="space-y-5">
+    <section class="relative overflow-hidden rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
+      <div class="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_50%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.10),transparent_42%)]"></div>
+
+      <div class="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+        <div class="min-w-0 max-w-3xl">
+          <div class="flex flex-wrap gap-2">
+            <span class="badge">حساب کاربری</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">پس از ورود</span>
+          </div>
+
+          <h1 class="mt-3 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">پروفایل و ترجیحات پایه</h1>
+          <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
+            این صفحه برای اطلاعات حساب و چند ترجیح پایدار است. اگر چیزی را همین حالا نمی‌دانید، لازم نیست همه بخش‌ها را کامل کنید.
+          </p>
         </div>
+
+        <div class="w-full lg:w-auto lg:min-w-[16rem]">
+          <div class="rounded-[1.35rem] border border-slate-200/80 bg-slate-50/82 p-4 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-300">
+            ترجیحات این صفحه روی تجربه روزمره شما اثر می‌گذارند، اما جایگزین تنظیمات تخصصی دستیارها یا ساختار ورک‌اسپیس نیستند.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <form method="post" class="space-y-4" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <ul class="errorlist">{{ form.non_field_errors }}</ul>
+      {% endif %}
+
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
       {% endfor %}
-      <button class="btn-primary w-full sm:w-auto" type="submit">ذخیره تغییرات</button>
+
+      <section class="rounded-[1.75rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">اطلاعات حساب</div>
+            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">راه‌های اصلی دسترسی به حساب</h2>
+          </div>
+          <p class="text-xs leading-6 text-slate-500 dark:text-slate-400">ایمیل و موبایل را با دقت نگه دارید تا دسترسی شما پایدار بماند.</p>
+        </div>
+
+        <div class="mt-4 grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="{{ form.full_name.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ form.full_name.label }}</label>
+            {{ form.full_name }}
+            {{ form.full_name.errors }}
+          </div>
+          <div>
+            <label for="{{ form.mobile.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ form.mobile.label }}</label>
+            {{ form.mobile }}
+            <p class="helptext">در ورود موبایلی و اعلان‌های ضروری حساب از این شماره استفاده می‌شود.</p>
+            {{ form.mobile.errors }}
+          </div>
+          <div class="sm:col-span-2">
+            <label for="{{ form.email.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ form.email.label }}</label>
+            {{ form.email }}
+            {{ form.email.errors }}
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/75 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">شخصی‌سازی سبک</div>
+        <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">ترجیحات پایدار برای تجربه روزمره</h2>
+        <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">فقط چیزهایی را اینجا تنظیم کنید که می‌خواهید در طول زمان نسبتاً ثابت بمانند.</p>
+
+        <div class="mt-4 grid gap-4">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label for="{{ form.preferred_name.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ form.preferred_name.label }}</label>
+              {{ form.preferred_name }}
+              <p class="helptext">اگر می‌خواهید FaralYar شما را با نام مشخصی خطاب کند، اینجا ثبت کنید.</p>
+              {{ form.preferred_name.errors }}
+            </div>
+            <div>
+              <label for="{{ form.job_title.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ form.job_title.label }}</label>
+              {{ form.job_title }}
+              {{ form.job_title.errors }}
+            </div>
+          </div>
+
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label for="{{ form.theme_preference.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ form.theme_preference.label }}</label>
+              {{ form.theme_preference }}
+              {{ form.theme_preference.errors }}
+            </div>
+            <div>
+              <label for="{{ form.persona_choice.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ form.persona_choice.label }}</label>
+              {{ form.persona_choice }}
+              {{ form.persona_choice.errors }}
+            </div>
+          </div>
+
+          <div>
+            <label for="{{ form.interests.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ form.interests.label }}</label>
+            {{ form.interests }}
+            {{ form.interests.errors }}
+          </div>
+
+          <div>
+            <label for="{{ form.custom_instructions.id_for_label }}" class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ form.custom_instructions.label }}</label>
+            {{ form.custom_instructions }}
+            <p class="helptext">در این بخش فقط پیش‌فرض‌های کلی و ماندگار را بنویسید؛ نه دستورهای مربوط به یک گفتگو یا پروژه خاص.</p>
+            {{ form.custom_instructions.errors }}
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-[1.75rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div class="min-w-0 max-w-3xl">
+            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">حافظه آزمایشی</div>
+            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">کنترل حافظه در سطح حساب</h2>
+            <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">
+              اگر این گزینه برای پلن فعلی شما در دسترس نباشد، ذخیره‌سازی نهایی در backend به‌صورت محافظه‌کارانه مدیریت می‌شود.
+            </p>
+          </div>
+
+          <div class="w-full lg:w-auto lg:min-w-[15rem] rounded-[1.35rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-950/35">
+            <label for="{{ form.memory_enabled.id_for_label }}" class="flex items-start gap-3 text-sm leading-7 text-slate-700 dark:text-slate-200">
+              {{ form.memory_enabled }}
+              <span>
+                <span class="block font-black text-slate-900 dark:text-white">{{ form.memory_enabled.label }}</span>
+                <span class="mt-1 block text-xs leading-6 text-slate-500 dark:text-slate-400">برای استفاده پایدار و محتاطانه از حافظه حساب.</span>
+              </span>
+            </label>
+            {{ form.memory_enabled.errors }}
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-[1.6rem] border border-slate-200/80 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div class="min-w-0">
+            <div class="text-sm font-black text-slate-900 dark:text-white">ذخیره تغییرات پروفایل</div>
+            <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">اگر بخشی را نمی‌خواهید همین حالا تعیین کنید، می‌توانید بعداً دوباره به این صفحه برگردید.</p>
+          </div>
+          <button class="btn-primary w-full sm:w-auto" type="submit">ذخیره تغییرات</button>
+        </div>
+      </section>
     </form>
   </div>
 {% endblock %}
