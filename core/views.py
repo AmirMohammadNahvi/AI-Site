@@ -31,7 +31,7 @@ def home(request):
 def pricing(request):
     return render(
         request,
-        "core/pricing.html",
+        "public/pricing.html",
         {"plans": Plan.objects.filter(is_active=True).prefetch_related("allowed_models")},
     )
 

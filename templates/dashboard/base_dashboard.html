@@ -5,8 +5,8 @@
   <section class="section-shell pt-8">
     <div class="mb-4 overflow-x-auto lg:hidden">
       <div class="flex min-w-max gap-2 pb-1">
-        <a href="{% url 'dashboard:home' %}" class="prompt-chip">{% site_text 'dashboard.nav.home' 'داشبورد' title='داشبورد در ناوبری پنل' group='dashboard' %}</a>
-        <a href="{% url 'dashboard:billing' %}" class="prompt-chip">{% site_text 'dashboard.nav.billing' 'اشتراک و پرداخت' title='اشتراک و پرداخت در ناوبری پنل' group='dashboard' %}</a>
+        <a href="{% url 'ai_platform:chat' %}" class="prompt-chip">{% site_text 'dashboard.nav.home' 'داشبورد' title='داشبورد در ناوبری پنل' group='dashboard' %}</a>
+        <a href="{% url 'ai_platform:billing' %}" class="prompt-chip">{% site_text 'dashboard.nav.billing' 'اشتراک و پرداخت' title='اشتراک و پرداخت در ناوبری پنل' group='dashboard' %}</a>
         <a href="{% url 'dashboard:profile' %}" class="prompt-chip">{% site_text 'dashboard.nav.profile' 'پروفایل' title='پروفایل در ناوبری پنل' group='dashboard' %}</a>
         {% if request.user.is_staff %}
           <a href="{% url 'dashboard:admin_home' %}" class="prompt-chip">{% site_text 'dashboard.nav.admin' 'ادمین سفارشی' title='ادمین سفارشی در ناوبری پنل' group='dashboard' %}</a>
@@ -19,8 +19,8 @@
       <aside class="glass-card hidden h-fit p-4 lg:block">
         <div class="mb-4 text-lg font-black">{% site_text 'dashboard.title' 'پنل کاربری' title='عنوان پنل کاربری' group='dashboard' %}</div>
         <nav class="space-y-2 text-sm">
-          <a href="{% url 'dashboard:home' %}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/70">{% site_text 'dashboard.nav.home' 'داشبورد' title='داشبورد در ناوبری پنل' group='dashboard' %}</a>
-          <a href="{% url 'dashboard:billing' %}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/70">{% site_text 'dashboard.nav.billing' 'اشتراک و پرداخت' title='اشتراک و پرداخت در ناوبری پنل' group='dashboard' %}</a>
+          <a href="{% url 'ai_platform:chat' %}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/70">{% site_text 'dashboard.nav.home' 'داشبورد' title='داشبورد در ناوبری پنل' group='dashboard' %}</a>
+          <a href="{% url 'ai_platform:billing' %}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/70">{% site_text 'dashboard.nav.billing' 'اشتراک و پرداخت' title='اشتراک و پرداخت در ناوبری پنل' group='dashboard' %}</a>
           <a href="{% url 'dashboard:profile' %}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/70">{% site_text 'dashboard.nav.profile' 'پروفایل' title='پروفایل در ناوبری پنل' group='dashboard' %}</a>
           {% if request.user.is_staff %}
             <a href="{% url 'dashboard:admin_home' %}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/70">{% site_text 'dashboard.nav.admin' 'ادمین سفارشی' title='ادمین سفارشی در ناوبری پنل' group='dashboard' %}</a>

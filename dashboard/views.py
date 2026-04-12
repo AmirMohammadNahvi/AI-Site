@@ -9,39 +9,18 @@ from ai_platform.forms import AIModelForm
 from ai_platform.models import AIModel, AIModelCapability
 from billing.forms import PlanForm
 from billing.models import PaymentTransaction, Plan
-from billing.services import get_active_subscription, get_or_create_quota_window
-from blog.models import BlogPost
 from core.forms import SiteSettingForm, TextSnippetForm
 from core.models import ContactMessage, SiteSetting, TextSnippet
 
 
 @login_required
 def home(request):
-    subscription = get_active_subscription(request.user)
-    quota_window = get_or_create_quota_window(subscription) if subscription else None
-    context = {
-        "subscription": subscription,
-        "quota_window": quota_window,
-        "recent_posts": BlogPost.objects.filter(status=BlogPost.PUBLISHED)[:3],
-        "recent_transactions": request.user.orders.all()[:5],
-    }
-    return render(request, "dashboard/home.html", context)
+    return redirect("ai_platform:chat")
 
 
 @login_required
 def billing_overview(request):
-    subscription = get_active_subscription(request.user)
-    quota_window = get_or_create_quota_window(subscription) if subscription else None
-    return render(
-        request,
-        "dashboard/billing.html",
-        {
-            "subscription": subscription,
-            "quota_window": quota_window,
-            "orders": request.user.orders.all()[:20],
-            "plans": Plan.objects.filter(is_active=True),
-        },
-    )
+    return redirect("ai_platform:billing")
 
 
 @login_required

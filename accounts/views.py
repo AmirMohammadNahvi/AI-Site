@@ -20,7 +20,7 @@ def _make_mobile_email(mobile):
 
 def signup_view(request):
     if request.user.is_authenticated:
-        return redirect("dashboard:home")
+        return redirect("ai_platform:chat")
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -28,7 +28,7 @@ def signup_view(request):
             OTPService.send_email_welcome(user)
             login(request, user, backend="django.contrib.auth.backends.ModelBackend")
             messages.success(request, "حساب شما با موفقیت ساخته شد.")
-            return redirect("dashboard:home")
+            return redirect("ai_platform:chat")
     else:
         form = SignUpForm()
     return render(request, "accounts/signup.html", {"form": form})
@@ -36,18 +36,18 @@ def signup_view(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect("dashboard:home")
+        return redirect("ai_platform:chat")
     form = LoginForm(request=request, data=request.POST or None)
     if request.method == "POST" and form.is_valid():
         login(request, form.user, backend="faralyar_project.auth_backends.EmailOrMobileBackend")
         messages.success(request, "با موفقیت وارد شدید.")
-        return redirect("dashboard:home")
+        return redirect("ai_platform:chat")
     return render(request, "accounts/login.html", {"form": form})
 
 
 def otp_request_view(request):
     if request.user.is_authenticated:
-        return redirect("dashboard:home")
+        return redirect("ai_platform:chat")
     form = OTPRequestForm(request.POST or None)
     provider_ready = OTPService.is_provider_configured() or settings.DEBUG
     if request.method == "POST":
@@ -88,7 +88,7 @@ def otp_verify_view(request):
                 messages.success(request, "حساب شما از طریق موبایل ساخته شد.")
             else:
                 messages.success(request, "با موفقیت وارد شدید.")
-            return redirect("dashboard:home")
+            return redirect("ai_platform:chat")
         messages.error(request, "کد واردشده معتبر نیست یا منقضی شده است.")
     return render(request, "accounts/otp_verify.html", {"form": form, "mobile": mobile})
 

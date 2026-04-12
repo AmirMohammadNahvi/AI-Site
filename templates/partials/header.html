@@ -30,7 +30,7 @@
           </button>
         </form>
         {% if request.user.is_authenticated %}
-          <a href="{% url 'dashboard:home' %}" class="btn-primary">{% site_text 'nav.dashboard' 'داشبورد' title='داشبورد در هدر' group='navigation' %}</a>
+          <a href="{% url 'ai_platform:chat' %}" class="btn-primary">{% site_text 'nav.dashboard' 'داشبورد' title='داشبورد در هدر' group='navigation' %}</a>
         {% else %}
           <a href="{% url 'accounts:login' %}" class="btn-secondary">{% site_text 'nav.login' 'ورود' title='ورود در هدر' group='navigation' %}</a>
           <a href="{% url 'accounts:signup' %}" class="btn-primary">{% site_text 'nav.start_free' 'شروع رایگان' title='شروع رایگان در هدر' group='navigation' %}</a>
@@ -71,7 +71,7 @@
           <div class="mb-3 text-sm font-black">{% site_text 'nav.drawer.quick' 'دسترسی سریع' title='عنوان دسترسی سریع منوی موبایل' group='navigation' %}</div>
           <div class="grid gap-3 sm:grid-cols-2">
             {% if request.user.is_authenticated %}
-              <a href="{% url 'dashboard:home' %}" class="btn-primary w-full">{% site_text 'nav.drawer.dashboard' 'ورود به داشبورد' title='ورود به داشبورد در منوی موبایل' group='navigation' %}</a>
+              <a href="{% url 'ai_platform:chat' %}" class="btn-primary w-full">{% site_text 'nav.drawer.dashboard' 'ورود به داشبورد' title='ورود به داشبورد در منوی موبایل' group='navigation' %}</a>
             {% else %}
               <a href="{% url 'accounts:login' %}" class="btn-secondary w-full">{% site_text 'nav.drawer.login' 'ورود' title='ورود در منوی موبایل' group='navigation' %}</a>
               <a href="{% url 'accounts:signup' %}" class="btn-primary w-full">{% site_text 'nav.drawer.start' 'شروع رایگان' title='شروع رایگان در منوی موبایل' group='navigation' %}</a>
