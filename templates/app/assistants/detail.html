@@ -79,7 +79,7 @@
 
         {% include 'app/_assistant_capability_block.html' with block_title="قابلیت‌های پشتیبانی‌شده" block_caption=assistant.supported_capabilities_caption|default:"این دستیار با این قابلیت‌ها بهترین تجربه را می‌دهد. نمایش این بخش باید کوتاه و تصمیم‌ساز بماند." block_badge="پشتیبانی‌شده" block_items=assistant.supported_capabilities block_tone="supported" block_empty_title="قابلیت خاصی ثبت نشده است" block_empty_body="اگر این دستیار به قابلیت خاصی وابسته نیست، همین رفتار عمومی برای آن کفایت می‌کند." %}
 
-        {% include 'app/_assistant_capability_block.html' with block_title="پیش‌نیازها و وابستگی‌ها" block_caption=assistant.required_capabilities_caption|default:"اگر استفاده از این دستیار به قابلیت یا دسترسی خاصی وابسته باشد، از اینجا روشن نمایش داده می‌شود." block_badge="پیش‌نیاز" block_items=assistant.required_capabilities block_tone="required" block_empty_title="پیش‌نیاز ویژه‌ای ندارد" block_empty_body="این دستیار بدون وابستگی خاص قابل‌استفاده است، مگر این‌که backend محدودیت دیگری اعلام کند." %}
+        {% include 'app/_assistant_capability_block.html' with block_title="پیش‌نیازها و وابستگی‌ها" block_caption=assistant.required_capabilities_caption|default:"اگر استفاده از این دستیار به قابلیت یا دسترسی خاصی وابسته باشد، از اینجا روشن نمایش داده می‌شود." block_badge="پیش‌نیاز" block_items=assistant.required_capabilities block_tone="required" block_empty_title="پیش‌نیاز ویژه‌ای ندارد" block_empty_body="این دستیار بدون وابستگی خاص قابل استفاده است، مگر این‌که برای این فضا محدودیت دیگری تعریف شده باشد." %}
       </div>
 
       <div class="space-y-4">
@@ -185,7 +185,7 @@
     <section class="rounded-[1.85rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
       <div class="grid gap-4 xl:grid-cols-[minmax(0,1.08fr)_minmax(18rem,0.92fr)]">
         <div class="space-y-4">
-          {% include 'app/_assistant_launch_card.html' with assistant=assistant assistant_launch_context=assistant_launch_context state=assistant.availability_state title="این دستیار را در کدام فضای اجرا وارد می‌کنید؟" body=assistant.launch_summary|default:"این دستیار خودش محل اجرا نیست. اول مقصد مناسب را انتخاب می‌کنید و بعد اجرای واقعی داخل چت همان فضا انجام می‌شود." helper=assistant.launch_helper|default:"اگر از قبل در یک اسپیس فعال هستید، ورود به همان فضا سریع‌ترین مسیر است. اگر نه، یک اسپیس تازه یا پیشنهادی را انتخاب کنید." primary_cta_url=assistant_launch_url primary_cta_label=assistant_launch_label|default:"مشاهده مسیرهای استفاده" secondary_cta_url=assistant_secondary_url secondary_cta_label=assistant_secondary_label|default:"جزئیات بیشتر" note=assistant_meta_note %}
+          {% include 'app/_assistant_launch_card.html' with assistant=assistant assistant_launch_context=assistant_launch_context state=assistant.availability_state title="این دستیار را در کدام فضای اجرا وارد می‌کنید؟" body=assistant.launch_summary|default:"این دستیار خودش محل اجرا نیست. اول مقصد مناسب را انتخاب می‌کنید و بعد اجرای واقعی داخل چت همان فضا انجام می‌شود." helper=assistant.launch_helper|default:"اگر از قبل در یک اسپیس فعال هستید، ورود به همان فضا سریع‌ترین مسیر است. اگر نه، یک اسپیس تازه یا پیشنهادی را انتخاب کنید." primary_cta_url=assistant_launch_url primary_cta_label=assistant_launch_label|default:"مشاهده مسیرهای اجرا" secondary_cta_url=assistant_secondary_url secondary_cta_label=assistant_secondary_label|default:"جزئیات دستیار" note=assistant_meta_note %}
 
           <section class="rounded-[1.7rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
             <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
@@ -206,7 +206,7 @@
               </div>
             {% else %}
               <div class="mt-4">
-                {% include 'app/_empty_state.html' with empty_badge="بدون اسپیس" empty_title="هنوز مقصد اجرایی مشخصی برای این دستیار ثبت نشده است" empty_body="وقتی این دستیار به اسپیس‌های قابل استفاده متصل باشد، از همین بخش می‌توانید وارد فضای مناسب شوید." empty_hint="اگر این دستیار برای ورک‌اسپیس فعلی آماده است، backend فقط کافی است گزینه‌های `assistant_space_options` را به این بخش وصل کند." empty_compact=True %}
+                {% include 'app/_empty_state.html' with empty_badge="بدون اسپیس" empty_title="هنوز مقصد اجرایی مشخصی برای این دستیار ثبت نشده است" empty_body="وقتی این دستیار به اسپیس‌های قابل استفاده متصل شود، از همین بخش می‌توانید وارد فضای مناسب شوید." empty_hint="به‌محض آماده‌شدن مقصدهای قابل استفاده، همین بخش بدون تغییر ساختار کامل می‌شود." empty_compact=True %}
               </div>
             {% endif %}
           </section>
@@ -291,7 +291,7 @@
         </div>
       {% else %}
         <div class="mt-5">
-          {% include 'app/_empty_state.html' with empty_badge="بدون تنظیمات" empty_title="هنوز بخشی برای ویرایش این دستیار تعریف نشده است" empty_body="وقتی backend سکشن‌های تنظیمات را ارسال کند، همین صفحه بدون تغییر معماری به یک editor کامل تبدیل می‌شود." empty_hint="ساختار partialها برای بخش‌بندی تنظیمات آماده است." empty_compact=True %}
+          {% include 'app/_empty_state.html' with empty_badge="بدون تنظیمات" empty_title="هنوز بخشی برای ویرایش این دستیار تعریف نشده است" empty_body="وقتی بخش‌های تنظیمات این دستیار آماده شوند، همین صفحه بدون تغییر ساختار کامل‌تر می‌شود." empty_hint="ساختار این صفحه برای بخش‌بندی تنظیمات آماده است." empty_compact=True %}
         </div>
       {% endif %}
     </section>

@@ -59,7 +59,7 @@
           {% elif use_state == 'migrated' or use_state == 'legacy' %}
             این مورد از نسخه قبلی آمده است. برای کار تازه، نسخه فعال یا مسیر جدید را ترجیح دهید.
           {% else %}
-            مدل به‌تنهایی یک workflow کامل نیست. اول باید وارد یک دستیار، اسپیس یا مسیر گفتگوی مناسب شوید تا این مدل در همان سطح اجرا معنا پیدا کند.
+            مدل به‌تنهایی مسیر کامل اجرا نیست. اول باید وارد یک دستیار، اسپیس یا مسیر گفتگوی مناسب شوید تا این مدل در همان سطح اجرا معنا پیدا کند.
           {% endif %}
         </p>
       </div>
@@ -70,13 +70,13 @@
             {% if model_use_context.primary_cta_label or primary_cta_label %}
               {{ model_use_context.primary_cta_label|default:primary_cta_label }}
             {% elif use_state == 'locked' or use_state == 'upgradeable' %}
-              بررسی مسیرهای دسترسی
+              بررسی دسترسی
             {% elif use_state == 'archived' %}
-              مشاهده وضعیت آرشیو
+              مشاهده آرشیو
             {% elif use_state == 'migrated' or use_state == 'legacy' %}
-              بررسی مسیر جدید
+              مشاهده مسیر جایگزین
             {% else %}
-              مشاهده مسیرهای استفاده
+              مشاهده مسیرهای اجرا
             {% endif %}
           </a>
         {% else %}
@@ -90,7 +90,7 @@
               {% elif use_state == 'archived' %}
                 {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"این مسیر آرشیوشده است" }}
               {% elif use_state == 'migrated' or use_state == 'legacy' %}
-                {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"در مسیر جدید دنبال کنید" }}
+                {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"در مسیر جایگزین ادامه دهید" }}
               {% else %}
                 {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"فعلاً مسیر انتخاب مستقیمی ندارد" }}
               {% endif %}
@@ -99,7 +99,7 @@
 
           {% if model_use_context.secondary_cta_url|default:secondary_cta_url %}
             <a href="{{ model_use_context.secondary_cta_url|default:secondary_cta_url }}" class="btn-secondary w-full">
-              {{ model_use_context.secondary_cta_label|default:secondary_cta_label|default:"جزئیات بیشتر" }}
+              {{ model_use_context.secondary_cta_label|default:secondary_cta_label|default:"جزئیات مدل" }}
             </a>
           {% endif %}
         </div>
@@ -111,7 +111,7 @@
           {% if model_use_context.helper or helper %}
             {{ model_use_context.helper|default:helper }}
           {% else %}
-            این صفحه برای شناخت تناسب و دسترسی مدل است. اجرای گفتگو همچنان در صفحه چت انجام می‌شود و انتخاب مدل فقط یکی از اجزای آن مسیر است.
+            این صفحه برای شناخت تناسب و دسترسی مدل است. اجرای واقعی همچنان در صفحه گفتگو انجام می‌شود و انتخاب مدل فقط یکی از اجزای همان مسیر است.
           {% endif %}
         </p>
       </div>

@@ -29,7 +29,7 @@
             </div>
           {% empty %}
             <div class="rounded-[1.2rem] bg-slate-100/85 px-3 py-3 text-sm leading-7 text-slate-600 dark:bg-slate-800/80 dark:text-slate-300">
-              هنوز context خاصی برای این اسپیس ثبت نشده است. یک توضیح کوتاه، خروجی مورد انتظار یا محدودیت اصلی را به این فضا اضافه کنید.
+              هنوز زمینه مشخصی برای این اسپیس ثبت نشده است. یک توضیح کوتاه، خروجی مورد انتظار یا محدودیت اصلی را به این فضا اضافه کنید.
             </div>
           {% endfor %}
         </div>
@@ -37,7 +37,7 @@
     </section>
 
     <section class="space-y-4">
-      {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="ورود به اجرای این اسپیس" body="اگر موضوع تازه‌ای دارید، گفتگوی جدید را از همین اسپیس شروع کنید. اگر thread فعالی دارید، به همان اجرای جاری برگردید." helper="اسپیس نقطه آماده‌سازی و ورود است؛ اجرای اصلی در صفحه گفتگو انجام می‌شود." new_cta_url=space_launch_url new_cta_label="شروع گفتگوی جدید" new_note="برای موضوع تازه در همین اسپیس" existing_cta_label="استفاده در این اسپیس" existing_note="برای برگشت به زمینه همین اسپیس" current_cta_label="ادامه گفتگوی فعلی" current_note="برای ادامه همان thread فعال" %}
+      {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="ورود به اجرای این اسپیس" body="اگر موضوع تازه‌ای دارید، گفتگوی جدید را از همین اسپیس شروع کنید. اگر گفتگوی فعالی دارید، به همان اجرای جاری برگردید." helper="اسپیس نقطه آماده‌سازی و ورود است؛ اجرای اصلی در صفحه گفتگو انجام می‌شود." new_cta_url=space_launch_url new_cta_label="شروع گفتگوی جدید" new_note="برای موضوع تازه در همین اسپیس" existing_cta_label="ورود به این اسپیس" existing_note="برای برگشت به زمینه همین اسپیس" current_cta_label="ادامه گفتگوی فعلی" current_note="برای ادامه همان گفتگوی فعال" %}
 
       <section class="rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -71,7 +71,7 @@
     </section>
 
     {% if not space_recent_conversations %}
-      {% include 'app/_empty_state.html' with empty_badge="آماده شروع" empty_title="هنوز گفتگویی در این اسپیس شروع نشده است" empty_body="این اسپیس برای جمع‌کردن context قبل از اجرا ساخته شده. اولین گفتگو را با یک درخواست مشخص و کوتاه آغاز کنید." empty_hint="اگر این فضا به یک پروژه متصل است، موضوع گفتگو را در همان محدوده نگه دارید تا تاریخچه قابل استفاده بماند." empty_action_url=space_launch_url empty_action_label="شروع اولین گفتگو" %}
+      {% include 'app/_empty_state.html' with empty_badge="آماده شروع" empty_title="هنوز گفتگویی در این اسپیس شروع نشده است" empty_body="این اسپیس برای جمع‌کردن زمینه قبل از اجرا ساخته شده است. اولین گفتگو را با یک درخواست مشخص و کوتاه آغاز کنید." empty_hint="اگر این فضا به یک پروژه متصل است، موضوع گفتگو را در همان محدوده نگه دارید تا تاریخچه قابل استفاده بماند." empty_action_url=space_launch_url empty_action_label="شروع اولین گفتگو" %}
     {% endif %}
 
     <section class="space-y-4">

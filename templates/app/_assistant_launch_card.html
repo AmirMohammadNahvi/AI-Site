@@ -84,13 +84,13 @@
             {% if assistant_launch_context.primary_cta_label or primary_cta_label %}
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label }}
             {% elif launch_state == 'locked' or launch_state == 'upgradeable' %}
-              بررسی مسیر دسترسی
+              بررسی دسترسی
             {% elif launch_state == 'archived' %}
-              مشاهده وضعیت آرشیو
+              مشاهده آرشیو
             {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
-              بررسی مسیر جدید
+              مشاهده مسیر جایگزین
             {% else %}
-              مشاهده مسیرهای استفاده
+              مشاهده مسیرهای اجرا
             {% endif %}
           </a>
         {% else %}
@@ -104,7 +104,7 @@
             {% elif launch_state == 'archived' %}
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"این مسیر آرشیوشده است" }}
             {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
-              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"در مسیر جدید دنبال کنید" }}
+              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"در مسیر جایگزین ادامه دهید" }}
             {% else %}
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"فعلاً مسیر اجرای مستقیمی ندارد" }}
             {% endif %}
@@ -113,7 +113,7 @@
 
         {% if assistant_launch_context.secondary_cta_url|default:secondary_cta_url %}
           <a href="{{ assistant_launch_context.secondary_cta_url|default:secondary_cta_url }}" class="btn-secondary w-full lg:w-auto">
-            {{ assistant_launch_context.secondary_cta_label|default:secondary_cta_label|default:"جزئیات بیشتر" }}
+            {{ assistant_launch_context.secondary_cta_label|default:secondary_cta_label|default:"جزئیات دستیار" }}
           </a>
         {% endif %}
       </div>

@@ -57,7 +57,7 @@
 
         {% if conversation_entry_context.existing_cta_url|default:existing_cta_url %}
           <a href="{{ conversation_entry_context.existing_cta_url|default:existing_cta_url }}" class="rounded-[1.2rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 text-right transition hover:border-slate-300 hover:bg-white dark:border-slate-700/70 dark:bg-slate-950/35 dark:hover:border-slate-600 dark:hover:bg-slate-900">
-            <div class="text-sm font-black text-slate-900 dark:text-white">{{ conversation_entry_context.existing_cta_label|default:existing_cta_label|default:"استفاده در این اسپیس" }}</div>
+            <div class="text-sm font-black text-slate-900 dark:text-white">{{ conversation_entry_context.existing_cta_label|default:existing_cta_label|default:"ورود به این اسپیس" }}</div>
             <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ conversation_entry_context.existing_note|default:existing_note|default:"برای برگشت به زمینه آماده‌سازی" }}</div>
           </a>
         {% endif %}
@@ -65,7 +65,7 @@
         {% if conversation_entry_context.current_cta_url|default:current_cta_url %}
           <a href="{{ conversation_entry_context.current_cta_url|default:current_cta_url }}" class="rounded-[1.2rem] border border-emerald-200/80 bg-emerald-50/82 px-4 py-3 text-right transition hover:border-emerald-300 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:hover:border-emerald-500/35">
             <div class="text-sm font-black text-slate-900 dark:text-white">{{ conversation_entry_context.current_cta_label|default:current_cta_label|default:"ادامه گفتگوی فعلی" }}</div>
-            <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ conversation_entry_context.current_note|default:current_note|default:"برای ادامه همان thread فعال" }}</div>
+            <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ conversation_entry_context.current_note|default:current_note|default:"برای ادامه همان گفتگوی فعال" }}</div>
           </a>
         {% endif %}
       </div>

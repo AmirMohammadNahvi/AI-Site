@@ -14,7 +14,7 @@
     {% endif %}
 
     {% if conversation_entry_context %}
-      {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="اگر به زمینه دیگری نیاز دارید" body="ادامه همین thread از همین صفحه انجام می‌شود. فقط وقتی موضوع تازه یا اسپیس دیگری لازم دارید از مسیرهای زیر استفاده کنید." helper="این کارت عمداً جمع‌وجور مانده تا تمرکز صفحه روی اجرای گفتگو بماند." %}
+      {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="اگر به زمینه دیگری نیاز دارید" body="ادامه همین گفتگو از همین صفحه انجام می‌شود. فقط وقتی موضوع تازه یا اسپیس دیگری لازم دارید از مسیرهای زیر استفاده کنید." helper="این کارت عمداً جمع‌وجور مانده تا تمرکز صفحه روی اجرای گفتگو بماند." %}
     {% endif %}
 
     {% if conversation_loading %}
@@ -94,7 +94,7 @@
               هنوز پیامی در این گفتگو ثبت نشده است
             </h2>
             <p class="mt-4 max-w-2xl text-sm leading-8 text-slate-600 dark:text-slate-300">
-              از composer پایین صفحه برای شروع یا ادامه همین گفتگو استفاده کنید. اگر موضوع تازه‌ای دارید، آن را در گفتگوی جداگانه همان اسپیس نگه دارید.
+              از بخش نوشتن پایین صفحه برای شروع یا ادامه همین گفتگو استفاده کنید. اگر موضوع تازه‌ای دارید، آن را در گفتگوی جداگانه همان اسپیس نگه دارید.
             </p>
           </div>
         {% endif %}

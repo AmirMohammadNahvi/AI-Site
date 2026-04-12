@@ -17,7 +17,7 @@
         {{ conversation_rail_title|default:"گفتگوهای اخیر" }}
       </h2>
       <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
-        {{ conversation_rail_caption|default:"گفتگوهای اخیر را سریع پیدا کنید و از همان context ادامه دهید." }}
+        {{ conversation_rail_caption|default:"گفتگوهای اخیر را سریع پیدا کنید و از همان زمینه ادامه دهید." }}
       </p>
     </div>
 
@@ -114,13 +114,13 @@
           {% endfor %}
         </div>
       {% else %}
-        {% include 'app/_empty_state.html' with empty_title=conversation_empty_title|default:"هنوز گفتگویی ندارید" empty_body=conversation_empty_body|default:"اولین گفتگو را از همین فضا شروع کنید تا سابقه کار و اجرای شما در همین context شکل بگیرد." empty_hint=conversation_empty_hint|default:"گفتگوها به هر اسپیس متصل هستند؛ برای شلوغ نشدن، هر موضوع را در اسپیس خودش شروع کنید." empty_compact=True %}
+        {% include 'app/_empty_state.html' with empty_title=conversation_empty_title|default:"هنوز گفتگویی ندارید" empty_body=conversation_empty_body|default:"اولین گفتگو را از همین فضا شروع کنید تا سابقه کار و اجرای شما در همین زمینه شکل بگیرد." empty_hint=conversation_empty_hint|default:"گفتگوها به هر اسپیس متصل هستند؛ برای شلوغ نشدن، هر موضوع را در اسپیس خودش شروع کنید." empty_compact=True %}
       {% endif %}
 
       {% if archived_conversations_url %}
         <div class="mt-4 border-t border-slate-200/80 pt-4 dark:border-slate-700/70">
           <a href="{{ archived_conversations_url }}" class="flex items-center justify-between gap-3 rounded-[1.2rem] border border-dashed border-slate-300 px-4 py-3 text-sm font-bold text-slate-600 transition hover:border-slate-400 hover:text-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white">
-            <span>ورود به آرشیو گفتگوها</span>
+            <span>مشاهده آرشیو گفتگوها</span>
             {% if archived_conversation_count %}
               <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ archived_conversation_count }}</span>
             {% endif %}
@@ -145,7 +145,7 @@
     <div class="flex items-start justify-between gap-3 px-1 pb-3">
       <div class="min-w-0">
         <div class="text-sm font-black text-slate-900 dark:text-white">{{ conversation_rail_title|default:"گفتگوهای اخیر" }}</div>
-        <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ conversation_rail_caption|default:"گفتگوهای اخیر را سریع پیدا کنید و از همان context ادامه دهید." }}</div>
+        <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ conversation_rail_caption|default:"گفتگوهای اخیر را سریع پیدا کنید و از همان زمینه ادامه دهید." }}</div>
       </div>
       <button type="button" class="icon-btn shrink-0" @click="sheetOpen = false" aria-label="بستن لیست گفتگوها">
         <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -188,12 +188,12 @@
           </a>
         {% endfor %}
       {% else %}
-        {% include 'app/_empty_state.html' with empty_title=conversation_empty_title|default:"هنوز گفتگویی ندارید" empty_body=conversation_empty_body|default:"اولین گفتگو را از همین فضا شروع کنید تا سابقه کار و اجرای شما در همین context شکل بگیرد." empty_hint=conversation_empty_hint|default:"گفتگوها به هر اسپیس متصل هستند؛ برای شلوغ نشدن، هر موضوع را در اسپیس خودش شروع کنید." empty_compact=True %}
+        {% include 'app/_empty_state.html' with empty_title=conversation_empty_title|default:"هنوز گفتگویی ندارید" empty_body=conversation_empty_body|default:"اولین گفتگو را از همین فضا شروع کنید تا سابقه کار و اجرای شما در همین زمینه شکل بگیرد." empty_hint=conversation_empty_hint|default:"گفتگوها به هر اسپیس متصل هستند؛ برای شلوغ نشدن، هر موضوع را در اسپیس خودش شروع کنید." empty_compact=True %}
       {% endif %}
 
       {% if archived_conversations_url %}
         <a href="{{ archived_conversations_url }}" class="flex items-center justify-between gap-3 rounded-[1.25rem] border border-dashed border-slate-300 px-4 py-3 text-sm font-bold text-slate-600 dark:border-slate-700 dark:text-slate-300">
-          <span>ورود به آرشیو گفتگوها</span>
+          <span>مشاهده آرشیو گفتگوها</span>
           {% if archived_conversation_count %}
             <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ archived_conversation_count }}</span>
           {% endif %}

@@ -63,13 +63,13 @@
             {% elif launch_state == 'current' %}
               بازگشت به این اسپیس
             {% elif launch_state == 'locked' or launch_state == 'upgradeable' %}
-              بررسی دسترسی این اسپیس
+              بررسی دسترسی
             {% elif launch_state == 'archived' %}
-              مشاهده در آرشیو
+              مشاهده آرشیو
             {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
-              بررسی مسیر جدید
+              مشاهده مسیر جایگزین
             {% else %}
-              استفاده در این اسپیس
+              ورود به این اسپیس
             {% endif %}
           </a>
         {% else %}
@@ -83,7 +83,7 @@
             {% elif launch_state == 'archived' %}
               {{ space_option.primary_cta_label|default:primary_cta_label|default:"این اسپیس آرشیوشده است" }}
             {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
-              {{ space_option.primary_cta_label|default:primary_cta_label|default:"در مسیر جدید دنبال کنید" }}
+              {{ space_option.primary_cta_label|default:primary_cta_label|default:"در مسیر جایگزین ادامه دهید" }}
             {% else %}
               {{ space_option.primary_cta_label|default:primary_cta_label|default:"فعلاً قابل ورود نیست" }}
             {% endif %}
@@ -92,7 +92,7 @@
 
         {% if space_option.secondary_cta_url|default:secondary_cta_url %}
           <a href="{{ space_option.secondary_cta_url|default:secondary_cta_url }}" class="btn-secondary w-full">
-            {{ space_option.secondary_cta_label|default:secondary_cta_label|default:"جزئیات فضا" }}
+            {{ space_option.secondary_cta_label|default:secondary_cta_label|default:"جزئیات اسپیس" }}
           </a>
         {% endif %}
       </div>

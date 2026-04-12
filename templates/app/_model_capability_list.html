@@ -64,7 +64,7 @@
     </div>
   {% else %}
     <div class="mt-4">
-      {% include 'app/_empty_state.html' with empty_badge='بدون قابلیت ثبت‌شده' empty_title=capability_empty_title|default:'هنوز قابلیت مشخصی برای این مدل ثبت نشده است' empty_body=capability_empty_body|default:'اگر backend قابلیت‌های این مدل را ارسال کند، از همین بخش به زبان محصولی و قابل تصمیم‌گیری نمایش داده می‌شود.' empty_compact=True %}
+      {% include 'app/_empty_state.html' with empty_badge='بدون قابلیت ثبت‌شده' empty_title=capability_empty_title|default:'هنوز قابلیت مشخصی برای این مدل ثبت نشده است' empty_body=capability_empty_body|default:'وقتی قابلیت‌های این مدل آماده نمایش باشند، از همین بخش به زبان محصولی و قابل تصمیم‌گیری دیده می‌شوند.' empty_compact=True %}
     </div>
   {% endif %}
 </section>

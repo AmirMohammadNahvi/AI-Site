@@ -2,14 +2,14 @@
 
 {% block dashboard_content %}
   <div class="space-y-6" x-data="{ activeFilter: 'all' }">
-    {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل‌ها' admin_context_label='عرضه و دسترسی' admin_meta_label='فهرست مدیریتی' admin_title='مدیریت مدل‌های قابل عرضه' admin_intro='این صفحه برای مرور سریع وضعیت مدل‌ها، تشخیص مدل‌های فعال یا برجسته و ورود امن‌تر به ویرایش طراحی شده است. تصمیم روزانه اینجا بیشتر درباره عرضه و وضوح است تا نگهداری فنی عمیق.' admin_hint='اگر قرار است endpoint یا mapping پاسخ را تغییر دهید، از صفحه ویرایش استفاده کنید. در این فهرست تمرکز روی خواندن وضعیت و تصمیم‌گیری سریع نگه داشته شده است.' admin_side_eyebrow='اقدام اصلی' admin_side_title='ثبت مدل جدید' admin_side_body='مدل تازه را ابتدا با اطلاعات هویتی و عرضه‌ای وارد کنید. جزئیات فنی اتصال در صفحه ویرایش جداگانه قابل تکمیل است.' admin_primary_url='/dashboard/admin-panel/models/new/' admin_primary_label='مدل جدید' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
+    {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل‌ها' admin_context_label='عرضه و دسترسی' admin_meta_label='فهرست مدیریتی' admin_title='مدیریت مدل‌های قابل عرضه' admin_intro='این صفحه برای مرور سریع وضعیت مدل‌ها، تشخیص مدل‌های فعال یا برجسته و ورود امن‌تر به ویرایش طراحی شده است. تصمیم روزانه اینجا بیشتر درباره عرضه و وضوح است تا نگهداری فنی عمیق.' admin_hint='اگر قرار است اتصال فنی یا قالب درخواست را تغییر دهید، از صفحه ویرایش استفاده کنید. در این فهرست تمرکز روی خواندن وضعیت و تصمیم‌گیری سریع نگه داشته شده است.' admin_side_eyebrow='اقدام اصلی' admin_side_title='ثبت مدل جدید' admin_side_body='مدل تازه را ابتدا با اطلاعات هویتی و عرضه‌ای وارد کنید. جزئیات فنی اتصال در صفحه ویرایش جداگانه قابل تکمیل است.' admin_primary_url='/dashboard/admin-panel/models/new/' admin_primary_label='مدل جدید' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
 
     <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
       <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div class="min-w-0">
           <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مرور سریع</div>
           <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">فهرست را بر اساس وضعیت عرضه ببینید</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">فیلترها فقط برای اسکن سریع داخل صفحه‌اند و چیزی را در backend تغییر نمی‌دهند.</p>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">فیلترها فقط برای اسکن سریع داخل همین صفحه‌اند و چیزی را ذخیره یا تغییر نمی‌دهند.</p>
         </div>
 
         <div class="text-xs font-bold text-slate-500 dark:text-slate-400">تعداد مدل‌ها: {{ models|length }}</div>

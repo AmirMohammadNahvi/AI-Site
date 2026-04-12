@@ -2,14 +2,14 @@
 
 {% block dashboard_content %}
   <div class="space-y-6" x-data="{ activeFilter: 'all' }">
-    {% include 'dashboard/_admin_page_header.html' with admin_badge='متن‌های سایت' admin_context_label='کنترل محتوای رابط' admin_meta_label='فهرست زنده' admin_title='متن‌های قابل ویرایش محصول' admin_intro='هر متنی که از سیستم snippet در سطح محصول استفاده می‌کند، باید از اینجا با خوانایی و ریسک کم‌تر قابل مدیریت باشد. این فهرست برای اسکن سریع، تشخیص وضعیت و ورود مستقیم به ویرایش طراحی شده است.' admin_hint='برای تغییرهای جزئی متنی از همینجا استفاده کنید. اگر چیزی در این فهرست نیست، احتمالاً هنوز در محصول مصرف نشده یا باید از مسیر نگهداری عمیق بررسی شود.' admin_side_eyebrow='اقدام اصلی' admin_side_title='ثبت متن جدید' admin_side_body='اگر snippet تازه‌ای لازم شده، رکورد جدید بسازید تا بعداً از همان کلید در template استفاده شود.' admin_primary_url='/dashboard/admin-panel/texts/new/' admin_primary_label='متن جدید' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
+    {% include 'dashboard/_admin_page_header.html' with admin_badge='متن‌های سایت' admin_context_label='کنترل محتوای رابط' admin_meta_label='فهرست زنده' admin_title='متن‌های قابل ویرایش محصول' admin_intro='هر متنی که از سیستم قطعه‌متن در سطح محصول استفاده می‌کند، باید از اینجا با خوانایی و ریسک کم‌تر قابل مدیریت باشد. این فهرست برای اسکن سریع، تشخیص وضعیت و ورود مستقیم به ویرایش طراحی شده است.' admin_hint='برای تغییرهای جزئی متنی از همینجا استفاده کنید. اگر چیزی در این فهرست نیست، احتمالاً هنوز در محصول مصرف نشده یا باید از مسیر نگهداری عمیق بررسی شود.' admin_side_eyebrow='اقدام اصلی' admin_side_title='ثبت متن جدید' admin_side_body='اگر قطعه‌متن تازه‌ای لازم شده، رکورد جدید بسازید تا بعداً از همان کلید در قالب مناسب استفاده شود.' admin_primary_url='/dashboard/admin-panel/texts/new/' admin_primary_label='متن جدید' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
 
     <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
       <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div class="min-w-0">
           <div class="text-xs font-bold text-slate-500 dark:text-slate-400">جست‌وجو و مرور</div>
           <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">عنوان، کلید یا متن را پیدا کنید و بعد وضعیت را فیلتر کنید</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">جست‌وجو از سمت backend انجام می‌شود و فیلتر وضعیت فقط برای مرور راحت‌تر داخل همین صفحه است.</p>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">جست‌وجو در داده‌های ثبت‌شده انجام می‌شود و فیلتر وضعیت فقط برای مرور راحت‌تر داخل همین صفحه است.</p>
         </div>
 
         <div class="text-xs font-bold text-slate-500 dark:text-slate-400">تعداد فعلی: {{ snippets|length }}</div>
@@ -64,7 +64,7 @@
         </article>
       {% empty %}
         <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/85 p-5 text-sm leading-7 text-slate-500 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-300">
-          هنوز متنی ثبت نشده است. با بازشدن صفحات اصلی، snippetها خودکار ساخته می‌شوند یا می‌توانید از همینجا مورد تازه‌ای اضافه کنید.
+          هنوز متنی ثبت نشده است. با بازشدن صفحات اصلی، قطعه‌متن‌ها خودکار ساخته می‌شوند یا می‌توانید از همینجا مورد تازه‌ای اضافه کنید.
         </div>
       {% endfor %}
     </section>

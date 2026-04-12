@@ -71,7 +71,7 @@
           <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مرور هدفمند</div>
           <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">فهرست را بر اساس وضعیت استفاده مرور کنید</h2>
           <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
-            اگر backend فهرست را از قبل مرتب کرده باشد، مدل‌های آماده استفاده زودتر دیده می‌شوند. این فیلتر فقط برای ساده‌تر شدن مرور در موبایل و صفحه‌های شلوغ است.
+            اگر فهرست از قبل مرتب شده باشد، مدل‌های آماده استفاده زودتر دیده می‌شوند. این فیلتر فقط برای ساده‌تر شدن مرور در موبایل و صفحه‌های شلوغ است.
           </p>
         </div>
       </div>
@@ -136,7 +136,7 @@
                 {% endwith %}
               {% empty %}
                 <div class="xl:col-span-2">
-                  {% include 'app/_empty_state.html' with empty_badge='بدون مدل' empty_title='هنوز مدلی برای این دسته ثبت نشده است' empty_body='وقتی backend این گروه را با مدل‌های قابل نمایش پر کند، کارت‌ها از همین ساختار استفاده می‌کنند.' empty_compact=True %}
+                  {% include 'app/_empty_state.html' with empty_badge='بدون مدل' empty_title='هنوز مدلی برای این دسته ثبت نشده است' empty_body='وقتی این گروه با مدل‌های قابل نمایش پر شود، کارت‌ها از همین ساختار استفاده می‌کنند.' empty_compact=True %}
                 </div>
               {% endfor %}
             </div>
@@ -158,7 +158,7 @@
         {% endfor %}
       </section>
     {% else %}
-      {% include 'app/_empty_state.html' with empty_badge='بدون مدل' empty_title=models_empty_title|default:'هنوز مدلی برای نمایش اینجا آماده نشده است' empty_body=models_empty_body|default:'وقتی کاتالوگ مدل‌ها برای این حساب یا ورک‌اسپیس تکمیل شود، از همین‌جا می‌توانید مدل مناسب را مرور و مقایسه کنید.' empty_hint=models_empty_hint|default:'این قالب از context ساده `models` یا `model_groups` استفاده می‌کند و به backend جدیدی نیاز ندارد؛ فقط داده باید به آن متصل شود.' %}
+      {% include 'app/_empty_state.html' with empty_badge='بدون مدل' empty_title=models_empty_title|default:'هنوز مدلی برای نمایش اینجا آماده نشده است' empty_body=models_empty_body|default:'وقتی کاتالوگ مدل‌ها برای این حساب یا ورک‌اسپیس تکمیل شود، از همین‌جا می‌توانید مدل مناسب را مرور و مقایسه کنید.' empty_hint=models_empty_hint|default:'این قالب با داده‌های ساده مدل‌ها یا گروه‌های مدل کار می‌کند؛ فقط کافی است اطلاعات لازم به آن برسد.' %}
     {% endif %}
   </div>
 {% endblock %}

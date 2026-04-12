@@ -36,10 +36,10 @@
       {% endif %}
     </div>
 
-    <div class="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[12rem]">
+      <div class="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[12rem]">
       {% if space_item.action_url and not space_item.action_disabled %}
         <a href="{{ space_item.action_url }}" class="{% if space_item.action_tone == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %} w-full">
-          {{ space_item.action_label|default:"استفاده در این اسپیس" }}
+          {{ space_item.action_label|default:"ورود به این اسپیس" }}
         </a>
       {% else %}
         <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-slate-100/90 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-500">

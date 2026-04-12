@@ -3,7 +3,7 @@
 
 {% block dashboard_content %}
   <div class="space-y-6">
-    {% include 'dashboard/_admin_page_header.html' with admin_badge='FaralYar v1.5' admin_context_label='مرکز کنترل عملیات' admin_meta_label='کار روزانه' admin_meta_label_two='سطح سفارشی ادمین' admin_title='ادمین سفارشی FaralYar' admin_intro='این فضا برای کنترل روزانه محصول ساخته شده است: تنظیم تجربه عمومی، مدیریت متن‌ها، پلن‌ها، مدل‌ها و مرور وضعیت پرداخت‌ها. کارهای عمیق‌تر و نگهداری فنی هنوز جدا از این سطح نگه داشته می‌شوند.' admin_hint='هدف این صفحه سرعت در تصمیم‌گیری عملیاتی است، نه انبوهی از فرم‌های خام. ابتدا چیزی را که نیاز به توجه دارد ببینید، بعد سراغ بخش مناسب بروید.' admin_side_eyebrow='شروع سریع' admin_side_title='از همان کاری شروع کنید که امروز باید جلو برود' admin_side_body='اگر قرار است فقط یک کار انجام دهید، از تنظیمات، متن‌ها، پلن‌ها یا مرور تراکنش‌ها شروع کنید. لینک‌های Django Admin پایین صفحه فقط برای نگهداری عمیق‌تر هستند.' admin_primary_url='/dashboard/admin-panel/settings/' admin_primary_label='تنظیمات سایت' admin_secondary_url='/dashboard/admin-panel/transactions/' admin_secondary_label='مرور تراکنش‌ها' %}
+    {% include 'dashboard/_admin_page_header.html' with admin_badge='FaralYar v1.5' admin_context_label='مرکز کنترل عملیات' admin_meta_label='کار روزانه' admin_meta_label_two='کنترل روزانه محصول' admin_title='مرکز کنترل FaralYar' admin_intro='این فضا برای کنترل روزانه محصول ساخته شده است: تنظیم تجربه عمومی، مدیریت متن‌ها، پلن‌ها، مدل‌ها و مرور وضعیت پرداخت‌ها. کارهای عمیق‌تر و نگهداری فنی همچنان جدا از این سطح نگه داشته می‌شوند.' admin_hint='هدف این صفحه سرعت در تصمیم‌گیری عملیاتی است، نه انبوهی از فرم‌های خام. ابتدا چیزی را که نیاز به توجه دارد ببینید، بعد سراغ بخش مناسب بروید.' admin_side_eyebrow='شروع سریع' admin_side_title='از همان کاری شروع کنید که امروز باید جلو برود' admin_side_body='اگر قرار است فقط یک کار انجام دهید، از تنظیمات، متن‌ها، پلن‌ها یا مرور تراکنش‌ها شروع کنید. لینک‌های ادمین پایه پایین صفحه فقط برای نگهداری عمیق‌تر هستند.' admin_primary_url='/dashboard/admin-panel/settings/' admin_primary_label='تنظیمات سایت' admin_secondary_url='/dashboard/admin-panel/transactions/' admin_secondary_label='مرور تراکنش‌ها' %}
 
     <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
       <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/85 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55">
@@ -90,7 +90,7 @@
               {% include 'dashboard/_admin_status_badge.html' with tone='warning' label=contact_count %}
             </div>
             <p class="mt-2 text-sm leading-7 text-amber-800/90 dark:text-amber-100">اگر این عدد بالا بماند، تجربه پشتیبانی بیرون از کنترل‌سنتر عقب می‌افتد و حس اعتماد کم می‌شود.</p>
-            <a href="/admin/core/contactmessage/" class="btn-secondary mt-3 w-full">بازکردن پیام‌های تماس در Django Admin</a>
+            <a href="/admin/core/contactmessage/" class="btn-secondary mt-3 w-full">بازکردن پیام‌های تماس در ادمین پایه</a>
           </div>
 
           <div class="rounded-[1.35rem] border border-slate-200/80 bg-slate-50/75 p-4 dark:border-slate-700/70 dark:bg-slate-950/35">
@@ -109,14 +109,14 @@
       <div class="min-w-0">
         <div class="text-xs font-bold text-slate-500 dark:text-slate-400">نگهداری عمیق</div>
         <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">هر چیزی که بهتر است هنوز بیرون از کنترل‌سنتر روزانه بماند</h2>
-        <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این لینک‌ها عمداً در بخش جداگانه آمده‌اند تا عملیات روزانه با maintenance فنی یا مدیریتی عمیق مخلوط نشود.</p>
+        <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این لینک‌ها عمداً در بخش جداگانه آمده‌اند تا عملیات روزانه با نگهداری فنی یا مدیریتی عمیق مخلوط نشود.</p>
       </div>
 
       <div class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <a href="/admin/accounts/user/" class="btn-secondary w-full">کاربران در Django Admin</a>
-        <a href="/admin/blog/blogpost/" class="btn-secondary w-full">مقالات در Django Admin</a>
-        <a href="/admin/blog/blogcategory/" class="btn-secondary w-full">دسته‌بندی‌ها در Django Admin</a>
-        <a href="/admin/core/textsnippet/" class="btn-secondary w-full">Snippetها در Django Admin</a>
+        <a href="/admin/accounts/user/" class="btn-secondary w-full">کاربران در ادمین پایه</a>
+        <a href="/admin/blog/blogpost/" class="btn-secondary w-full">مقالات در ادمین پایه</a>
+        <a href="/admin/blog/blogcategory/" class="btn-secondary w-full">دسته‌بندی‌ها در ادمین پایه</a>
+        <a href="/admin/core/textsnippet/" class="btn-secondary w-full">قطعه‌متن‌ها در ادمین پایه</a>
       </div>
     </section>
   </div>

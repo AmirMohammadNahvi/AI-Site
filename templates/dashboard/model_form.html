@@ -3,9 +3,9 @@
 {% block dashboard_content %}
   <div class="space-y-6" x-data="{ technicalOpen: false }">
     {% if instance %}
-      {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل' admin_context_label='ویرایش مدل' admin_meta_label='عرضه و نگهداری' admin_title='ویرایش مدل' admin_intro='این صفحه بین کنترل عرضه و نگهداری فنی مرز می‌گذارد: اطلاعات عمومی و وضعیت مدل بالا آمده‌اند و تنظیمات اتصال فنی پایین‌تر و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='اگر فقط می‌خواهید مدل را فعال، غیرفعال یا برجسته کنید، لازم نیست سراغ بخش فنی بروید. آن بخش فقط برای اتصال واقعی runtime است.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست مدل‌ها' admin_side_body='بعد از ذخیره به فهرست مدل‌ها برمی‌گردید تا بتوانید وضعیت عرضه را در یک نگاه مرور کنید.' admin_secondary_url='/dashboard/admin-panel/models/' admin_secondary_label='بازگشت به مدل‌ها' %}
+      {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل' admin_context_label='ویرایش مدل' admin_meta_label='عرضه و نگهداری' admin_title='ویرایش مدل' admin_intro='این صفحه بین کنترل عرضه و نگهداری فنی مرز می‌گذارد: اطلاعات عمومی و وضعیت مدل بالا آمده‌اند و تنظیمات اتصال فنی پایین‌تر و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='اگر فقط می‌خواهید مدل را فعال، غیرفعال یا برجسته کنید، لازم نیست سراغ بخش فنی بروید. آن بخش فقط برای اتصال واقعی مدل است.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست مدل‌ها' admin_side_body='بعد از ذخیره به فهرست مدل‌ها برمی‌گردید تا بتوانید وضعیت عرضه را در یک نگاه مرور کنید.' admin_secondary_url='/dashboard/admin-panel/models/' admin_secondary_label='بازگشت به مدل‌ها' %}
     {% else %}
-      {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل' admin_context_label='مدل جدید' admin_meta_label='عرضه و نگهداری' admin_title='ایجاد مدل' admin_intro='این صفحه بین کنترل عرضه و نگهداری فنی مرز می‌گذارد: اطلاعات عمومی و وضعیت مدل بالا آمده‌اند و تنظیمات اتصال فنی پایین‌تر و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='اگر فقط می‌خواهید مدل را فعال، غیرفعال یا برجسته کنید، لازم نیست سراغ بخش فنی بروید. آن بخش فقط برای اتصال واقعی runtime است.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست مدل‌ها' admin_side_body='بعد از ذخیره به فهرست مدل‌ها برمی‌گردید تا بتوانید وضعیت عرضه را در یک نگاه مرور کنید.' admin_secondary_url='/dashboard/admin-panel/models/' admin_secondary_label='بازگشت به مدل‌ها' %}
+      {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل' admin_context_label='مدل جدید' admin_meta_label='عرضه و نگهداری' admin_title='ایجاد مدل' admin_intro='این صفحه بین کنترل عرضه و نگهداری فنی مرز می‌گذارد: اطلاعات عمومی و وضعیت مدل بالا آمده‌اند و تنظیمات اتصال فنی پایین‌تر و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='اگر فقط می‌خواهید مدل را فعال، غیرفعال یا برجسته کنید، لازم نیست سراغ بخش فنی بروید. آن بخش فقط برای اتصال واقعی مدل است.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست مدل‌ها' admin_side_body='بعد از ذخیره به فهرست مدل‌ها برمی‌گردید تا بتوانید وضعیت عرضه را در یک نگاه مرور کنید.' admin_secondary_url='/dashboard/admin-panel/models/' admin_secondary_label='بازگشت به مدل‌ها' %}
     {% endif %}
 
     <form method="post" class="space-y-4">
@@ -81,8 +81,8 @@
         <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div class="min-w-0">
             <div class="text-xs font-bold text-amber-700 dark:text-amber-300">تنظیمات فنی اتصال</div>
-            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">فقط برای نگهداری runtime و mapping پاسخ</h2>
-            <p class="mt-1 text-sm leading-7 text-amber-800/90 dark:text-amber-100">این بخش عمداً جمع‌شونده است تا کنترل روزانه با maintenance فنی یکی نشود. تغییر در این فیلدها می‌تواند روی پاسخ زنده مدل اثر مستقیم بگذارد.</p>
+            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">فقط برای نگهداری اجرای زنده و مسیر پاسخ</h2>
+            <p class="mt-1 text-sm leading-7 text-amber-800/90 dark:text-amber-100">این بخش عمداً جمع‌شونده است تا کنترل روزانه با نگهداری فنی یکی نشود. تغییر در این فیلدها می‌تواند روی پاسخ زنده مدل اثر مستقیم بگذارد.</p>
           </div>
 
           <button type="button" class="btn-secondary w-full sm:w-auto" @click="technicalOpen = !technicalOpen" :aria-expanded="technicalOpen.toString()">
@@ -96,9 +96,9 @@
               {% if field.name == 'headers' or field.name == 'system_prompt' %}
                 {% include 'dashboard/_admin_form_field.html' with field=field field_class='lg:col-span-2' %}
               {% elif field.name == 'api_key' %}
-                {% include 'dashboard/_admin_form_field.html' with field=field field_note='قبل از ذخیره، مطمئن شوید کلید مربوط به همان endpoint و محیط درست است.' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='قبل از ذخیره، مطمئن شوید کلید مربوط به همان آدرس اتصال و محیط درست است.' %}
               {% elif field.name == 'response_text_path' %}
-                {% include 'dashboard/_admin_form_field.html' with field=field field_note='اگر این مسیر نادرست باشد، پاسخ مدل در runtime خالی یا خراب دیده می‌شود.' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='اگر این مسیر نادرست باشد، پاسخ مدل در اجرای زنده خالی یا خراب دیده می‌شود.' %}
               {% else %}
                 {% include 'dashboard/_admin_form_field.html' with field=field %}
               {% endif %}
