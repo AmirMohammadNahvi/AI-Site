@@ -1,0 +1,79 @@
+<section class="rounded-[1.85rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div class="min-w-0">
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">فعالیت‌های اخیر</div>
+        <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">
+          {{ billing_activity_title|default:"سفارش‌ها و تراکنش‌های اخیر" }}
+        </h2>
+        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+          {{ billing_activity_intro|default:"آخرین رویدادهای مالی و وضعیت سفارش‌های مرتبط با اشتراک شما در این بخش ثبت می‌شود تا پیگیری وضعیت‌ها ساده و مستقیم بماند." }}
+        </p>
+      </div>
+
+      {% if billing_activity_caption %}
+        <div class="text-xs leading-6 text-slate-500 dark:text-slate-400">{{ billing_activity_caption }}</div>
+      {% endif %}
+    </div>
+
+    {% if billing_activity_items %}
+      <div class="space-y-3">
+        {% for item in billing_activity_items %}
+          <article class="rounded-[1.45rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-950/35">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div class="min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                  <div class="text-sm font-black text-slate-900 dark:text-white">{{ item.title|default:item.plan_name|default:"رویداد مالی" }}</div>
+                  {% if item.status_label %}
+                    <span class="rounded-full px-2.5 py-1 text-[10px] font-bold {% if item.status_tone == 'success' %}bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300{% elif item.status_tone == 'warning' %}bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300{% elif item.status_tone == 'danger' %}bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300{% else %}bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300{% endif %}">
+                      {{ item.status_label }}
+                    </span>
+                  {% endif %}
+                </div>
+
+                {% if item.subtitle %}
+                  <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ item.subtitle }}</p>
+                {% elif item.description %}
+                  <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ item.description }}</p>
+                {% endif %}
+
+                <div class="mt-3 flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+                  {% if item.created_at_label %}
+                    <span class="rounded-full bg-white/88 px-2.5 py-1 dark:bg-slate-900/70">{{ item.created_at_label }}</span>
+                  {% endif %}
+                  {% if item.reference_label %}
+                    <span class="rounded-full bg-white/88 px-2.5 py-1 dark:bg-slate-900/70">{{ item.reference_label }}</span>
+                  {% endif %}
+                  {% if item.type_label %}
+                    <span class="rounded-full bg-white/88 px-2.5 py-1 dark:bg-slate-900/70">{{ item.type_label }}</span>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="flex w-full shrink-0 flex-col gap-2 sm:w-auto sm:items-end">
+                {% if item.amount_label %}
+                  <div class="rounded-[1.1rem] bg-white/88 px-3 py-2 text-sm font-black text-slate-900 dark:bg-slate-900/70 dark:text-white">
+                    {{ item.amount_label }}
+                  </div>
+                {% endif %}
+
+                {% if item.detail_label %}
+                  <a href="{{ item.detail_url|default:'#' }}" class="btn-secondary w-full sm:w-auto">
+                    {{ item.detail_label }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="rounded-[1.45rem] border border-dashed border-slate-300/90 bg-slate-50/82 px-4 py-5 dark:border-slate-700/80 dark:bg-slate-950/35">
+        <div class="text-sm font-black text-slate-900 dark:text-white">{{ billing_activity_empty_title|default:"هنوز فعالیت مالی قابل نمایش ثبت نشده است" }}</div>
+        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+          {{ billing_activity_empty_body|default:"وقتی سفارش، تمدید یا تراکنش جدیدی برای این حساب ثبت شود، از همین بخش می‌توانید آخرین وضعیت آن را مرور کنید." }}
+        </p>
+      </div>
+    {% endif %}
+  </div>
+</section>
