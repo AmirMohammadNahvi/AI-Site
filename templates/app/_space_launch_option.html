@@ -1,0 +1,81 @@
+{% with launch_state=space_option.state|default:state|default:'available' %}
+  <article class="rounded-[1.45rem] border p-4 transition sm:p-5 {% if launch_state == 'available' %}border-slate-200/80 bg-white/88 hover:border-emerald-200 hover:bg-white dark:border-slate-700/70 dark:bg-slate-900/55 dark:hover:border-emerald-500/20{% elif launch_state == 'current' %}border-emerald-200/80 bg-emerald-50/78 dark:border-emerald-500/20 dark:bg-emerald-500/10{% elif launch_state == 'locked' %}border-sky-200/80 bg-sky-50/78 dark:border-sky-500/20 dark:bg-sky-500/10{% else %}border-slate-200/80 bg-slate-50/82 dark:border-slate-700/70 dark:bg-slate-900/55{% endif %}">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div class="min-w-0">
+        <div class="flex flex-wrap items-center gap-2">
+          <h3 class="text-sm font-black text-slate-900 dark:text-white sm:text-base">{{ space_option.title|default:title|default:space_option.name|default:"اسپیس بدون عنوان" }}</h3>
+
+          {% if launch_state == 'available' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=space_option.state_label|default:state_label|default:'قابل ورود' entitlement_note=space_option.reason|default:reason %}
+          {% elif launch_state == 'current' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=space_option.state_label|default:state_label|default:'فضای فعلی' entitlement_note=space_option.reason|default:reason %}
+          {% elif launch_state == 'locked' %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=space_option.state_label|default:state_label|default:'نیازمند دسترسی' entitlement_note=space_option.reason|default:reason %}
+          {% else %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=space_option.state_label|default:state_label|default:'فعلاً در دسترس نیست' entitlement_note=space_option.reason|default:reason %}
+          {% endif %}
+        </div>
+
+        <div class="mt-2 flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+          {% if space_option.workspace_name %}
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ space_option.workspace_name }}</span>
+          {% endif %}
+          {% if space_option.project_name %}
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ space_option.project_name }}</span>
+          {% endif %}
+          {% if space_option.badge %}
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ space_option.badge }}</span>
+          {% endif %}
+        </div>
+
+        {% if space_option.body or body or space_option.summary %}
+          <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+            {{ space_option.body|default:body|default:space_option.summary }}
+          </p>
+        {% endif %}
+
+        {% if space_option.helper or helper %}
+          <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
+            {{ space_option.helper|default:helper }}
+          </p>
+        {% endif %}
+
+        {% if space_option.note or note or space_option.reason %}
+          <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
+            {{ space_option.note|default:note|default:space_option.reason }}
+          </p>
+        {% endif %}
+      </div>
+
+      <div class="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[12rem]">
+        {% if space_option.primary_cta_url|default:primary_cta_url and launch_state != 'unavailable' %}
+          <a href="{{ space_option.primary_cta_url|default:primary_cta_url }}" class="{% if launch_state == 'current' %}btn-secondary{% else %}btn-primary{% endif %} w-full">
+            {% if space_option.primary_cta_label or primary_cta_label %}
+              {{ space_option.primary_cta_label|default:primary_cta_label }}
+            {% elif launch_state == 'current' %}
+              بازگشت به همین فضا
+            {% elif launch_state == 'locked' %}
+              بررسی مسیر دسترسی
+            {% else %}
+              ورود به این فضا
+            {% endif %}
+          </a>
+        {% else %}
+          <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-slate-100/90 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-500">
+            {% if launch_state == 'locked' %}
+              {{ space_option.primary_cta_label|default:primary_cta_label|default:"فعلاً نیازمند دسترسی بیشتر" }}
+            {% else %}
+              {{ space_option.primary_cta_label|default:primary_cta_label|default:"فعلاً قابل ورود نیست" }}
+            {% endif %}
+          </span>
+        {% endif %}
+
+        {% if space_option.secondary_cta_url|default:secondary_cta_url %}
+          <a href="{{ space_option.secondary_cta_url|default:secondary_cta_url }}" class="btn-secondary w-full">
+            {{ space_option.secondary_cta_label|default:secondary_cta_label|default:"جزئیات فضا" }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </article>
+{% endwith %}

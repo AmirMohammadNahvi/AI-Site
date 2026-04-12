@@ -1,0 +1,92 @@
+{% with model_state=model.availability_state|default:'available' %}
+  <section class="space-y-4">
+    {% if model_state == 'available' %}
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">وضعیت دسترسی</div>
+            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">این مدل برای همین زمینه آماده استفاده است</h2>
+          </div>
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=model.availability_label|default:'آماده استفاده' entitlement_note=model.availability_note %}
+        </div>
+
+        <div class="mt-4 rounded-[1.3rem] border border-emerald-200/80 bg-emerald-50/80 p-4 dark:border-emerald-500/20 dark:bg-emerald-500/10">
+          <div class="text-sm font-black text-slate-900 dark:text-white">
+            {{ model.availability_headline|default:'می‌توانید این مدل را وارد جریان کار خود کنید' }}
+          </div>
+          <p class="mt-2 text-sm leading-7 text-slate-700 dark:text-slate-200">
+            {{ model.availability_note|default:'از نظر سطح دسترسی، این مدل برای حساب و ورک‌اسپیس فعلی قابل استفاده است. اگر زمینه استفاده تغییر کند، توضیح همان‌جا باید دوباره بررسی شود.' }}
+          </p>
+        </div>
+      </section>
+    {% elif model_state == 'upgradeable' or model_state == 'locked' %}
+      {% include 'app/_upgrade_explainer_card.html' with entitlement_label=model.availability_label|default:'این مدل در سطح فعلی شما کامل فعال نیست' entitlement_note=model.plan_note|default:model.availability_note upgrade_title=model.upgrade_title|default:'اگر به این مدل نیاز دارید، مسیر ارتقا از همین‌جا روشن است' upgrade_body=model.upgrade_body|default:model.availability_note|default:'این مدل برای کارهای مشخصی مناسب است، اما در پلن فعلی شما فعال نشده است. اگر بعداً به آن نیاز داشتید، می‌توانید گزینه مناسب‌تر را بررسی کنید.' upgrade_primary_url=model.primary_cta_url upgrade_primary_label=model.primary_cta_label|default:'بررسی گزینه ارتقا' upgrade_secondary_url=model.secondary_cta_url|default:model.detail_back_url upgrade_secondary_label=model.secondary_cta_label|default:model.detail_back_label|default:'بازگشت به کاتالوگ' %}
+    {% elif model_state == 'workspace' %}
+      {% include 'app/_blocked_feature_note.html' with blocked_tone='workspace' entitlement_state='workspace' entitlement_label=model.availability_label|default:'در این ورک‌اسپیس فعال نیست' blocked_title=model.blocked_title|default:'این مدل برای همین ورک‌اسپیس آماده استفاده نیست' blocked_body=model.availability_note|default:model.workspace_note|default:'این محدودیت از تنظیمات یا دامنه همین ورک‌اسپیس می‌آید و الزاماً با ارتقا برطرف نمی‌شود.' blocked_reason=model.workspace_note blocked_cta_url=model.detail_back_url blocked_cta_label=model.detail_back_label|default:'بازگشت به کاتالوگ' %}
+    {% elif model_state == 'policy' or model_state == 'policy_disabled' %}
+      {% include 'app/_blocked_feature_note.html' with blocked_tone='policy' entitlement_state='policy' entitlement_label=model.availability_label|default:'با سیاست دسترسی محدود شده' blocked_title=model.blocked_title|default:'این مدل به‌خاطر سیاست دسترسی فعال نیست' blocked_body=model.availability_note|default:model.workspace_note|default:'این وضعیت به معنی قابل‌خرید بودن نیست. اول باید سیاست دسترسی یا تنظیمات مدیریتی این مسیر تغییر کند.' blocked_reason=model.workspace_note|default:model.plan_note blocked_cta_url=model.detail_back_url blocked_cta_label=model.detail_back_label|default:'بازگشت به کاتالوگ' %}
+    {% elif model_state == 'disabled' or model_state == 'admin_disabled' %}
+      {% include 'app/_blocked_feature_note.html' with blocked_tone='disabled' entitlement_state='disabled' entitlement_label=model.availability_label|default:'فعلاً غیرفعال' blocked_title=model.blocked_title|default:'این مدل فعلاً برای این مسیر غیرفعال است' blocked_body=model.availability_note|default:'این وضعیت از مدیریت سرویس یا تنظیمات فعلی می‌آید و نباید مثل یک گزینه ارتقا دیده شود.' blocked_reason=model.workspace_note|default:model.plan_note blocked_cta_url=model.detail_back_url blocked_cta_label=model.detail_back_label|default:'بازگشت به کاتالوگ' %}
+    {% elif model_state == 'deprecated' %}
+      <section class="rounded-[1.8rem] border border-rose-200/80 bg-rose-50/72 p-4 shadow-sm shadow-slate-900/5 dark:border-rose-500/20 dark:bg-rose-500/10 sm:p-5">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="text-xs font-bold text-rose-700 dark:text-rose-300">وضعیت چرخه عمر</div>
+            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">این مدل برای شروع کار جدید توصیه نمی‌شود</h2>
+          </div>
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state='limited' entitlement_tone='warning' entitlement_label=model.availability_label|default:'در حال خروج' entitlement_note=model.availability_note %}
+        </div>
+
+        <p class="mt-4 text-sm leading-7 text-slate-700 dark:text-slate-200">
+          {{ model.availability_note|default:'ممکن است هنوز در بعضی جریان‌ها دیده شود، اما بهتر است برای کار تازه از گزینه‌ای استفاده کنید که مسیر پایدارتری دارد.' }}
+        </p>
+
+        {% if model.replacement_label or model.secondary_cta_url %}
+          <div class="mt-4 rounded-[1.25rem] border border-white/75 bg-white/82 p-4 dark:border-slate-800/60 dark:bg-slate-950/30">
+            {% if model.replacement_label %}
+              <div class="text-sm font-black text-slate-900 dark:text-white">{{ model.replacement_label }}</div>
+            {% endif %}
+            {% if model.secondary_cta_url %}
+              <a href="{{ model.secondary_cta_url }}" class="btn-secondary mt-4 w-full">
+                {{ model.secondary_cta_label|default:'مشاهده جایگزین پیشنهادی' }}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </section>
+    {% else %}
+      {% include 'app/_blocked_feature_note.html' with blocked_tone='context' entitlement_state='unavailable' entitlement_label=model.availability_label|default:'در این زمینه در دسترس نیست' blocked_title=model.blocked_title|default:'این مدل فعلاً برای زمینه فعلی شما آماده نیست' blocked_body=model.availability_note|default:'اگر بعداً برای همین مدل مسیر روشن‌تری فراهم شود، توضیح آن از همین بخش قابل مشاهده خواهد بود.' blocked_reason=model.workspace_note|default:model.plan_note blocked_cta_url=model.detail_back_url blocked_cta_label=model.detail_back_label|default:'بازگشت به کاتالوگ' %}
+    {% endif %}
+
+    {% if current_workspace.name or current_plan.name or model.workspace_note or model.plan_note %}
+      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">زمینه فعلی شما</div>
+        <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">این وضعیت برای کدام حساب یا فضا توضیح داده شده است؟</h2>
+
+        <div class="mt-4 space-y-3">
+          {% if current_workspace.name %}
+            <div class="rounded-[1.2rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-950/35">
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">ورک‌اسپیس</div>
+              <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ current_workspace.name }}</div>
+              {% if model.workspace_note %}
+                <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ model.workspace_note }}</p>
+              {% elif current_workspace.subtitle %}
+                <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ current_workspace.subtitle }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% if current_plan.name or model.plan_note %}
+            <div class="rounded-[1.2rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-950/35">
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">پلن یا سطح دسترسی</div>
+              <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ current_plan.name|default:'بدون پلن مشخص' }}</div>
+              {% if model.plan_note %}
+                <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ model.plan_note }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </section>
+    {% endif %}
+  </section>
+{% endwith %}

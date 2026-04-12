@@ -36,34 +36,38 @@
       </div>
     </section>
 
-    <section class="rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
-      <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">شروع گفتگو</div>
-          <h2 class="mt-2 text-lg font-black text-slate-900 dark:text-white">لانچر گفتگو برای این اسپیس</h2>
-          <p class="mt-2 max-w-3xl text-sm leading-8 text-slate-600 dark:text-slate-300">
-            موضوع را کوتاه و اجرایی بنویسید. بعد از شروع، thread کامل در مرحله بعدی روی صفحه مخصوص گفتگو نمایش داده می‌شود.
-          </p>
-        </div>
+    <section class="space-y-4">
+      {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="ورود به اجرای این اسپیس" body="از همین‌جا می‌توانید یک گفتگوی تازه برای این اسپیس شروع کنید یا اگر جریان فعالی دارید، به همان برگردید." helper="اسپیس جای سازمان‌دهی زمینه است و چت سطح اجرا باقی می‌ماند." new_cta_url=space_launch_url new_cta_label="شروع گفتگوی جدید" %}
 
-        {% if space_launch_url %}
-          <a href="{{ space_launch_url }}" class="btn-primary w-full sm:w-auto">شروع گفتگوی جدید</a>
-        {% endif %}
-      </div>
-
-      <div class="mt-5 rounded-[1.5rem] border border-slate-200/80 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-900/70">
-        <div class="rounded-[1.25rem] border border-slate-200/80 bg-white px-4 py-4 text-sm leading-7 text-slate-400 dark:border-slate-700 dark:bg-slate-950/70 dark:text-slate-500">
-          {{ composer_placeholder|default:"مثلاً: برای جلسه فردا یک برنامه اجرایی سه‌مرحله‌ای برای این اسپیس آماده کن..." }}
-        </div>
-
-        {% if space_starter_prompts %}
-          <div class="mt-4 flex flex-wrap gap-2">
-            {% for prompt in space_starter_prompts %}
-              <a href="{{ prompt.url|default:space_launch_url|default:'#' }}" class="prompt-chip">{{ prompt.label }}</a>
-            {% endfor %}
+      <section class="rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div class="min-w-0">
+            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">شروع گفتگو</div>
+            <h2 class="mt-2 text-lg font-black text-slate-900 dark:text-white">لانچر گفتگو برای این اسپیس</h2>
+            <p class="mt-2 max-w-3xl text-sm leading-8 text-slate-600 dark:text-slate-300">
+              موضوع را کوتاه و اجرایی بنویسید. بعد از شروع، thread کامل در مرحله بعدی روی صفحه مخصوص گفتگو نمایش داده می‌شود.
+            </p>
           </div>
-        {% endif %}
-      </div>
+
+          {% if space_launch_url %}
+            <a href="{{ space_launch_url }}" class="btn-primary w-full sm:w-auto">شروع گفتگوی جدید</a>
+          {% endif %}
+        </div>
+
+        <div class="mt-5 rounded-[1.5rem] border border-slate-200/80 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-900/70">
+          <div class="rounded-[1.25rem] border border-slate-200/80 bg-white px-4 py-4 text-sm leading-7 text-slate-400 dark:border-slate-700 dark:bg-slate-950/70 dark:text-slate-500">
+            {{ composer_placeholder|default:"مثلاً: برای جلسه فردا یک برنامه اجرایی سه‌مرحله‌ای برای این اسپیس آماده کن..." }}
+          </div>
+
+          {% if space_starter_prompts %}
+            <div class="mt-4 flex flex-wrap gap-2">
+              {% for prompt in space_starter_prompts %}
+                <a href="{{ prompt.url|default:space_launch_url|default:'#' }}" class="prompt-chip">{{ prompt.label }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </section>
     </section>
 
     {% if not space_recent_conversations %}

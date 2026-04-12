@@ -1,0 +1,164 @@
+{% extends 'app/layouts/app_shell.html' %}
+
+{% block title %}{{ models_page_title|default:'مدل‌ها' }} | {{ site_settings.site_name_fa }}{% endblock %}
+{% block meta_description %}{{ models_page_description|default:'مرور مدل‌های قابل استفاده در FaralYar با تاکید بر تناسب کاری، قابلیت‌های محصولی و وضعیت دسترسی در همین ورک‌اسپیس.' }}{% endblock %}
+
+{% block app_content %}
+  <div class="space-y-6" x-data="{ activeFilter: '{{ models_active_filter|default:'all'|escapejs }}' }">
+    <section class="relative overflow-hidden rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
+      <div class="absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_52%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.12),transparent_42%)]"></div>
+
+      <div class="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+        <div class="min-w-0 max-w-3xl">
+          <div class="flex flex-wrap gap-2">
+            <span class="badge">{{ models_page_badge|default:'FaralYar v1.5' }}</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+              {{ models_page_context_label|default:'کاتالوگ مدل‌ها' }}
+            </span>
+            {% if current_workspace.name %}
+              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">ورک‌اسپیس: {{ current_workspace.name }}</span>
+            {% endif %}
+            {% if current_plan.name %}
+              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">پلن: {{ current_plan.name }}</span>
+            {% endif %}
+          </div>
+
+          <h1 class="mt-3 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
+            {{ models_page_title|default:'مدل‌ها' }}
+          </h1>
+
+          <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
+            {{ models_page_intro|default:'این صفحه برای انتخاب آگاهانه مدل است. هر کارت باید روشن کند این مدل برای چه نوع کاری مناسب‌تر است، چه قابلیت‌هایی را در زبان FaralYar خوب پشتیبانی می‌کند، و آیا همین حالا در زمینه فعلی شما قابل استفاده است یا نه.' }}
+          </p>
+
+          <div class="mt-4 rounded-[1.4rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-300">
+            {{ models_page_hint|default:'مدل‌هایی که با سیاست یا مدیریت غیرفعال شده‌اند، مثل گزینه خرید یا ارتقا نمایش داده نمی‌شوند. اگر مدلی فقط در زمینه فعلی شما در دسترس نباشد، توضیح آرام و مشخص خودش را خواهد داشت.' }}
+          </div>
+
+          <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-bold">
+            {% if models_summary_label %}
+              <span class="rounded-full bg-white/88 px-3 py-1.5 text-slate-600 dark:bg-slate-950/55 dark:text-slate-300">{{ models_summary_label }}</span>
+            {% endif %}
+            {% if models_available_label %}
+              <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">{{ models_available_label }}</span>
+            {% endif %}
+            {% if models_upgradeable_label %}
+              <span class="rounded-full bg-sky-50 px-3 py-1.5 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300">{{ models_upgradeable_label }}</span>
+            {% endif %}
+            {% if models_unavailable_label %}
+              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ models_unavailable_label }}</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="w-full lg:w-auto lg:min-w-[17rem]">
+          <div class="rounded-[1.4rem] border border-slate-200/80 bg-slate-50/85 p-4 dark:border-slate-700/70 dark:bg-slate-950/40">
+            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">چطور این صفحه را بخوانیم؟</div>
+            <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">
+              {{ models_guide_title|default:'اول تناسب کاری را ببینید، بعد وضعیت دسترسی را' }}
+            </div>
+            <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+              {{ models_guide_body|default:'در FaralYar مدل خوب مدلی است که برای کار شما روشن و مناسب باشد. اگر مدلی برای حساب یا ورک‌اسپیس فعلی آماده نیست، همین صفحه باید دلیل را بدون ابهام و بدون اغراق نشان دهد.' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/72 p-3 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-4">
+      <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مرور هدفمند</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">فهرست را بر اساس وضعیت استفاده مرور کنید</h2>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
+            اگر backend فهرست را از قبل مرتب کرده باشد، مدل‌های آماده استفاده زودتر دیده می‌شوند. این فیلتر فقط برای ساده‌تر شدن مرور در موبایل و صفحه‌های شلوغ است.
+          </p>
+        </div>
+      </div>
+
+      <div class="horizontal-scroll -mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1">
+        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'all' ? 'border-emerald-200 bg-emerald-50 text-slate-900 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'all'">
+          <div class="text-sm font-black">همه</div>
+          <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">مرور کل فهرست</div>
+        </button>
+
+        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'available' ? 'border-emerald-200 bg-emerald-50 text-slate-900 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'available'">
+          <div class="text-sm font-black">آماده استفاده</div>
+          <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">برای شروع سریع</div>
+        </button>
+
+        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'upgradeable' ? 'border-sky-200 bg-sky-50 text-slate-900 shadow-sm shadow-sky-100/70 dark:border-sky-500/25 dark:bg-sky-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'upgradeable'">
+          <div class="text-sm font-black">قابل ارتقا</div>
+          <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">اگر بعداً نیاز شد</div>
+        </button>
+
+        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'unavailable' ? 'border-slate-300 bg-slate-100 text-slate-900 shadow-sm shadow-slate-100/70 dark:border-slate-600 dark:bg-slate-800 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'unavailable'">
+          <div class="text-sm font-black">فعلاً خارج از دسترس</div>
+          <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">با توضیح زمینه‌ای</div>
+        </button>
+
+        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'deprecated' ? 'border-rose-200 bg-rose-50 text-slate-900 shadow-sm shadow-rose-100/70 dark:border-rose-500/25 dark:bg-rose-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'deprecated'">
+          <div class="text-sm font-black">در حال خروج</div>
+          <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">برای کار جدید نه</div>
+        </button>
+      </div>
+    </section>
+
+    {% if model_groups %}
+      <div class="space-y-4">
+        {% for group in model_groups %}
+          <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+            <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+              <div class="min-w-0">
+                {% if group.eyebrow %}
+                  <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ group.eyebrow }}</div>
+                {% endif %}
+                <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">{{ group.title|default:group.label }}</h2>
+                {% if group.caption %}
+                  <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">{{ group.caption }}</p>
+                {% endif %}
+              </div>
+              {% if group.note %}
+                <div class="text-xs leading-6 text-slate-500 dark:text-slate-400">{{ group.note }}</div>
+              {% endif %}
+            </div>
+
+            <div class="mt-4 grid gap-4 xl:grid-cols-2">
+              {% for model in group.models %}
+                {% with group_state=model.availability_state|default:'available' %}
+                  {% if group_state != 'hidden' and group_state != 'admin_disabled' and group_state != 'policy_disabled' %}
+                    {% if group_state != 'unavailable' and group_state != 'workspace' or model.availability_note or model.workspace_note or model.plan_note or model.detail_url %}
+                      <div x-cloak x-show="activeFilter === 'all' || (activeFilter === 'available' && '{{ group_state|escapejs }}' === 'available') || (activeFilter === 'upgradeable' && ('{{ group_state|escapejs }}' === 'upgradeable' || '{{ group_state|escapejs }}' === 'locked')) || (activeFilter === 'unavailable' && ('{{ group_state|escapejs }}' === 'unavailable' || '{{ group_state|escapejs }}' === 'workspace')) || (activeFilter === 'deprecated' && '{{ group_state|escapejs }}' === 'deprecated')">
+                        {% include 'app/_model_card.html' with model=model %}
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                {% endwith %}
+              {% empty %}
+                <div class="xl:col-span-2">
+                  {% include 'app/_empty_state.html' with empty_badge='بدون مدل' empty_title='هنوز مدلی برای این دسته ثبت نشده است' empty_body='وقتی backend این گروه را با مدل‌های قابل نمایش پر کند، کارت‌ها از همین ساختار استفاده می‌کنند.' empty_compact=True %}
+                </div>
+              {% endfor %}
+            </div>
+          </section>
+        {% endfor %}
+      </div>
+    {% elif models %}
+      <section class="grid gap-4 xl:grid-cols-2">
+        {% for model in models %}
+          {% with model_state=model.availability_state|default:'available' %}
+            {% if model_state != 'hidden' and model_state != 'admin_disabled' and model_state != 'policy_disabled' %}
+              {% if model_state != 'unavailable' and model_state != 'workspace' or model.availability_note or model.workspace_note or model.plan_note or model.detail_url %}
+                <div x-cloak x-show="activeFilter === 'all' || (activeFilter === 'available' && '{{ model_state|escapejs }}' === 'available') || (activeFilter === 'upgradeable' && ('{{ model_state|escapejs }}' === 'upgradeable' || '{{ model_state|escapejs }}' === 'locked')) || (activeFilter === 'unavailable' && ('{{ model_state|escapejs }}' === 'unavailable' || '{{ model_state|escapejs }}' === 'workspace')) || (activeFilter === 'deprecated' && '{{ model_state|escapejs }}' === 'deprecated')">
+                  {% include 'app/_model_card.html' with model=model %}
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endwith %}
+        {% endfor %}
+      </section>
+    {% else %}
+      {% include 'app/_empty_state.html' with empty_badge='بدون مدل' empty_title=models_empty_title|default:'هنوز مدلی برای نمایش اینجا آماده نشده است' empty_body=models_empty_body|default:'وقتی کاتالوگ مدل‌ها برای این حساب یا ورک‌اسپیس تکمیل شود، از همین‌جا می‌توانید مدل مناسب را مرور و مقایسه کنید.' empty_hint=models_empty_hint|default:'این قالب از context ساده `models` یا `model_groups` استفاده می‌کند و به backend جدیدی نیاز ندارد؛ فقط داده باید به آن متصل شود.' %}
+    {% endif %}
+  </div>
+{% endblock %}

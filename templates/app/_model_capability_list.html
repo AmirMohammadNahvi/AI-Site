@@ -1,0 +1,70 @@
+<section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+    <div class="min-w-0">
+      <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ capability_eyebrow|default:"قابلیت‌ها" }}</div>
+      <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">
+        {{ capability_title|default:"این مدل در FaralYar چه کارهایی را خوب پشتیبانی می‌کند؟" }}
+      </h2>
+      {% if capability_caption %}
+        <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">{{ capability_caption }}</p>
+      {% endif %}
+    </div>
+
+    {% if capability_badge %}
+      <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+        {{ capability_badge }}
+      </span>
+    {% endif %}
+  </div>
+
+  {% if capabilities %}
+    <div class="mt-4 grid gap-3 sm:grid-cols-2">
+      {% for capability in capabilities %}
+        {% with capability_state=capability.state|default:capability.availability_state|default:'included' %}
+          <article class="rounded-[1.35rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-950/35">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <div class="text-sm font-black text-slate-900 dark:text-white">
+                  {{ capability.label|default:capability.name|default:capability }}
+                </div>
+                {% if capability.summary %}
+                  <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ capability.summary }}</p>
+                {% endif %}
+              </div>
+
+              <div class="shrink-0">
+                {% if capability_state == 'included' or capability_state == 'supported' or capability_state == 'available' %}
+                  {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=capability.state_label|default:'پشتیبانی‌شده' entitlement_note=capability.note %}
+                {% elif capability_state == 'upgradeable' or capability_state == 'locked' %}
+                  {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=capability.state_label|default:'با ارتقا فعال می‌شود' entitlement_note=capability.note %}
+                {% elif capability_state == 'workspace' %}
+                  {% include 'app/_entitlement_status_badge.html' with entitlement_state='workspace' entitlement_tone='workspace' entitlement_label=capability.state_label|default:'در این ورک‌اسپیس فعال نیست' entitlement_note=capability.note %}
+                {% elif capability_state == 'policy' or capability_state == 'policy_disabled' %}
+                  {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=capability.state_label|default:'با سیاست دسترسی محدود شده' entitlement_note=capability.note %}
+                {% elif capability_state == 'disabled' or capability_state == 'admin_disabled' %}
+                  {% include 'app/_entitlement_status_badge.html' with entitlement_state='disabled' entitlement_tone='disabled' entitlement_label=capability.state_label|default:'فعلاً غیرفعال' entitlement_note=capability.note %}
+                {% else %}
+                  {% include 'app/_entitlement_status_badge.html' with entitlement_state='limited' entitlement_tone='warning' entitlement_label=capability.state_label|default:'محدود' entitlement_note=capability.note %}
+                {% endif %}
+              </div>
+            </div>
+
+            {% if capability.note or capability.reason %}
+              <div class="mt-3 rounded-[1.1rem] border px-3 py-3 text-xs leading-6 {% if capability_state == 'workspace' or capability_state == 'policy' or capability_state == 'policy_disabled' or capability_state == 'disabled' or capability_state == 'admin_disabled' %}border-rose-200/80 bg-rose-50/80 text-rose-800 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-200{% elif capability_state == 'upgradeable' or capability_state == 'locked' %}border-sky-200/80 bg-sky-50/80 text-sky-800 dark:border-sky-500/20 dark:bg-sky-500/10 dark:text-sky-200{% else %}border-slate-200/80 bg-white/85 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300{% endif %}">
+                {% if capability.note %}
+                  {{ capability.note }}
+                {% else %}
+                  {{ capability.reason }}
+                {% endif %}
+              </div>
+            {% endif %}
+          </article>
+        {% endwith %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="mt-4">
+      {% include 'app/_empty_state.html' with empty_badge='بدون قابلیت ثبت‌شده' empty_title=capability_empty_title|default:'هنوز قابلیت مشخصی برای این مدل ثبت نشده است' empty_body=capability_empty_body|default:'اگر backend قابلیت‌های این مدل را ارسال کند، از همین بخش به زبان محصولی و قابل تصمیم‌گیری نمایش داده می‌شود.' empty_compact=True %}
+    </div>
+  {% endif %}
+</section>

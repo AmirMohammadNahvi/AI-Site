@@ -181,33 +181,41 @@
     </section>
 
     <section class="rounded-[1.85rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
-      <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">استفاده در اسپیس</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">این دستیار را کجا می‌خواهید به‌کار بگیرید؟</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
-            این بخش فقط نقطه ورود است. اجرای واقعی همچنان در چت انجام می‌شود، اما انتخاب اسپیس مناسب از همین‌جا شروع می‌شود.
-          </p>
+      <div class="grid gap-4 xl:grid-cols-[minmax(0,1.08fr)_minmax(18rem,0.92fr)]">
+        <div class="space-y-4">
+          {% include 'app/_assistant_launch_card.html' with assistant=assistant assistant_launch_context=assistant_launch_context state=assistant.availability_state title="این دستیار را در کدام فضای اجرا وارد می‌کنید؟" body=assistant.launch_summary|default:"این دستیار خودش محل اجرا نیست. اول مقصد مناسب را انتخاب می‌کنید و بعد اجرای واقعی داخل چت همان فضا انجام می‌شود." helper=assistant.launch_helper|default:"اگر از قبل در یک اسپیس فعال هستید، ورود به همان فضا سریع‌ترین مسیر است. اگر نه، یک اسپیس تازه یا پیشنهادی را انتخاب کنید." primary_cta_url=assistant_launch_url primary_cta_label=assistant_launch_label|default:"مشاهده مسیرهای استفاده" secondary_cta_url=assistant_secondary_url secondary_cta_label=assistant_secondary_label|default:"جزئیات بیشتر" note=assistant_meta_note %}
+
+          <section class="rounded-[1.7rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div class="min-w-0">
+                <div class="text-xs font-bold text-slate-500 dark:text-slate-400">انتخاب مقصد اجرا</div>
+                <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">کدام اسپیس برای این دستیار مناسب‌تر است؟</h2>
+                <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
+                  مقصد را از همین‌جا انتخاب کنید. بعد از ورود، گفتگو در همان اسپیس شروع یا ادامه پیدا می‌کند.
+                </p>
+              </div>
+            </div>
+
+            {% if assistant_space_options %}
+              <div class="mt-4 space-y-3">
+                {% for space_option in assistant_space_options %}
+                  {% include 'app/_space_launch_option.html' with space_option=space_option %}
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="mt-4">
+                {% include 'app/_empty_state.html' with empty_badge="بدون اسپیس" empty_title="هنوز مقصد اجرایی مشخصی برای این دستیار ثبت نشده است" empty_body="وقتی این دستیار به اسپیس‌های قابل استفاده متصل باشد، از همین بخش می‌توانید وارد فضای مناسب شوید." empty_hint="اگر این دستیار برای ورک‌اسپیس فعلی آماده است، backend فقط کافی است گزینه‌های `assistant_space_options` را به این بخش وصل کند." empty_compact=True %}
+              </div>
+            {% endif %}
+          </section>
         </div>
 
-        {% if assistant_launch_url %}
-          <a href="{{ assistant_launch_url }}" class="btn-primary w-full lg:w-auto">
-            {{ assistant_launch_label|default:"شروع استفاده از این دستیار" }}
-          </a>
-        {% endif %}
+        <div class="space-y-4">
+          {% if conversation_entry_context or current_space or current_conversation %}
+            {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="بعد از انتخاب دستیار، از کجا وارد گفتگو شوید؟" body="اگر همین حالا در یک اسپیس یا گفتگوی فعال هستید، از همان‌جا ادامه دهید. برای موضوع جدید هم مسیر تازه را جدا نگه دارید." helper="این بخش فقط راه ورود را روشن می‌کند و سطح اجرا را شلوغ نمی‌کند." %}
+          {% endif %}
+        </div>
       </div>
-
-      {% if assistant_space_options %}
-        <div class="mt-4 space-y-3">
-          {% for space_item in assistant_space_options %}
-            {% include 'app/_assistant_use_in_space_row.html' with space_item=space_item %}
-          {% endfor %}
-        </div>
-      {% else %}
-        <div class="mt-4">
-          {% include 'app/_empty_state.html' with empty_badge="بدون اسپیس" empty_title="هنوز اسپیس پیشنهادی یا قابل‌استفاده‌ای برای این دستیار ثبت نشده است" empty_body="وقتی این دستیار به یک یا چند اسپیس قابل استفاده متصل باشد، از همین‌جا می‌توانید مقصد مناسب را انتخاب کنید." empty_hint="اگر این دستیار برای ورک‌اسپیس فعلی آماده است، backend می‌تواند گزینه‌های استفاده در اسپیس را به این بخش اضافه کند." empty_compact=True %}
-        </div>
-      {% endif %}
     </section>
 
     <section class="rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">

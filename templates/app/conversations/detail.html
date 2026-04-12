@@ -13,6 +13,10 @@
       </section>
     {% endif %}
 
+    {% if conversation_entry_context %}
+      {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="مسیرهای ورود از همین زمینه" body="اگر می‌خواهید همین thread را ادامه دهید، از همین‌جا برگردید. برای موضوع جدید، گفتگوی تازه را جدا نگه دارید تا این مسیر مدیریت‌پذیر بماند." helper="این کارت عمداً جمع‌وجور مانده تا تمرکز صفحه روی اجرای گفتگو حفظ شود." %}
+    {% endif %}
+
     {% if conversation_loading %}
       <section class="chat-thread-area overflow-hidden rounded-[1.8rem] border border-slate-200/80 bg-white/72 dark:border-slate-700/70 dark:bg-slate-900/45">
         <div class="mx-auto flex w-full max-w-4xl flex-col gap-4 px-4 py-6 sm:px-6">

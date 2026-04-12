@@ -1,0 +1,60 @@
+{% with entry_state=conversation_entry_context.state|default:state|default:'available' %}
+  <section class="rounded-[1.65rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+    <div class="flex flex-col gap-3">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="badge">{{ conversation_entry_context.badge|default:badge|default:"ورود به گفتگو" }}</span>
+        {% if entry_state == 'current' %}
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'در جریان فعلی هستید' entitlement_note=conversation_entry_context.reason|default:reason %}
+        {% elif entry_state == 'available' %}
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'مسیر گفتگو آماده است' entitlement_note=conversation_entry_context.reason|default:reason %}
+        {% elif entry_state == 'locked' %}
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'بعضی مسیرها محدود است' entitlement_note=conversation_entry_context.reason|default:reason %}
+        {% else %}
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'مسیر گفتگو محدود است' entitlement_note=conversation_entry_context.reason|default:reason %}
+        {% endif %}
+      </div>
+
+      <div>
+        <h2 class="text-base font-black text-slate-900 dark:text-white">{{ conversation_entry_context.title|default:title|default:"گام بعدی برای ورود به اجرا" }}</h2>
+        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+          {% if conversation_entry_context.body or body %}
+            {{ conversation_entry_context.body|default:body }}
+          {% elif entry_state == 'current' %}
+            اگر می‌خواهید کار را ادامه دهید، از همین گفتگو برگردید. اگر موضوع تازه‌ای دارید، آن را در همان اسپیس با گفتگوی جدید جدا نگه دارید.
+          {% else %}
+            بسته به جایی که الان هستید، می‌توانید یک گفتگوی تازه شروع کنید، به اسپیس موجود برگردید، یا اجرای جاری را از همان نقطه ادامه دهید.
+          {% endif %}
+        </p>
+      </div>
+
+      <div class="grid gap-2 sm:grid-cols-3">
+        {% if conversation_entry_context.new_cta_url|default:new_cta_url %}
+          <a href="{{ conversation_entry_context.new_cta_url|default:new_cta_url }}" class="rounded-[1.2rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 text-right transition hover:border-emerald-200 hover:bg-emerald-50 dark:border-slate-700/70 dark:bg-slate-950/35 dark:hover:border-emerald-500/20 dark:hover:bg-emerald-500/10">
+            <div class="text-sm font-black text-slate-900 dark:text-white">{{ conversation_entry_context.new_cta_label|default:new_cta_label|default:"شروع گفتگوی جدید" }}</div>
+            <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ conversation_entry_context.new_note|default:new_note|default:"برای موضوع جدید یا اجرای مستقل" }}</div>
+          </a>
+        {% endif %}
+
+        {% if conversation_entry_context.existing_cta_url|default:existing_cta_url %}
+          <a href="{{ conversation_entry_context.existing_cta_url|default:existing_cta_url }}" class="rounded-[1.2rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 text-right transition hover:border-slate-300 hover:bg-white dark:border-slate-700/70 dark:bg-slate-950/35 dark:hover:border-slate-600 dark:hover:bg-slate-900">
+            <div class="text-sm font-black text-slate-900 dark:text-white">{{ conversation_entry_context.existing_cta_label|default:existing_cta_label|default:"ورود به اسپیس موجود" }}</div>
+            <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ conversation_entry_context.existing_note|default:existing_note|default:"برای ادامه کار در همان زمینه" }}</div>
+          </a>
+        {% endif %}
+
+        {% if conversation_entry_context.current_cta_url|default:current_cta_url %}
+          <a href="{{ conversation_entry_context.current_cta_url|default:current_cta_url }}" class="rounded-[1.2rem] border border-emerald-200/80 bg-emerald-50/82 px-4 py-3 text-right transition hover:border-emerald-300 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:hover:border-emerald-500/35">
+            <div class="text-sm font-black text-slate-900 dark:text-white">{{ conversation_entry_context.current_cta_label|default:current_cta_label|default:"بازگشت به گفتگوی فعلی" }}</div>
+            <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ conversation_entry_context.current_note|default:current_note|default:"برای ادامه همین thread" }}</div>
+          </a>
+        {% endif %}
+      </div>
+
+      {% if conversation_entry_context.helper or helper %}
+        <p class="text-xs leading-6 text-slate-500 dark:text-slate-400">
+          {{ conversation_entry_context.helper|default:helper }}
+        </p>
+      {% endif %}
+    </div>
+  </section>
+{% endwith %}
