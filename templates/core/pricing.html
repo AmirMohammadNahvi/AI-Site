@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load site_text %}
+
+{% block title %}قیمت‌گذاری | {{ site_settings.site_name_fa }}{% endblock %}
+
+{% block content %}
+  <section class="section-shell pt-10">
+    <div class="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+      <div class="max-w-3xl">
+        <div class="mb-3 flex flex-wrap gap-2">
+          <span class="badge">{% site_text 'pricing.badge_one' 'پلن‌های روشن و ساده' title='نشانک اول صفحه قیمت‌گذاری' group='pricing' %}</span>
+          <span class="badge">{% site_text 'pricing.badge_two' 'ریست دوره‌ای و مدیریت‌شده' title='نشانک دوم صفحه قیمت‌گذاری' group='pricing' %}</span>
+        </div>
+        <h1 class="text-4xl font-black">{% site_text 'pricing.title' 'پلن‌های FaralYar' title='عنوان اصلی صفحه قیمت‌گذاری' group='pricing' %}</h1>
+        <p class="mt-4 text-base leading-8 text-slate-600 dark:text-slate-300">{% site_text 'pricing.subtitle' 'پلن‌ها بر اساس مدت اعتبار، توکن هر بازه و فاصله ریست طراحی شده‌اند. پس از پرداخت موفق، اشتراک به‌صورت خودکار فعال می‌شود.' title='زیرعنوان صفحه قیمت‌گذاری' group='pricing' %}</p>
+      </div>
+
+      <div class="panel-soft p-6">
+        <div class="text-sm font-black">{% site_text 'pricing.side_title' 'این ساختار برای چه کسانی مناسب است؟' title='عنوان باکس کناری قیمت‌گذاری' group='pricing' %}</div>
+        <div class="mt-4 space-y-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+          <p>{% site_text 'pricing.side_one' 'برای کاربرانی که می‌خواهند هزینه و ظرفیت استفاده‌شان قابل پیش‌بینی باشد.' title='متن اول باکس کناری قیمت‌گذاری' group='pricing' %}</p>
+          <p>{% site_text 'pricing.side_two' 'برای تیم‌هایی که نیاز دارند بدون شلوغی اضافه، خیلی سریع وارد چت و تحلیل شوند.' title='متن دوم باکس کناری قیمت‌گذاری' group='pricing' %}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 grid gap-4 lg:grid-cols-3">
+      {% for plan in plans %}
+        <article class="panel-soft flex flex-col p-6">
+          <div class="flex items-center justify-between gap-3">
+            <h2 class="text-2xl font-black">{{ plan.name }}</h2>
+            {% if forloop.first %}<span class="badge">{% site_text 'pricing.popular_badge' 'پیشنهادی' title='برچسب پلن پیشنهادی در قیمت‌گذاری' group='pricing' %}</span>{% endif %}
+          </div>
+          {% site_text 'pricing.default_description' 'پلن حرفه‌ای برای تجربه مداوم با مدل‌های AI.' title='توضیح پیش‌فرض پلن در قیمت‌گذاری' group='pricing' as pricing_default_description %}
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ plan.description|default:pricing_default_description }}</p>
+          <div class="mt-6 text-4xl font-black">{{ plan.price|floatformat:0 }}</div>
+          <div class="text-sm text-slate-500 dark:text-slate-400">{% site_text 'pricing.currency' 'تومان' title='واحد پول در قیمت‌گذاری' group='pricing' %}</div>
+          <ul class="mt-6 space-y-3 text-sm text-slate-600 dark:text-slate-300">
+            <li>{% site_text 'pricing.item_duration' 'مدت' title='عنوان مدت در قیمت‌گذاری' group='pricing' %}: {{ plan.duration_days }} {% site_text 'pricing.day_suffix' 'روز' title='پسوند روز در قیمت‌گذاری' group='pricing' %}</li>
+            <li>{% site_text 'pricing.item_tokens' 'توکن هر بازه' title='عنوان توکن در قیمت‌گذاری' group='pricing' %}: {{ plan.token_limit_per_window }}</li>
+            <li>{% site_text 'pricing.item_reset' 'ریست هر' title='عنوان ریست در قیمت‌گذاری' group='pricing' %} {{ plan.reset_interval_hours }} {% site_text 'pricing.hour_suffix' 'ساعت' title='پسوند ساعت در قیمت‌گذاری' group='pricing' %}</li>
+            <li>{% site_text 'pricing.item_models' 'مدل‌های مجاز' title='عنوان مدل‌های مجاز در قیمت‌گذاری' group='pricing' %}: {{ plan.allowed_models.count }}</li>
+          </ul>
+          <a href="{% url 'billing:checkout' plan.slug %}" class="btn-primary mt-8 w-full">{% site_text 'pricing.buy' 'خرید پلن' title='دکمه خرید در قیمت‌گذاری' group='pricing' %}</a>
+        </article>
+      {% empty %}
+        <div class="panel-soft p-6 lg:col-span-3">{% site_text 'pricing.empty' 'هنوز پلنی در پنل مدیریت ساخته نشده است.' title='حالت خالی صفحه قیمت‌گذاری' group='pricing' %}</div>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

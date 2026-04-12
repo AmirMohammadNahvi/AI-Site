@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}ثبت‌نام | {{ site_settings.site_name_fa }}{% endblock %}
+
+{% block content %}
+  <section class="section-shell pt-10">
+    <div class="mx-auto max-w-xl glass-card p-6 sm:p-8">
+      <h1 class="text-3xl font-black">ساخت حساب کاربری</h1>
+      <form method="post" class="mt-6 grid gap-4">
+        {% csrf_token %}
+        {% for field in form %}
+          <div>
+            <label class="mb-2 block text-sm font-bold">{{ field.label }}</label>
+            {{ field }}
+            {{ field.errors }}
+          </div>
+        {% endfor %}
+        <button class="btn-primary w-full" type="submit">ثبت‌نام</button>
+      </form>
+    </div>
+  </section>
+{% endblock %}

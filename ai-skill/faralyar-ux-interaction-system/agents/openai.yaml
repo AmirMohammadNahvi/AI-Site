@@ -1,0 +1,6 @@
+interface:
+  display_name: "FaralYar UX Interaction System"
+  short_description: "بهبود UX، تعاملات، stateها و تجربه تبدیل کاربر در FaralYar"
+  icon:
+    emoji: "✨"
+  theme_color: "#28ab88"

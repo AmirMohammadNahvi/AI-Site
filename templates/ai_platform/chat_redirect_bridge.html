@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}انتقال به فضای جدید | {{ site_settings.site_name_fa }}{% endblock %}
+{% block meta_description %}انتقال سریع و امن گفتگو به تجربه جدید FaralYar{% endblock %}
+
+{% block content %}
+  <section
+    class="min-h-screen py-6 sm:py-10"
+    x-data="{
+      seconds: {{ bridge_redirect_delay|default:'2' }},
+      initialSeconds: {{ bridge_redirect_delay|default:'2' }},
+      canRedirect: {% if request.user.is_authenticated and bridge_state == 'redirecting' and bridge_target_url %}true{% else %}false{% endif %},
+      startRedirect() {
+        if (!this.canRedirect) return;
+        const timer = setInterval(() => {
+          if (this.seconds > 0) {
+            this.seconds -= 1;
+          } else {
+            clearInterval(timer);
+          }
+        }, 1000);
+        setTimeout(() => {
+          window.location.replace('{{ bridge_target_url|default:'#'|escapejs }}');
+        }, this.initialSeconds * 1000);
+      }
+    }"
+    x-init="startRedirect()"
+  >
+    <div class="section-shell">
+      <div class="mx-auto max-w-3xl">
+        <div class="mb-6 text-center">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">پل انتقال FaralYar v1.5</div>
+          <div class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+            این صفحه فقط برای انتقال نرم از مسیرهای قدیمی `/chat/` به تجربه جدید `/app/...` استفاده می‌شود.
+          </div>
+        </div>
+
+        {% if request.user.is_authenticated and bridge_state == 'redirecting' and bridge_target_url %}
+          {% include 'ai_platform/_bridge_state_card.html' with bridge_badge='در حال انتقال' bridge_icon='spinner' bridge_title=bridge_title|default:'در حال انتقال به فضای جدید گفتگو' bridge_body=bridge_body|default:'چند لحظه صبر کنید. شما به نسخه جدید و یکپارچه‌تر گفتگو منتقل می‌شوید.' bridge_target_label=bridge_target_label|default:'تجربه جدید اپلیکیشن' bridge_show_progress=True bridge_primary_url=bridge_target_url bridge_primary_label=bridge_primary_label|default:'اگر منتظر نماند، ادامه بده' bridge_secondary_url=bridge_secondary_url bridge_secondary_label=bridge_secondary_label|default:'بازگشت' %}
+          <noscript>
+            <div class="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
+              جاوااسکریپت غیرفعال است. از دکمه ادامه برای رفتن به مسیر جدید استفاده کنید.
+            </div>
+          </noscript>
+        {% elif bridge_state == 'unauthorized' %}
+          {% include 'ai_platform/_bridge_state_card.html' with bridge_badge='دسترسی محدود' bridge_icon='lock' bridge_title=bridge_title|default:'به این گفتگو دسترسی ندارید' bridge_body=bridge_body|default:'این گفتگو در فضای جدید وجود دارد، اما برای حساب فعلی شما در دسترس نیست.' bridge_primary_url=bridge_primary_url bridge_primary_label=bridge_primary_label|default:'رفتن به فضای کاری' bridge_secondary_url=bridge_secondary_url bridge_secondary_label=bridge_secondary_label|default:'بازگشت' %}
+        {% elif bridge_state == 'missing' %}
+          {% include 'ai_platform/_bridge_state_card.html' with bridge_badge='یافت نشد' bridge_icon='warning' bridge_title=bridge_title|default:'گفتگو پیدا نشد' bridge_body=bridge_body|default:'احتمالاً این گفتگو جابه‌جا شده، حذف شده یا دیگر برای این حساب در دسترس نیست.' bridge_primary_url=bridge_primary_url bridge_primary_label=bridge_primary_label|default:'رفتن به ورک‌اسپیس' bridge_secondary_url=bridge_secondary_url bridge_secondary_label=bridge_secondary_label|default:'بازگشت به چت' %}
+        {% else %}
+          {% include 'ai_platform/_bridge_state_card.html' with bridge_badge='مسیر انتقال' bridge_icon='warning' bridge_title=bridge_title|default:'این مسیر برای انتقال حساب‌های واردشده است' bridge_body=bridge_body|default:'اگر با حساب کاربری وارد شده‌اید، از همین صفحه به تجربه جدید هدایت می‌شوید. در غیر این صورت، جریان مهمان همچنان روی چت قدیمی باقی می‌ماند.' bridge_primary_url=bridge_primary_url bridge_primary_label=bridge_primary_label|default:'ادامه' bridge_secondary_url=bridge_secondary_url bridge_secondary_label=bridge_secondary_label|default:'بازگشت' %}
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

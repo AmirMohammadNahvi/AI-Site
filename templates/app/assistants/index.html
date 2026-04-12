@@ -1,0 +1,146 @@
+{% extends 'app/layouts/app_shell.html' %}
+
+{% block title %}{{ app_page_title|default:"دستیارها" }} | {{ site_settings.site_name_fa }}{% endblock %}
+{% block meta_description %}{{ app_page_description|default:"مرور، انتخاب و ورود به جزئیات دستیارهای قابل‌استفاده‌مجدد فرال‌یار." }}{% endblock %}
+
+{% block app_content %}
+  <div
+    class="space-y-6"
+    x-data="{ activeTab: '{{ assistants_active_tab|default:'all'|escapejs }}' }"
+  >
+    <section class="relative overflow-hidden rounded-[1.9rem] border border-slate-200/80 bg-white/80 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
+      <div class="absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.18),transparent_48%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.12),transparent_40%)]"></div>
+
+      <div class="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+        <div class="min-w-0 max-w-3xl">
+          <div class="flex flex-wrap gap-2">
+            <span class="badge">FaralYar v1.5</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+              پروفایل‌های کاری قابل‌استفاده‌مجدد
+            </span>
+          </div>
+
+          <h1 class="mt-3 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
+            {{ assistants_page_title|default:"دستیارها" }}
+          </h1>
+
+          <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300 sm:text-[0.95rem]">
+            {{ assistants_page_intro|default:"دستیارها چت یا اسپیس نیستند؛ هر دستیار یک پروفایل کاری آماده برای استفاده مجدد است. اینجا دستیار مناسب را پیدا می‌کنید، جزئیاتش را می‌بینید و بعد برای اجرا وارد سطح چت می‌شوید." }}
+          </p>
+
+          <div class="mt-4 rounded-[1.4rem] border border-slate-200/80 bg-slate-50/80 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300">
+            {{ assistants_page_hint|default:"هر دستیار وعده، دامنه و قابلیت خودش را دارد. اگر دستیاری در این ورک‌اسپیس در دسترس نباشد یا پلن شما آن را پوشش ندهد، وضعیت آن همین‌جا روشن نمایش داده می‌شود." }}
+          </div>
+
+          <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-bold">
+            {% if assistants_total_count or assistants_total_count == 0 %}
+              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ assistants_total_count }} دستیار</span>
+            {% endif %}
+            {% if assistants_available_count %}
+              <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">{{ assistants_available_count }} مورد آماده استفاده</span>
+            {% endif %}
+            {% if assistants_restricted_count %}
+              <span class="rounded-full bg-amber-50 px-3 py-1.5 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300">{{ assistants_restricted_count }} مورد محدود</span>
+            {% endif %}
+            {% if assistants_my_count %}
+              <span class="rounded-full bg-sky-50 px-3 py-1.5 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300">{{ assistants_my_count }} دستیار شخصی</span>
+            {% endif %}
+            {% if current_workspace.name %}
+              <span class="rounded-full bg-white/85 px-3 py-1.5 text-slate-600 dark:bg-slate-950/70 dark:text-slate-300">ورک‌اسپیس: {{ current_workspace.name }}</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="flex w-full flex-col gap-2 lg:w-auto lg:min-w-[15rem]">
+          {% if assistants_can_create and assistant_create_url %}
+            <a href="{{ assistant_create_url }}" class="btn-primary w-full lg:w-auto">
+              {{ assistant_create_label|default:"ساخت دستیار جدید" }}
+            </a>
+          {% elif assistant_upgrade_url %}
+            <a href="{{ assistant_upgrade_url }}" class="btn-secondary w-full lg:w-auto">
+              {{ assistant_upgrade_label|default:"ارتقا برای ساخت دستیار" }}
+            </a>
+          {% endif %}
+
+          {% if assistants_archive_url %}
+            <a href="{{ assistants_archive_url }}" class="btn-secondary w-full lg:w-auto">
+              {{ assistants_archive_label|default:"مشاهده آرشیو دستیارها" }}
+            </a>
+          {% endif %}
+
+          {% if not assistants_can_create and assistants_create_locked_message %}
+            <p class="px-1 text-xs leading-6 text-slate-500 dark:text-slate-400">
+              {{ assistants_create_locked_message }}
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    {% if assistant_tabs %}
+      <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/72 p-3 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-4">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+          <div class="min-w-0">
+            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مرور دسته‌ای</div>
+            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">دستیارها را به‌صورت هدفمند مرور کنید</h2>
+            <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
+              بین پیشنهادها، دستیارهای شخصی، ورک‌اسپیسی و سیستمی جابه‌جا شوید و فقط همان گروهی را ببینید که الان برایتان مهم‌تر است.
+            </p>
+          </div>
+
+          {% if assistants_tab_note %}
+            <div class="text-xs leading-6 text-slate-500 dark:text-slate-400">{{ assistants_tab_note }}</div>
+          {% endif %}
+        </div>
+
+        <div class="horizontal-scroll -mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1">
+          <button
+            type="button"
+            class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition"
+            :class="activeTab === 'all' ? 'border-emerald-200 bg-emerald-50 text-slate-900 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'"
+            @click="activeTab = 'all'"
+          >
+            <div class="text-sm font-black">همه</div>
+            <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">نمایش تمام گروه‌ها</div>
+          </button>
+
+          {% for tab in assistant_tabs %}
+            <button
+              type="button"
+              class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition"
+              :class="activeTab === '{{ tab.key|escapejs }}' ? 'border-emerald-200 bg-emerald-50 text-slate-900 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'"
+              @click="activeTab = '{{ tab.key|escapejs }}'"
+            >
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-black">{{ tab.label }}</span>
+                {% if tab.count or tab.count == 0 %}
+                  <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ tab.count }}</span>
+                {% endif %}
+              </div>
+              {% if tab.caption %}
+                <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{{ tab.caption }}</div>
+              {% endif %}
+            </button>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if assistant_sections %}
+      <div class="space-y-4">
+        {% for section in assistant_sections %}
+          <div
+            {% if assistant_tabs %}
+              x-cloak
+              x-show="activeTab === 'all' || activeTab === '{{ section.key|default:''|escapejs }}'"
+            {% endif %}
+          >
+            {% include 'app/_assistant_section.html' with section=section assistants_can_create=assistants_can_create assistant_create_url=assistant_create_url assistant_create_label=assistant_create_label %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      {% include 'app/_empty_state.html' with empty_badge="بدون دستیار" empty_title=assistants_empty_title|default:"هنوز هیچ دستیاری برای نمایش وجود ندارد" empty_body=assistants_empty_body|default:"وقتی دستیارها برای حساب، ورک‌اسپیس یا پلن شما آماده شوند، از همین‌جا می‌توانید آن‌ها را مرور و انتخاب کنید." empty_hint=assistants_empty_hint|default:"اگر ساخت دستیار برای شما فعال است، از دکمه بالای صفحه اولین پروفایل کاری خودتان را بسازید." empty_action_url=assistant_create_url empty_action_label=assistant_create_label|default:"ساخت دستیار جدید" empty_secondary_url=assistants_archive_url empty_secondary_label=assistants_archive_label|default:"رفتن به آرشیو" %}
+    {% endif %}
+  </div>
+{% endblock %}

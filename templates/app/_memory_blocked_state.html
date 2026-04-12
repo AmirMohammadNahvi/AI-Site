@@ -1,0 +1,65 @@
+<section class="rounded-[1.85rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
+  <div class="mx-auto max-w-3xl text-center">
+    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-[1.55rem] {% if memory_state == 'locked' %}bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300{% else %}bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300{% endif %}">
+      <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+        {% if memory_state == 'disabled' %}
+          <path d="M6 12h12M8 16h8M9 8h6" stroke-linecap="round"></path>
+        {% else %}
+          <path d="M8 10V8a4 4 0 118 0v2" stroke-linecap="round"></path>
+          <rect x="6" y="10" width="12" height="10" rx="2"></rect>
+        {% endif %}
+      </svg>
+    </div>
+
+    <div class="mt-4 inline-flex rounded-full px-3 py-1 text-[11px] font-bold {% if memory_state == 'locked' %}bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300{% else %}bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300{% endif %}">
+      {% if memory_state == 'locked' %}
+        قفل پلن
+      {% elif memory_state == 'policy_blocked' %}
+        محدودیت سیاست ورک‌اسپیس
+      {% else %}
+        حافظه غیرفعال است
+      {% endif %}
+    </div>
+
+    <h2 class="mt-4 text-lg font-black text-slate-900 dark:text-white">
+      {% if memory_state == 'locked' %}
+        {{ memory_blocked.title|default:"حافظه برای پلن فعلی شما در دسترس نیست" }}
+      {% elif memory_state == 'policy_blocked' %}
+        {{ memory_blocked.title|default:"حافظه در این ورک‌اسپیس توسط سیاست دسترسی محدود شده است" }}
+      {% else %}
+        {{ memory_blocked.title|default:"حافظه برای این حساب غیرفعال است" }}
+      {% endif %}
+    </h2>
+
+    <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
+      {% if memory_blocked.body %}
+        {{ memory_blocked.body }}
+      {% elif memory_state == 'locked' %}
+        این به معنی وجود حافظه پنهان نیست؛ فقط این قابلیت برای حساب فعلی شما فعال نشده است.
+      {% elif memory_state == 'policy_blocked' %}
+        این وضعیت به‌خاطر تنظیمات دسترسی یا سیاست ورک‌اسپیس است و نه به‌خاطر فعالیت پنهان در پس‌زمینه.
+      {% else %}
+        وقتی حافظه غیرفعال باشد، چیزی در این صفحه ایجاد یا ذخیره نمی‌شود.
+      {% endif %}
+    </p>
+
+    {% if memory_blocked.hint %}
+      <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ memory_blocked.hint }}</p>
+    {% endif %}
+
+    {% if memory_blocked.primary_url or memory_blocked.secondary_url %}
+      <div class="mt-5 flex flex-col justify-center gap-2 sm:flex-row">
+        {% if memory_blocked.primary_url %}
+          <a href="{{ memory_blocked.primary_url }}" class="btn-primary w-full sm:w-auto">
+            {{ memory_blocked.primary_label|default:"ادامه" }}
+          </a>
+        {% endif %}
+        {% if memory_blocked.secondary_url %}
+          <a href="{{ memory_blocked.secondary_url }}" class="btn-secondary w-full sm:w-auto">
+            {{ memory_blocked.secondary_label|default:"بازگشت" }}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>

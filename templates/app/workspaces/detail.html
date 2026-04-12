@@ -1,0 +1,41 @@
+{% extends 'app/layouts/app_shell.html' %}
+
+{% block title %}{{ workspace.name|default:current_workspace.name|default:"ورک‌اسپیس" }} | {{ site_settings.site_name_fa }}{% endblock %}
+
+{% block app_content %}
+  <div class="space-y-6">
+    <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">ورک‌اسپیس</div>
+          <h1 class="mt-2 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
+            {{ workspace.name|default:current_workspace.name|default:"فضای کاری" }}
+          </h1>
+          <p class="mt-3 max-w-3xl text-sm leading-8 text-slate-600 dark:text-slate-300">
+            {{ workspace.summary|default:current_workspace.subtitle|default:"تمام اسپیس‌ها و گفتگوهای این حوزه از همین‌جا مدیریت می‌شوند. ابتدا اسپیس مناسب را انتخاب کنید و بعد سراغ اجرای گفتگو بروید." }}
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-2 lg:max-w-xs lg:justify-end">
+          {% if workspace_spaces_count %}
+            <span class="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ workspace_spaces_count }} اسپیس</span>
+          {% endif %}
+          {% if workspace_projects_count %}
+            <span class="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ workspace_projects_count }} پروژه</span>
+          {% endif %}
+          {% if workspace_recent_conversations_count %}
+            <span class="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ workspace_recent_conversations_count }} گفتگوی اخیر</span>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      {% include 'app/_space_list.html' with default_space=workspace_default_space ungrouped_spaces=workspace_ungrouped_spaces space_groups=workspace_space_groups archived_space_count=workspace_archived_space_count archived_spaces_url=workspace_archived_spaces_url space_create_url=workspace_space_create_url space_create_label="ساخت اسپیس جدید" space_list_title="اسپیس‌های این ورک‌اسپیس" space_list_caption="اسپیس‌ها اولویت اصلی این صفحه هستند. هر کار واقعی باید در یک اسپیس روشن و محدود شروع شود." %}
+    </section>
+
+    <section class="space-y-4">
+      {% include 'app/_conversation_rail.html' with conversation_items=workspace_recent_conversations active_conversation_id=active_conversation_id archived_conversations_url=workspace_archived_conversations_url archived_conversation_count=workspace_archived_conversation_count conversation_rail_title="گفتگوهای اخیر ورک‌اسپیس" conversation_rail_caption="اگر از قبل کاری را شروع کرده‌اید، از اینجا سریع به همان جریان برگردید." conversation_search_placeholder="جست‌وجو در گفتگوهای این ورک‌اسپیس" conversation_rail_mobile_label="گفتگوهای اخیر" %}
+    </section>
+  </div>
+{% endblock %}

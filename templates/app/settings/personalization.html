@@ -1,0 +1,168 @@
+{% extends 'app/layouts/app_shell.html' %}
+
+{% block title %}{{ app_page_title|default:"شخصی‌سازی" }} | {{ site_settings.site_name_fa }}{% endblock %}
+{% block meta_description %}{{ app_page_description|default:"تنظیم پیش‌فرض‌های پایدار شخصی برای تجربه FaralYar." }}{% endblock %}
+
+{% block app_content %}
+  <div class="space-y-6">
+    <section class="relative overflow-hidden rounded-[1.9rem] border border-slate-200/80 bg-white/80 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
+      <div class="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_50%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.10),transparent_42%)]"></div>
+
+      <div class="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+        <div class="min-w-0 max-w-3xl">
+          <div class="flex flex-wrap gap-2">
+            <span class="badge">پیش‌فرض‌های شخصی</span>
+            {% if personalization_scope_label %}
+              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ personalization_scope_label }}</span>
+            {% endif %}
+          </div>
+
+          <h1 class="mt-3 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
+            {{ personalization_page_title|default:"شخصی‌سازی" }}
+          </h1>
+
+          <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
+            {{ personalization_page_intro|default:"این بخش فقط برای ترجیحات پایدار و کوچک شماست؛ چیزهایی مثل نام ترجیحی، لحن پاسخ، سبک خروجی و چند پیش‌فرض ساده که تجربه روزمره را هماهنگ‌تر می‌کنند." }}
+          </p>
+
+          <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+            {% if personalization_summary.name_label %}
+              <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ personalization_summary.name_label }}</span>
+            {% endif %}
+            {% if personalization_summary.tone_label %}
+              <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ personalization_summary.tone_label }}</span>
+            {% endif %}
+            {% if personalization_summary.language_label %}
+              <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ personalization_summary.language_label }}</span>
+            {% endif %}
+            {% if personalization_summary.theme_label %}
+              <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ personalization_summary.theme_label }}</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="w-full lg:w-auto lg:min-w-[15rem]">
+          <div class="rounded-[1.35rem] border border-slate-200/80 bg-slate-50/82 p-4 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-300">
+            {{ personalization_page_hint|default:"این تنظیمات assistant-specific نیستند و قرار نیست به مرکز مدیریت حافظه تبدیل شوند. فقط همان پیش‌فرض‌هایی را اینجا نگه دارید که واقعاً باید در طول زمان ثابت بمانند." }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
+      <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">وضعیت ذخیره</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">پیش‌فرض‌های شخصی شما</h2>
+          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
+            {{ personalization_save_hint|default:"بعد از ذخیره، این ترجیحات به‌عنوان پیش‌فرض کاربر در تجربه‌های سازگار FaralYar اعمال می‌شوند." }}
+          </p>
+        </div>
+
+        {% if personalization_last_saved_label %}
+          <span class="rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-slate-950/55 dark:text-slate-300">
+            {{ personalization_last_saved_label }}
+          </span>
+        {% endif %}
+      </div>
+
+      <div class="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1fr)_18rem]">
+        <div class="rounded-[1.4rem] border border-slate-200/80 bg-white/88 px-4 py-4 dark:border-slate-700/70 dark:bg-slate-950/35">
+          {% if personalization_save_state == 'success' %}
+            <div class="text-sm font-black text-emerald-700 dark:text-emerald-300">{{ personalization_save_title|default:"تنظیمات شخصی شما ذخیره شد" }}</div>
+            <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ personalization_save_message|default:"پیش‌فرض‌های جدید از این به بعد در تجربه‌های سازگار استفاده می‌شوند." }}</p>
+          {% elif personalization_save_state == 'error' %}
+            <div class="text-sm font-black text-rose-700 dark:text-rose-300">{{ personalization_save_title|default:"ذخیره‌سازی کامل نشد" }}</div>
+            <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ personalization_save_message|default:"برخی فیلدها نیاز به بازبینی دارند. خطاها را در همان بخش‌ها بررسی کنید." }}</p>
+          {% else %}
+            <div class="text-sm font-black text-slate-900 dark:text-white">{{ personalization_save_title|default:"تنظیمات کوچک، اثر ماندگار" }}</div>
+            <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ personalization_save_message|default:"بهتر است فقط چیزهایی را اینجا تنظیم کنید که واقعاً می‌خواهید در اکثر تعامل‌ها ثابت بمانند." }}</p>
+          {% endif %}
+        </div>
+
+        <div class="rounded-[1.4rem] border border-slate-200/80 bg-white/88 px-4 py-4 dark:border-slate-700/70 dark:bg-slate-950/35">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">راهنمای سریع</div>
+          <div class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+            {{ personalization_quick_note|default:"اگر برای چیزی مطمئن نیستید، خالی گذاشتنش بهتر از پرکردن بیش از حد است." }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_19rem]">
+      <section class="rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+          <div class="min-w-0">
+            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">تنظیمات اصلی</div>
+            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">پیش‌فرض‌های پایدار حساب شما</h2>
+            <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
+              این صفحه برای انتخاب چند ترجیح کوچک و ماندگار طراحی شده است؛ نه برای ویرایش دستیارها و نه برای مدیریت عمیق حافظه.
+            </p>
+          </div>
+        </div>
+
+        <form method="post" action="{{ personalization_form_action|default:request.path }}" class="mt-5 space-y-4">
+          {% csrf_token %}
+
+          {% for hidden in personalization_form.hidden_fields %}
+            {{ hidden }}
+          {% endfor %}
+
+          {% if personalization_form.non_field_errors %}
+            <ul class="errorlist">{{ personalization_form.non_field_errors }}</ul>
+          {% endif %}
+
+          {% if personalization_sections %}
+            {% for section in personalization_sections %}
+              {% include 'app/_settings_section.html' with section=section %}
+            {% endfor %}
+          {% else %}
+            {% include 'app/_settings_section.html' with section=personalization_fallback_section %}
+          {% endif %}
+
+          <div class="rounded-[1.5rem] border border-slate-200/80 bg-slate-50/85 p-4 dark:border-slate-700/70 dark:bg-slate-950/40">
+            <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <div class="min-w-0">
+                <div class="text-sm font-black text-slate-900 dark:text-white">ذخیره ترجیحات شخصی</div>
+                <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">
+                  {{ personalization_submit_hint|default:"فقط پیش‌فرض‌های عمومی شما ذخیره می‌شوند و این صفحه جایگزین تنظیمات تخصصی دیگر نیست." }}
+                </p>
+              </div>
+
+              <div class="flex flex-col gap-2 sm:flex-row">
+                {% if personalization_reset_url %}
+                  <a href="{{ personalization_reset_url }}" class="btn-secondary w-full sm:w-auto">
+                    {{ personalization_reset_label|default:"بازنشانی" }}
+                  </a>
+                {% endif %}
+                <button type="submit" class="btn-primary w-full sm:w-auto">
+                  {{ personalization_save_label|default:"ذخیره تنظیمات شخصی" }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <aside class="space-y-4">
+        {% include 'app/_memory_preference_summary.html' with memory_pref=memory_preference %}
+
+        <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مرور سریع</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">در این صفحه چه چیزهایی نیست؟</h2>
+          <div class="mt-4 space-y-2">
+            {% for item in personalization_boundaries %}
+              <div class="rounded-[1.2rem] border border-slate-200/80 bg-white/82 px-3 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/35 dark:text-slate-300">
+                {{ item.label|default:item }}
+              </div>
+            {% empty %}
+              <div class="rounded-[1.2rem] border border-slate-200/80 bg-white/82 px-3 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/35 dark:text-slate-300">
+                اینجا برای ساخت دستیار، مدیریت عمیق حافظه یا تنظیمات پراکنده محصول طراحی نشده است.
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      </aside>
+    </div>
+  </div>
+{% endblock %}

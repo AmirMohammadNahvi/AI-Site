@@ -1,0 +1,60 @@
+<section class="rounded-[1.8rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
+  <div class="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
+    <div class="rounded-[1.45rem] border border-slate-200/80 bg-white/88 p-4 dark:border-slate-700/70 dark:bg-slate-950/35">
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">دامنه فعال</div>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">
+            {{ memory_scope.title|default:"دامنه حافظه" }}
+          </h2>
+          <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+            {{ memory_scope.summary|default:"حافظه فقط در همان دامنه‌ای که برایش تعریف شده فعال می‌شود و باید برای کاربر روشن بماند." }}
+          </p>
+        </div>
+
+        {% if memory_scope.state == 'active' %}
+          <span class="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">فعال</span>
+        {% elif memory_scope.state == 'disabled' %}
+          <span class="rounded-full bg-slate-200 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">غیرفعال</span>
+        {% elif memory_scope.state == 'locked' %}
+          <span class="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-bold text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">قفل پلن</span>
+        {% else %}
+          <span class="rounded-full bg-slate-200 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">محدود</span>
+        {% endif %}
+      </div>
+
+      <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+        {% if memory_scope.scope_label %}
+          <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ memory_scope.scope_label }}</span>
+        {% endif %}
+        {% if memory_scope.workspace_label %}
+          <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ memory_scope.workspace_label }}</span>
+        {% endif %}
+        {% if memory_scope.plan_label %}
+          <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ memory_scope.plan_label }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="rounded-[1.45rem] border border-slate-200/80 bg-white/88 p-4 dark:border-slate-700/70 dark:bg-slate-950/35">
+      <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مرور سریع وضعیت</div>
+      <div class="mt-3 space-y-2">
+        {% if memory_scope.visibility_note %}
+          <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/85 px-3 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/65 dark:text-slate-300">
+            {{ memory_scope.visibility_note }}
+          </div>
+        {% endif %}
+        {% if memory_scope.control_note %}
+          <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/85 px-3 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/65 dark:text-slate-300">
+            {{ memory_scope.control_note }}
+          </div>
+        {% endif %}
+        {% if memory_scope.privacy_note %}
+          <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/85 px-3 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/65 dark:text-slate-300">
+            {{ memory_scope.privacy_note }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>

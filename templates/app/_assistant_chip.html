@@ -1,0 +1,66 @@
+{% if assistant_chip or assistant_label or conversation_is_migrated %}
+  {% with chip=assistant_chip %}
+    {% if conversation_is_migrated and not chip %}
+      <div class="inline-flex max-w-full items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200">
+        <span class="text-[11px] font-bold opacity-70">پروفایل گفتگو</span>
+        <span class="max-w-[11rem] truncate text-sm font-black">گفتگوی قدیمی بدون انتساب عمومی</span>
+      </div>
+    {% elif chip.is_interactive %}
+      <button
+        type="button"
+        class="inline-flex max-w-full items-center gap-2 rounded-full border px-3 py-2 text-right transition {% if chip.state == 'available' %}border-emerald-200 bg-emerald-50 text-slate-900 hover:border-emerald-300 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-white{% elif chip.state == 'blocked' %}border-amber-200 bg-amber-50 text-slate-900 hover:border-amber-300 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-white{% elif chip.state == 'legacy' %}border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200{% else %}border-slate-200 bg-white text-slate-700 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200{% endif %}"
+        @click="assistantPickerOpen = !assistantPickerOpen"
+        :aria-expanded="assistantPickerOpen.toString()"
+      >
+        <span class="text-[11px] font-bold opacity-70">
+          {% if chip.state == 'legacy' %}
+            پروفایل گفتگو
+          {% else %}
+            دستیار
+          {% endif %}
+        </span>
+        <span class="max-w-[11rem] truncate text-sm font-black">
+          {% if chip.state == 'legacy' %}
+            {{ chip.label|default:"گفتگوی قدیمی بدون انتساب عمومی" }}
+          {% else %}
+            {{ chip.label|default:assistant_label|default:"بدون دستیار" }}
+          {% endif %}
+        </span>
+        <svg class="h-4 w-4 shrink-0 transition" :class="assistantPickerOpen ? 'rotate-180' : ''" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+    {% else %}
+      <div class="inline-flex max-w-full items-center gap-2 rounded-full border px-3 py-2 {% if chip.state == 'available' %}border-emerald-200 bg-emerald-50 text-slate-900 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-white{% elif chip.state == 'blocked' %}border-amber-200 bg-amber-50 text-slate-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-white{% elif chip.state == 'legacy' %}border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200{% else %}border-slate-200 bg-white text-slate-700 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200{% endif %}">
+        <span class="text-[11px] font-bold opacity-70">
+          {% if chip.state == 'legacy' %}
+            پروفایل گفتگو
+          {% else %}
+            دستیار
+          {% endif %}
+        </span>
+        <span class="max-w-[11rem] truncate text-sm font-black">
+          {% if chip.state == 'legacy' %}
+            {{ chip.label|default:"گفتگوی قدیمی بدون انتساب عمومی" }}
+          {% else %}
+            {{ chip.label|default:assistant_label|default:"بدون دستیار" }}
+          {% endif %}
+        </span>
+      </div>
+    {% endif %}
+
+    {% if conversation_is_migrated and not chip %}
+      <div class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
+        این گفتگو از مسیر قبلی منتقل شده و به‌معنی اتصال به یک دستیار عمومی قابل‌استفاده‌مجدد نیست.
+      </div>
+    {% elif chip.note %}
+      <div class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ chip.note }}</div>
+    {% elif conversation_is_migrated and chip.state == 'legacy' %}
+      <div class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
+        این گفتگو از مسیر قبلی منتقل شده و به‌معنی اتصال به یک دستیار عمومی قابل‌استفاده‌مجدد نیست.
+      </div>
+    {% elif chip.state == 'blocked' and chip.reason %}
+      <div class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ chip.reason }}</div>
+    {% endif %}
+  {% endwith %}
+{% endif %}

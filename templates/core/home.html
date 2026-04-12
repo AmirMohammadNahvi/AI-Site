@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static site_text %}
+
+{% block title %}{{ site_settings.site_name_fa }} | خانه{% endblock %}
+
+{% block content %}
+  <section class="section-shell pt-8 sm:pt-10">
+    <div class="grid gap-6 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+      <div class="space-y-6">
+        <div class="flex flex-wrap gap-2">
+          <span class="badge">{% site_text 'home.hero.badge_one' 'تجربه فارسی، سریع و موبایل‌محور' title='نشانک اول هدر خانه' group='home' %}</span>
+          <span class="badge">{% site_text 'home.hero.badge_two' 'چت، تحلیل فایل و تحلیل تصویر' title='نشانک دوم هدر خانه' group='home' %}</span>
+        </div>
+
+        <div class="max-w-3xl">
+          <h1 class="text-4xl font-black leading-[1.15] sm:text-5xl lg:text-6xl">{% site_text 'home.hero.title' 'فارال یار، همراه هوش مصنوعی برای گفتگو، تحلیل و تصمیم سریع' title='عنوان اصلی خانه' group='home' %}</h1>
+          <p class="mt-5 max-w-2xl text-base leading-8 text-slate-600 dark:text-slate-300 sm:text-lg">{% site_text 'home.hero.subtitle' 'از یک لندینگ نرم و مدرن وارد می‌شوی، مدل مناسب را انتخاب می‌کنی، فایل یا تصویر می‌فرستی و در یک رابط تمیز و سریع، پاسخ قابل استفاده می‌گیری.' title='زیرعنوان اصلی خانه' group='home' %}</p>
+        </div>
+
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <a href="{% url 'ai_platform:chat' %}" class="btn-primary">{% site_text 'home.hero.cta_primary' 'شروع گفتگو با هوش مصنوعی' title='دکمه اصلی خانه' group='home' %}</a>
+          <a href="{% url 'core:pricing' %}" class="btn-secondary">{% site_text 'home.hero.cta_secondary' 'دیدن پلن‌ها و ظرفیت‌ها' title='دکمه دوم خانه' group='home' %}</a>
+        </div>
+
+        <div class="grid gap-3 sm:grid-cols-3">
+          <div class="panel-soft p-4">
+            <div class="text-2xl font-black">{{ featured_models|length }}</div>
+            <div class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{% site_text 'home.metric.models' 'مدل منتخب برای شروع' title='متریک مدل‌ها در خانه' group='home' %}</div>
+          </div>
+          <div class="panel-soft p-4">
+            <div class="text-2xl font-black">{{ plans|length }}</div>
+            <div class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{% site_text 'home.metric.plans' 'پلن قابل فروش' title='متریک پلن‌ها در خانه' group='home' %}</div>
+          </div>
+          <div class="panel-soft p-4">
+            <div class="text-2xl font-black">۵</div>
+            <div class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{% site_text 'home.metric.guests' 'پیام رایگان برای مهمان' title='متریک مهمان‌ها در خانه' group='home' %}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="smart-hero">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <div class="text-sm font-black">FaralYar Signal</div>
+            <div class="mt-2 max-w-sm text-xs leading-6 text-slate-300">{% site_text 'home.smart.topline' 'یک المان هوشمند برندشده که حس سرعت، تمرکز و جریان زنده‌ی پردازش را منتقل می‌کند.' title='متن بالای المان هوشمند خانه' group='home' %}</div>
+          </div>
+          <span class="badge">Live</span>
+        </div>
+
+        <div class="smart-hero-grid mt-6">
+          <div class="smart-hero-core"></div>
+          <div class="smart-hero-ring ring-a"></div>
+          <div class="smart-hero-ring ring-b"></div>
+          <div class="smart-hero-ring ring-c"></div>
+
+          <div class="smart-hero-line line-a"></div>
+          <div class="smart-hero-line line-b"></div>
+
+          <div class="smart-hero-node node-a">{% site_text 'home.smart.node_a' 'مدل‌های چندگانه' title='نود اول المان هوشمند خانه' group='home' %}</div>
+          <div class="smart-hero-node node-b">{% site_text 'home.smart.node_b' 'تحلیل فایل' title='نود دوم المان هوشمند خانه' group='home' %}</div>
+          <div class="smart-hero-node node-c">{% site_text 'home.smart.node_c' 'پاسخ سریع' title='نود سوم المان هوشمند خانه' group='home' %}</div>
+          <div class="smart-hero-node node-d">{% site_text 'home.smart.node_d' 'تجربه فارسی' title='نود چهارم المان هوشمند خانه' group='home' %}</div>
+
+          <div class="absolute inset-x-5 bottom-5 grid gap-3 sm:grid-cols-3">
+            <div class="rounded-3xl border border-white/10 bg-white/10 p-4 backdrop-blur">
+              <div class="text-xs text-slate-300">{% site_text 'home.smart.card_one_title' 'هسته برند' title='کارت اول المان هوشمند خانه' group='home' %}</div>
+              <div class="mt-2 text-sm font-black text-white">{% site_text 'home.smart.card_one_value' 'Faral + YAR + AI' title='مقدار کارت اول المان هوشمند خانه' group='home' %}</div>
+            </div>
+            <div class="rounded-3xl border border-white/10 bg-white/10 p-4 backdrop-blur">
+              <div class="text-xs text-slate-300">{% site_text 'home.smart.card_two_title' 'حس محصول' title='کارت دوم المان هوشمند خانه' group='home' %}</div>
+              <div class="mt-2 text-sm font-black text-white">{% site_text 'home.smart.card_two_value' 'خلوت، سریع، مدرن' title='مقدار کارت دوم المان هوشمند خانه' group='home' %}</div>
+            </div>
+            <div class="rounded-3xl border border-white/10 bg-white/10 p-4 backdrop-blur">
+              <div class="text-xs text-slate-300">{% site_text 'home.smart.card_three_title' 'کاربرد' title='کارت سوم المان هوشمند خانه' group='home' %}</div>
+              <div class="mt-2 text-sm font-black text-white">{% site_text 'home.smart.card_three_value' 'چت، فایل، تصمیم‌یار' title='مقدار کارت سوم المان هوشمند خانه' group='home' %}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell pt-14">
+    <div class="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+      <div class="panel-soft p-6 sm:p-8">
+        <div class="mb-5 flex items-center justify-between gap-3">
+          <h2 class="text-2xl font-black">{% site_text 'home.why.title' 'چرا FaralYar حس بهتری می‌دهد؟' title='عنوان بخش مزیت‌ها در خانه' group='home' %}</h2>
+          <span class="badge">لندینگ + محصول</span>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          <article class="rounded-3xl border border-slate-200/80 bg-white/80 p-5 dark:border-slate-700 dark:bg-slate-900/50">
+            <h3 class="text-lg font-black">{% site_text 'home.why.card1.title' 'ورود سریع به کار' title='کارت مزیت ۱ خانه' group='home' %}</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{% site_text 'home.why.card1.body' 'بدون شلوغی زیاد، CTAهای واضح، و مسیر روشن از لندینگ به چت.' title='متن کارت مزیت ۱ خانه' group='home' %}</p>
+          </article>
+          <article class="rounded-3xl border border-slate-200/80 bg-white/80 p-5 dark:border-slate-700 dark:bg-slate-900/50">
+            <h3 class="text-lg font-black">{% site_text 'home.why.card2.title' 'مدل‌ها با زبان ساده' title='کارت مزیت ۲ خانه' group='home' %}</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{% site_text 'home.why.card2.body' 'مدل مناسب را با summary و capability می‌بینی، نه با فرم خشک و فنی.' title='متن کارت مزیت ۲ خانه' group='home' %}</p>
+          </article>
+          <article class="rounded-3xl border border-slate-200/80 bg-white/80 p-5 dark:border-slate-700 dark:bg-slate-900/50">
+            <h3 class="text-lg font-black">{% site_text 'home.why.card3.title' 'موبایل‌فرندلی واقعی' title='کارت مزیت ۳ خانه' group='home' %}</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{% site_text 'home.why.card3.body' 'منو، اقدام‌های اصلی و مسیر خرید روی گوشی قابل دسترس و خوانا هستند.' title='متن کارت مزیت ۳ خانه' group='home' %}</p>
+          </article>
+          <article class="rounded-3xl border border-slate-200/80 bg-white/80 p-5 dark:border-slate-700 dark:bg-slate-900/50">
+            <h3 class="text-lg font-black">{% site_text 'home.why.card4.title' 'فضای برندشده و جدی' title='کارت مزیت ۴ خانه' group='home' %}</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{% site_text 'home.why.card4.body' 'ترکیب سفید، سبز و آبی در هر دو تم، حس تمیز و حرفه‌ای‌تری می‌سازد.' title='متن کارت مزیت ۴ خانه' group='home' %}</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="grid gap-4">
+        <div class="panel-soft p-6">
+          <h2 class="text-2xl font-black">{% site_text 'home.active_models.title' 'مدل‌های فعال' title='عنوان مدل‌های فعال در خانه' group='home' %}</h2>
+          <div class="mt-5 grid gap-3">
+            {% for model in featured_models %}
+              <a href="{% url 'ai_platform:model_detail' model.slug %}" class="model-pill block">
+                <div class="flex items-center justify-between gap-3">
+                  <div class="font-bold">{{ model.name }}</div>
+                  <div class="text-xs text-slate-500">{{ model.provider_label }}</div>
+                </div>
+                {% site_text 'home.active_models.default_summary' 'برای تحلیل و پاسخ سریع.' title='خلاصه پیش‌فرض مدل در خانه' group='home' as home_active_model_summary %}
+                <div class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ model.summary|default:home_active_model_summary|truncatechars:90 }}</div>
+              </a>
+            {% empty %}
+              <div class="rounded-2xl border border-dashed border-slate-300 px-4 py-6 text-center text-sm text-slate-500 dark:border-slate-700">{% site_text 'home.active_models.empty' 'مدلی فعال نشده است.' title='حالت خالی مدل‌های فعال در خانه' group='home' %}</div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="panel-soft p-6">
+          <h2 class="text-2xl font-black">{% site_text 'home.flow.title' 'جریان استفاده' title='عنوان جریان استفاده در خانه' group='home' %}</h2>
+          <div class="mt-5 space-y-3">
+            <div class="flex gap-3 rounded-3xl bg-slate-100/80 p-4 dark:bg-slate-800/60"><span class="badge">۱</span><p class="text-sm leading-7 text-slate-600 dark:text-slate-300">{% site_text 'home.flow.step1' 'مدل مناسب را انتخاب کن.' title='گام ۱ جریان استفاده' group='home' %}</p></div>
+            <div class="flex gap-3 rounded-3xl bg-slate-100/80 p-4 dark:bg-slate-800/60"><span class="badge">۲</span><p class="text-sm leading-7 text-slate-600 dark:text-slate-300">{% site_text 'home.flow.step2' 'متن، فایل یا تصویرت را بفرست.' title='گام ۲ جریان استفاده' group='home' %}</p></div>
+            <div class="flex gap-3 rounded-3xl bg-slate-100/80 p-4 dark:bg-slate-800/60"><span class="badge">۳</span><p class="text-sm leading-7 text-slate-600 dark:text-slate-300">{% site_text 'home.flow.step3' 'پاسخ را ذخیره کن، ادامه بده یا ارتقا بزن.' title='گام ۳ جریان استفاده' group='home' %}</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell pt-14">
+    <div class="mb-6 flex items-center justify-between">
+      <h2 class="text-2xl font-black">{% site_text 'home.plans.title' 'پلن‌ها' title='عنوان پلن‌ها در خانه' group='home' %}</h2>
+      <a href="{% url 'core:pricing' %}" class="text-sm font-bold text-brand-primary">مشاهده همه</a>
+    </div>
+
+    <div class="grid gap-4 lg:grid-cols-3">
+      {% for plan in plans %}
+        <article class="panel-soft p-6">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="text-xl font-black">{{ plan.name }}</h3>
+            {% if forloop.first %}<span class="badge">محبوب</span>{% endif %}
+          </div>
+          {% site_text 'home.plans.default_description' 'پلن مناسب برای استفاده روزمره و حرفه‌ای.' title='توضیح پیش‌فرض پلن در خانه' group='home' as home_default_plan_description %}
+          <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ plan.description|default:home_default_plan_description }}</p>
+          <div class="mt-5 text-4xl font-black">{{ plan.price|floatformat:0 }}</div>
+          <div class="text-xs text-slate-500">تومان</div>
+          <ul class="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+            <li>مدت اعتبار: {{ plan.duration_days }} روز</li>
+            <li>سقف توکن: {{ plan.token_limit_per_window }}</li>
+            <li>ریست هر {{ plan.reset_interval_hours }} ساعت</li>
+          </ul>
+          <a href="{% url 'billing:checkout' plan.slug %}" class="btn-primary mt-6 w-full">خرید پلن</a>
+        </article>
+      {% empty %}
+        <div class="panel-soft p-6 lg:col-span-3">{% site_text 'home.plans.empty' 'فعلاً هیچ پلنی تعریف نشده است.' title='حالت خالی پلن‌ها در خانه' group='home' %}</div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="section-shell pt-14">
+    <div class="panel-soft p-6 sm:p-8">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-2xl">
+          <h2 class="text-3xl font-black">{% site_text 'home.content.title' 'از مطالعه مستقیم وارد اجرا شو' title='عنوان بخش محتوا در خانه' group='home' %}</h2>
+          <p class="mt-4 text-base leading-8 text-slate-600 dark:text-slate-300">{% site_text 'home.content.body' 'محتوای آموزشی و چت محصول در یک مسیر قرار گرفته‌اند؛ کاربر می‌تواند بعد از خواندن مقاله، مستقیم وارد گفتگو یا خرید شود.' title='متن بخش محتوا در خانه' group='home' %}</p>
+        </div>
+        <a href="{% url 'blog:list' %}" class="btn-secondary">{% site_text 'home.content.cta' 'رفتن به بلاگ' title='دکمه بلاگ در خانه' group='home' %}</a>
+      </div>
+
+      <div class="mt-8 grid gap-4 lg:grid-cols-3">
+        {% for post in featured_posts %}
+          <article class="rounded-[1.75rem] border border-slate-200/80 bg-white/85 p-6 dark:border-slate-700 dark:bg-slate-900/50">
+            <h3 class="text-lg font-black">{{ post.title }}</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ post.excerpt|truncatechars:130 }}</p>
+            <a href="{% url 'blog:detail' post.slug %}" class="mt-4 inline-flex font-bold text-brand-primary">مطالعه مقاله</a>
+          </article>
+        {% empty %}
+          <div class="rounded-[1.75rem] border border-dashed border-slate-300 p-6 text-sm text-slate-500 dark:border-slate-700 lg:col-span-3">{% site_text 'home.content.empty' 'بخش بلاگ آماده است و با اولین مقاله فعال می‌شود.' title='حالت خالی بلاگ در خانه' group='home' %}</div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell pb-8 pt-14">
+    <div class="panel-soft overflow-hidden rounded-[2rem] p-6 sm:p-8">
+      <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div>
+          <h2 class="text-3xl font-black">{% site_text 'home.final_cta.title' 'برای اولین پاسخ منتظر نمان' title='عنوان CTA پایانی خانه' group='home' %}</h2>
+          <p class="mt-4 max-w-2xl text-base leading-8 text-slate-600 dark:text-slate-300">{% site_text 'home.final_cta.body' 'اگر می‌خواهی FaralYar از همان اولین برخورد، حرفه‌ای‌تر و نرم‌تر به نظر برسد، بهترین نقطه شروع همین حالا صفحه چت است.' title='متن CTA پایانی خانه' group='home' %}</p>
+        </div>
+        <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+          <a href="{% url 'ai_platform:chat' %}" class="btn-primary">{% site_text 'home.final_cta.primary' 'شروع گفتگو' title='دکمه اصلی CTA پایانی خانه' group='home' %}</a>
+          <a href="{% url 'accounts:signup' %}" class="btn-secondary">{% site_text 'home.final_cta.secondary' 'ساخت حساب' title='دکمه دوم CTA پایانی خانه' group='home' %}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,88 @@
+<article
+  class="rounded-[1.45rem] border border-slate-200/80 bg-white/88 p-4 dark:border-slate-700/70 dark:bg-slate-950/35"
+  x-data="{ detailsOpen: false, confirmDelete: false }"
+>
+  <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+    <div class="min-w-0">
+      <div class="flex flex-wrap items-center gap-2">
+        <h4 class="text-sm font-black text-slate-900 dark:text-white sm:text-base">
+          {{ memory_item.title|default:"آیتم حافظه" }}
+        </h4>
+        {% if memory_item.kind_label %}
+          <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ memory_item.kind_label }}</span>
+        {% endif %}
+      </div>
+
+      <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+        {{ memory_item.preview|default:memory_item.value|default:"مقداری برای این حافظه ثبت شده است." }}
+      </p>
+
+      <div class="mt-3 flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+        {% if memory_item.scope_label %}
+          <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ memory_item.scope_label }}</span>
+        {% endif %}
+        {% if memory_item.saved_at_label %}
+          <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ memory_item.saved_at_label }}</span>
+        {% endif %}
+        {% if memory_item.source_label %}
+          <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ memory_item.source_label }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="flex w-full flex-col gap-2 sm:flex-row lg:w-auto">
+      {% if memory_item.detail_text or memory_item.detail_lines %}
+        <button type="button" class="btn-secondary w-full sm:w-auto" @click="detailsOpen = !detailsOpen">
+          <span x-show="!detailsOpen">{{ memory_item.detail_open_label|default:"جزئیات بیشتر" }}</span>
+          <span x-show="detailsOpen" x-cloak>{{ memory_item.detail_close_label|default:"بستن جزئیات" }}</span>
+        </button>
+      {% endif %}
+
+      {% if memory_item.delete_url and memory_item.can_delete %}
+        <form method="post" action="{{ memory_item.delete_url }}" class="w-full sm:w-auto">
+          {% csrf_token %}
+          <template x-if="!confirmDelete">
+            <button type="button" class="btn-secondary w-full text-rose-600 sm:w-auto" @click="confirmDelete = true">
+              {{ memory_item.delete_label|default:"حذف این مورد" }}
+            </button>
+          </template>
+          <div x-show="confirmDelete" x-cloak class="flex w-full flex-col gap-2 sm:flex-row">
+            <button type="submit" class="btn-secondary w-full text-rose-600 sm:w-auto">
+              {{ memory_item.delete_confirm_label|default:"تایید حذف" }}
+            </button>
+            <button type="button" class="btn-secondary w-full sm:w-auto" @click="confirmDelete = false">
+              {{ memory_item.delete_cancel_label|default:"انصراف" }}
+            </button>
+          </div>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if memory_item.detail_text or memory_item.detail_lines %}
+    <div
+      class="overflow-hidden"
+      x-cloak
+      x-show="detailsOpen"
+      x-transition:enter="transition duration-200 ease-out"
+      x-transition:enter-start="opacity-0 -translate-y-1"
+      x-transition:enter-end="opacity-100 translate-y-0"
+    >
+      <div class="mt-4 rounded-[1.2rem] border border-slate-200/80 bg-slate-50/82 px-4 py-4 dark:border-slate-700/70 dark:bg-slate-900/65">
+        {% if memory_item.detail_text %}
+          <p class="text-sm leading-8 text-slate-600 dark:text-slate-300">{{ memory_item.detail_text }}</p>
+        {% endif %}
+
+        {% if memory_item.detail_lines %}
+          <div class="{% if memory_item.detail_text %}mt-3{% endif %} space-y-2">
+            {% for line in memory_item.detail_lines %}
+              <div class="rounded-[1rem] bg-white/82 px-3 py-3 text-sm leading-7 text-slate-600 dark:bg-slate-950/40 dark:text-slate-300">
+                {{ line.label|default:line }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+</article>

@@ -1,0 +1,191 @@
+<section class="space-y-4">
+  <div class="flex items-start justify-between gap-3">
+    <div class="min-w-0">
+      <h2 class="text-base font-black text-slate-900 dark:text-white sm:text-lg">
+        {{ space_list_title|default:"اسپیس‌ها" }}
+      </h2>
+      <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
+        {{ space_list_caption|default:"اسپیس‌ها نقطه شروع کار هستند؛ ابتدا فضا را انتخاب کنید و سپس گفتگو را ادامه دهید." }}
+      </p>
+    </div>
+
+    {% if archived_spaces_url %}
+      <a href="{{ archived_spaces_url }}" class="hidden rounded-full border border-slate-200/80 bg-white/80 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/60 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white sm:inline-flex">
+        {% if archived_space_count %}
+          آرشیو {{ archived_space_count }}
+        {% else %}
+          آرشیو
+        {% endif %}
+      </a>
+    {% endif %}
+  </div>
+
+  {% if default_space or ungrouped_spaces or space_groups %}
+    <div class="space-y-4">
+      {% if default_space %}
+        <div class="rounded-[1.75rem] border border-emerald-200/80 bg-emerald-50/80 p-3 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/20 dark:bg-emerald-500/10">
+          <div class="mb-3 flex items-center justify-between gap-3 px-1">
+            <div>
+              <div class="text-xs font-bold text-emerald-700 dark:text-emerald-300">اسپیس پیش‌فرض</div>
+              <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">بهترین نقطه برای شروع سریع و کارهای روزمره</div>
+            </div>
+            <span class="rounded-full bg-white/85 px-3 py-1 text-[11px] font-bold text-emerald-700 dark:bg-slate-900/70 dark:text-emerald-300">پیش‌فرض</span>
+          </div>
+
+          <a
+            href="{{ default_space.url|default:'#' }}"
+            class="block rounded-[1.4rem] border px-4 py-4 transition {% if default_space.is_active %}border-emerald-300 bg-white/90 shadow-sm shadow-emerald-100/80 dark:border-emerald-400/30 dark:bg-slate-900/75{% else %}border-white/70 bg-white/78 hover:border-emerald-200 hover:bg-white dark:border-slate-800 dark:bg-slate-900/55 dark:hover:border-slate-700 dark:hover:bg-slate-900/78{% endif %}"
+          >
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <div class="truncate text-sm font-black text-slate-900 dark:text-white">{{ default_space.name }}</div>
+                  {% if default_space.is_active %}
+                    <span class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">فعال</span>
+                  {% endif %}
+                </div>
+                {% if default_space.summary %}
+                  <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ default_space.summary }}</p>
+                {% endif %}
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {% if default_space.conversation_count %}
+                    <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ default_space.conversation_count }} گفتگو</span>
+                  {% endif %}
+                  {% if default_space.updated_label %}
+                    <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ default_space.updated_label }}</span>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-sm font-black text-white dark:bg-white dark:text-slate-900">
+                {% if default_space.initials %}
+                  {{ default_space.initials }}
+                {% else %}
+                  {{ default_space.name|slice:":2" }}
+                {% endif %}
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+
+      {% if ungrouped_spaces %}
+        <div class="space-y-3">
+          <div class="px-1 text-xs font-bold text-slate-500 dark:text-slate-400">اسپیس‌های مستقل</div>
+          <div class="grid gap-3 md:grid-cols-2">
+            {% for space in ungrouped_spaces %}
+              <a
+                href="{{ space.url|default:'#' }}"
+                class="block rounded-[1.5rem] border px-4 py-4 transition {% if space.is_active %}border-emerald-200 bg-emerald-50 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10{% else %}border-slate-200/80 bg-white/82 hover:border-slate-300 hover:bg-white dark:border-slate-700/70 dark:bg-slate-900/55 dark:hover:border-slate-600 dark:hover:bg-slate-900{% endif %}"
+              >
+                <div class="flex items-start justify-between gap-3">
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                      <div class="truncate text-sm font-black text-slate-900 dark:text-white">{{ space.name }}</div>
+                      {% if space.is_active %}
+                        <span class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">فعال</span>
+                      {% endif %}
+                    </div>
+                    {% if space.summary %}
+                      <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ space.summary }}</p>
+                    {% endif %}
+                    <div class="mt-3 flex flex-wrap gap-2">
+                      {% if space.is_default %}
+                        <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">پیش‌فرض</span>
+                      {% endif %}
+                      {% if space.conversation_count %}
+                        <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ space.conversation_count }} گفتگو</span>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-xs font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                    {% if space.initials %}
+                      {{ space.initials }}
+                    {% else %}
+                      {{ space.name|slice:":2" }}
+                    {% endif %}
+                  </div>
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% for group in space_groups %}
+        <div class="space-y-3 rounded-[1.6rem] border border-slate-200/80 bg-slate-50/70 p-3 dark:border-slate-700/70 dark:bg-slate-900/40">
+          <div class="flex items-start justify-between gap-3 px-1">
+            <div class="min-w-0">
+              <div class="truncate text-xs font-bold text-slate-500 dark:text-slate-400">پروژه</div>
+              <div class="mt-1 truncate text-sm font-black text-slate-900 dark:text-white">{{ group.project_name }}</div>
+              {% if group.project_summary %}
+                <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ group.project_summary }}</p>
+              {% endif %}
+            </div>
+            {% if group.project_badge %}
+              <span class="rounded-full bg-white/85 px-2.5 py-1 text-[10px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ group.project_badge }}</span>
+            {% endif %}
+          </div>
+
+          <div class="grid gap-3 md:grid-cols-2">
+            {% for space in group.spaces %}
+              <a
+                href="{{ space.url|default:'#' }}"
+                class="block rounded-[1.4rem] border px-4 py-4 transition {% if space.is_active %}border-emerald-200 bg-emerald-50 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10{% else %}border-slate-200/80 bg-white/82 hover:border-slate-300 hover:bg-white dark:border-slate-700/70 dark:bg-slate-900/55 dark:hover:border-slate-600 dark:hover:bg-slate-900{% endif %}"
+              >
+                <div class="flex items-start justify-between gap-3">
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                      <div class="truncate text-sm font-black text-slate-900 dark:text-white">{{ space.name }}</div>
+                      {% if space.is_active %}
+                        <span class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">فعال</span>
+                      {% endif %}
+                    </div>
+                    {% if space.summary %}
+                      <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ space.summary }}</p>
+                    {% endif %}
+                    <div class="mt-3 flex flex-wrap gap-2">
+                      {% if space.is_default %}
+                        <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">پیش‌فرض</span>
+                      {% endif %}
+                      {% if space.conversation_count %}
+                        <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ space.conversation_count }} گفتگو</span>
+                      {% endif %}
+                      {% if space.updated_label %}
+                        <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ space.updated_label }}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-xs font-black text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                    {% if space.initials %}
+                      {{ space.initials }}
+                    {% else %}
+                      {{ space.name|slice:":2" }}
+                    {% endif %}
+                  </div>
+                </div>
+              </a>
+            {% empty %}
+              <div class="md:col-span-2 rounded-[1.4rem] border border-dashed border-slate-300 px-4 py-6 text-sm leading-7 text-slate-500 dark:border-slate-700 dark:text-slate-300">
+                هنوز اسپیسی برای این پروژه ساخته نشده است.
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+
+      {% if archived_spaces_url %}
+        <a href="{{ archived_spaces_url }}" class="flex items-center justify-between gap-3 rounded-[1.4rem] border border-dashed border-slate-300 px-4 py-3 text-sm font-bold text-slate-600 transition hover:border-slate-400 hover:text-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white sm:hidden">
+          <span>مشاهده اسپیس‌های آرشیوشده</span>
+          {% if archived_space_count %}
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ archived_space_count }}</span>
+          {% endif %}
+        </a>
+      {% endif %}
+    </div>
+  {% else %}
+    {% include 'app/_empty_state.html' with empty_title=space_empty_title|default:"هنوز اسپیسی در این ورک‌اسپیس ندارید" empty_body=space_empty_body|default:"برای شروع منظم، ابتدا یک اسپیس بسازید تا گفتگوها و زمینه‌های کاری‌تان در همان‌جا جمع شوند." empty_hint=space_empty_hint|default:"اسپیس‌ها باید کوتاه، مشخص و متناسب با خروجی واقعی کار تعریف شوند." empty_action_url=space_create_url empty_action_label=space_create_label|default:"ساخت اسپیس" %}
+  {% endif %}
+</section>

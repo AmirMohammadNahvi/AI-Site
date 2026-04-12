@@ -1,0 +1,89 @@
+<section class="rounded-[1.85rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
+  <div class="grid gap-4 lg:grid-cols-[minmax(0,1.1fr)_19rem] lg:items-start">
+    <div class="min-w-0">
+      <div class="text-xs font-bold text-slate-500 dark:text-slate-400">خلاصه سفارش</div>
+      <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">
+        {{ checkout_summary_title|default:'پلنی که در حال خرید آن هستید' }}
+      </h2>
+
+      <div class="mt-4 rounded-[1.5rem] border border-slate-200/80 bg-slate-50/85 p-4 dark:border-slate-700/70 dark:bg-slate-950/40">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div class="min-w-0">
+            <div class="text-sm font-black text-slate-900 dark:text-white">{{ checkout_plan.name }}</div>
+            {% if checkout_plan.fit_statement %}
+              <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ checkout_plan.fit_statement }}</p>
+            {% endif %}
+          </div>
+          {% if checkout_plan.snapshot_label %}
+            <span class="rounded-full bg-white px-3 py-1 text-[11px] font-bold text-slate-600 shadow-sm dark:bg-slate-900 dark:text-slate-300">
+              {{ checkout_plan.snapshot_label }}
+            </span>
+          {% endif %}
+        </div>
+
+        {% if checkout_current_plan_label %}
+          <div class="mt-4 grid gap-3 sm:grid-cols-2">
+            <div class="rounded-[1.2rem] border border-slate-200/80 bg-white/85 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-900/55">
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">پلن فعلی</div>
+              <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ checkout_current_plan_label }}</div>
+            </div>
+            <div class="rounded-[1.2rem] border border-emerald-200/80 bg-emerald-50/80 px-4 py-3 dark:border-emerald-500/20 dark:bg-emerald-500/10">
+              <div class="text-xs font-bold text-emerald-700 dark:text-emerald-300">پلن انتخاب‌شده</div>
+              <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ checkout_plan.name }}</div>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if checkout_plan.summary %}
+          <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ checkout_plan.summary }}</p>
+        {% endif %}
+
+        {% if checkout_plan.snapshot_items %}
+          <div class="mt-4 space-y-2">
+            {% for item in checkout_plan.snapshot_items %}
+              <div class="rounded-[1.15rem] border border-slate-200/80 bg-white/88 px-3 py-3 text-sm leading-7 text-slate-700 dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-200">
+                {{ item }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      {% if checkout_summary_items %}
+        <div class="mt-4">
+          <div class="text-sm font-black text-slate-900 dark:text-white">مرور کوتاه خرید</div>
+          <div class="mt-3 grid gap-3 sm:grid-cols-2">
+            {% for item in checkout_summary_items %}
+              <div class="rounded-[1.2rem] border border-slate-200/80 bg-white/85 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-300">
+                {{ item }}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <aside class="min-w-0">
+      <div class="rounded-[1.5rem] border border-slate-200/80 bg-slate-50/85 p-4 dark:border-slate-700/70 dark:bg-slate-950/40">
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مبلغ قابل پرداخت</div>
+        <div class="mt-3 flex items-end gap-2">
+          <div class="text-3xl font-black text-slate-900 dark:text-white sm:text-4xl">{{ checkout_amount }}</div>
+          <div class="pb-1 text-sm font-medium text-slate-500 dark:text-slate-400">{{ checkout_currency_label|default:'تومان' }}</div>
+        </div>
+        <div class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">
+          {{ checkout_period_label|default:'برای این دوره' }}
+        </div>
+
+        {% if checkout_amount_note %}
+          <p class="mt-3 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ checkout_amount_note }}</p>
+        {% endif %}
+
+        {% if checkout_warning_note %}
+          <div class="mt-4 rounded-[1.2rem] border border-amber-200/80 bg-amber-50/80 px-4 py-3 text-sm leading-7 text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-100">
+            {{ checkout_warning_note }}
+          </div>
+        {% endif %}
+      </div>
+    </aside>
+  </div>
+</section>

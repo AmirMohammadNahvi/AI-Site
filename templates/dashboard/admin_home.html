@@ -1,0 +1,36 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load site_text %}
+
+{% block dashboard_content %}
+  <div class="glass-card p-6">
+    <h1 class="text-2xl font-black">{% site_text 'admin.home.title' 'ادمین سفارشی FaralYar' title='عنوان داشبورد ادمین' group='admin' %}</h1>
+    <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{% site_text 'admin.home.subtitle' 'از اینجا می‌توانی تنظیمات برند، متن‌های سایت، مدل‌ها، پلن‌ها و تراکنش‌ها را سریع‌تر از Django Admin روزمره مدیریت کنی.' title='زیرعنوان داشبورد ادمین' group='admin' %}</p>
+
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+      <div class="mobile-table-card"><div class="text-sm text-slate-500">{% site_text 'admin.stats.users' 'کاربران' title='آمار کاربران در ادمین' group='admin' %}</div><div class="mt-2 text-2xl font-black">{{ user_count }}</div></div>
+      <div class="mobile-table-card"><div class="text-sm text-slate-500">{% site_text 'admin.stats.models' 'مدل‌ها' title='آمار مدل‌ها در ادمین' group='admin' %}</div><div class="mt-2 text-2xl font-black">{{ model_count }}</div></div>
+      <div class="mobile-table-card"><div class="text-sm text-slate-500">{% site_text 'admin.stats.plans' 'پلن‌ها' title='آمار پلن‌ها در ادمین' group='admin' %}</div><div class="mt-2 text-2xl font-black">{{ plan_count }}</div></div>
+      <div class="mobile-table-card"><div class="text-sm text-slate-500">{% site_text 'admin.stats.transactions' 'تراکنش‌ها' title='آمار تراکنش‌ها در ادمین' group='admin' %}</div><div class="mt-2 text-2xl font-black">{{ transaction_count }}</div></div>
+      <div class="mobile-table-card"><div class="text-sm text-slate-500">{% site_text 'admin.stats.messages' 'پیام‌های جدید' title='آمار پیام‌های جدید در ادمین' group='admin' %}</div><div class="mt-2 text-2xl font-black">{{ contact_count }}</div></div>
+    </div>
+
+    <div class="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <a href="{% url 'dashboard:admin_settings' %}" class="btn-secondary">{% site_text 'admin.quick.settings' 'تنظیمات سایت' title='دکمه تنظیمات سایت در ادمین' group='admin' %}</a>
+      <a href="{% url 'dashboard:admin_texts' %}" class="btn-secondary">{% site_text 'admin.quick.texts' 'متن‌های سایت' title='دکمه متن‌های سایت در ادمین' group='admin' %}</a>
+      <a href="{% url 'dashboard:admin_models' %}" class="btn-secondary">{% site_text 'admin.quick.models' 'مدیریت مدل‌ها' title='دکمه مدیریت مدل‌ها در ادمین' group='admin' %}</a>
+      <a href="{% url 'dashboard:admin_plans' %}" class="btn-secondary">{% site_text 'admin.quick.plans' 'مدیریت پلن‌ها' title='دکمه مدیریت پلن‌ها در ادمین' group='admin' %}</a>
+    </div>
+
+    <div class="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <a href="{% url 'dashboard:admin_transactions' %}" class="btn-secondary">{% site_text 'admin.quick.transactions' 'تراکنش‌ها' title='دکمه تراکنش‌ها در ادمین' group='admin' %}</a>
+      <a href="/admin/accounts/user/" class="btn-secondary">{% site_text 'admin.quick.users_admin' 'کاربران در Django Admin' title='دکمه کاربران در جنگو ادمین' group='admin' %}</a>
+      <a href="/admin/blog/blogpost/" class="btn-secondary">{% site_text 'admin.quick.posts_admin' 'مقالات در Django Admin' title='دکمه مقالات در جنگو ادمین' group='admin' %}</a>
+      <a href="/admin/blog/blogcategory/" class="btn-secondary">{% site_text 'admin.quick.categories_admin' 'دسته‌بندی‌ها در Django Admin' title='دکمه دسته‌بندی‌ها در جنگو ادمین' group='admin' %}</a>
+    </div>
+
+    <div class="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <a href="/admin/core/contactmessage/" class="btn-secondary">{% site_text 'admin.quick.contacts_admin' 'پیام‌های تماس' title='دکمه پیام‌های تماس در ادمین' group='admin' %}</a>
+      <a href="/admin/core/textsnippet/" class="btn-secondary">{% site_text 'admin.quick.snippets_admin' 'Snippetها در Django Admin' title='دکمه اسنیپت‌ها در جنگو ادمین' group='admin' %}</a>
+    </div>
+  </div>
+{% endblock %}

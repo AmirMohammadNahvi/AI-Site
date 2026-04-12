@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ app_page_title|default:"اپلیکیشن" }} | {{ site_settings.site_name_fa }}{% endblock %}
+{% block meta_description %}{{ app_page_description|default:site_settings.tagline }}{% endblock %}
+
+{% block content %}
+  <section
+    class="relative min-h-screen"
+    x-data="{ mobileMenuOpen: false }"
+    x-init="window.addEventListener('resize', () => { if (window.innerWidth >= 1024) { mobileMenuOpen = false } })"
+    @keydown.escape.window="mobileMenuOpen = false"
+  >
+    <div class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.10),transparent_26%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.10),transparent_24%),linear-gradient(180deg,rgba(247,250,249,0.96),rgba(241,245,249,0.84))] dark:bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.14),transparent_26%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.18),transparent_24%),linear-gradient(180deg,rgba(6,22,44,0.96),rgba(10,29,54,0.94))]"></div>
+
+    <div
+      class="fixed inset-0 z-40 bg-slate-950/45 backdrop-blur-sm lg:hidden"
+      x-cloak
+      x-show="mobileMenuOpen"
+      @click="mobileMenuOpen = false"
+    ></div>
+
+    <aside
+      class="fixed inset-y-0 right-0 z-50 flex w-[90vw] max-w-sm flex-col border-l border-slate-200/80 bg-white/96 shadow-2xl shadow-slate-900/12 backdrop-blur-xl dark:border-slate-700/70 dark:bg-slate-950/92 lg:hidden"
+      x-cloak
+      x-show="mobileMenuOpen"
+      x-transition:enter="transition duration-200 ease-out"
+      x-transition:enter-start="translate-x-full opacity-0"
+      x-transition:enter-end="translate-x-0 opacity-100"
+    >
+      <div class="border-b border-slate-200/70 px-4 py-4 dark:border-slate-700/70">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">منوی فضای کاری</div>
+            <div class="mt-1 truncate text-lg font-black text-slate-900 dark:text-white">
+              {{ current_workspace.name|default:"بدون ورک‌اسپیس" }}
+            </div>
+            {% if current_workspace.subtitle %}
+              <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.subtitle }}</div>
+            {% elif current_workspace.role_label %}
+              <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.role_label }}</div>
+            {% endif %}
+          </div>
+          <button type="button" class="icon-btn shrink-0" @click="mobileMenuOpen = false" aria-label="بستن منوی موبایل">
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M6 6l8 8M14 6l-8 8" stroke-linecap="round"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto px-4 py-4">
+        <div class="panel-soft rounded-[1.75rem] p-3">
+          <div class="mb-3 text-xs font-bold text-slate-500 dark:text-slate-400">فضای فعال</div>
+          <div class="flex items-center gap-3 rounded-[1.5rem] border border-emerald-200/70 bg-emerald-50/80 px-3 py-3 text-slate-900 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-white">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-sm font-black text-white dark:bg-white dark:text-slate-900">
+              {% if current_workspace.initials %}
+                {{ current_workspace.initials }}
+              {% elif current_workspace.name %}
+                {{ current_workspace.name|slice:":2" }}
+              {% else %}
+                فا
+              {% endif %}
+            </div>
+            <div class="min-w-0">
+              <div class="truncate text-sm font-black">{{ current_workspace.name|default:"ورک‌اسپیس پیش‌فرض" }}</div>
+              {% if current_workspace.subtitle %}
+                <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.subtitle }}</div>
+              {% elif current_workspace.meta %}
+                <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.meta }}</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <nav class="mt-4 space-y-2">
+          {% for item in app_sidebar_items %}
+            <a
+              href="{{ item.url }}"
+              class="block rounded-[1.35rem] border px-4 py-3 transition {% if item.is_active %}border-emerald-200 bg-emerald-50 text-slate-900 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white{% else %}border-transparent bg-white/70 text-slate-700 hover:border-slate-200 hover:bg-white dark:bg-slate-900/40 dark:text-slate-200 dark:hover:border-slate-700 dark:hover:bg-slate-900/75{% endif %}"
+            >
+              <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                  <div class="truncate text-sm font-bold">{{ item.label }}</div>
+                  {% if item.caption %}
+                    <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ item.caption }}</div>
+                  {% endif %}
+                </div>
+                {% if item.badge %}
+                  <span class="badge shrink-0">{{ item.badge }}</span>
+                {% endif %}
+              </div>
+            </a>
+          {% empty %}
+            <div class="rounded-[1.5rem] border border-dashed border-slate-300 px-4 py-6 text-sm leading-7 text-slate-500 dark:border-slate-700 dark:text-slate-300">
+              هنوز آیتمی برای منوی این بخش تعریف نشده است.
+            </div>
+          {% endfor %}
+        </nav>
+
+        {% block app_mobile_menu_extra %}{% endblock %}
+      </div>
+
+      <div class="border-t border-slate-200/70 px-4 py-4 dark:border-slate-700/70">
+        {% block app_mobile_menu_footer %}
+          {% if app_mobile_footer_note %}
+            <p class="text-xs leading-6 text-slate-500 dark:text-slate-400">{{ app_mobile_footer_note }}</p>
+          {% else %}
+            <p class="text-xs leading-6 text-slate-500 dark:text-slate-400">این منو فقط برای جابه‌جایی بین بخش‌های اصلی فضای کاری استفاده می‌شود.</p>
+          {% endif %}
+        {% endblock %}
+      </div>
+    </aside>
+
+    {% include 'app/_topbar.html' %}
+
+    <div class="section-shell pb-6 pt-4 sm:pb-8">
+      <div class="grid gap-4 lg:grid-cols-[17.5rem_minmax(0,1fr)] xl:gap-5">
+        <aside class="hidden lg:block">
+          <div class="panel-soft sticky top-28 rounded-[2rem] p-4">
+            <div class="flex items-center gap-3 rounded-[1.5rem] border border-slate-200/70 bg-white/70 px-3 py-3 dark:border-slate-700/70 dark:bg-slate-900/55">
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-sm font-black text-white dark:bg-white dark:text-slate-900">
+                {% if current_workspace.initials %}
+                  {{ current_workspace.initials }}
+                {% elif current_workspace.name %}
+                  {{ current_workspace.name|slice:":2" }}
+                {% else %}
+                  فا
+                {% endif %}
+              </div>
+              <div class="min-w-0">
+                <div class="truncate text-sm font-black text-slate-900 dark:text-white">{{ current_workspace.name|default:"ورک‌اسپیس پیش‌فرض" }}</div>
+                {% if current_workspace.subtitle %}
+                  <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.subtitle }}</div>
+                {% elif current_workspace.meta %}
+                  <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.meta }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <div class="mb-3 px-1 text-xs font-bold text-slate-500 dark:text-slate-400">بخش‌های اصلی</div>
+              <nav class="space-y-2">
+                {% for item in app_sidebar_items %}
+                  <a
+                    href="{{ item.url }}"
+                    class="block rounded-[1.35rem] border px-4 py-3 transition {% if item.is_active %}border-emerald-200 bg-emerald-50 text-slate-900 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white{% else %}border-transparent bg-white/72 text-slate-700 hover:border-slate-200 hover:bg-white dark:bg-slate-900/35 dark:text-slate-200 dark:hover:border-slate-700 dark:hover:bg-slate-900/75{% endif %}"
+                  >
+                    <div class="flex items-center justify-between gap-3">
+                      <div class="min-w-0">
+                        <div class="truncate text-sm font-bold">{{ item.label }}</div>
+                        {% if item.caption %}
+                          <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ item.caption }}</div>
+                        {% endif %}
+                      </div>
+                      {% if item.badge %}
+                        <span class="badge shrink-0">{{ item.badge }}</span>
+                      {% endif %}
+                    </div>
+                  </a>
+                {% empty %}
+                  <div class="rounded-[1.5rem] border border-dashed border-slate-300 px-4 py-6 text-sm leading-7 text-slate-500 dark:border-slate-700 dark:text-slate-300">
+                    برای این workspace هنوز ناوبری اختصاصی تعریف نشده است.
+                  </div>
+                {% endfor %}
+              </nav>
+            </div>
+
+            {% block app_sidebar_extra %}{% endblock %}
+          </div>
+        </aside>
+
+        <div class="min-w-0 space-y-4">
+          {% if app_page_notice %}
+            <div class="rounded-[1.5rem] border border-emerald-200/70 bg-emerald-50/80 px-4 py-3 text-sm leading-7 text-slate-700 shadow-sm shadow-emerald-100/60 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-slate-100">
+              {{ app_page_notice }}
+            </div>
+          {% endif %}
+
+          <div class="{% if app_has_context_panel %}grid gap-4 xl:grid-cols-[minmax(0,1fr)_19rem] xl:items-start{% endif %}">
+            <main class="min-w-0">
+              <div class="panel-soft rounded-[2rem] p-4 sm:p-5 lg:p-6">
+                {% block app_content %}{% endblock %}
+              </div>
+            </main>
+
+            {% if app_has_context_panel %}
+              <aside class="min-w-0">
+                <div class="panel-soft rounded-[2rem] p-4 sm:p-5">
+                  {% block app_context_panel %}{% endblock %}
+                </div>
+              </aside>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "FaralYar Product Copy System"
+  short_description: "سیستم متن‌نویسی محصول، میکروکپی و CTA برای FaralYar"
+  icon:
+    emoji: "✍️"
+  theme_color: "#013366"

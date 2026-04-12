@@ -1,0 +1,37 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+  <div class="glass-card p-6">
+    <h1 class="text-2xl font-black">اشتراک و پرداخت</h1>
+    <div class="mt-6 grid gap-4 lg:grid-cols-3">
+      {% for plan in plans %}
+        <article class="rounded-3xl border border-slate-200 p-5 dark:border-slate-800">
+          <h2 class="text-xl font-black">{{ plan.name }}</h2>
+          <div class="mt-3 text-3xl font-black">{{ plan.price|floatformat:0 }} تومان</div>
+          <ul class="mt-4 space-y-2 text-sm">
+            <li>{{ plan.duration_days }} روز اعتبار</li>
+            <li>{{ plan.token_limit_per_window }} توکن هر بازه</li>
+            <li>ریست هر {{ plan.reset_interval_hours }} ساعت</li>
+          </ul>
+          <a href="{% url 'billing:checkout' plan.slug %}" class="btn-primary mt-5 w-full">خرید پلن</a>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="glass-card mt-6 p-6">
+    <h2 class="text-xl font-black">سفارش‌های من</h2>
+    <div class="mt-4 space-y-3">
+      {% for order in orders %}
+        <div class="mobile-table-card">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <strong>{{ order.plan.name }}</strong>
+            <span class="badge">{{ order.get_status_display }}</span>
+          </div>
+          <div class="mt-2 text-sm text-slate-500">{{ order.amount|floatformat:0 }} تومان • {{ order.created_at|date:"Y/m/d H:i" }}</div>
+        </div>
+      {% empty %}
+        <p class="text-sm text-slate-500">هیچ سفارشی ثبت نشده است.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

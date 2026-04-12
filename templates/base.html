@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="{{ theme_choice }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site_settings.site_name_fa }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ site_settings.tagline }}{% endblock %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              primary: '#28ab88',
+              secondary: '#013366',
+            },
+          },
+          boxShadow: {
+            soft: '0 25px 80px rgba(15, 23, 42, 0.08)',
+          }
+        }
+      }
+    }
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    :root {
+      --brand-primary: {{ site_settings.primary_color|default:'#28ab88' }};
+      --brand-secondary: {{ site_settings.secondary_color|default:'#013366' }};
+    }
+  </style>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <script defer src="{% static 'js/app.js' %}"></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
+  <div class="relative isolate overflow-hidden">
+    <div class="absolute inset-x-0 top-0 -z-10 h-[32rem] bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.2),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.14),transparent_26%),linear-gradient(180deg,rgba(255,255,255,0.66),transparent_80%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.18),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.2),transparent_26%),linear-gradient(180deg,rgba(15,23,42,0.78),transparent_74%)]"></div>
+    <div class="absolute left-0 top-40 -z-10 h-56 w-56 rounded-full bg-brand-secondary/10 blur-3xl dark:bg-brand-secondary/25"></div>
+    <div class="absolute right-0 top-64 -z-10 h-64 w-64 rounded-full bg-brand-primary/10 blur-3xl dark:bg-brand-primary/25"></div>
+    {% if not hide_site_chrome %}{% include 'partials/header.html' %}{% endif %}
+    {% include 'partials/messages.html' %}
+    <main class="{% if not hide_site_chrome %}pb-16{% endif %}">
+      {% block content %}{% endblock %}
+    </main>
+    {% if not hide_site_chrome %}
+      {% include 'partials/footer.html' %}
+      {% include 'partials/mobile_dock.html' %}
+    {% endif %}
+  </div>
+</body>
+</html>

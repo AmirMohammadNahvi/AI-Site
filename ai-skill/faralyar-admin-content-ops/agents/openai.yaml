@@ -1,0 +1,6 @@
+interface:
+  display_name: "FaralYar Admin Content Ops"
+  short_description: "طراحی UX، منطق مدیریت و توسعه قابلیت‌های پنل ادمین FaralYar"
+  icon:
+    emoji: "🛠️"
+  theme_color: "#013366"

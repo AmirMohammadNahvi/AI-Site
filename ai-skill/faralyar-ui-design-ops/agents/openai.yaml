@@ -1,0 +1,6 @@
+interface:
+  display_name: "FaralYar UI Design Ops"
+  short_description: "ممیزی بصری، prompt بازطراحی، و spec فرانت‌اند برای FaralYar"
+  icon:
+    emoji: "🎛️"
+  theme_color: "#28ab88"

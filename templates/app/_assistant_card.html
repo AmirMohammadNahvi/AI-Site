@@ -1,0 +1,148 @@
+<article
+  class="group relative overflow-hidden rounded-[1.7rem] border p-4 transition sm:p-5 {% if assistant.availability_state == 'available' %}border-slate-200/80 bg-white/88 hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-white hover:shadow-sm hover:shadow-emerald-100/60 dark:border-slate-700/70 dark:bg-slate-900/60 dark:hover:border-emerald-500/25 dark:hover:bg-slate-900{% elif assistant.availability_state == 'locked' %}border-amber-200/80 bg-amber-50/70 dark:border-amber-500/20 dark:bg-amber-500/10{% elif assistant.availability_state == 'unavailable' %}border-slate-200/80 bg-slate-50/80 dark:border-slate-700/70 dark:bg-slate-900/55{% elif assistant.availability_state == 'draft' %}border-sky-200/80 bg-sky-50/65 dark:border-sky-500/20 dark:bg-sky-500/10{% elif assistant.availability_state == 'deprecated' %}border-rose-200/80 bg-rose-50/70 dark:border-rose-500/20 dark:bg-rose-500/10{% else %}border-slate-300/80 bg-slate-100/70 dark:border-slate-700/80 dark:bg-slate-900/65{% endif %}"
+>
+  <div class="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_52%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.10),transparent_46%)] opacity-80"></div>
+
+  <div class="relative">
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex min-w-0 items-start gap-3">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.15rem] bg-slate-900 text-sm font-black text-white shadow-sm shadow-slate-900/10 dark:bg-white dark:text-slate-900">
+          {% if assistant.initials %}
+            {{ assistant.initials }}
+          {% elif assistant.name %}
+            {{ assistant.name|slice:":2" }}
+          {% else %}
+            AI
+          {% endif %}
+        </div>
+
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <h3 class="truncate text-sm font-black text-slate-900 dark:text-white sm:text-base">
+              {{ assistant.name|default:"دستیار بدون عنوان" }}
+            </h3>
+            {% if assistant.is_featured or assistant.is_recommended %}
+              <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">پیشنهادی</span>
+            {% endif %}
+          </div>
+
+          <div class="mt-1 flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+            {% if assistant.scope_label %}
+              <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ assistant.scope_label }}</span>
+            {% endif %}
+            {% if assistant.owner_label %}
+              <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ assistant.owner_label }}</span>
+            {% endif %}
+            {% if assistant.workspace_label %}
+              <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ assistant.workspace_label }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="shrink-0">
+        {% if assistant.availability_state == 'available' %}
+          <span class="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">در دسترس</span>
+        {% elif assistant.availability_state == 'locked' %}
+          <span class="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-bold text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">قفل پلن</span>
+        {% elif assistant.availability_state == 'unavailable' %}
+          <span class="rounded-full bg-slate-200 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">خارج از دسترس</span>
+        {% elif assistant.availability_state == 'draft' %}
+          <span class="rounded-full bg-sky-100 px-3 py-1 text-[11px] font-bold text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">پیش‌نویس</span>
+        {% elif assistant.availability_state == 'deprecated' %}
+          <span class="rounded-full bg-rose-100 px-3 py-1 text-[11px] font-bold text-rose-700 dark:bg-rose-500/15 dark:text-rose-300">منقضی/جایگزین‌شده</span>
+        {% else %}
+          <span class="rounded-full bg-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">آرشیوی</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
+      {{ assistant.promise|default:assistant.summary|default:"یک پروفایل کاری قابل‌استفاده‌مجدد برای اجرای منظم‌تر درخواست‌های هوش مصنوعی." }}
+    </p>
+
+    {% if assistant.capability_badges %}
+      <div class="mt-4 flex flex-wrap gap-2">
+        {% for capability in assistant.capability_badges %}
+          <span class="rounded-full border border-slate-200/80 bg-white/80 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/55 dark:text-slate-300">
+            {{ capability.label|default:capability }}
+          </span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="mt-4 rounded-[1.25rem] border border-slate-200/80 bg-white/72 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-950/45">
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">وضعیت استفاده</div>
+          <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">
+            {% if assistant.availability_state == 'available' %}
+              آماده ورود به جزئیات و اجرا
+            {% elif assistant.availability_state == 'locked' %}
+              نیازمند پلن مناسب
+            {% elif assistant.availability_state == 'unavailable' %}
+              در این ورک‌اسپیس فعال نیست
+            {% elif assistant.availability_state == 'draft' %}
+              هنوز برای استفاده عمومی منتشر نشده
+            {% elif assistant.availability_state == 'deprecated' %}
+              برای استفاده جدید پیشنهاد نمی‌شود
+            {% else %}
+              فقط برای مرور سابقه نگه‌داری شده
+            {% endif %}
+          </div>
+          <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">
+            {{ assistant.availability_reason|default:"جزئیات دسترسی و دامنه این دستیار از همین کارت مشخص است." }}
+          </p>
+        </div>
+
+        {% if assistant.plan_label %}
+          <span class="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+            {{ assistant.plan_label }}
+          </span>
+        {% endif %}
+      </div>
+
+      {% if assistant.last_used_label or assistant.updated_label or assistant.usage_hint %}
+        <div class="mt-3 flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+          {% if assistant.last_used_label %}
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ assistant.last_used_label }}</span>
+          {% endif %}
+          {% if assistant.updated_label %}
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ assistant.updated_label }}</span>
+          {% endif %}
+          {% if assistant.usage_hint %}
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ assistant.usage_hint }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="mt-5 flex flex-col gap-2 sm:flex-row">
+      {% if assistant.primary_action_url and not assistant.primary_action_disabled %}
+        <a href="{{ assistant.primary_action_url }}" class="btn-primary w-full sm:w-auto">
+          {{ assistant.primary_action_label|default:"انتخاب دستیار" }}
+        </a>
+      {% else %}
+        <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-slate-100/90 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-500 sm:w-auto">
+          {% if assistant.availability_state == 'locked' %}
+            {{ assistant.primary_action_label|default:"نیازمند ارتقا" }}
+          {% elif assistant.availability_state == 'unavailable' %}
+            {{ assistant.primary_action_label|default:"خارج از دسترس در این ورک‌اسپیس" }}
+          {% elif assistant.availability_state == 'draft' %}
+            {{ assistant.primary_action_label|default:"در انتظار انتشار" }}
+          {% elif assistant.availability_state == 'deprecated' %}
+            {{ assistant.primary_action_label|default:"استفاده از نسخه جدیدتر" }}
+          {% else %}
+            {{ assistant.primary_action_label|default:"فقط برای مشاهده" }}
+          {% endif %}
+        </span>
+      {% endif %}
+
+      {% if assistant.detail_url %}
+        <a href="{{ assistant.detail_url }}" class="btn-secondary w-full sm:w-auto">
+          {{ assistant.detail_label|default:"مشاهده جزئیات" }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</article>

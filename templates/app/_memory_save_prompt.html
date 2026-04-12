@@ -1,0 +1,34 @@
+{% if memory_save_prompt %}
+  <section
+    class="rounded-[1.35rem] border border-slate-200/80 bg-slate-50/78 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-900/55"
+    x-data="{ dismissed: false }"
+    x-cloak
+    x-show="!dismissed"
+  >
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div class="min-w-0">
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">حافظه</div>
+          {% if memory_save_prompt.scope_label %}
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ memory_save_prompt.scope_label }}</span>
+          {% endif %}
+        </div>
+        <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ memory_save_prompt.title|default:"ذخیره در حافظه" }}</div>
+        <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">
+          {{ memory_save_prompt.body|default:"اگر این مورد برای شما یک ترجیح پایدار است، می‌توانید آن را به حافظه بسپارید. در غیر این صورت، صرفاً در همین گفتگو باقی می‌ماند." }}
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+        {% if memory_save_prompt.primary_url %}
+          <a href="{{ memory_save_prompt.primary_url }}" class="btn-secondary !px-4 !py-2 text-xs">
+            {{ memory_save_prompt.primary_label|default:"بررسی در مرکز حافظه" }}
+          </a>
+        {% endif %}
+        <button type="button" class="btn-secondary !px-4 !py-2 text-xs" @click="dismissed = true">
+          {{ memory_save_prompt.dismiss_label|default:"بعداً" }}
+        </button>
+      </div>
+    </div>
+  </section>
+{% endif %}

@@ -1,0 +1,35 @@
+[11/Apr/2026 18:03:07] "GET / HTTP/1.1" 200 19676
+[11/Apr/2026 18:03:07,550] - Broken pipe from ('127.0.0.1', 56471)
+[11/Apr/2026 18:03:19] "GET / HTTP/1.1" 200 19676
+[11/Apr/2026 18:03:19] "GET /static/css/app.css HTTP/1.1" 200 17291
+[11/Apr/2026 18:03:19] "GET /static/branding/farayarl-white.png HTTP/1.1" 200 105377
+[11/Apr/2026 18:03:19] "GET /static/branding/faralyar-main.png HTTP/1.1" 200 507399
+[11/Apr/2026 18:03:21] "GET /static/js/app.js HTTP/1.1" 200 434
+Not Found: /favicon.ico
+[11/Apr/2026 18:03:22] "GET /favicon.ico HTTP/1.1" 404 4124
+[11/Apr/2026 18:03:22] "GET /pricing/ HTTP/1.1" 200 11137
+[11/Apr/2026 18:03:23] "GET /accounts/login/ HTTP/1.1" 200 10697
+[11/Apr/2026 18:03:23] "GET /accounts/otp/ HTTP/1.1" 200 10329
+[11/Apr/2026 18:03:24] "GET /chat/ HTTP/1.1" 200 11130
+[11/Apr/2026 18:03:25] "GET /dashboard/ HTTP/1.1" 302 0
+[11/Apr/2026 18:03:25] "GET /accounts/login/?next=/dashboard/ HTTP/1.1" 200 10697
+[11/Apr/2026 18:03:25] "GET / HTTP/1.1" 200 19676
+[11/Apr/2026 18:03:25] "GET /static/css/app.css HTTP/1.1" 200 17291
+[11/Apr/2026 18:03:25] "GET /static/branding/farayarl-white.png HTTP/1.1" 200 105377
+[11/Apr/2026 18:03:25] "GET /static/branding/faralyar-main.png HTTP/1.1" 200 507399
+[11/Apr/2026 18:03:26] "GET /static/js/app.js HTTP/1.1" 200 434
+[11/Apr/2026 18:03:28] "GET /pricing/ HTTP/1.1" 200 11137
+[11/Apr/2026 18:03:29] "GET /accounts/login/ HTTP/1.1" 200 10697
+[11/Apr/2026 18:03:29] "GET /accounts/otp/ HTTP/1.1" 200 10329
+[11/Apr/2026 18:03:30] "GET /chat/ HTTP/1.1" 200 11130
+[11/Apr/2026 18:03:30] "GET /dashboard/ HTTP/1.1" 302 0
+[11/Apr/2026 18:03:30] "GET /accounts/login/?next=/dashboard/ HTTP/1.1" 200 10697
+Method Not Allowed (GET): /theme/
+[11/Apr/2026 18:03:44] "GET /theme/ HTTP/1.1" 405 0
+[11/Apr/2026 18:03:44] "GET /accounts/personalization/ HTTP/1.1" 302 0
+[11/Apr/2026 18:03:44,679] - Broken pipe from ('127.0.0.1', 56518)
+[11/Apr/2026 18:03:44] "GET /accounts/logout/ HTTP/1.1" 302 0
+[11/Apr/2026 18:03:44] "GET /billing/verify/ HTTP/1.1" 302 0
+[11/Apr/2026 18:03:44,756] - Broken pipe from ('127.0.0.1', 56519)
+[11/Apr/2026 18:03:44,762] - Broken pipe from ('127.0.0.1', 56520)
+[11/Apr/2026 18:03:44,766] - Broken pipe from ('127.0.0.1', 56521)

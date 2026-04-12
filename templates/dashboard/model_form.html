@@ -1,0 +1,20 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block dashboard_content %}
+  <div class="glass-card p-6">
+    <h1 class="text-2xl font-black">{% if instance %}ویرایش مدل{% else %}ایجاد مدل{% endif %}</h1>
+    <form method="post" class="mt-6 grid gap-4 lg:grid-cols-2">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="{% if field.name in 'system_prompt,summary,description,limitations,headers' %}lg:col-span-2{% endif %}">
+          <label class="mb-2 block text-sm font-bold">{{ field.label }}</label>
+          {{ field }}
+          {{ field.errors }}
+        </div>
+      {% endfor %}
+      <div class="lg:col-span-2">
+        <button class="btn-primary w-full sm:w-auto" type="submit">ذخیره مدل</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

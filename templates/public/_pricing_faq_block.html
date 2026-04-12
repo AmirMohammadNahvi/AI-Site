@@ -1,0 +1,66 @@
+<section id="pricing-faq" class="section-shell pt-14">
+  <div class="grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+    <div class="panel-soft p-6 sm:p-8">
+      <span class="badge">{{ faq_intro_badge|default:'پرسش‌های رایج' }}</span>
+      <h2 class="mt-4 text-2xl font-black text-slate-950 dark:text-white sm:text-3xl">
+        {{ faq_intro_title|default:'سوال‌هایی که معمولاً پیش از انتخاب پلن مطرح می‌شوند' }}
+      </h2>
+      <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
+        {{ faq_intro_body|default:'پاسخ‌ها کوتاه، روشن و تا حد ممکن نزدیک به واقعیت استفاده نوشته شده‌اند؛ تا صفحه قیمت‌گذاری حس اطمینان بدهد و تصمیم‌گیری را راحت‌تر کند.' }}
+      </p>
+
+      {% if faq_support_note %}
+        <div class="mt-6 rounded-[1.5rem] border border-slate-200/80 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-900/50">
+          <div class="text-sm font-black text-slate-900 dark:text-white">{{ faq_support_note.title }}</div>
+          <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ faq_support_note.body }}</p>
+          {% if faq_support_note.cta_label %}
+            <a href="{{ faq_support_note.cta_url|default:'#pricing-plans' }}" class="mt-4 inline-flex text-sm font-bold text-brand-primary">
+              {{ faq_support_note.cta_label }}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="space-y-3">
+      {% for item in faq_items %}
+        <section class="panel-soft overflow-hidden" x-data="{ open: {% if forloop.first %}true{% else %}false{% endif %} }">
+          <button
+            type="button"
+            class="flex w-full items-center justify-between gap-4 px-5 py-5 text-right sm:px-6"
+            @click="open = !open"
+            :aria-expanded="open.toString()"
+          >
+            <span class="text-sm font-black leading-7 text-slate-900 dark:text-white sm:text-base">{{ item.question }}</span>
+            <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-white/80 text-slate-500 transition dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-300" :class="open ? 'rotate-180' : ''">
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"></path>
+              </svg>
+            </span>
+          </button>
+
+          <div
+            x-show="open"
+            x-cloak
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-2"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-1"
+            class="border-t border-slate-200/80 px-5 py-5 dark:border-slate-700 sm:px-6"
+          >
+            <p class="text-sm leading-8 text-slate-600 dark:text-slate-300">{{ item.answer }}</p>
+            {% if item.note %}
+              <p class="mt-3 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ item.note }}</p>
+            {% endif %}
+          </div>
+        </section>
+      {% empty %}
+        <div class="panel-soft p-6 text-sm leading-7 text-slate-600 dark:text-slate-300">
+          هنوز پرسش متداولی برای این صفحه ثبت نشده است.
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

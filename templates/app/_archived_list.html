@@ -1,0 +1,45 @@
+<section class="space-y-4">
+  <div>
+    <h2 class="text-base font-black text-slate-900 dark:text-white">آرشیو گفتگوها</h2>
+    <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
+      گفتگوهای آرشیوشده فقط برای مرور و تداوم سابقه نگه داشته می‌شوند.
+    </p>
+  </div>
+
+  {% if archived_conversation_items %}
+    <div class="space-y-2">
+      {% for item in archived_conversation_items %}
+        <article class="rounded-[1.4rem] border px-4 py-4 {% if item.is_active or item.id == active_archived_conversation_id %}border-amber-200 bg-amber-50/80 dark:border-amber-500/20 dark:bg-amber-500/10{% else %}border-slate-200/80 bg-white/78 dark:border-slate-700/70 dark:bg-slate-900/55{% endif %}">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-2">
+                <a href="{{ item.url|default:'#' }}" class="truncate text-sm font-black text-slate-900 hover:text-slate-700 dark:text-white dark:hover:text-slate-200">
+                  {{ item.title|default:"گفتگوی بدون عنوان" }}
+                </a>
+                <span class="rounded-full bg-amber-100 px-2 py-1 text-[10px] font-bold text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">فقط خواندنی</span>
+              </div>
+
+              <div class="mt-2 flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+                {% if item.space_name %}<span>{{ item.space_name }}</span>{% endif %}
+                {% if item.assistant_label %}<span>{{ item.assistant_label }}</span>{% endif %}
+                {% if item.archived_label %}<span>{{ item.archived_label }}</span>{% endif %}
+              </div>
+            </div>
+
+            {% if item.restore_url %}
+              <form method="post" action="{{ item.restore_url }}" class="shrink-0">
+                {% csrf_token %}
+                {% if archived_list_next_url or request.get_full_path %}
+                  <input type="hidden" name="next" value="{{ archived_list_next_url|default:request.get_full_path }}">
+                {% endif %}
+                <button type="submit" class="btn-secondary !px-4 !py-2 text-xs">بازگردانی</button>
+              </form>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    {% include 'app/_empty_state.html' with empty_title=archived_empty_title|default:"آرشیو این بخش خالی است" empty_body=archived_empty_body|default:"هنوز گفتگوی آرشیوشده‌ای برای نمایش وجود ندارد." empty_hint=archived_empty_hint|default:"وقتی گفتگویی از جریان فعال خارج شود، برای مرور بعدی در این بخش قرار می‌گیرد." empty_compact=True %}
+  {% endif %}
+</section>

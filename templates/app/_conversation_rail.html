@@ -1,0 +1,204 @@
+<section
+  class="space-y-4"
+  x-data="{
+    sheetOpen: false,
+    query: '',
+    matchesConversation(title, spaceName, projectName) {
+      const needle = this.query.trim().toLowerCase();
+      if (!needle) return true;
+      return `${title} ${spaceName} ${projectName}`.toLowerCase().includes(needle);
+    }
+  }"
+  @keydown.escape.window="sheetOpen = false"
+>
+  <div class="flex items-start justify-between gap-3">
+    <div class="min-w-0">
+      <h2 class="text-base font-black text-slate-900 dark:text-white sm:text-lg">
+        {{ conversation_rail_title|default:"گفتگوهای اخیر" }}
+      </h2>
+      <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
+        {{ conversation_rail_caption|default:"گفتگوهای اخیر را سریع پیدا کنید و از همان context ادامه دهید." }}
+      </p>
+    </div>
+
+    {% if archived_conversations_url %}
+      <a href="{{ archived_conversations_url }}" class="hidden rounded-full border border-slate-200/80 bg-white/80 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/60 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white sm:inline-flex">
+        {% if archived_conversation_count %}
+          آرشیو {{ archived_conversation_count }}
+        {% else %}
+          آرشیو
+        {% endif %}
+      </a>
+    {% endif %}
+  </div>
+
+  <div class="lg:hidden">
+    <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55">
+      <div class="flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">دسترسی سریع</div>
+          <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">
+            {% if conversation_items %}
+              {{ conversation_items|length }} گفتگو در دسترس است
+            {% else %}
+              هنوز گفتگویی ثبت نشده است
+            {% endif %}
+          </div>
+        </div>
+        <button type="button" class="btn-secondary !px-4 !py-2 text-xs" @click="sheetOpen = true">
+          {{ conversation_rail_mobile_label|default:"لیست گفتگوها" }}
+        </button>
+      </div>
+
+      {% if conversation_items %}
+        <div class="mt-4 space-y-2">
+          {% for item in conversation_items|slice:":2" %}
+            <a
+              href="{{ item.url|default:'#' }}"
+              class="block rounded-[1.2rem] border px-3 py-3 transition {% if item.is_active or item.id == active_conversation_id %}border-emerald-200 bg-emerald-50 dark:border-emerald-500/25 dark:bg-emerald-500/10{% else %}border-slate-200/80 bg-slate-50/80 dark:border-slate-700/70 dark:bg-slate-900/70{% endif %}"
+            >
+              <div class="truncate text-sm font-bold text-slate-900 dark:text-white">{{ item.title|default:"گفتگوی بدون عنوان" }}</div>
+              <div class="mt-1 flex flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+                {% if item.space_name %}<span>{{ item.space_name }}</span>{% endif %}
+                {% if item.updated_label %}<span>{{ item.updated_label }}</span>{% endif %}
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      {% elif archived_conversations_url %}
+        <div class="mt-4">
+          <a href="{{ archived_conversations_url }}" class="flex items-center justify-between gap-3 rounded-[1.2rem] border border-dashed border-slate-300 px-4 py-3 text-sm font-bold text-slate-600 dark:border-slate-700 dark:text-slate-300">
+            <span>مشاهده آرشیو گفتگوها</span>
+            {% if archived_conversation_count %}
+              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ archived_conversation_count }}</span>
+            {% endif %}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="hidden lg:block">
+    <div class="rounded-[1.8rem] border border-slate-200/80 bg-white/84 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55">
+      <div class="mb-4">
+        <input
+          type="search"
+          x-model="query"
+          class="input !rounded-[1.2rem]"
+          placeholder="{{ conversation_search_placeholder|default:'جست‌وجو در گفتگوها' }}"
+        >
+      </div>
+
+      {% if conversation_items %}
+        <div class="space-y-2">
+          {% for item in conversation_items %}
+            <a
+              href="{{ item.url|default:'#' }}"
+              x-show="matchesConversation('{{ item.title|default:'گفتگوی بدون عنوان'|escapejs }}', '{{ item.space_name|default:''|escapejs }}', '{{ item.project_name|default:''|escapejs }}')"
+              class="block rounded-[1.25rem] border px-3 py-3 transition {% if item.is_active or item.id == active_conversation_id %}border-emerald-200 bg-emerald-50 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10{% else %}border-slate-200/80 bg-slate-50/80 hover:border-slate-300 hover:bg-white dark:border-slate-700/70 dark:bg-slate-900/70 dark:hover:border-slate-600 dark:hover:bg-slate-900{% endif %}"
+            >
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <div class="truncate text-sm font-black text-slate-900 dark:text-white">{{ item.title|default:"گفتگوی بدون عنوان" }}</div>
+                  <div class="mt-1 flex flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+                    {% if item.space_name %}<span>{{ item.space_name }}</span>{% endif %}
+                    {% if item.project_name %}<span>{{ item.project_name }}</span>{% endif %}
+                    {% if item.updated_label %}<span>{{ item.updated_label }}</span>{% endif %}
+                  </div>
+                </div>
+                {% if item.is_active or item.id == active_conversation_id %}
+                  <span class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">فعال</span>
+                {% endif %}
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        {% include 'app/_empty_state.html' with empty_title=conversation_empty_title|default:"هنوز گفتگویی ندارید" empty_body=conversation_empty_body|default:"اولین گفتگو را از همین فضا شروع کنید تا سابقه کار و اجرای شما در همین context شکل بگیرد." empty_hint=conversation_empty_hint|default:"گفتگوها به هر اسپیس متصل هستند؛ برای شلوغ نشدن، هر موضوع را در اسپیس خودش شروع کنید." empty_compact=True %}
+      {% endif %}
+
+      {% if archived_conversations_url %}
+        <div class="mt-4 border-t border-slate-200/80 pt-4 dark:border-slate-700/70">
+          <a href="{{ archived_conversations_url }}" class="flex items-center justify-between gap-3 rounded-[1.2rem] border border-dashed border-slate-300 px-4 py-3 text-sm font-bold text-slate-600 transition hover:border-slate-400 hover:text-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white">
+            <span>ورود به آرشیو گفتگوها</span>
+            {% if archived_conversation_count %}
+              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ archived_conversation_count }}</span>
+            {% endif %}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="fixed inset-0 z-[70] bg-slate-950/45 backdrop-blur-sm lg:hidden" x-cloak x-show="sheetOpen" @click="sheetOpen = false"></div>
+
+  <div
+    class="fixed inset-x-3 bottom-3 z-[80] rounded-[2rem] border border-slate-200/90 bg-white/96 p-3 shadow-2xl shadow-slate-900/15 backdrop-blur-xl dark:border-slate-700/70 dark:bg-slate-950/94 lg:hidden"
+    x-cloak
+    x-show="sheetOpen"
+    x-transition:enter="transition duration-200 ease-out"
+    x-transition:enter-start="translate-y-4 opacity-0"
+    x-transition:enter-end="translate-y-0 opacity-100"
+  >
+    <div class="mx-auto mb-3 h-1.5 w-14 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+
+    <div class="flex items-start justify-between gap-3 px-1 pb-3">
+      <div class="min-w-0">
+        <div class="text-sm font-black text-slate-900 dark:text-white">{{ conversation_rail_title|default:"گفتگوهای اخیر" }}</div>
+        <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ conversation_rail_caption|default:"گفتگوهای اخیر را سریع پیدا کنید و از همان context ادامه دهید." }}</div>
+      </div>
+      <button type="button" class="icon-btn shrink-0" @click="sheetOpen = false" aria-label="بستن لیست گفتگوها">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M6 6l8 8M14 6l-8 8" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="px-1 pb-3">
+      <input
+        type="search"
+        x-model="query"
+        class="input !rounded-[1.2rem]"
+        placeholder="{{ conversation_search_placeholder|default:'جست‌وجو در گفتگوها' }}"
+      >
+    </div>
+
+    <div class="max-h-[54vh] space-y-2 overflow-y-auto px-1 pb-1">
+      {% if conversation_items %}
+        {% for item in conversation_items %}
+          <a
+            href="{{ item.url|default:'#' }}"
+            x-show="matchesConversation('{{ item.title|default:'گفتگوی بدون عنوان'|escapejs }}', '{{ item.space_name|default:''|escapejs }}', '{{ item.project_name|default:''|escapejs }}')"
+            class="block rounded-[1.25rem] border px-3 py-3 transition {% if item.is_active or item.id == active_conversation_id %}border-emerald-200 bg-emerald-50 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10{% else %}border-slate-200/80 bg-white/78 dark:border-slate-700/70 dark:bg-slate-900/70{% endif %}"
+            @click="sheetOpen = false"
+          >
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <div class="truncate text-sm font-black text-slate-900 dark:text-white">{{ item.title|default:"گفتگوی بدون عنوان" }}</div>
+                <div class="mt-1 flex flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+                  {% if item.space_name %}<span>{{ item.space_name }}</span>{% endif %}
+                  {% if item.project_name %}<span>{{ item.project_name }}</span>{% endif %}
+                  {% if item.updated_label %}<span>{{ item.updated_label }}</span>{% endif %}
+                </div>
+              </div>
+              {% if item.is_active or item.id == active_conversation_id %}
+                <span class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">فعال</span>
+              {% endif %}
+            </div>
+          </a>
+        {% endfor %}
+      {% else %}
+        {% include 'app/_empty_state.html' with empty_title=conversation_empty_title|default:"هنوز گفتگویی ندارید" empty_body=conversation_empty_body|default:"اولین گفتگو را از همین فضا شروع کنید تا سابقه کار و اجرای شما در همین context شکل بگیرد." empty_hint=conversation_empty_hint|default:"گفتگوها به هر اسپیس متصل هستند؛ برای شلوغ نشدن، هر موضوع را در اسپیس خودش شروع کنید." empty_compact=True %}
+      {% endif %}
+
+      {% if archived_conversations_url %}
+        <a href="{{ archived_conversations_url }}" class="flex items-center justify-between gap-3 rounded-[1.25rem] border border-dashed border-slate-300 px-4 py-3 text-sm font-bold text-slate-600 dark:border-slate-700 dark:text-slate-300">
+          <span>ورود به آرشیو گفتگوها</span>
+          {% if archived_conversation_count %}
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ archived_conversation_count }}</span>
+          {% endif %}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>

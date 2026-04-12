@@ -1,0 +1,475 @@
+{% extends 'base.html' %}
+{% load site_text %}
+
+{% block title %}چت هوش مصنوعی | {{ site_settings.site_name_fa }}{% endblock %}
+
+{% block content %}
+  <section
+    class="min-h-screen"
+    x-data="{
+      sidebarOpen: window.innerWidth >= 1024,
+      settingsOpen: false,
+      settingsTab: 'general',
+      userMenuOpen: false,
+      modelMenuOpen: false,
+      historyQuery: '',
+      selectedModel: '{{ selected_model_id }}',
+      models: [{% for model in active_models %}{ id: '{{ model.id }}', name: '{{ model.name|escapejs }}', provider: '{{ model.provider_label|escapejs }}', summary: '{{ model.summary|default:''|truncatechars:140|escapejs }}' }{% if not forloop.last %},{% endif %}{% endfor %}],
+      syncModel(id) {
+        this.selectedModel = id;
+        if (this.$refs.modelSelect) this.$refs.modelSelect.value = id;
+        this.modelMenuOpen = false;
+      },
+      matchesHistory(title, modelName) {
+        const needle = this.historyQuery.trim().toLowerCase();
+        if (!needle) return true;
+        return (`${title} ${modelName}`).toLowerCase().includes(needle);
+      },
+      openTab(tab) {
+        this.settingsTab = tab;
+        this.settingsOpen = true;
+        this.userMenuOpen = false;
+      },
+      get currentModel() {
+        return this.models.find((model) => model.id === this.selectedModel) || null;
+      }
+    }"
+    x-init="if (!selectedModel && models.length) { syncModel(models[0].id) }; window.addEventListener('resize', () => { if (window.innerWidth >= 1024) { sidebarOpen = true } })"
+  >
+    <div class="grid min-h-screen lg:grid-cols-[22rem_minmax(0,1fr)]">
+      <div class="fixed inset-0 z-40 bg-slate-950/45 lg:hidden" x-cloak x-show="sidebarOpen" @click="sidebarOpen = false"></div>
+
+      <aside class="chat-app-sidebar fixed inset-y-0 right-0 z-50 flex w-[88vw] max-w-sm flex-col lg:static lg:z-auto lg:w-auto" x-cloak x-show="sidebarOpen" x-transition:enter="transition duration-200" x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100">
+        <div class="flex items-center justify-between gap-3 border-b border-slate-200/70 px-4 py-4 dark:border-slate-700/70">
+          <div>
+            <div class="text-lg font-black">گفتگوها</div>
+            <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">تاریخچه، جست‌وجو و شروع سریع</div>
+          </div>
+          <button type="button" class="icon-btn lg:hidden" @click="sidebarOpen = false">✕</button>
+        </div>
+
+        <div class="border-b border-slate-200/70 px-4 py-4 dark:border-slate-700/70">
+          <a href="{% url 'ai_platform:chat' %}" class="btn-primary w-full">چت جدید</a>
+          <div class="mt-3">
+            <input type="search" x-model="historyQuery" class="input" placeholder="جست‌وجو بین چت‌های قبلی">
+          </div>
+        </div>
+
+        <div class="sidebar-scroll flex-1 overflow-y-auto px-3 py-3">
+          <div class="space-y-2">
+            {% for item in conversations %}
+              <div x-show="matchesHistory('{{ item.title|default:'گفتگوی بدون عنوان'|escapejs }}', '{{ item.model.name|escapejs }}')" class="conversation-row">
+                <a href="{% url 'ai_platform:chat_detail' item.id %}" class="conversation-link {% if conversation and item.id == conversation.id %}active{% endif %}">
+                  <div class="min-w-0">
+                    <div class="truncate text-sm font-bold">{{ item.title|default:"گفتگوی بدون عنوان" }}</div>
+                    <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{{ item.model.name }}</div>
+                  </div>
+                  <div class="mt-2 text-[10px] text-slate-400">{{ item.updated_at|date:"m/d H:i" }}</div>
+                </a>
+                {% if request.user.is_authenticated %}
+                  <form method="post" action="{% url 'ai_platform:chat_archive' item.id %}" class="shrink-0">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" class="icon-btn !h-10 !w-10" title="آرشیو گفتگو">⌁</button>
+                  </form>
+                {% endif %}
+              </div>
+            {% empty %}
+              <div class="rounded-2xl border border-dashed border-slate-300 px-4 py-6 text-center text-sm text-slate-500 dark:border-slate-700 dark:text-slate-300">
+                هنوز گفتگویی شروع نشده است.
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </aside>
+
+      <div class="flex min-h-screen min-w-0 flex-col">
+        <header class="chat-top-shell">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <button type="button" class="icon-btn" @click="sidebarOpen = !sidebarOpen" title="باز و بسته کردن سایدبار">☰</button>
+              {% if conversation and request.user.is_authenticated %}
+                <form method="post" action="{% url 'ai_platform:chat_archive' conversation.id %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="next" value="{% url 'ai_platform:chat' %}">
+                  <button type="submit" class="icon-btn !w-auto gap-2 px-3 text-xs font-bold" title="آرشیو گفتگو">آرشیو</button>
+                </form>
+              {% endif %}
+              <div class="relative">
+                <button type="button" class="chat-toolbar-btn" @click="modelMenuOpen = !modelMenuOpen; userMenuOpen = false">
+                  <div class="text-right">
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400">مدل فعال</div>
+                    <div class="mt-1 text-sm font-bold" x-text="currentModel ? currentModel.name : 'بدون مدل'"></div>
+                  </div>
+                  <span class="text-slate-400">▾</span>
+                </button>
+
+                <div class="model-dropdown" x-cloak x-show="modelMenuOpen" @click.outside="modelMenuOpen = false">
+                  <div class="space-y-2">
+                    {% for model in active_models %}
+                      <button type="button" class="model-option" :class="{ 'active': selectedModel === '{{ model.id }}' }" @click="syncModel('{{ model.id }}')">
+                        <div class="flex items-start justify-between gap-3">
+                          <div class="min-w-0 text-right">
+                            <div class="truncate text-sm font-bold">{{ model.name }}</div>
+                            <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{{ model.provider_label }}</div>
+                          </div>
+                          {% if model.is_featured %}<span class="badge">منتخب</span>{% endif %}
+                        </div>
+                        <div class="mt-2 text-right text-xs leading-6 text-slate-600 dark:text-slate-300">{{ model.summary|default:"مناسب برای پاسخ سریع و تجربه روان."|truncatechars:82 }}</div>
+                      </button>
+                    {% empty %}
+                      <div class="rounded-2xl border border-dashed border-slate-300 px-4 py-6 text-center text-sm text-slate-500 dark:border-slate-700 dark:text-slate-300">
+                        هنوز مدلی فعال نشده است.
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <div class="relative">
+                <button type="button" class="chat-avatar-btn" @click="userMenuOpen = !userMenuOpen; modelMenuOpen = false">
+                  {% if request.user.is_authenticated %}
+                    <span>{{ request.user.full_name|slice:":1" }}</span>
+                  {% else %}
+                    <span>؟</span>
+                  {% endif %}
+                </button>
+
+                <div class="user-menu-card" x-cloak x-show="userMenuOpen" @click.outside="userMenuOpen = false">
+                  {% if request.user.is_authenticated %}
+                    <div class="border-b border-slate-200/70 px-4 py-4 dark:border-slate-700/70">
+                      <div class="text-sm font-black">{{ request.user.full_name }}</div>
+                      <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ request.user.email }}</div>
+                    </div>
+                    <div class="grid gap-2 p-3">
+                      <a href="{% url 'core:home' %}" class="user-menu-link">خانه</a>
+                      <a href="{% url 'core:pricing' %}" class="user-menu-link">خرید پلن</a>
+                      <button type="button" class="user-menu-link text-right" @click="openTab('general')">تنظیمات</button>
+                      <button type="button" class="user-menu-link text-right" @click="openTab('personalization')">شخصی‌سازی</button>
+                      <form method="post" action="{% url 'accounts:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="user-menu-link w-full text-right text-rose-600">خروج</button>
+                      </form>
+                    </div>
+                  {% else %}
+                    <div class="grid gap-2 p-3">
+                      <a href="{% url 'core:home' %}" class="user-menu-link">خانه</a>
+                      <a href="{% url 'accounts:login' %}" class="user-menu-link">ورود</a>
+                      <a href="{% url 'accounts:signup' %}" class="user-menu-link">شروع رایگان</a>
+                      <a href="{% url 'core:pricing' %}" class="user-menu-link">خرید پلن</a>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="chat-thread-area">
+          {% if conversation %}
+            <div class="mx-auto flex w-full max-w-4xl flex-col gap-5 px-4 py-6 sm:px-6">
+              {% for message in conversation.messages.all %}
+                <article class="{% if message.role == 'assistant' %}mr-auto max-w-[94%] sm:max-w-[80%]{% else %}ml-auto max-w-[94%] sm:max-w-[75%]{% endif %}">
+                  <div class="{% if message.role == 'assistant' %}chat-message assistant{% else %}chat-message user{% endif %}">
+                    <div class="text-[11px] opacity-60">{{ message.get_role_display }}</div>
+                    <div class="mt-2 whitespace-pre-line">{{ message.content }}</div>
+                    {% if message.attachment %}
+                      <a href="{{ message.attachment.url }}" class="mt-3 inline-flex text-xs font-bold underline">فایل پیوست</a>
+                    {% endif %}
+                  </div>
+                </article>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="mx-auto flex h-full w-full max-w-4xl flex-col items-center justify-center px-6 py-12 text-center">
+              <div class="chat-empty-mark">
+                <div class="chat-empty-core"></div>
+                <div class="chat-empty-ring ring-one"></div>
+                <div class="chat-empty-ring ring-two"></div>
+              </div>
+              <h1 class="mt-8 text-2xl font-black sm:text-3xl">از همین‌جا گفتگو را شروع کن</h1>
+              <p class="mt-4 max-w-2xl text-sm leading-8 text-slate-600 dark:text-slate-300">
+                یک مدل انتخاب کن، درخواستت را بنویس و اگر لازم است فایل یا تصویر ضمیمه کن. کل صفحه برای تمرکز روی گفتگو طراحی شده است.
+              </p>
+              <div class="mt-6 flex flex-wrap justify-center gap-2">
+                <button type="button" class="prompt-chip" @click="$refs.promptField.value = 'این فایل را برای جلسه فردا خلاصه کن.'; $refs.promptField.focus()">خلاصه‌سازی</button>
+                <button type="button" class="prompt-chip" @click="$refs.promptField.value = 'این متن را رسمی‌تر و کوتاه‌تر بازنویسی کن.'; $refs.promptField.focus()">بازنویسی</button>
+                <button type="button" class="prompt-chip" @click="$refs.promptField.value = 'این موضوع را مرحله‌به‌مرحله تحلیل کن.'; $refs.promptField.focus()">تحلیل</button>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="chat-composer-shell">
+          <form method="post" enctype="multipart/form-data" class="mx-auto grid w-full max-w-4xl gap-3">
+            {% csrf_token %}
+            {{ form.conversation_id }}
+            <div class="hidden">{{ form.model }}</div>
+
+            <div class="chat-composer-card">
+              <div class="rounded-[1.5rem] border border-slate-200 bg-white px-4 py-4 dark:border-slate-700 dark:bg-slate-900/70">
+                {{ form.prompt }}
+              </div>
+              {{ form.prompt.errors }}
+
+              <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex flex-wrap items-center gap-3">
+                  <div class="chat-inline-meta">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400">مدل</span>
+                    <span class="text-sm font-bold" x-text="currentModel ? currentModel.name : 'بدون مدل'"></span>
+                  </div>
+                  <div class="chat-inline-meta">
+                    <label class="cursor-pointer text-sm font-bold">
+                      <span class="text-[11px] text-slate-500 dark:text-slate-400">فایل</span>
+                      {{ form.attachment }}
+                    </label>
+                  </div>
+                </div>
+                <button class="btn-primary w-full sm:w-auto" type="submit">ارسال پیام</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    {% if request.user.is_authenticated %}
+      <div class="fixed inset-0 z-[70] bg-slate-950/45 backdrop-blur-sm" x-cloak x-show="settingsOpen" @click="settingsOpen = false"></div>
+
+      <div class="fixed inset-x-3 top-4 z-[80] mx-auto max-h-[92vh] w-full max-w-5xl overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white shadow-2xl shadow-slate-900/15 dark:border-slate-700 dark:bg-slate-900" x-cloak x-show="settingsOpen" @click.outside="settingsOpen = false">
+        <div class="flex items-center justify-between gap-3 border-b border-slate-200/80 px-5 py-4 dark:border-slate-700/70">
+          <div>
+            <div class="text-xl font-black">حساب کاربری و تنظیمات</div>
+            <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">مدیریت شخصی‌سازی، پلن، آرشیو گفتگو و سوالات متداول</div>
+          </div>
+          <button type="button" class="icon-btn" @click="settingsOpen = false">✕</button>
+        </div>
+
+        <div class="grid max-h-[calc(92vh-5rem)] min-h-[32rem] lg:grid-cols-[15rem_minmax(0,1fr)]">
+          <aside class="border-b border-slate-200/80 p-4 dark:border-slate-700/70 lg:border-b-0 lg:border-l">
+            <div class="grid gap-2">
+              <button type="button" class="settings-tab-btn" :class="{ 'active': settingsTab === 'general' }" @click="settingsTab = 'general'">تنظیمات کلی</button>
+              <button type="button" class="settings-tab-btn" :class="{ 'active': settingsTab === 'personalization' }" @click="settingsTab = 'personalization'">شخصی‌سازی</button>
+              <button type="button" class="settings-tab-btn" :class="{ 'active': settingsTab === 'plan' }" @click="settingsTab = 'plan'">وضعیت پلن</button>
+              <button type="button" class="settings-tab-btn" :class="{ 'active': settingsTab === 'faq' }" @click="settingsTab = 'faq'">سوالات متداول</button>
+            </div>
+          </aside>
+
+          <div class="sidebar-scroll overflow-y-auto p-5">
+            <section x-show="settingsTab === 'general'" x-cloak class="space-y-6">
+              <div>
+                <h2 class="text-lg font-black">تنظیمات کلی</h2>
+                <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">مدیریت گفت‌وگوهای آرشیو شده، حذف همه گفتگوها و خروج از همه دستگاه‌ها.</p>
+              </div>
+
+              <div class="settings-section-card">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <div class="font-black">گفت‌و‌گوهای آرشیو شده</div>
+                    <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">مشاهده و مدیریت گفت‌و‌گوهای آرشیو شده</div>
+                  </div>
+                  <span class="badge">{{ archived_conversations|length }} مورد</span>
+                </div>
+                <div class="mt-4 grid gap-3">
+                  {% for item in archived_conversations %}
+                    <div class="rounded-2xl border border-slate-200/80 p-4 dark:border-slate-700/70">
+                      <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                          <div class="font-bold">{{ item.title|default:"گفتگوی بدون عنوان" }}</div>
+                          <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ item.model.name }} • {{ item.updated_at|date:"Y/m/d H:i" }}</div>
+                        </div>
+                        <div class="flex gap-2">
+                          <form method="post" action="{% url 'ai_platform:chat_restore' item.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{% url 'ai_platform:chat' %}">
+                            <button type="submit" class="btn-secondary !px-4 !py-2 text-xs">بازگردانی</button>
+                          </form>
+                          <form method="post" action="{% url 'ai_platform:chat_delete' item.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{% url 'ai_platform:chat' %}">
+                            <button type="submit" class="btn-secondary !px-4 !py-2 text-xs text-rose-600">حذف</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  {% empty %}
+                    <div class="rounded-2xl border border-dashed border-slate-300 px-4 py-6 text-sm text-slate-500 dark:border-slate-700 dark:text-slate-300">آرشیوی برای نمایش وجود ندارد.</div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="settings-section-card">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <div class="font-black">حذف همه گفت‌و‌گوها</div>
+                    <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">حذف تمام گفتگوهای شما</div>
+                  </div>
+                  <form method="post" action="{% url 'accounts:settings_action' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="delete_all_conversations">
+                    <input type="hidden" name="next" value="{% url 'ai_platform:chat' %}">
+                    <button type="submit" class="btn-secondary text-rose-600">حذف همه</button>
+                  </form>
+                </div>
+              </div>
+
+              <div class="settings-section-card">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <div class="font-black">خروج از همه دستگاه‌ها</div>
+                    <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">خروج از حساب کاربری در تمام دستگاه‌های متصل</div>
+                  </div>
+                  <form method="post" action="{% url 'accounts:settings_action' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="logout_all_devices">
+                    <button type="submit" class="btn-secondary">خروج سراسری</button>
+                  </form>
+                </div>
+              </div>
+            </section>
+
+            <section x-show="settingsTab === 'personalization'" x-cloak class="space-y-6">
+              <div>
+                <h2 class="text-lg font-black">شخصی‌سازی</h2>
+                <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">شخصیت مورد نظر، لحن، اطلاعات درباره شما و حافظه آزمایشی را در چارچوب FaralYar تنظیم کن.</p>
+              </div>
+
+              <form method="post" action="{% url 'accounts:personalization' %}" class="grid gap-5">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{% url 'ai_platform:chat' %}">
+
+                <div class="settings-section-card">
+                  <div class="font-black">انتخاب شخصیت</div>
+                  <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">شخصیت مورد نظر خود را انتخاب کنید</p>
+                  <div class="mt-4">
+                    <label class="mb-2 block text-sm font-bold">{{ personalization_form.persona_choice.label }}</label>
+                    {{ personalization_form.persona_choice }}
+                  </div>
+                </div>
+
+                <div class="settings-section-card">
+                  <div class="font-black">دستورات</div>
+                  <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">دستورات بیشتر برای لحن، نحوه رفتار و...</p>
+                  <div class="mt-4">
+                    {{ personalization_form.custom_instructions }}
+                  </div>
+                </div>
+
+                <div class="settings-section-card">
+                  <div class="font-black">درباره شما</div>
+                  <div class="mt-4 grid gap-4">
+                    <div>
+                      <label class="mb-2 block text-sm font-bold">{{ personalization_form.preferred_name.label }}</label>
+                      {{ personalization_form.preferred_name }}
+                    </div>
+                    <div>
+                      <label class="mb-2 block text-sm font-bold">{{ personalization_form.job_title.label }}</label>
+                      {{ personalization_form.job_title }}
+                    </div>
+                    <div>
+                      <label class="mb-2 block text-sm font-bold">{{ personalization_form.interests.label }}</label>
+                      {{ personalization_form.interests }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-section-card">
+                  <div class="font-black">حافظه (آزمایشی)</div>
+                  <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                    فارال یار با ادامه گفتگو و درک جزئیات و ترجیحات شما، پاسخ‌های خود را شخصی سازی می‌کند.
+                    {% if subscription %}
+                      این ویژگی برای پلن فعال شما در دسترس است.
+                    {% else %}
+                      این ویژگی فقط برای کاربران دارای اشتراک در دسترس است.
+                    {% endif %}
+                  </p>
+                  <label class="mt-4 flex items-center gap-3">
+                    {{ personalization_form.memory_enabled }}
+                    <span class="text-sm font-bold">فعال‌سازی حافظه</span>
+                  </label>
+                  <div class="mt-4 rounded-2xl bg-slate-100/90 p-4 text-sm leading-7 text-slate-600 dark:bg-slate-800/70 dark:text-slate-300">
+                    <div>"یادت باشه که من پاسخ‌های مختصر رو ترجیح میدم."</div>
+                    <div>"من به تازگی یه خونه گرفتم!"</div>
+                    <div>"درباره من چه چیزهایی یادت مونده؟"</div>
+                    <div>"آخرین بار پروژه‌ام رو کجا رها کردیم؟"</div>
+                  </div>
+                  <div class="mt-4 text-sm text-slate-500 dark:text-slate-400">برای پاک کردن حافظه، این گزینه را غیرفعال کن و اطلاعات جدیدی ذخیره نخواهد شد.</div>
+                </div>
+
+                <div class="flex justify-end">
+                  <button type="submit" class="btn-primary">ذخیره شخصی‌سازی</button>
+                </div>
+              </form>
+            </section>
+
+            <section x-show="settingsTab === 'plan'" x-cloak class="space-y-6">
+              <div>
+                <h2 class="text-lg font-black">وضعیت پلن</h2>
+                <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">پلن فعلی، تاریخ شروع و پایان، و تاریخچه پرداخت‌های شما.</p>
+              </div>
+
+              <div class="grid gap-4 md:grid-cols-3">
+                <div class="settings-section-card">
+                  <div class="text-sm text-slate-500 dark:text-slate-400">پلن فعلی</div>
+                  <div class="mt-2 text-lg font-black">{{ subscription.plan.name|default:"بدون پلن فعال" }}</div>
+                </div>
+                <div class="settings-section-card">
+                  <div class="text-sm text-slate-500 dark:text-slate-400">تاریخ شروع</div>
+                  <div class="mt-2 text-lg font-black">{{ subscription.starts_at|date:"Y/m/d H:i"|default:"-" }}</div>
+                </div>
+                <div class="settings-section-card">
+                  <div class="text-sm text-slate-500 dark:text-slate-400">تاریخ پایان</div>
+                  <div class="mt-2 text-lg font-black">{{ subscription.ends_at|date:"Y/m/d H:i"|default:"-" }}</div>
+                </div>
+              </div>
+
+              <div class="settings-section-card">
+                <div class="mb-4 flex items-center justify-between gap-3">
+                  <div class="font-black">تاریخچه پرداخت‌ها</div>
+                  <a href="{% url 'core:pricing' %}" class="text-sm font-bold text-brand-primary">خرید یا ارتقا پلن</a>
+                </div>
+                <div class="grid gap-3">
+                  {% for order in payment_history %}
+                    <div class="rounded-2xl border border-slate-200/80 p-4 dark:border-slate-700/70">
+                      <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                          <div class="font-bold">{{ order.plan.name }}</div>
+                          <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ order.created_at|date:"Y/m/d H:i" }}</div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                          <span class="badge">{{ order.get_status_display }}</span>
+                          <span class="text-sm font-bold">{{ order.amount|floatformat:0 }} تومان</span>
+                        </div>
+                      </div>
+                    </div>
+                  {% empty %}
+                    <div class="rounded-2xl border border-dashed border-slate-300 px-4 py-6 text-sm text-slate-500 dark:border-slate-700 dark:text-slate-300">هنوز پرداختی ثبت نشده است.</div>
+                  {% endfor %}
+                </div>
+              </div>
+            </section>
+
+            <section x-show="settingsTab === 'faq'" x-cloak class="space-y-6">
+              <div>
+                <h2 class="text-lg font-black">سوالات متداول</h2>
+                <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">پاسخ سوال‌های پرتکرار را بدون خروج از صفحه چت ببین.</p>
+              </div>
+              <div class="grid gap-3">
+                {% for item in faq_items %}
+                  <article class="settings-section-card">
+                    <h3 class="font-black">{{ item.question }}</h3>
+                    <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ item.answer }}</p>
+                  </article>
+                {% empty %}
+                  <div class="rounded-2xl border border-dashed border-slate-300 px-4 py-6 text-sm text-slate-500 dark:border-slate-700 dark:text-slate-300">هنوز سوال متداولی ثبت نشده است.</div>
+                {% endfor %}
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}
