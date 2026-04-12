@@ -1,0 +1,108 @@
+{% with status_key=payment_status_key|default:'pending' %}
+  <section class="rounded-[1.85rem] border border-slate-200/80 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5 lg:p-6">
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <div class="min-w-0 max-w-3xl">
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">اقدام بعدی</div>
+        <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">
+          {{ payment_actions_title|default:'بر اساس همین وضعیت چه کاری مناسب است؟' }}
+        </h2>
+        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+          {{ payment_actions_intro|default:'اقدام بعدی باید متناسب با وضعیت نهایی سفارش باشد. این بخش فقط مسیرهای ضروری را نشان می‌دهد تا تصمیم‌گیری ساده‌تر و دقیق‌تر باشد.' }}
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_18rem] lg:items-start">
+      <div class="min-w-0">
+        {% if payment_next_actions %}
+          <div class="space-y-3">
+            {% for action in payment_next_actions %}
+              <article class="rounded-[1.45rem] border border-slate-200/80 bg-white/88 p-4 dark:border-slate-700/70 dark:bg-slate-900/55">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div class="min-w-0">
+                    <div class="text-sm font-black text-slate-900 dark:text-white">{{ action.title }}</div>
+                    <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ action.body }}</p>
+                    {% if action.note %}
+                      <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ action.note }}</p>
+                    {% endif %}
+                  </div>
+
+                  {% if action.cta_label %}
+                    <a
+                      href="{{ action.cta_url|default:'#' }}"
+                      class="{% if action.tone == 'primary' %}btn-primary{% else %}btn-secondary{% endif %} w-full shrink-0 sm:w-auto"
+                    >
+                      {{ action.cta_label }}
+                    </a>
+                  {% endif %}
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="rounded-[1.5rem] border border-slate-200/80 bg-white/88 p-4 dark:border-slate-700/70 dark:bg-slate-900/55">
+            <div class="text-sm font-black text-slate-900 dark:text-white">
+              {% if status_key == 'success' %}
+                ادامه کار از صفحه حساب یا سفارش‌ها
+              {% elif status_key == 'failed' %}
+                قبل از تلاش دوباره، نتیجه همین سفارش را بررسی کنید
+              {% elif status_key == 'canceled' %}
+                در صورت نیاز، سفارش تازه را از ابتدا شروع کنید
+              {% else %}
+                فعلاً منتظر نتیجه نهایی بمانید
+              {% endif %}
+            </div>
+            <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+              {% if status_key == 'success' %}
+                اگر انتظار دارید پلن یا دسترسی شما تغییر کند، نتیجه را از بخش حساب بررسی کنید. اگر تغییری اعمال نشده، با شناسه همین سفارش موضوع را پیگیری کنید.
+              {% elif status_key == 'failed' %}
+                این سفارش به پرداخت موفق نرسیده است. اگر لازم است دوباره تلاش کنید، بهتر است از مسیر رسمی خرید اقدام شود تا سفارش و پرداخت جدید به‌طور جداگانه ثبت شوند.
+              {% elif status_key == 'canceled' %}
+                چون فرایند متوقف شده، این سفارش برای اعمال دسترسی کافی نیست. در صورت تمایل به ادامه، سفارش جدید را از ابتدای فرایند ثبت کنید.
+              {% else %}
+                در این وضعیت معمولاً لازم نیست پرداخت تازه‌ای انجام شود. اگر تاخیر غیرعادی شد، جزئیات سفارش را برای پشتیبانی ارسال کنید.
+              {% endif %}
+            </p>
+          </div>
+        {% endif %}
+      </div>
+
+      <aside class="min-w-0">
+        <div class="rounded-[1.5rem] border border-slate-200/80 bg-white/88 p-4 dark:border-slate-700/70 dark:bg-slate-900/55">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">راهنمای پیگیری</div>
+          <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">
+            {{ payment_help_title|default:'برای پیگیری چه چیزهایی را آماده نگه دارید؟' }}
+          </div>
+
+          {% if payment_help_items %}
+            <div class="mt-3 space-y-2">
+              {% for item in payment_help_items %}
+                <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/85 px-3 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-300">
+                  {{ item }}
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="mt-3 space-y-2">
+              <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/85 px-3 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-300">
+                شناسه سفارش یا کد رهگیری مرتبط با همین صفحه را نگه دارید.
+              </div>
+              <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/85 px-3 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-300">
+                زمان تقریبی پرداخت یا بازگشت از درگاه را همراه نتیجه‌ای که دیده‌اید اعلام کنید.
+              </div>
+              <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/85 px-3 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-300">
+                اگر از بخش دیگری وارد شده‌اید، همین صفحه باید مرجع نهایی برای نتیجه سفارش باشد.
+              </div>
+            </div>
+          {% endif %}
+
+          {% if payment_help_cta_label %}
+            <a href="{{ payment_help_cta_url|default:'#' }}" class="btn-secondary mt-4 w-full">
+              {{ payment_help_cta_label }}
+            </a>
+          {% endif %}
+        </div>
+      </aside>
+    </div>
+  </section>
+{% endwith %}

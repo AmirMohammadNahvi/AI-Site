@@ -1,0 +1,123 @@
+{% with status_key=payment_status_key|default:'pending' %}
+  <section class="rounded-[1.85rem] border p-4 shadow-sm shadow-slate-900/5 sm:p-5 lg:p-6 {% if status_key == 'success' %}border-emerald-200/80 bg-emerald-50/75 dark:border-emerald-500/20 dark:bg-emerald-500/10{% elif status_key == 'failed' %}border-rose-200/80 bg-rose-50/75 dark:border-rose-500/20 dark:bg-rose-500/10{% elif status_key == 'canceled' %}border-slate-200/80 bg-slate-50/78 dark:border-slate-700/70 dark:bg-slate-900/50{% else %}border-amber-200/80 bg-amber-50/75 dark:border-amber-500/20 dark:bg-amber-500/10{% endif %}">
+    <div class="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_18rem] lg:items-start">
+      <div class="min-w-0">
+        <div class="flex items-start gap-3">
+          <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.2rem] border {% if status_key == 'success' %}border-emerald-200 bg-white/85 text-emerald-700 dark:border-emerald-400/20 dark:bg-slate-950/35 dark:text-emerald-300{% elif status_key == 'failed' %}border-rose-200 bg-white/85 text-rose-700 dark:border-rose-400/20 dark:bg-slate-950/35 dark:text-rose-300{% elif status_key == 'canceled' %}border-slate-200 bg-white/85 text-slate-600 dark:border-slate-600/50 dark:bg-slate-950/35 dark:text-slate-300{% else %}border-amber-200 bg-white/85 text-amber-700 dark:border-amber-400/20 dark:bg-slate-950/35 dark:text-amber-300{% endif %}">
+            {% if status_key == 'success' %}
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+                <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            {% elif status_key == 'failed' %}
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+                <path d="M8 8l8 8M16 8l-8 8" stroke-linecap="round"></path>
+              </svg>
+            {% elif status_key == 'canceled' %}
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+                <path d="M7 7l10 10M17 7l-10 10" stroke-linecap="round"></path>
+                <circle cx="12" cy="12" r="9"></circle>
+              </svg>
+            {% else %}
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+                <path d="M12 7v5l3 3" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="12" cy="12" r="9"></circle>
+              </svg>
+            {% endif %}
+          </span>
+
+          <div class="min-w-0">
+            <div class="flex flex-wrap gap-2">
+              <span class="rounded-full px-3 py-1 text-[11px] font-black {% if status_key == 'success' %}bg-white/90 text-emerald-700 dark:bg-slate-950/35 dark:text-emerald-300{% elif status_key == 'failed' %}bg-white/90 text-rose-700 dark:bg-slate-950/35 dark:text-rose-300{% elif status_key == 'canceled' %}bg-white/90 text-slate-700 dark:bg-slate-950/35 dark:text-slate-300{% else %}bg-white/90 text-amber-800 dark:bg-slate-950/35 dark:text-amber-200{% endif %}">
+                {% if payment_status_badge %}
+                  {{ payment_status_badge }}
+                {% elif status_key == 'success' %}
+                  پرداخت ثبت شد
+                {% elif status_key == 'failed' %}
+                  پرداخت ناموفق
+                {% elif status_key == 'canceled' %}
+                  پرداخت لغو شد
+                {% else %}
+                  در انتظار تایید
+                {% endif %}
+              </span>
+
+              {% if payment_status_secondary_badge %}
+                <span class="rounded-full bg-white/85 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-950/35 dark:text-slate-300">{{ payment_status_secondary_badge }}</span>
+              {% endif %}
+            </div>
+
+            <h2 class="mt-3 text-lg font-black text-slate-900 dark:text-white sm:text-xl">
+              {% if payment_status_title %}
+                {{ payment_status_title }}
+              {% elif status_key == 'success' %}
+                پرداخت این سفارش با موفقیت ثبت و تایید شده است
+              {% elif status_key == 'failed' %}
+                پرداخت این سفارش نهایی نشده است
+              {% elif status_key == 'canceled' %}
+                فرایند پرداخت این سفارش متوقف شده است
+              {% else %}
+                پرداخت ثبت شده و در انتظار بررسی نهایی است
+              {% endif %}
+            </h2>
+
+            <p class="mt-3 text-sm leading-8 text-slate-700 dark:text-slate-200">
+              {% if payment_status_summary %}
+                {{ payment_status_summary }}
+              {% elif status_key == 'success' %}
+                این وضعیت یعنی ثبت پرداخت با موفقیت انجام شده است. اگر این سفارش برای فعال‌سازی یا تمدید پلن باشد، اعمال دسترسی بر اساس تایید نهایی سیستم انجام می‌شود.
+              {% elif status_key == 'failed' %}
+                پرداخت به نتیجه قابل قبول نرسیده و برای این سفارش دسترسی تازه‌ای اعمال نشده است. اگر مبلغی از حساب شما کسر شده، فقط بر اساس پیگیری رسمی بررسی می‌شود.
+              {% elif status_key == 'canceled' %}
+                این سفارش به مرحله تایید پرداخت نرسیده است. تا زمانی که وضعیت نهایی به موفق تغییر نکند، هیچ تغییر فعالی در پلن یا سهمیه ثبت نمی‌شود.
+              {% else %}
+                نتیجه اولیه دریافت شده اما هنوز نیاز به تطبیق یا تایید نهایی دارد. در این وضعیت معمولاً نیازی به تلاش دوباره برای پرداخت نیست مگر اینکه راهنمایی مشخصی دریافت کنید.
+              {% endif %}
+            </p>
+
+            {% if payment_status_detail %}
+              <div class="mt-4 rounded-[1.25rem] border border-white/70 bg-white/70 px-4 py-3 text-sm leading-7 text-slate-700 dark:border-slate-800/60 dark:bg-slate-950/30 dark:text-slate-200">
+                {{ payment_status_detail }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if payment_status_meta_items %}
+          <div class="mt-4 grid gap-3 sm:grid-cols-2">
+            {% for item in payment_status_meta_items %}
+              <div class="rounded-[1.2rem] border border-white/70 bg-white/78 px-4 py-3 dark:border-slate-800/60 dark:bg-slate-950/30">
+                <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ item.label }}</div>
+                <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ item.value }}</div>
+                {% if item.note %}
+                  <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ item.note }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <aside class="min-w-0">
+        <div class="rounded-[1.5rem] border border-white/70 bg-white/78 p-4 dark:border-slate-800/60 dark:bg-slate-950/30">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مسیر پشتیبانی</div>
+          <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">
+            {{ payment_support_title|default:'اگر نیاز به پیگیری دارید' }}
+          </div>
+          <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+            {{ payment_support_note|default:'برای بررسی دقیق‌تر، کد سفارش، زمان ثبت و نتیجه‌ای که در همین صفحه می‌بینید را برای پشتیبانی ارسال کنید تا پیگیری روی همان سفارش انجام شود.' }}
+          </p>
+
+          {% if payment_support_helper_note %}
+            <p class="mt-3 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ payment_support_helper_note }}</p>
+          {% endif %}
+
+          {% if payment_support_cta_label %}
+            <a href="{{ payment_support_cta_url|default:'#' }}" class="btn-secondary mt-4 w-full">
+              {{ payment_support_cta_label }}
+            </a>
+          {% endif %}
+        </div>
+      </aside>
+    </div>
+  </section>
+{% endwith %}
