@@ -8,15 +8,19 @@
       {% if entitlement_label %}
         {{ entitlement_label }}
       {% elif badge_state == 'included' %}
-        شامل دسترسی
+        شامل در این سطح
       {% elif badge_state == 'limited' %}
         دسترسی محدود
       {% elif badge_state == 'upgradeable' %}
-        با ارتقا فعال می‌شود
-      {% elif badge_state == 'disabled' or badge_state == 'policy' or badge_state == 'workspace' %}
-        غیرفعال در این فضا
+        با ارتقا قابل فعال‌سازی
+      {% elif badge_state == 'workspace' %}
+        غیرفعال در این ورک‌اسپیس
+      {% elif badge_state == 'policy' %}
+        غیرفعال با سیاست دسترسی
+      {% elif badge_state == 'disabled' %}
+        غیرفعال
       {% elif badge_state == 'unavailable' %}
-        در دسترس نیست
+        در این مسیر در دسترس نیست
       {% else %}
         وضعیت دسترسی
       {% endif %}

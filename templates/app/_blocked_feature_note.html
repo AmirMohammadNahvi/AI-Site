@@ -19,22 +19,23 @@
       <div class="min-w-0 flex-1">
         <div class="flex flex-wrap items-center gap-2">
           {% include 'app/_entitlement_status_badge.html' with entitlement_state=entitlement_state|default:note_tone entitlement_tone=note_tone entitlement_label=entitlement_label entitlement_note=blocked_reason|default:entitlement_note %}
-          {% if blocked_reason %}
-            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">دلیل وضعیت روشن است</span>
-          {% endif %}
         </div>
 
         <h2 class="mt-3 text-sm font-black text-slate-900 dark:text-white sm:text-base">
           {% if blocked_title %}
             {{ blocked_title }}
           {% elif note_tone == 'limited' or note_tone == 'warning' %}
-            این بخش برای حساب فعلی با محدودیت نمایش داده می‌شود
-          {% elif note_tone == 'disabled' or note_tone == 'policy' or note_tone == 'workspace' or note_tone == 'critical' %}
-            این بخش در این ورک‌اسپیس یا سیاست دسترسی غیرفعال است
+            این بخش در سطح دسترسی فعلی محدود است
+          {% elif note_tone == 'policy' %}
+            این بخش با سیاست دسترسی غیرفعال شده است
+          {% elif note_tone == 'workspace' %}
+            این بخش در این ورک‌اسپیس غیرفعال است
+          {% elif note_tone == 'disabled' or note_tone == 'critical' %}
+            این بخش برای این حساب یا این مسیر غیرفعال است
           {% elif note_tone == 'context' or note_tone == 'not_enabled' %}
             این قابلیت برای این زمینه فعال نشده است
           {% else %}
-            این قابلیت در حال حاضر در دسترس نیست
+            این قابلیت در این مسیر در دسترس نیست
           {% endif %}
         </h2>
 
@@ -42,13 +43,17 @@
           {% if blocked_body %}
             {{ blocked_body }}
           {% elif note_tone == 'limited' or note_tone == 'warning' %}
-            بخشی از استفاده در این سطح دسترسی محدود است. فقط گزینه‌هایی که همین‌جا فعال نشان داده می‌شوند قابل استفاده‌اند.
-          {% elif note_tone == 'disabled' or note_tone == 'policy' or note_tone == 'workspace' or note_tone == 'critical' %}
-            این وضعیت از تنظیمات مدیر یا سیاست ورک‌اسپیس می‌آید و لزوماً با ارتقا تغییر نمی‌کند.
+            بخشی از این قابلیت در دسترس است، اما همه گزینه‌ها در این سطح فعال نیستند.
+          {% elif note_tone == 'policy' %}
+            این وضعیت از سیاست دسترسی می‌آید و مسیر ارتقا یا خرید به‌تنهایی آن را تغییر نمی‌دهد.
+          {% elif note_tone == 'workspace' %}
+            این وضعیت از تنظیمات همین ورک‌اسپیس می‌آید و لزوماً با تغییر پلن برطرف نمی‌شود.
+          {% elif note_tone == 'disabled' or note_tone == 'critical' %}
+            این وضعیت به پیکربندی فعلی حساب یا همین مسیر استفاده مربوط است و باید از همان مسیر بررسی شود.
           {% elif note_tone == 'context' or note_tone == 'not_enabled' %}
             ممکن است همین قابلیت در بخش یا زمینه‌ی دیگری فعال باشد، اما برای این صفحه یا این جریان استفاده آماده نشده است.
           {% else %}
-            در حال حاضر مسیر امنی برای استفاده از این بخش در همین صفحه وجود ندارد. اگر مسیر جایگزین یا تنظیم مرتبطی تعریف شده باشد، از همان مسیر ادامه دهید.
+            برای استفاده از این بخش، باید مسیر یا تنظیم مرتبط دیگری فعال باشد.
           {% endif %}
         </p>
 
@@ -62,7 +67,7 @@
         {% if blocked_cta_url %}
           <div class="mt-4">
             <a href="{{ blocked_cta_url }}" class="btn-secondary w-full sm:w-auto">
-              {{ blocked_cta_label|default:'مشاهده جزئیات مرتبط' }}
+              {{ blocked_cta_label|default:'بررسی جزئیات' }}
             </a>
           </div>
         {% endif %}

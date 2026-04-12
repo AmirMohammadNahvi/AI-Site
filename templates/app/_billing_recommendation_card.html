@@ -15,14 +15,14 @@
           {{ billing_recommendation.title|default:"اقدام بعدی بر اساس وضعیت فعلی شما" }}
         </h2>
         <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-          {{ billing_recommendation.body|default:"اگر نیاز به تمدید، ارتقا، پیگیری پرداخت یا فقط ادامه استفاده از پلن فعلی داشته باشید، این بخش باید کوتاه‌ترین و روشن‌ترین مسیر بعدی را نشان دهد." }}
+          {{ billing_recommendation.body|default:"این بخش کوتاه‌ترین مسیر بعدی را بر اساس وضعیت فعلی شما نشان می‌دهد؛ چه ادامه استفاده باشد، چه تمدید، چه بررسی گزینه ارتقا یا پیگیری پرداخت." }}
         </p>
       </div>
 
       <div class="rounded-[1.35rem] border border-slate-200/80 bg-white/88 p-4 dark:border-slate-700/70 dark:bg-slate-900/55">
         <div class="text-xs font-bold text-slate-500 dark:text-slate-400">راهنمای کوتاه</div>
         <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">
-          {{ billing_recommendation.summary|default:billing_recommendation.title|default:"مسیر بعدی از همین‌جا شروع می‌شود" }}
+          {{ billing_recommendation.summary|default:billing_recommendation.title|default:"مسیر بعدی از همین‌جا روشن می‌شود" }}
         </div>
 
         {% if billing_recommendation.helper_text %}

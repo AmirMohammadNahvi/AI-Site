@@ -32,7 +32,7 @@
             <div class="text-xs font-bold text-slate-500 dark:text-slate-400">وضعیت این صفحه</div>
             <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">{{ payment_status_surface_title|default:'آخرین نتیجه ثبت‌شده برای همین سفارش' }}</div>
             <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-              {{ payment_status_surface_note|default:'اعمال دسترسی، تمدید یا تغییر پلن فقط بر اساس وضعیت نهایی سفارش انجام می‌شود؛ نه صرفاً بازگشت از درگاه یا پیام‌های موقت.' }}
+              {{ payment_status_surface_note|default:'هر تغییر در پلن، سهمیه یا دسترسی فقط بر اساس وضعیت نهایی همین سفارش اعمال می‌شود؛ نه صرفاً بازگشت از درگاه یا پیام‌های موقت.' }}
             </p>
           </div>
         </div>
@@ -100,7 +100,7 @@
             {% endif %}
 
             <div class="mt-4 rounded-[1.2rem] border border-slate-200/80 bg-white/88 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-300">
-              {{ payment_order_access_note|default:'هر تغییری در اشتراک یا دسترسی فقط بعد از ثبت وضعیت نهایی همین سفارش اعمال می‌شود.' }}
+              {{ payment_order_access_note|default:'هر تغییری در پلن، سهمیه یا دسترسی فقط بعد از ثبت وضعیت نهایی همین سفارش اعمال می‌شود.' }}
             </div>
           </div>
         </aside>
