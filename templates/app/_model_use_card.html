@@ -13,7 +13,7 @@
             {% elif use_state == 'locked' or use_state == 'upgradeable' %}
               {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=model_use_context.state_label|default:state_label|default:'با ارتقا قابل انتخاب' entitlement_note=model_use_context.reason|default:reason %}
             {% elif use_state == 'policy' or use_state == 'policy_restricted' %}
-              {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=model_use_context.state_label|default:state_label|default:'محدود با سیاست دسترسی' entitlement_note=model_use_context.reason|default:reason %}
+              {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=model_use_context.state_label|default:state_label|default:'با سیاست دسترسی محدود شده' entitlement_note=model_use_context.reason|default:reason %}
             {% elif use_state == 'workspace' or use_state == 'restricted' %}
               {% include 'app/_entitlement_status_badge.html' with entitlement_state='workspace' entitlement_tone='workspace' entitlement_label=model_use_context.state_label|default:state_label|default:'در این فضا فعال نیست' entitlement_note=model_use_context.reason|default:reason %}
             {% elif use_state == 'archived' %}

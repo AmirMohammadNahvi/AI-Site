@@ -12,19 +12,19 @@
         {% endif %}
 
         {% if assistant.availability_state == 'available' %}
-          <span class="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">در دسترس</span>
+          <span class="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">آماده استفاده</span>
         {% elif assistant.availability_state == 'locked' %}
-          <span class="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-bold text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">قفل پلن</span>
+          <span class="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-bold text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">با ارتقا قابل استفاده</span>
         {% elif assistant.availability_state == 'unavailable' %}
-          <span class="rounded-full bg-slate-200 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">خارج از دسترس</span>
+          <span class="rounded-full bg-slate-200 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">در این ورک‌اسپیس فعال نیست</span>
         {% elif assistant.availability_state == 'draft' %}
           <span class="rounded-full bg-sky-100 px-3 py-1 text-[11px] font-bold text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">پیش‌نویس</span>
         {% elif assistant.availability_state == 'archived' %}
-          <span class="rounded-full bg-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">آرشیوی</span>
+          <span class="rounded-full bg-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">آرشیوشده</span>
         {% elif assistant.availability_state == 'deprecated' %}
-          <span class="rounded-full bg-rose-100 px-3 py-1 text-[11px] font-bold text-rose-700 dark:bg-rose-500/15 dark:text-rose-300">منقضی/جایگزین‌شده</span>
+          <span class="rounded-full bg-rose-100 px-3 py-1 text-[11px] font-bold text-rose-700 dark:bg-rose-500/15 dark:text-rose-300">برای شروع جدید توصیه نمی‌شود</span>
         {% else %}
-          <span class="rounded-full bg-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">آرشیوی</span>
+          <span class="rounded-full bg-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">وضعیت ثبت‌شده</span>
         {% endif %}
       </div>
 

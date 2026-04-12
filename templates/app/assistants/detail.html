@@ -91,19 +91,19 @@
             </div>
 
             {% if assistant.availability_state == 'available' %}
-              <span class="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">available</span>
+              <span class="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">آماده استفاده</span>
             {% elif assistant.availability_state == 'locked' %}
-              <span class="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-bold text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">locked</span>
+              <span class="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-bold text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">با ارتقا قابل استفاده</span>
             {% elif assistant.availability_state == 'unavailable' %}
-              <span class="rounded-full bg-slate-200 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">unavailable</span>
+              <span class="rounded-full bg-slate-200 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">در این ورک‌اسپیس فعال نیست</span>
             {% elif assistant.availability_state == 'draft' %}
-              <span class="rounded-full bg-sky-100 px-3 py-1 text-[11px] font-bold text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">draft</span>
+              <span class="rounded-full bg-sky-100 px-3 py-1 text-[11px] font-bold text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">پیش‌نویس</span>
             {% elif assistant.availability_state == 'archived' %}
-              <span class="rounded-full bg-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">archived</span>
+              <span class="rounded-full bg-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">آرشیوشده</span>
             {% elif assistant.availability_state == 'deprecated' %}
-              <span class="rounded-full bg-rose-100 px-3 py-1 text-[11px] font-bold text-rose-700 dark:bg-rose-500/15 dark:text-rose-300">deprecated</span>
+              <span class="rounded-full bg-rose-100 px-3 py-1 text-[11px] font-bold text-rose-700 dark:bg-rose-500/15 dark:text-rose-300">برای شروع جدید توصیه نمی‌شود</span>
             {% else %}
-              <span class="rounded-full bg-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">archived</span>
+              <span class="rounded-full bg-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">وضعیت ثبت‌شده</span>
             {% endif %}
           </div>
 
@@ -119,8 +119,10 @@
                 هنوز منتشر نشده و در مرحله آماده‌سازی است
               {% elif assistant.availability_state == 'archived' %}
                 برای استفاده جدید توصیه نمی‌شود و فقط برای سابقه نگه‌داری شده است
+              {% elif assistant.availability_state == 'deprecated' %}
+                برای شروع جدید بهتر است از جایگزین تازه‌تر استفاده شود
               {% else %}
-                نسخه قدیمی است و بهتر است از جایگزین جدید استفاده شود
+                این وضعیت نیاز به بررسی جزئیات دسترسی و چرخه استفاده دارد
               {% endif %}
             </div>
             <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">

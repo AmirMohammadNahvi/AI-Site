@@ -13,7 +13,7 @@
 
     <div class="mt-4 inline-flex rounded-full px-3 py-1 text-[11px] font-bold {% if memory_state == 'locked' %}bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300{% else %}bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300{% endif %}">
       {% if memory_state == 'locked' %}
-        قفل پلن
+        با ارتقا قابل استفاده
       {% elif memory_state == 'policy_blocked' %}
         محدودیت سیاست ورک‌اسپیس
       {% else %}
@@ -51,7 +51,7 @@
       <div class="mt-5 flex flex-col justify-center gap-2 sm:flex-row">
         {% if memory_blocked.primary_url %}
           <a href="{{ memory_blocked.primary_url }}" class="btn-primary w-full sm:w-auto">
-            {{ memory_blocked.primary_label|default:"ادامه" }}
+            {{ memory_blocked.primary_label|default:"بررسی دسترسی" }}
           </a>
         {% endif %}
         {% if memory_blocked.secondary_url %}

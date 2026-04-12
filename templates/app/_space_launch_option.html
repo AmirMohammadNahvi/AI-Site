@@ -12,7 +12,7 @@
           {% elif launch_state == 'locked' or launch_state == 'upgradeable' %}
             {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=space_option.state_label|default:state_label|default:'با ارتقا قابل استفاده' entitlement_note=space_option.reason|default:reason %}
           {% elif launch_state == 'policy' or launch_state == 'policy_restricted' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=space_option.state_label|default:state_label|default:'با سیاست این مسیر محدود است' entitlement_note=space_option.reason|default:reason %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=space_option.state_label|default:state_label|default:'با سیاست دسترسی محدود شده' entitlement_note=space_option.reason|default:reason %}
           {% elif launch_state == 'workspace' or launch_state == 'restricted' %}
             {% include 'app/_entitlement_status_badge.html' with entitlement_state='workspace' entitlement_tone='workspace' entitlement_label=space_option.state_label|default:state_label|default:'در این زمینه فعال نیست' entitlement_note=space_option.reason|default:reason %}
           {% elif launch_state == 'archived' %}
@@ -77,7 +77,7 @@
             {% if launch_state == 'locked' or launch_state == 'upgradeable' %}
               {{ space_option.primary_cta_label|default:primary_cta_label|default:"فعلاً نیازمند دسترسی بیشتر" }}
             {% elif launch_state == 'policy' or launch_state == 'policy_restricted' %}
-              {{ space_option.primary_cta_label|default:primary_cta_label|default:"این اسپیس با سیاست این مسیر محدود است" }}
+              {{ space_option.primary_cta_label|default:primary_cta_label|default:"با سیاست دسترسی محدود شده" }}
             {% elif launch_state == 'workspace' or launch_state == 'restricted' %}
               {{ space_option.primary_cta_label|default:primary_cta_label|default:"در این زمینه فعال نیست" }}
             {% elif launch_state == 'archived' %}

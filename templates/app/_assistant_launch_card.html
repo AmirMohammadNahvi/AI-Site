@@ -12,13 +12,13 @@
           {% elif launch_state == 'locked' or launch_state == 'upgradeable' %}
             {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'با ارتقا قابل استفاده' entitlement_note=assistant_launch_context.reason|default:reason %}
           {% elif launch_state == 'policy' or launch_state == 'policy_restricted' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'محدود با سیاست دسترسی' entitlement_note=assistant_launch_context.reason|default:reason %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'با سیاست دسترسی محدود شده' entitlement_note=assistant_launch_context.reason|default:reason %}
           {% elif launch_state == 'workspace' or launch_state == 'restricted' %}
             {% include 'app/_entitlement_status_badge.html' with entitlement_state='workspace' entitlement_tone='workspace' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'در این فضا فعال نیست' entitlement_note=assistant_launch_context.reason|default:reason %}
           {% elif launch_state == 'archived' %}
             {% include 'app/_entitlement_status_badge.html' with entitlement_state='disabled' entitlement_tone='default' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'آرشیوشده' entitlement_note=assistant_launch_context.reason|default:reason %}
           {% elif launch_state == 'migrated' or launch_state == 'legacy' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'نسخه منتقل‌شده' entitlement_note=assistant_launch_context.reason|default:reason %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'منتقل‌شده از مسیر قبلی' entitlement_note=assistant_launch_context.reason|default:reason %}
           {% else %}
             {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=assistant_launch_context.state_label|default:state_label|default:'فعلاً در دسترس نیست' entitlement_note=assistant_launch_context.reason|default:reason %}
           {% endif %}
@@ -98,9 +98,9 @@
             {% if launch_state == 'locked' or launch_state == 'upgradeable' %}
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"نیازمند ارتقا یا دسترسی بیشتر" }}
             {% elif launch_state == 'policy' or launch_state == 'policy_restricted' %}
-              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"این مسیر با سیاست دسترسی بسته است" }}
+              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"با سیاست دسترسی محدود شده" }}
             {% elif launch_state == 'workspace' or launch_state == 'restricted' %}
-              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"برای این ورک‌اسپیس آماده نیست" }}
+              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"در این ورک‌اسپیس فعال نیست" }}
             {% elif launch_state == 'archived' %}
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"این مسیر آرشیوشده است" }}
             {% elif launch_state == 'migrated' or launch_state == 'legacy' %}

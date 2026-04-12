@@ -5,7 +5,7 @@
         <h3 class="text-sm font-black text-slate-900 dark:text-white sm:text-base">{{ space_item.name|default:"اسپیس بدون عنوان" }}</h3>
 
         {% if space_item.state == 'available' %}
-          <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">قابل استفاده</span>
+          <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">در این اسپیس قابل استفاده</span>
         {% elif space_item.state == 'locked' %}
           <span class="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-bold text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">نیازمند دسترسی</span>
         {% elif space_item.state == 'unavailable' %}
@@ -43,7 +43,7 @@
         </a>
       {% else %}
         <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-slate-100/90 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-500">
-          {{ space_item.action_label|default:"فعلاً قابل استفاده نیست" }}
+          {{ space_item.action_label|default:"در این اسپیس فعال نیست" }}
         </span>
       {% endif %}
 

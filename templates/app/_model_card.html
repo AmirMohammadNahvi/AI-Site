@@ -49,7 +49,7 @@
             {% if model_state == 'available' %}
               {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=model.availability_label|default:'آماده استفاده' entitlement_note=model.availability_note %}
             {% elif model_state == 'upgradeable' or model_state == 'locked' %}
-              {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=model.availability_label|default:'با ارتقا در دسترس' entitlement_note=model.availability_note %}
+              {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=model.availability_label|default:'با ارتقا قابل استفاده' entitlement_note=model.availability_note %}
             {% elif model_state == 'deprecated' %}
               {% include 'app/_entitlement_status_badge.html' with entitlement_state='limited' entitlement_tone='warning' entitlement_label=model.availability_label|default:'برای شروع جدید توصیه نمی‌شود' entitlement_note=model.availability_note %}
             {% elif model_state == 'workspace' %}
