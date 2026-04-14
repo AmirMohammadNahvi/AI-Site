@@ -1,24 +1,26 @@
 {% load site_text %}
-<nav class="mobile-dock fixed inset-x-3 bottom-3 z-30 flex items-center justify-between rounded-[1.75rem] border border-slate-200/70 px-3 py-2 shadow-2xl shadow-slate-900/10 dark:border-slate-700 md:hidden">
-  <a href="{% url 'core:home' %}" class="flex min-w-[4.5rem] flex-col items-center gap-1 rounded-2xl px-2 py-2 text-[11px] font-bold text-slate-600 dark:text-slate-300">
+{% with ns=request.resolver_match.namespace|default:'' url_name=request.resolver_match.url_name|default:'' %}
+<nav class="mobile-dock fixed inset-x-3 bottom-3 z-30 grid grid-cols-5 items-end rounded-[1.9rem] border border-slate-200/70 px-2 py-2 dark:border-slate-700 md:hidden">
+  <a href="{% url 'core:home' %}" class="flex min-w-0 flex-col items-center gap-1 rounded-[1.2rem] px-2 py-2 text-[11px] font-black {% if ns == 'core' and url_name == 'home' %}bg-slate-950 text-white dark:bg-white dark:text-slate-950{% else %}text-slate-600 dark:text-slate-300{% endif %}">
     <span>{% site_text 'nav.mobile.home' 'خانه' title='خانه در داک موبایل' group='navigation' %}</span>
   </a>
-  <a href="{% url 'core:pricing' %}" class="flex min-w-[4.5rem] flex-col items-center gap-1 rounded-2xl px-2 py-2 text-[11px] font-bold text-slate-600 dark:text-slate-300">
+  <a href="{% url 'core:pricing' %}" class="flex min-w-0 flex-col items-center gap-1 rounded-[1.2rem] px-2 py-2 text-[11px] font-black {% if ns == 'core' and url_name == 'pricing' %}bg-slate-950 text-white dark:bg-white dark:text-slate-950{% else %}text-slate-600 dark:text-slate-300{% endif %}">
     <span>{% site_text 'nav.mobile.pricing' 'پلن‌ها' title='پلن‌ها در داک موبایل' group='navigation' %}</span>
   </a>
-  <a href="{% url 'ai_platform:chat' %}" class="-mt-8 inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-primary text-sm font-black text-white shadow-xl shadow-emerald-500/30">
+  <a href="{% url 'ai_platform:chat' %}" class="-mt-8 mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--brand-primary),#209374)] text-sm font-black text-white shadow-[0_20px_45px_rgba(40,171,136,0.35)]">
     AI
   </a>
   {% if request.user.is_authenticated %}
-    <a href="{% url 'ai_platform:chat' %}" class="flex min-w-[4.5rem] flex-col items-center gap-1 rounded-2xl px-2 py-2 text-[11px] font-bold text-slate-600 dark:text-slate-300">
-      <span>{% site_text 'nav.mobile.dashboard' 'داشبورد' title='داشبورد در داک موبایل' group='navigation' %}</span>
+    <a href="{% url 'ai_platform:chat' %}" class="flex min-w-0 flex-col items-center gap-1 rounded-[1.2rem] px-2 py-2 text-[11px] font-black {% if ns == 'ai_platform' or ns == 'billing' %}bg-slate-950 text-white dark:bg-white dark:text-slate-950{% else %}text-slate-600 dark:text-slate-300{% endif %}">
+      <span>{% site_text 'nav.mobile.dashboard' 'اپ' title='داشبورد در داک موبایل' group='navigation' %}</span>
     </a>
   {% else %}
-    <a href="{% url 'accounts:signup' %}" class="flex min-w-[4.5rem] flex-col items-center gap-1 rounded-2xl px-2 py-2 text-[11px] font-bold text-slate-600 dark:text-slate-300">
+    <a href="{% url 'accounts:signup' %}" class="flex min-w-0 flex-col items-center gap-1 rounded-[1.2rem] px-2 py-2 text-[11px] font-black {% if ns == 'accounts' and url_name == 'signup' %}bg-slate-950 text-white dark:bg-white dark:text-slate-950{% else %}text-slate-600 dark:text-slate-300{% endif %}">
       <span>{% site_text 'nav.mobile.start' 'شروع' title='شروع در داک موبایل' group='navigation' %}</span>
     </a>
   {% endif %}
-  <a href="{% url 'blog:list' %}" class="flex min-w-[4.5rem] flex-col items-center gap-1 rounded-2xl px-2 py-2 text-[11px] font-bold text-slate-600 dark:text-slate-300">
+  <a href="{% url 'blog:list' %}" class="flex min-w-0 flex-col items-center gap-1 rounded-[1.2rem] px-2 py-2 text-[11px] font-black {% if ns == 'blog' %}bg-slate-950 text-white dark:bg-white dark:text-slate-950{% else %}text-slate-600 dark:text-slate-300{% endif %}">
     <span>{% site_text 'nav.mobile.blog' 'بلاگ' title='بلاگ در داک موبایل' group='navigation' %}</span>
   </a>
 </nav>
+{% endwith %}

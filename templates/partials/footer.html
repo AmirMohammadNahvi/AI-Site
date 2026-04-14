@@ -1,34 +1,71 @@
 {% load site_text %}
-<footer class="border-t border-slate-200/70 bg-white/85 py-10 dark:border-slate-700 dark:bg-slate-900/55">
-  <div class="section-shell grid gap-8 md:grid-cols-2 xl:grid-cols-4">
-    <div>
-      <h3 class="text-lg font-black">{{ site_settings.site_name_fa }}</h3>
-      <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-400">{{ site_settings.hero_subtitle }}</p>
-    </div>
-    <div>
-      <h4 class="font-bold">{% site_text 'footer.quick_links' 'دسترسی سریع' title='عنوان دسترسی سریع فوتر' group='footer' %}</h4>
-      <div class="mt-3 flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-400">
-        <a href="{% url 'ai_platform:chat' %}">{% site_text 'footer.chat' 'چت هوش مصنوعی' title='لینک چت فوتر' group='footer' %}</a>
-        <a href="{% url 'core:pricing' %}">{% site_text 'footer.pricing' 'قیمت‌گذاری' title='لینک قیمت‌گذاری فوتر' group='footer' %}</a>
-        <a href="{% url 'blog:list' %}">{% site_text 'footer.blog' 'بلاگ' title='لینک بلاگ فوتر' group='footer' %}</a>
-        <a href="{% url 'core:faq' %}">{% site_text 'footer.faq' 'سوالات متداول' title='لینک سوالات فوتر' group='footer' %}</a>
+<footer class="px-3 pb-28 pt-14 md:pb-12">
+  <div class="mx-auto max-w-[92rem] overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/86 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur-2xl dark:border-slate-800/80 dark:bg-slate-950/76">
+    <div class="border-b border-slate-200/70 px-5 py-5 dark:border-slate-800/80 sm:px-8">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div class="max-w-2xl">
+          <div class="text-xs font-black uppercase tracking-[0.24em] text-brand-primary">FaralYar</div>
+          <h3 class="mt-2 text-2xl font-black text-slate-950 dark:text-white">یک تجربه فارسی، آرام و قابل‌اعتماد برای مسیر واقعی کار با AI</h3>
+          <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">{{ site_settings.hero_subtitle|default:site_settings.tagline }}</p>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-3">
+          <div class="surface-muted px-4 py-3">
+            <div class="text-xs font-black text-slate-500 dark:text-slate-400">اعتماد</div>
+            <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">صفحات عمومی روشن</div>
+          </div>
+          <div class="surface-muted px-4 py-3">
+            <div class="text-xs font-black text-slate-500 dark:text-slate-400">خرید</div>
+            <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">مسیر پرداخت شفاف</div>
+          </div>
+          <div class="surface-muted px-4 py-3">
+            <div class="text-xs font-black text-slate-500 dark:text-slate-400">پشتیبانی</div>
+            <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">مسیر تماس مشخص</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div>
-      <h4 class="font-bold">اعتماد و راهنما</h4>
-      <div class="mt-3 flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-400">
-        <a href="{% url 'core:about' %}">درباره ما</a>
-        <a href="{% url 'core:contact' %}">تماس با ما</a>
-        <a href="{% url 'core:privacy' %}">حریم خصوصی</a>
-        <a href="{% url 'core:terms' %}">قوانین استفاده</a>
+
+    <div class="section-shell max-w-none grid gap-8 px-5 py-8 md:grid-cols-2 xl:grid-cols-[1.15fr_0.75fr_0.8fr_0.9fr] sm:px-8">
+      <div>
+        <h4 class="footer-heading">{{ site_settings.site_name_fa }}</h4>
+        <p class="mt-3 max-w-md text-sm leading-8 text-slate-600 dark:text-slate-300">{{ site_settings.tagline }}</p>
+        <div class="mt-5 flex flex-wrap gap-2">
+          <a href="{% url 'ai_platform:chat' %}" class="soft-chip">چت AI</a>
+          <a href="{% url 'core:pricing' %}" class="soft-chip">قیمت‌گذاری</a>
+          <a href="{% url 'core:faq' %}" class="soft-chip">راهنما</a>
+        </div>
       </div>
-    </div>
-    <div>
-      <h4 class="font-bold">{% site_text 'footer.contact' 'ارتباط با ما' title='عنوان ارتباط با ما فوتر' group='footer' %}</h4>
-      <div class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
-        {% if site_settings.support_email %}<p>{{ site_settings.support_email }}</p>{% endif %}
-        {% if site_settings.support_phone %}<p>{{ site_settings.support_phone }}</p>{% endif %}
-        {% if site_settings.address %}<p>{{ site_settings.address }}</p>{% endif %}
+
+      <div>
+        <h4 class="footer-heading">{% site_text 'footer.quick_links' 'دسترسی سریع' title='عنوان دسترسی سریع فوتر' group='footer' %}</h4>
+        <div class="mt-4 flex flex-col gap-3 text-sm">
+          <a href="{% url 'ai_platform:chat' %}" class="footer-link">{% site_text 'footer.chat' 'چت هوش مصنوعی' title='لینک چت فوتر' group='footer' %}</a>
+          <a href="{% url 'core:pricing' %}" class="footer-link">{% site_text 'footer.pricing' 'قیمت‌گذاری' title='لینک قیمت‌گذاری فوتر' group='footer' %}</a>
+          <a href="{% url 'blog:list' %}" class="footer-link">{% site_text 'footer.blog' 'بلاگ' title='لینک بلاگ فوتر' group='footer' %}</a>
+          <a href="{% url 'core:faq' %}" class="footer-link">{% site_text 'footer.faq' 'سوالات متداول' title='لینک سوالات فوتر' group='footer' %}</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">اعتماد و قوانین</h4>
+        <div class="mt-4 flex flex-col gap-3 text-sm">
+          <a href="{% url 'core:about' %}" class="footer-link">درباره ما</a>
+          <a href="{% url 'core:contact' %}" class="footer-link">تماس با ما</a>
+          <a href="{% url 'core:privacy' %}" class="footer-link">حریم خصوصی</a>
+          <a href="{% url 'core:terms' %}" class="footer-link">قوانین استفاده</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">{% site_text 'footer.contact' 'ارتباط با ما' title='عنوان ارتباط با ما فوتر' group='footer' %}</h4>
+        <div class="mt-4 space-y-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+          {% if site_settings.support_email %}<p>{{ site_settings.support_email }}</p>{% endif %}
+          {% if site_settings.support_phone %}<p>{{ site_settings.support_phone }}</p>{% endif %}
+          {% if site_settings.address %}<p>{{ site_settings.address }}</p>{% endif %}
+          {% if site_settings.telegram_url %}<a href="{{ site_settings.telegram_url }}" class="footer-link inline-flex">تلگرام</a>{% endif %}
+          {% if site_settings.instagram_url %}<a href="{{ site_settings.instagram_url }}" class="footer-link inline-flex">اینستاگرام</a>{% endif %}
+          {% if site_settings.linkedin_url %}<a href="{{ site_settings.linkedin_url }}" class="footer-link inline-flex">لینکدین</a>{% endif %}
+        </div>
       </div>
     </div>
   </div>

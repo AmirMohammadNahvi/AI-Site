@@ -61,7 +61,15 @@
               <article class="{% if message.role == 'assistant' %}mr-auto max-w-[94%] sm:max-w-[80%]{% elif message.role == 'user' %}ml-auto max-w-[94%] sm:max-w-[75%]{% elif message.is_user %}ml-auto max-w-[94%] sm:max-w-[75%]{% else %}mr-auto max-w-[94%] sm:max-w-[80%]{% endif %}">
                 <div class="{% if message.role == 'user' or message.is_user %}chat-message user{% else %}chat-message assistant{% endif %}">
                   <div class="text-[11px] opacity-60">
-                    {{ message.label|default:message.role_label|default:message.role|default:"پیام" }}
+                    {% if message.label %}
+                      {{ message.label }}
+                    {% elif message.role_label %}
+                      {{ message.role_label }}
+                    {% elif message.role %}
+                      {{ message.role }}
+                    {% else %}
+                      پیام
+                    {% endif %}
                   </div>
 
                   {% if message.html %}

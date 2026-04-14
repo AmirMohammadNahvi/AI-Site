@@ -2,36 +2,45 @@
 {% load site_text %}
 
 {% block content %}
-  <section class="section-shell pt-8">
-    <div class="mb-4 overflow-x-auto lg:hidden">
-      <div class="flex min-w-max gap-2 pb-1">
-        <a href="{% url 'ai_platform:chat' %}" class="prompt-chip">{% site_text 'dashboard.nav.home' 'داشبورد' title='داشبورد در ناوبری پنل' group='dashboard' %}</a>
-        <a href="{% url 'ai_platform:billing' %}" class="prompt-chip">{% site_text 'dashboard.nav.billing' 'اشتراک و پرداخت' title='اشتراک و پرداخت در ناوبری پنل' group='dashboard' %}</a>
-        <a href="{% url 'dashboard:profile' %}" class="prompt-chip">{% site_text 'dashboard.nav.profile' 'پروفایل' title='پروفایل در ناوبری پنل' group='dashboard' %}</a>
-        {% if request.user.is_staff %}
-          <a href="{% url 'dashboard:admin_home' %}" class="prompt-chip">{% site_text 'dashboard.nav.admin' 'ادمین سفارشی' title='ادمین سفارشی در ناوبری پنل' group='dashboard' %}</a>
-        {% endif %}
-        <a href="{% url 'accounts:logout' %}" class="prompt-chip">{% site_text 'dashboard.nav.logout' 'خروج' title='خروج در ناوبری پنل' group='dashboard' %}</a>
-      </div>
-    </div>
-
-    <div class="grid gap-6 lg:grid-cols-[18rem_minmax(0,1fr)]">
-      <aside class="glass-card hidden h-fit p-4 lg:block">
-        <div class="mb-4 text-lg font-black">{% site_text 'dashboard.title' 'پنل کاربری' title='عنوان پنل کاربری' group='dashboard' %}</div>
-        <nav class="space-y-2 text-sm">
-          <a href="{% url 'ai_platform:chat' %}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/70">{% site_text 'dashboard.nav.home' 'داشبورد' title='داشبورد در ناوبری پنل' group='dashboard' %}</a>
-          <a href="{% url 'ai_platform:billing' %}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/70">{% site_text 'dashboard.nav.billing' 'اشتراک و پرداخت' title='اشتراک و پرداخت در ناوبری پنل' group='dashboard' %}</a>
-          <a href="{% url 'dashboard:profile' %}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/70">{% site_text 'dashboard.nav.profile' 'پروفایل' title='پروفایل در ناوبری پنل' group='dashboard' %}</a>
+  {% with url_name=request.resolver_match.url_name|default:'' %}
+    <section class="section-shell pt-6 sm:pt-8">
+      <div class="mb-4 overflow-x-auto lg:hidden">
+        <div class="dashboard-mobile-nav pb-1">
+          <a href="{% url 'ai_platform:chat' %}" class="prompt-chip {% if request.resolver_match.namespace == 'ai_platform' %}!bg-slate-950 !text-white dark:!bg-white dark:!text-slate-950{% endif %}">{% site_text 'dashboard.nav.home' 'اپ' title='داشبورد در ناوبری پنل' group='dashboard' %}</a>
+          <a href="{% url 'ai_platform:billing' %}" class="prompt-chip {% if request.resolver_match.namespace == 'billing' or request.resolver_match.namespace == 'ai_platform' and url_name == 'billing' %}!bg-slate-950 !text-white dark:!bg-white dark:!text-slate-950{% endif %}">{% site_text 'dashboard.nav.billing' 'اشتراک و پرداخت' title='اشتراک و پرداخت در ناوبری پنل' group='dashboard' %}</a>
+          <a href="{% url 'dashboard:profile' %}" class="prompt-chip {% if url_name == 'profile' %}!bg-slate-950 !text-white dark:!bg-white dark:!text-slate-950{% endif %}">{% site_text 'dashboard.nav.profile' 'پروفایل' title='پروفایل در ناوبری پنل' group='dashboard' %}</a>
           {% if request.user.is_staff %}
-            <a href="{% url 'dashboard:admin_home' %}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-800/70">{% site_text 'dashboard.nav.admin' 'ادمین سفارشی' title='ادمین سفارشی در ناوبری پنل' group='dashboard' %}</a>
+            <a href="{% url 'dashboard:admin_home' %}" class="prompt-chip {% if url_name == 'admin_home' or url_name == 'admin_settings' or url_name == 'admin_models' or url_name == 'admin_model_create' or url_name == 'admin_model_edit' or url_name == 'admin_plans' or url_name == 'admin_plan_create' or url_name == 'admin_plan_edit' or url_name == 'admin_texts' or url_name == 'admin_text_create' or url_name == 'admin_text_edit' or url_name == 'admin_transactions' %}!bg-slate-950 !text-white dark:!bg-white dark:!text-slate-950{% endif %}">{% site_text 'dashboard.nav.admin' 'ادمین سفارشی' title='ادمین سفارشی در ناوبری پنل' group='dashboard' %}</a>
           {% endif %}
-          <a href="{% url 'accounts:logout' %}" class="block rounded-2xl px-4 py-3 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30">{% site_text 'dashboard.nav.logout' 'خروج' title='خروج در ناوبری پنل' group='dashboard' %}</a>
-        </nav>
-      </aside>
-
-      <div class="min-w-0">
-        {% block dashboard_content %}{% endblock %}
+          <a href="{% url 'accounts:logout' %}" class="prompt-chip">خروج</a>
+        </div>
       </div>
-    </div>
-  </section>
+
+      <div class="dashboard-shell-grid">
+        <aside class="hidden lg:block">
+          <div class="dashboard-sidebar">
+            <div class="surface-tint px-4 py-4">
+              <div class="text-xs font-black text-slate-500 dark:text-slate-400">ناوبری پنل</div>
+              <div class="mt-2 text-lg font-black text-slate-950 dark:text-white">{% site_text 'dashboard.title' 'پنل کاربری' title='عنوان پنل کاربری' group='dashboard' %}</div>
+              <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">میان سطوح حساب، پرداخت و عملیات ادمین بدون شلوغی جابه‌جا شوید.</p>
+            </div>
+
+            <nav class="space-y-1.5">
+              <a href="{% url 'ai_platform:chat' %}" class="admin-nav-link {% if request.resolver_match.namespace == 'ai_platform' %}active{% endif %}">{% site_text 'dashboard.nav.home' 'اپ FaralYar' title='داشبورد در ناوبری پنل' group='dashboard' %}<span class="text-[11px] text-slate-400">Chat</span></a>
+              <a href="{% url 'ai_platform:billing' %}" class="admin-nav-link {% if request.resolver_match.namespace == 'billing' or request.resolver_match.namespace == 'ai_platform' and url_name == 'billing' %}active{% endif %}">{% site_text 'dashboard.nav.billing' 'اشتراک و پرداخت' title='اشتراک و پرداخت در ناوبری پنل' group='dashboard' %}<span class="text-[11px] text-slate-400">Billing</span></a>
+              <a href="{% url 'dashboard:profile' %}" class="admin-nav-link {% if url_name == 'profile' %}active{% endif %}">{% site_text 'dashboard.nav.profile' 'پروفایل' title='پروفایل در ناوبری پنل' group='dashboard' %}<span class="text-[11px] text-slate-400">Account</span></a>
+              {% if request.user.is_staff %}
+                <a href="{% url 'dashboard:admin_home' %}" class="admin-nav-link {% if url_name == 'admin_home' or url_name == 'admin_settings' or url_name == 'admin_models' or url_name == 'admin_model_create' or url_name == 'admin_model_edit' or url_name == 'admin_plans' or url_name == 'admin_plan_create' or url_name == 'admin_plan_edit' or url_name == 'admin_texts' or url_name == 'admin_text_create' or url_name == 'admin_text_edit' or url_name == 'admin_transactions' %}active{% endif %}">{% site_text 'dashboard.nav.admin' 'ادمین سفارشی' title='ادمین سفارشی در ناوبری پنل' group='dashboard' %}<span class="text-[11px] text-slate-400">Admin</span></a>
+              {% endif %}
+              <a href="{% url 'accounts:logout' %}" class="admin-nav-link !text-rose-600 dark:!text-rose-300">{% site_text 'dashboard.nav.logout' 'خروج' title='خروج در ناوبری پنل' group='dashboard' %}<span class="text-[11px] text-rose-300 dark:text-rose-500">Exit</span></a>
+            </nav>
+          </div>
+        </aside>
+
+        <div class="min-w-0">
+          {% block dashboard_content %}{% endblock %}
+        </div>
+      </div>
+    </section>
+  {% endwith %}
 {% endblock %}

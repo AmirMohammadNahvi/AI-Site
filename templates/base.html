@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ site_settings.site_name_fa }}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ site_settings.tagline }}{% endblock %}">
+  <meta name="theme-color" content="{{ site_settings.secondary_color|default:'#0b1f3a' }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Vazirmatn:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -35,20 +39,33 @@
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
   <script defer src="{% static 'js/app.js' %}"></script>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50">
-  <div class="relative isolate overflow-hidden">
-    <div class="absolute inset-x-0 top-0 -z-10 h-[32rem] bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.2),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.14),transparent_26%),linear-gradient(180deg,rgba(255,255,255,0.66),transparent_80%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.18),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.2),transparent_26%),linear-gradient(180deg,rgba(15,23,42,0.78),transparent_74%)]"></div>
-    <div class="absolute left-0 top-40 -z-10 h-56 w-56 rounded-full bg-brand-secondary/10 blur-3xl dark:bg-brand-secondary/25"></div>
-    <div class="absolute right-0 top-64 -z-10 h-64 w-64 rounded-full bg-brand-primary/10 blur-3xl dark:bg-brand-primary/25"></div>
-    {% if not hide_site_chrome %}{% include 'partials/header.html' %}{% endif %}
+{% with ns=request.resolver_match.namespace|default:'' %}
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-50">
+  <div class="relative isolate min-h-screen overflow-x-clip">
+    {% if ns == 'ai_platform' or ns == 'dashboard' or ns == 'billing' or ns == 'accounts' %}
+      <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[24rem] bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.12),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.12),transparent_28%),linear-gradient(180deg,rgba(248,250,252,0.98),rgba(241,245,249,0.86))] dark:bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.14),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.20),transparent_28%),linear-gradient(180deg,rgba(2,10,24,0.98),rgba(10,20,36,0.92))]"></div>
+      <div class="pointer-events-none absolute inset-x-0 top-[18rem] -z-10 h-[34rem] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.56),transparent_55%)] dark:bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.28),transparent_58%)]"></div>
+    {% else %}
+      <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.17),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.12),transparent_26%),linear-gradient(180deg,rgba(255,255,255,0.90),transparent_82%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.20),transparent_26%),linear-gradient(180deg,rgba(15,23,42,0.82),transparent_76%)]"></div>
+      <div class="pointer-events-none absolute left-0 top-32 -z-10 h-56 w-56 rounded-full bg-brand-secondary/10 blur-3xl dark:bg-brand-secondary/20"></div>
+      <div class="pointer-events-none absolute right-0 top-56 -z-10 h-72 w-72 rounded-full bg-brand-primary/10 blur-3xl dark:bg-brand-primary/18"></div>
+    {% endif %}
+
+    {% if not hide_site_chrome and ns != 'ai_platform' and ns != 'dashboard' and ns != 'billing' and ns != 'accounts' %}
+      {% include 'partials/header.html' %}
+    {% endif %}
+
     {% include 'partials/messages.html' %}
-    <main class="{% if not hide_site_chrome %}pb-16{% endif %}">
+
+    <main class="{% if ns == 'ai_platform' or ns == 'dashboard' or ns == 'billing' or ns == 'accounts' %}pb-0{% else %}pb-24 md:pb-28{% endif %}">
       {% block content %}{% endblock %}
     </main>
-    {% if not hide_site_chrome %}
+
+    {% if not hide_site_chrome and ns != 'ai_platform' and ns != 'dashboard' and ns != 'billing' and ns != 'accounts' %}
       {% include 'partials/footer.html' %}
       {% include 'partials/mobile_dock.html' %}
     {% endif %}
   </div>
 </body>
+{% endwith %}
 </html>
