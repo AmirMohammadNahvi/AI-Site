@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.urls import reverse
 from django.utils import timezone
 
 from accounts.models import User
@@ -32,3 +33,11 @@ class BillingServiceTests(TestCase):
         success, window = consume_tokens(subscription, 1)
         self.assertTrue(success)
         self.assertEqual(window.remaining_tokens, 2)
+
+    def test_billing_root_redirects_to_safe_destination(self):
+        guest_response = self.client.get(reverse("billing:index"))
+        self.assertRedirects(guest_response, reverse("core:pricing"))
+
+        self.client.force_login(self.user)
+        auth_response = self.client.get(reverse("billing:index"))
+        self.assertRedirects(auth_response, reverse("ai_platform:billing"))

@@ -9,19 +9,16 @@ from billing.services import consume_tokens, get_active_subscription
 from core.models import FAQItem, SiteSetting
 
 from .app_ui import (
-    build_app_shell_context,
     build_assistant_sections,
-    build_billing_activity_items,
     build_billing_recommendation_context,
     build_billing_usage_context,
-    build_current_plan_context,
     build_memory_page_context,
     build_memory_scope_inline,
-    serialize_model,
 )
 from .forms import ChatMessageForm
 from .models import AIModel, AIModelCapability, Conversation
 from .services import AIAdapterError, AIAdapterService, build_attachment_payload, persist_exchange
+from .stable_app_ui import build_app_shell_context, build_billing_activity_items, build_current_plan_context, serialize_model
 
 
 def _ensure_session_key(request):
@@ -186,6 +183,7 @@ def model_index(request):
 def model_detail(request, slug):
     model = get_object_or_404(AIModel.objects.prefetch_related("capabilities"), slug=slug, is_active=True)
     subscription = get_active_subscription(request.user) if request.user.is_authenticated else None
+    serialized_model = serialize_model(model)
     context = build_app_shell_context(
         request,
         active_nav="models",
@@ -193,7 +191,8 @@ def model_detail(request, slug):
         page_description="مرور تناسب، قابلیت‌ها و وضعیت استفاده مدل در سطح v1.5.",
         page_eyebrow="کاتالوگ مدل‌ها",
     )
-    context["model"] = serialize_model(model)
+    context["model"] = serialized_model
+    context["model_use_context"] = serialized_model.get("model_use_context")
     context["current_plan"] = build_current_plan_context(subscription)
     context["conversation_entry_context"] = {
         "state": "available",

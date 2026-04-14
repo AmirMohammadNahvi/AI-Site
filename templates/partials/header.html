@@ -1,11 +1,11 @@
 {% load static site_text %}
 {% with ns=request.resolver_match.namespace|default:'' url_name=request.resolver_match.url_name|default:'' %}
 <header class="sticky top-0 z-40 px-3 pt-3" x-data="{ open: false }">
-  <div class="mx-auto max-w-[92rem] rounded-[2rem] border border-white/70 bg-white/84 shadow-[0_28px_90px_rgba(15,23,42,0.08)] backdrop-blur-2xl dark:border-slate-800/80 dark:bg-slate-950/78">
+  <div class="site-chrome mx-auto max-w-[92rem]">
     <div class="section-shell max-w-none">
       <div class="flex min-h-[5.25rem] items-center justify-between gap-3 py-3">
         <a href="{% url 'core:home' %}" class="flex min-w-0 items-center gap-3 rounded-[1.5rem] px-1 py-1">
-          <div class="surface-tint flex h-[3.25rem] w-[3.25rem] items-center justify-center overflow-hidden rounded-[1.4rem]">
+          <div class="surface-tint brand-mark flex items-center justify-center overflow-hidden">
             <img src="{% static site_settings.light_logo %}" alt="{{ site_settings.site_name_fa }}" class="h-9 w-auto dark:hidden">
             <img src="{% static site_settings.dark_logo %}" alt="{{ site_settings.site_name_fa }}" class="hidden h-9 w-auto dark:block">
           </div>
@@ -16,11 +16,11 @@
         </a>
 
         <nav class="hidden items-center gap-1 xl:flex">
-          <a href="{% url 'core:home' %}" class="rounded-full px-4 py-2.5 text-sm font-black transition {% if ns == 'core' and url_name == 'home' %}bg-slate-950 text-white shadow-lg shadow-slate-900/15 dark:bg-white dark:text-slate-950{% else %}text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white{% endif %}">{% site_text 'nav.home' 'خانه' title='خانه در منوی بالا' group='navigation' %}</a>
-          <a href="{% url 'core:pricing' %}" class="rounded-full px-4 py-2.5 text-sm font-black transition {% if ns == 'core' and url_name == 'pricing' %}bg-slate-950 text-white shadow-lg shadow-slate-900/15 dark:bg-white dark:text-slate-950{% else %}text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white{% endif %}">{% site_text 'nav.pricing' 'قیمت‌گذاری' title='قیمت‌گذاری در منوی بالا' group='navigation' %}</a>
-          <a href="{% url 'blog:list' %}" class="rounded-full px-4 py-2.5 text-sm font-black transition {% if ns == 'blog' %}bg-slate-950 text-white shadow-lg shadow-slate-900/15 dark:bg-white dark:text-slate-950{% else %}text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white{% endif %}">{% site_text 'nav.blog' 'بلاگ' title='بلاگ در منوی بالا' group='navigation' %}</a>
-          <a href="{% url 'core:faq' %}" class="rounded-full px-4 py-2.5 text-sm font-black transition {% if ns == 'core' and url_name == 'faq' %}bg-slate-950 text-white shadow-lg shadow-slate-900/15 dark:bg-white dark:text-slate-950{% else %}text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white{% endif %}">{% site_text 'nav.faq' 'سوالات' title='سوالات در منوی بالا' group='navigation' %}</a>
-          <a href="{% url 'core:contact' %}" class="rounded-full px-4 py-2.5 text-sm font-black transition {% if ns == 'core' and url_name == 'contact' %}bg-slate-950 text-white shadow-lg shadow-slate-900/15 dark:bg-white dark:text-slate-950{% else %}text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white{% endif %}">{% site_text 'nav.contact' 'تماس' title='تماس در منوی بالا' group='navigation' %}</a>
+          <a href="{% url 'core:home' %}" class="site-nav-link {% if ns == 'core' and url_name == 'home' %}is-active{% endif %}">{% site_text 'nav.home' 'خانه' title='خانه در منوی بالا' group='navigation' %}</a>
+          <a href="{% url 'core:pricing' %}" class="site-nav-link {% if ns == 'core' and url_name == 'pricing' %}is-active{% endif %}">{% site_text 'nav.pricing' 'قیمت‌گذاری' title='قیمت‌گذاری در منوی بالا' group='navigation' %}</a>
+          <a href="{% url 'blog:list' %}" class="site-nav-link {% if ns == 'blog' %}is-active{% endif %}">{% site_text 'nav.blog' 'بلاگ' title='بلاگ در منوی بالا' group='navigation' %}</a>
+          <a href="{% url 'core:faq' %}" class="site-nav-link {% if ns == 'core' and url_name == 'faq' %}is-active{% endif %}">{% site_text 'nav.faq' 'سوالات' title='سوالات در منوی بالا' group='navigation' %}</a>
+          <a href="{% url 'core:contact' %}" class="site-nav-link {% if ns == 'core' and url_name == 'contact' %}is-active{% endif %}">{% site_text 'nav.contact' 'تماس' title='تماس در منوی بالا' group='navigation' %}</a>
         </nav>
 
         <div class="hidden items-center gap-2 md:flex">
@@ -58,18 +58,18 @@
       </div>
     </div>
 
-    <div class="border-t border-slate-200/70 px-4 py-4 dark:border-slate-800/80 xl:hidden" x-cloak x-show="open" x-transition.opacity.scale.origin.top>
+    <div class="menu-sheet px-4 py-4 xl:hidden" x-cloak x-show="open" x-transition.opacity.scale.origin.top>
       <div class="section-shell max-w-none px-0">
         <div class="grid gap-3">
           <div class="surface-tint rounded-[1.7rem] p-4">
             <div class="text-xs font-black text-slate-500 dark:text-slate-400">مسیرهای اصلی</div>
             <div class="mt-3 grid gap-3 sm:grid-cols-2">
-              <a href="{% url 'core:home' %}" class="surface-card rounded-[1.35rem] px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.home' 'خانه' title='خانه در منوی موبایل' group='navigation' %}</a>
-              <a href="{% url 'ai_platform:chat' %}" class="surface-card rounded-[1.35rem] px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.chat' 'چت هوش مصنوعی' title='چت در منوی موبایل' group='navigation' %}</a>
-              <a href="{% url 'core:pricing' %}" class="surface-card rounded-[1.35rem] px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.pricing' 'قیمت‌گذاری' title='قیمت‌گذاری در منوی موبایل' group='navigation' %}</a>
-              <a href="{% url 'blog:list' %}" class="surface-card rounded-[1.35rem] px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.blog' 'بلاگ' title='بلاگ در منوی موبایل' group='navigation' %}</a>
-              <a href="{% url 'core:faq' %}" class="surface-card rounded-[1.35rem] px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.faq' 'سوالات متداول' title='سوالات متداول در منوی موبایل' group='navigation' %}</a>
-              <a href="{% url 'core:contact' %}" class="surface-card rounded-[1.35rem] px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.contact' 'تماس' title='تماس در منوی موبایل' group='navigation' %}</a>
+              <a href="{% url 'core:home' %}" class="tile-card px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.home' 'خانه' title='خانه در منوی موبایل' group='navigation' %}</a>
+              <a href="{% url 'ai_platform:chat' %}" class="tile-card px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.chat' 'چت هوش مصنوعی' title='چت در منوی موبایل' group='navigation' %}</a>
+              <a href="{% url 'core:pricing' %}" class="tile-card px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.pricing' 'قیمت‌گذاری' title='قیمت‌گذاری در منوی موبایل' group='navigation' %}</a>
+              <a href="{% url 'blog:list' %}" class="tile-card px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.blog' 'بلاگ' title='بلاگ در منوی موبایل' group='navigation' %}</a>
+              <a href="{% url 'core:faq' %}" class="tile-card px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.faq' 'سوالات متداول' title='سوالات متداول در منوی موبایل' group='navigation' %}</a>
+              <a href="{% url 'core:contact' %}" class="tile-card px-4 py-4 text-sm font-black text-slate-700 dark:text-slate-100">{% site_text 'nav.drawer.contact' 'تماس' title='تماس در منوی موبایل' group='navigation' %}</a>
             </div>
           </div>
 

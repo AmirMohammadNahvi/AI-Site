@@ -1,5 +1,5 @@
 <aside class="space-y-4">
-  <section class="surface-tint relative overflow-hidden p-4 shadow-sm shadow-slate-900/5 sm:p-5">
+  <section class="page-section-card relative overflow-hidden p-4 sm:p-5">
     <div class="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_52%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.10),transparent_42%)]"></div>
 
     <div class="relative">
@@ -17,7 +17,7 @@
 
       <div class="mt-5 space-y-3">
         {% if auth_intro_point_one_title or auth_intro_point_one_body %}
-          <div class="surface-card rounded-[1.35rem] p-4">
+          <div class="feature-card p-4">
             {% if auth_intro_point_one_title %}
               <div class="text-sm font-black text-slate-900 dark:text-white">{{ auth_intro_point_one_title }}</div>
             {% endif %}
@@ -28,7 +28,7 @@
         {% endif %}
 
         {% if auth_intro_point_two_title or auth_intro_point_two_body %}
-          <div class="surface-card rounded-[1.35rem] p-4">
+          <div class="feature-card p-4">
             {% if auth_intro_point_two_title %}
               <div class="text-sm font-black text-slate-900 dark:text-white">{{ auth_intro_point_two_title }}</div>
             {% endif %}
@@ -42,7 +42,7 @@
   </section>
 
   {% if auth_intro_meta_title or auth_intro_meta_body %}
-    <section class="surface-muted p-4 sm:p-5">
+    <section class="info-panel p-4 sm:p-5">
       {% if auth_intro_meta_title %}
         <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ auth_intro_meta_title }}</div>
       {% endif %}

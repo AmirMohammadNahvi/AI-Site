@@ -3,15 +3,18 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
-from ai_platform.app_ui import (
-    build_app_shell_context,
-    build_checkout_plan_context,
-    build_order_status_context,
-)
+from ai_platform.app_ui import build_checkout_plan_context, build_order_status_context
+from ai_platform.stable_app_ui import build_app_shell_context
 from billing.services import get_active_subscription
 
 from .models import Plan, PurchaseOrder
 from .services import BillingError, ZarinpalService, activate_plan_for_order
+
+
+def index(request):
+    if request.user.is_authenticated:
+        return redirect("ai_platform:billing")
+    return redirect("core:pricing")
 
 
 def _start_checkout(request, plan):

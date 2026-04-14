@@ -29,6 +29,12 @@ def _format_amount(value):
         return str(value)
 
 
+def _with_defaults(payload, defaults):
+    merged = defaults.copy()
+    merged.update(payload)
+    return merged
+
+
 def get_subscription_and_window(request):
     if not request.user.is_authenticated:
         return None, None
@@ -97,6 +103,73 @@ def build_current_plan_context(subscription, latest_order=None):
         "secondary_cta_url": reverse("ai_platform:chat"),
         "secondary_cta_label": "بازگشت به گفتگو",
     }
+
+
+def build_current_plan_context(subscription, latest_order=None):
+    defaults = {
+        "badge": "",
+        "name": "",
+        "title": "",
+        "description": "",
+        "summary": "",
+        "price_label": "",
+        "cycle_label": "",
+        "status_label": "",
+        "started_at_label": "",
+        "started_at_note": "",
+        "expires_at_label": "",
+        "expires_at_note": "",
+        "renews_at_label": "",
+        "renews_at_note": "",
+        "order_reference": "",
+        "order_label": "",
+        "invoice_note": "",
+        "renewal_label": "",
+        "renewal_note": "",
+        "next_action_label": "",
+        "helper_text": "",
+        "primary_cta_url": "",
+        "primary_cta_label": "",
+        "secondary_cta_url": "",
+        "secondary_cta_label": "",
+    }
+    if not subscription:
+        return _with_defaults(
+            {
+                "primary_cta_url": reverse("core:pricing"),
+                "primary_cta_label": "Ù…Ø±ÙˆØ± Ù¾Ù„Ù†â€ŒÙ‡Ø§",
+                "secondary_cta_url": reverse("core:contact"),
+                "secondary_cta_label": "ØªÙ…Ø§Ø³ Ø¨Ø§ ØªÛŒÙ…",
+            },
+            defaults,
+        )
+
+    order_reference = f"#{latest_order.id}" if latest_order else ""
+    return _with_defaults(
+        {
+            "badge": "Ù¾Ù„Ù† ÙØ¹Ø§Ù„",
+            "name": subscription.plan.name,
+            "title": subscription.plan.name,
+            "description": subscription.plan.description or "Ø¬Ø²Ø¦ÛŒØ§Øª Ù¾Ù„Ù† ÙØ¹Ø§Ù„ Ø´Ù…Ø§ Ø§Ø² Ù‡Ù…ÛŒÙ† Ø¨Ø®Ø´ Ù‚Ø§Ø¨Ù„ Ù…Ø±ÙˆØ± Ø§Ø³Øª.",
+            "summary": subscription.plan.description or "Ø§ÛŒÙ† Ù¾Ù„Ù† Ø¨Ø±Ø§ÛŒ Ø§Ø³ØªÙØ§Ø¯Ù‡ Ø±ÙˆØ²Ù…Ø±Ù‡ Ù‡Ù…ÛŒÙ† Ø­Ø³Ø§Ø¨ ÙØ¹Ø§Ù„ Ø§Ø³Øª.",
+            "price_label": f"{_format_amount(subscription.plan.price)} ØªÙˆÙ…Ø§Ù†",
+            "cycle_label": f"{subscription.plan.duration_days} Ø±ÙˆØ² Ø§Ø¹ØªØ¨Ø§Ø±",
+            "status_label": "ÙØ¹Ø§Ù„",
+            "started_at_label": _format_dt(subscription.starts_at),
+            "expires_at_label": _format_dt(subscription.ends_at),
+            "started_at_note": "Ø´Ø±ÙˆØ¹ Ø§Ø¹ØªØ¨Ø§Ø± Ù¾Ù„Ù† ÙØ¹Ù„ÛŒ",
+            "expires_at_note": "Ø¯Ø± ØµÙˆØ±Øª Ù†Ø¯Ø§Ø´ØªÙ† Ø³ÙØ§Ø±Ø´ Ø¬Ø¯ÛŒØ¯ØŒ Ù¾Ø³ Ø§Ø² Ø§ÛŒÙ† Ø²Ù…Ø§Ù† Ù¾Ø§ÛŒØ§Ù† Ù…ÛŒâ€ŒÛŒØ§Ø¨Ø¯.",
+            "order_reference": order_reference or "Ø§Ø² Ø³ÙØ§Ø±Ø´ ÙØ¹Ø§Ù„ ÙØ¹Ù„ÛŒ",
+            "renewal_label": "ØªÙ…Ø¯ÛŒØ¯ Ø®ÙˆØ¯Ú©Ø§Ø± ØªØ¹Ø±ÛŒÙ Ù†Ø´Ø¯Ù‡",
+            "renewal_note": "Ø¨Ø±Ø§ÛŒ Ø§Ø¯Ø§Ù…Ù‡ Ø§Ø³ØªÙØ§Ø¯Ù‡ Ø¨Ø§ÛŒØ¯ Ø³ÙØ§Ø±Ø´ Ø¨Ø¹Ø¯ÛŒ Ø±Ø§ Ø®ÙˆØ¯ØªØ§Ù† Ø«Ø¨Øª Ú©Ù†ÛŒØ¯.",
+            "helper_text": "Ù…Ø±Ø¬Ø¹ Ø§ØµÙ„ÛŒ Ù…Ù‚Ø§ÛŒØ³Ù‡ Ù¾Ù„Ù†â€ŒÙ‡Ø§ ØµÙØ­Ù‡ Ù‚ÛŒÙ…Øªâ€ŒÚ¯Ø°Ø§Ø±ÛŒ Ø¹Ù…ÙˆÙ…ÛŒ Ø§Ø³ØªØ› ÙˆØ¶Ø¹ÛŒØª ÙˆØ§Ù‚Ø¹ÛŒ Ø§ÛŒÙ† Ø­Ø³Ø§Ø¨ Ø§Ø² Ù‡Ù…ÛŒÙ† Ú©Ø§Ø±Øª Ø®ÙˆØ§Ù†Ø¯Ù‡ Ù…ÛŒâ€ŒØ´ÙˆØ¯.",
+            "primary_cta_url": reverse("core:pricing"),
+            "primary_cta_label": "Ù…Ù‚Ø§ÛŒØ³Ù‡ Ù¾Ù„Ù†â€ŒÙ‡Ø§",
+            "secondary_cta_url": reverse("ai_platform:chat"),
+            "secondary_cta_label": "Ø¨Ø§Ø²Ú¯Ø´Øª Ø¨Ù‡ Ú¯ÙØªÚ¯Ùˆ",
+        },
+        defaults,
+    )
 
 
 def build_app_shell_context(
@@ -266,6 +339,117 @@ def serialize_model(model):
             "reason": "انتخاب نهایی مدل هنگام ارسال پیام انجام می‌شود.",
         },
     }
+
+
+def serialize_model(model):
+    capability_defaults = {
+        "label": "",
+        "short_label": "",
+        "name": "",
+        "summary": "",
+        "state": "supported",
+        "availability_state": "supported",
+        "state_label": "",
+        "note": "",
+        "reason": "",
+    }
+    capabilities = [
+        _with_defaults(
+            {
+                "label": capability.get_capability_type_display(),
+                "short_label": capability.get_capability_type_display(),
+            },
+            capability_defaults,
+        )
+        for capability in model.capabilities.filter(is_enabled=True)
+    ]
+    summary = model.summary or model.description or "Ø¨Ø±Ø§ÛŒ Ø§Ø³ØªÙØ§Ø¯Ù‡ Ø±ÙˆØ²Ù…Ø±Ù‡ Ø¯Ø± Ú¯ÙØªâ€ŒÙˆÚ¯ÙˆÙ‡Ø§ÛŒ FaralYar Ø¢Ù…Ø§Ø¯Ù‡ Ø´Ø¯Ù‡ Ø§Ø³Øª."
+    model_defaults = {
+        "name": "",
+        "initials": "AI",
+        "family_label": "",
+        "speed_label": "",
+        "summary": "",
+        "long_summary": "",
+        "fit_statement": "",
+        "meta_description": "",
+        "category_label": "",
+        "availability_state": "available",
+        "availability_label": "",
+        "availability_note": "",
+        "availability_headline": "",
+        "workspace_label": "",
+        "workspace_note": "",
+        "plan_note": "",
+        "blocked_title": "",
+        "hero_note": "",
+        "use_summary": "",
+        "use_helper": "",
+        "upgrade_title": "",
+        "upgrade_body": "",
+        "replacement_label": "",
+        "detail_url": "",
+        "detail_label": "",
+        "detail_back_url": reverse("ai_platform:models"),
+        "detail_back_label": "Ø¨Ø§Ø²Ú¯Ø´Øª Ø¨Ù‡ Ú©Ø§ØªØ§Ù„ÙˆÚ¯ Ù…Ø¯Ù„â€ŒÙ‡Ø§",
+        "primary_cta_url": "",
+        "primary_cta_label": "",
+        "secondary_cta_url": "",
+        "secondary_cta_label": "",
+        "capabilities": [],
+        "badges": [],
+        "strengths": [],
+        "strengths_summary": "",
+        "limitations": [],
+        "limitations_summary": "",
+        "is_recommended": False,
+        "is_deprecated": False,
+        "model_use_context": {
+            "badge": "",
+            "title": "",
+            "body": "",
+            "helper": "",
+            "note": "",
+            "state": "available",
+            "state_label": "",
+            "reason": "",
+            "primary_cta_url": "",
+            "primary_cta_label": "",
+            "secondary_cta_url": "",
+            "secondary_cta_label": "",
+        },
+    }
+    return _with_defaults(
+        {
+            "name": model.name,
+            "initials": _initials(model.name, fallback="AI"),
+            "family_label": model.provider_label,
+            "summary": summary,
+            "fit_statement": model.description or summary,
+            "availability_state": "available",
+            "availability_label": "Ø¢Ù…Ø§Ø¯Ù‡ Ø§Ø³ØªÙØ§Ø¯Ù‡",
+            "availability_note": "Ø¯Ø± Ù…Ø³ÛŒØ± Ú¯ÙØªâ€ŒÙˆÚ¯ÙˆÛŒ ÙØ¹Ù„ÛŒ Ù…ÛŒâ€ŒØªÙˆØ§Ù†ÛŒØ¯ Ø§ÛŒÙ† Ù…Ø¯Ù„ Ø±Ø§ Ø§Ù†ØªØ®Ø§Ø¨ Ú©Ù†ÛŒØ¯.",
+            "availability_headline": "Ø¯Ø± Ú¯ÙØªâ€ŒÙˆÚ¯ÙˆÛŒ ÙØ¹Ù„ÛŒ Ù‚Ø§Ø¨Ù„ Ø§Ù†ØªØ®Ø§Ø¨ Ø§Ø³Øª",
+            "workspace_label": "ÙØ¶Ø§ÛŒ Ø´Ø®ØµÛŒ",
+            "capabilities": capabilities,
+            "badges": capabilities,
+            "detail_url": reverse("ai_platform:model_detail", args=[model.slug]),
+            "detail_label": "Ø¬Ø²Ø¦ÛŒØ§Øª Ù…Ø¯Ù„",
+            "primary_cta_url": reverse("ai_platform:chat"),
+            "primary_cta_label": "Ø´Ø±ÙˆØ¹ Ú¯ÙØªÚ¯Ùˆ",
+            "secondary_cta_url": reverse("ai_platform:chat"),
+            "secondary_cta_label": "Ø¨Ø§Ø²Ú¯Ø´Øª Ø¨Ù‡ Ú¯ÙØªÚ¯Ùˆ",
+            "model_use_context": {
+                "state": "available",
+                "primary_cta_url": reverse("ai_platform:chat"),
+                "primary_cta_label": "Ø´Ø±ÙˆØ¹ Ú¯ÙØªÚ¯Ùˆ Ø¨Ø§ Ø§ÛŒÙ† Ù…Ø¯Ù„",
+                "secondary_cta_url": reverse("ai_platform:models"),
+                "secondary_cta_label": "Ø¨Ø§Ø²Ú¯Ø´Øª Ø¨Ù‡ ÙÙ‡Ø±Ø³Øª Ù…Ø¯Ù„â€ŒÙ‡Ø§",
+                "reason": "Ø§Ù†ØªØ®Ø§Ø¨ Ù†Ù‡Ø§ÛŒÛŒ Ù…Ø¯Ù„ Ù‡Ù†Ú¯Ø§Ù… Ø§Ø±Ø³Ø§Ù„ Ù¾ÛŒØ§Ù… Ø§Ù†Ø¬Ø§Ù… Ù…ÛŒâ€ŒØ´ÙˆØ¯.",
+            },
+        },
+        model_defaults,
+    )
 
 
 def build_billing_usage_context(subscription, quota_window):

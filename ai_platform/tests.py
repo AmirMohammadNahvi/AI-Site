@@ -4,6 +4,8 @@ from django.test import TestCase
 from django.urls import reverse
 
 from accounts.models import User
+from billing.models import Plan, PurchaseOrder
+from billing.services import activate_plan_for_order
 
 from .models import AIModel, AIModelCapability, Conversation
 
@@ -47,3 +49,31 @@ class ChatTests(TestCase):
         self.assertEqual(response.status_code, 302)
         conversation.refresh_from_db()
         self.assertTrue(conversation.is_archived)
+
+    def test_model_routes_render_without_optional_context_crashes(self):
+        list_response = self.client.get(reverse("ai_platform:models"))
+        detail_response = self.client.get(reverse("ai_platform:model_detail", args=[self.model.slug]))
+
+        self.assertEqual(list_response.status_code, 200)
+        self.assertEqual(detail_response.status_code, 200)
+        self.assertContains(list_response, self.model.name)
+        self.assertContains(detail_response, self.model.name)
+
+    def test_billing_page_renders_for_user_with_active_subscription(self):
+        user = User.objects.create_user(email="billing@example.com", password="Secret123!", full_name="Billing User")
+        plan = Plan.objects.create(
+            name="Billing Plan",
+            slug="billing-test-plan",
+            price=250000,
+            duration_days=30,
+            token_limit_per_window=5,
+            reset_interval_hours=24,
+        )
+        order = PurchaseOrder.objects.create(user=user, plan=plan, amount=plan.price, status=PurchaseOrder.PAID)
+        activate_plan_for_order(order)
+
+        self.client.force_login(user)
+        response = self.client.get(reverse("ai_platform:billing"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, plan.name)

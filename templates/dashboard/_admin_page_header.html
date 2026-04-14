@@ -1,4 +1,4 @@
-<section class="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white/84 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/58 sm:p-5 lg:p-6">
+<section class="page-hero-card relative overflow-hidden p-4 sm:p-5 lg:p-6">
   <div class="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_52%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.12),transparent_42%)]"></div>
 
   <div class="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
@@ -8,13 +8,13 @@
           <span class="badge">{{ admin_badge }}</span>
         {% endif %}
         {% if admin_context_label %}
-          <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ admin_context_label }}</span>
+          <span class="meta-chip px-3 py-1 text-[11px]">{{ admin_context_label }}</span>
         {% endif %}
         {% if admin_meta_label %}
-          <span class="rounded-full bg-white/88 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-950/55 dark:text-slate-300">{{ admin_meta_label }}</span>
+          <span class="soft-chip px-3 py-1 text-[11px]">{{ admin_meta_label }}</span>
         {% endif %}
         {% if admin_meta_label_two %}
-          <span class="rounded-full bg-white/88 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-950/55 dark:text-slate-300">{{ admin_meta_label_two }}</span>
+          <span class="soft-chip px-3 py-1 text-[11px]">{{ admin_meta_label_two }}</span>
         {% endif %}
       </div>
 
@@ -25,7 +25,7 @@
       {% endif %}
 
       {% if admin_hint %}
-        <div class="mt-4 rounded-[1.4rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-300">
+        <div class="info-panel mt-4 px-4 py-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
           {{ admin_hint }}
         </div>
       {% endif %}

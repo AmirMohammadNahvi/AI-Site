@@ -1,6 +1,6 @@
 {% load site_text %}
 <footer class="px-3 pb-28 pt-14 md:pb-12">
-  <div class="mx-auto max-w-[92rem] overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/86 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur-2xl dark:border-slate-800/80 dark:bg-slate-950/76">
+  <div class="site-footer mx-auto max-w-[92rem] overflow-hidden">
     <div class="border-b border-slate-200/70 px-5 py-5 dark:border-slate-800/80 sm:px-8">
       <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div class="max-w-2xl">
@@ -9,15 +9,15 @@
           <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">{{ site_settings.hero_subtitle|default:site_settings.tagline }}</p>
         </div>
         <div class="grid gap-3 sm:grid-cols-3">
-          <div class="surface-muted px-4 py-3">
+          <div class="surface-muted footer-metric px-4 py-3">
             <div class="text-xs font-black text-slate-500 dark:text-slate-400">اعتماد</div>
             <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">صفحات عمومی روشن</div>
           </div>
-          <div class="surface-muted px-4 py-3">
+          <div class="surface-muted footer-metric px-4 py-3">
             <div class="text-xs font-black text-slate-500 dark:text-slate-400">خرید</div>
             <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">مسیر پرداخت شفاف</div>
           </div>
-          <div class="surface-muted px-4 py-3">
+          <div class="surface-muted footer-metric px-4 py-3">
             <div class="text-xs font-black text-slate-500 dark:text-slate-400">پشتیبانی</div>
             <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">مسیر تماس مشخص</div>
           </div>
@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="section-shell max-w-none grid gap-8 px-5 py-8 md:grid-cols-2 xl:grid-cols-[1.15fr_0.75fr_0.8fr_0.9fr] sm:px-8">
+    <div class="section-shell max-w-none grid gap-8 px-5 py-8 sm:px-8 md:grid-cols-2 xl:grid-cols-[1.15fr_0.75fr_0.8fr_0.9fr]">
       <div>
         <h4 class="footer-heading">{{ site_settings.site_name_fa }}</h4>
         <p class="mt-3 max-w-md text-sm leading-8 text-slate-600 dark:text-slate-300">{{ site_settings.tagline }}</p>

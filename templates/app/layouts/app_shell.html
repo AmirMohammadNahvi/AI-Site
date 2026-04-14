@@ -20,7 +20,7 @@
     ></div>
 
     <aside
-      class="fixed inset-y-0 right-0 z-50 flex w-[90vw] max-w-sm flex-col border-l border-slate-200/80 bg-white/96 shadow-2xl shadow-slate-900/12 backdrop-blur-xl dark:border-slate-700/70 dark:bg-slate-950/92 lg:hidden"
+      class="workspace-shell-card fixed inset-y-0 right-0 z-50 flex w-[90vw] max-w-sm flex-col border-l shadow-2xl shadow-slate-900/12 backdrop-blur-xl lg:hidden"
       x-cloak
       x-show="mobileMenuOpen"
       x-transition:enter="transition duration-200 ease-out"
@@ -49,7 +49,7 @@
       </div>
 
       <div class="flex-1 overflow-y-auto px-4 py-4">
-        <div class="panel-soft rounded-[1.75rem] p-3">
+        <div class="workspace-shell-card rounded-[1.75rem] p-3">
           <div class="mb-3 text-xs font-bold text-slate-500 dark:text-slate-400">فضای فعال</div>
           <div class="flex items-center gap-3 rounded-[1.5rem] border border-emerald-200/70 bg-emerald-50/80 px-3 py-3 text-slate-900 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-white">
             <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-sm font-black text-white dark:bg-white dark:text-slate-900">
@@ -76,7 +76,7 @@
           {% for item in app_sidebar_items %}
             <a
               href="{{ item.url }}"
-              class="block rounded-[1.35rem] border px-4 py-3 transition {% if item.is_active %}border-emerald-200 bg-emerald-50 text-slate-900 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white{% else %}border-transparent bg-white/70 text-slate-700 hover:border-slate-200 hover:bg-white dark:bg-slate-900/40 dark:text-slate-200 dark:hover:border-slate-700 dark:hover:bg-slate-900/75{% endif %}"
+            class="workspace-nav-link {% if item.is_active %}is-active{% endif %}"
             >
               <div class="flex items-center justify-between gap-3">
                 <div class="min-w-0">
@@ -114,10 +114,10 @@
     {% include 'app/_topbar.html' %}
 
     <div class="section-shell pb-6 pt-4 sm:pb-8">
-      <div class="grid gap-4 lg:grid-cols-[18.5rem_minmax(0,1fr)] xl:gap-6">
+      <div class="shell-grid xl:gap-6">
         <aside class="hidden lg:block lg:self-start">
           <div class="chat-app-sidebar sticky top-24 rounded-[2rem] p-4">
-            <div class="surface-card flex items-center gap-3 rounded-[1.5rem] px-3 py-3">
+            <div class="workspace-shell-card flex items-center gap-3 px-3 py-3">
               <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-sm font-black text-white dark:bg-white dark:text-slate-900">
                 {% if current_workspace.initials %}
                   {{ current_workspace.initials }}
@@ -143,7 +143,7 @@
                 {% for item in app_sidebar_items %}
                   <a
                     href="{{ item.url }}"
-                    class="block rounded-[1.35rem] border px-4 py-3 transition {% if item.is_active %}border-emerald-200 bg-emerald-50 text-slate-900 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white{% else %}border-slate-200/70 bg-white/72 text-slate-700 hover:border-slate-300 hover:bg-white dark:border-slate-800/80 dark:bg-slate-900/35 dark:text-slate-200 dark:hover:border-slate-700 dark:hover:bg-slate-900/75{% endif %}"
+                    class="workspace-nav-link {% if item.is_active %}is-active{% endif %}"
                   >
                     <div class="flex items-center justify-between gap-3">
                       <div class="min-w-0">
@@ -189,14 +189,14 @@
 
           <div class="{% if app_has_context_panel %}grid gap-4 xl:grid-cols-[minmax(0,1fr)_19rem] xl:items-start{% endif %}">
             <main class="min-w-0">
-              <div class="surface-card rounded-[2rem] p-4 sm:p-5 lg:p-6">
+              <div class="workspace-page-card rounded-[2rem] p-4 sm:p-5 lg:p-6">
                 {% block app_content %}{% endblock %}
               </div>
             </main>
 
             {% if app_has_context_panel %}
               <aside class="min-w-0 xl:sticky xl:top-24">
-                <div class="surface-card rounded-[2rem] p-4 sm:p-5">
+                <div class="workspace-page-card rounded-[2rem] p-4 sm:p-5">
                   {% block app_context_panel %}{% endblock %}
                 </div>
               </aside>
