@@ -1,64 +1,76 @@
 {% load site_text %}
-<footer class="px-3 pb-28 pt-14 md:pb-12">
-  <div class="site-footer mx-auto max-w-[92rem] overflow-hidden">
-    <div class="border-b border-slate-200/70 px-5 py-5 dark:border-slate-800/80 sm:px-8">
-      <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div class="max-w-2xl">
-          <div class="text-xs font-black uppercase tracking-[0.24em] text-brand-primary">FaralYar</div>
-          <h3 class="mt-2 text-2xl font-black text-slate-950 dark:text-white">یک تجربه فارسی، آرام و قابل‌اعتماد برای مسیر واقعی کار با AI</h3>
-          <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">{{ site_settings.hero_subtitle|default:site_settings.tagline }}</p>
-        </div>
-        <div class="grid gap-3 sm:grid-cols-3">
-          <div class="surface-muted footer-metric px-4 py-3">
-            <div class="text-xs font-black text-slate-500 dark:text-slate-400">اعتماد</div>
-            <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">صفحات عمومی روشن</div>
-          </div>
-          <div class="surface-muted footer-metric px-4 py-3">
-            <div class="text-xs font-black text-slate-500 dark:text-slate-400">خرید</div>
-            <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">مسیر پرداخت شفاف</div>
-          </div>
-          <div class="surface-muted footer-metric px-4 py-3">
-            <div class="text-xs font-black text-slate-500 dark:text-slate-400">پشتیبانی</div>
-            <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">مسیر تماس مشخص</div>
-          </div>
+<footer class="px-3 pb-28 pt-16 md:px-4 md:pb-14">
+  <div class="site-footer public-footer-shell mx-auto max-w-[92rem] overflow-hidden">
+    <div class="public-footer-top">
+      <div class="public-footer-intro">
+        <div class="public-footer-eyebrow">FaralYar</div>
+        <h3 class="public-footer-title">یک محصول فارسی برای کار جدی با AI؛ روشن، کم‌نویز و قابل‌اعتماد.</h3>
+        <p class="public-footer-copy">{{ site_settings.hero_subtitle|default:site_settings.tagline }}</p>
+        <div class="public-footer-actions">
+          <a href="{% url 'ai_platform:chat' %}" class="btn-primary">شروع گفتگو</a>
+          <a href="{% url 'core:pricing' %}" class="btn-secondary">مرور پلن‌ها</a>
         </div>
       </div>
+
+      <aside class="public-footer-trust">
+        <div class="text-xs font-black uppercase tracking-[0.22em] text-brand-primary">لایه اعتماد عمومی</div>
+        <div class="public-footer-trust-list">
+          <div class="public-footer-trust-item">
+            <span class="public-footer-trust-dot"></span>
+            <div>
+              <div class="text-sm font-black text-slate-950 dark:text-white">مسیرهای اصلی از هم جدا و روشن‌اند</div>
+              <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">شروع گفتگو، مرور پلن‌ها، مطالعه و پشتیبانی هرکدام جای مشخص خودشان را دارند.</p>
+            </div>
+          </div>
+          <div class="public-footer-trust-item">
+            <span class="public-footer-trust-dot"></span>
+            <div>
+              <div class="text-sm font-black text-slate-950 dark:text-white">متن عمومی با رفتار واقعی محصول هماهنگ است</div>
+              <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">نه وعده اضافی می‌دهد و نه کاربر را بین سطح دسترسی‌ها و مسیر خرید سردرگم می‌کند.</p>
+            </div>
+          </div>
+          <div class="public-footer-trust-item">
+            <span class="public-footer-trust-dot"></span>
+            <div>
+              <div class="text-sm font-black text-slate-950 dark:text-white">پشتیبانی و صفحات قانونی در دسترس‌اند</div>
+              <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">اگر سوالی درباره خرید، حساب یا داده داشته باشید، نقطه بعدی شما از همین‌جا روشن است.</p>
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
 
-    <div class="section-shell max-w-none grid gap-8 px-5 py-8 sm:px-8 md:grid-cols-2 xl:grid-cols-[1.15fr_0.75fr_0.8fr_0.9fr]">
-      <div>
-        <h4 class="footer-heading">{{ site_settings.site_name_fa }}</h4>
-        <p class="mt-3 max-w-md text-sm leading-8 text-slate-600 dark:text-slate-300">{{ site_settings.tagline }}</p>
-        <div class="mt-5 flex flex-wrap gap-2">
-          <a href="{% url 'ai_platform:chat' %}" class="soft-chip">چت AI</a>
-          <a href="{% url 'core:pricing' %}" class="soft-chip">قیمت‌گذاری</a>
-          <a href="{% url 'core:faq' %}" class="soft-chip">راهنما</a>
-        </div>
-      </div>
-
-      <div>
-        <h4 class="footer-heading">{% site_text 'footer.quick_links' 'دسترسی سریع' title='عنوان دسترسی سریع فوتر' group='footer' %}</h4>
-        <div class="mt-4 flex flex-col gap-3 text-sm">
+    <div class="public-footer-grid">
+      <div class="public-footer-column">
+        <h4 class="footer-heading">محصول</h4>
+        <div class="public-footer-list">
           <a href="{% url 'ai_platform:chat' %}" class="footer-link">{% site_text 'footer.chat' 'چت هوش مصنوعی' title='لینک چت فوتر' group='footer' %}</a>
           <a href="{% url 'core:pricing' %}" class="footer-link">{% site_text 'footer.pricing' 'قیمت‌گذاری' title='لینک قیمت‌گذاری فوتر' group='footer' %}</a>
           <a href="{% url 'blog:list' %}" class="footer-link">{% site_text 'footer.blog' 'بلاگ' title='لینک بلاگ فوتر' group='footer' %}</a>
-          <a href="{% url 'core:faq' %}" class="footer-link">{% site_text 'footer.faq' 'سوالات متداول' title='لینک سوالات فوتر' group='footer' %}</a>
         </div>
       </div>
 
-      <div>
-        <h4 class="footer-heading">اعتماد و قوانین</h4>
-        <div class="mt-4 flex flex-col gap-3 text-sm">
-          <a href="{% url 'core:about' %}" class="footer-link">درباره ما</a>
+      <div class="public-footer-column">
+        <h4 class="footer-heading">راهنما و پشتیبانی</h4>
+        <div class="public-footer-list">
+          <a href="{% url 'core:faq' %}" class="footer-link">{% site_text 'footer.faq' 'سوالات متداول' title='لینک سوالات فوتر' group='footer' %}</a>
           <a href="{% url 'core:contact' %}" class="footer-link">تماس با ما</a>
+          <a href="{% url 'core:about' %}" class="footer-link">درباره ما</a>
+        </div>
+      </div>
+
+      <div class="public-footer-column">
+        <h4 class="footer-heading">اعتماد و قوانین</h4>
+        <div class="public-footer-list">
           <a href="{% url 'core:privacy' %}" class="footer-link">حریم خصوصی</a>
           <a href="{% url 'core:terms' %}" class="footer-link">قوانین استفاده</a>
+          <a href="{% url 'core:contact' %}" class="footer-link">پیگیری سوال یا ابهام</a>
         </div>
       </div>
 
-      <div>
-        <h4 class="footer-heading">{% site_text 'footer.contact' 'ارتباط با ما' title='عنوان ارتباط با ما فوتر' group='footer' %}</h4>
-        <div class="mt-4 space-y-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+      <div class="public-footer-column">
+        <h4 class="footer-heading">{% site_text 'footer.contact' 'ارتباط مستقیم' title='عنوان ارتباط با ما فوتر' group='footer' %}</h4>
+        <div class="public-footer-contact-list">
           {% if site_settings.support_email %}<p>{{ site_settings.support_email }}</p>{% endif %}
           {% if site_settings.support_phone %}<p>{{ site_settings.support_phone }}</p>{% endif %}
           {% if site_settings.address %}<p>{{ site_settings.address }}</p>{% endif %}
@@ -66,6 +78,15 @@
           {% if site_settings.instagram_url %}<a href="{{ site_settings.instagram_url }}" class="footer-link inline-flex">اینستاگرام</a>{% endif %}
           {% if site_settings.linkedin_url %}<a href="{{ site_settings.linkedin_url }}" class="footer-link inline-flex">لینکدین</a>{% endif %}
         </div>
+      </div>
+    </div>
+
+    <div class="public-footer-bottom">
+      <p>FaralYar برای تجربه عمومی فارسی، راست‌چین و خوانا روی دسکتاپ و موبایل طراحی شده است.</p>
+      <div class="flex flex-wrap gap-2">
+        <a href="{% url 'core:faq' %}" class="soft-chip">راهنما</a>
+        <a href="{% url 'core:contact' %}" class="soft-chip">پشتیبانی</a>
+        <a href="{% url 'core:privacy' %}" class="soft-chip">حریم خصوصی</a>
       </div>
     </div>
   </div>

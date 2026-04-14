@@ -1,175 +1,321 @@
 {% extends 'base.html' %}
-{% load site_text %}
 
 {% block title %}{{ site_settings.site_name_fa }} | خانه{% endblock %}
-{% block meta_description %}FaralYar یک فضای کاری فارسی و آرام برای گفتگو، تحلیل فایل و ادامه کار حرفه‌ای است؛ با توضیح روشن درباره شروع، پلن‌ها و مسیر استفاده.{% endblock %}
+{% block meta_description %}FaralYar یک فضای کاری فارسی و آرام برای گفت‌وگو، تحلیل فایل و تصویر، و ادامه کار حرفه‌ای با هوش مصنوعی است؛ با مسیر شروع روشن، اعتماد عمومی و پلن‌های قابل‌فهم.{% endblock %}
 
 {% block content %}
   {% url 'ai_platform:chat' as home_chat_url %}
   {% url 'core:pricing' as home_pricing_url %}
-  {% url 'blog:list' as home_blog_url %}
 
-  {% include 'public/_public_page_hero.html' with hero_badge='فارسی‌اول و راست‌چین' hero_secondary_badge='گفتگو، فایل و تصویر' hero_title='FaralYar برای شروعی آرام، روشن و حرفه‌ای ساخته شده است.' hero_body='از اولین برخورد باید بدانید قرار است چه چیزی بگیرید: یک فضای کاری فارسی برای گفتگو، تحلیل و پیگیری کار؛ نه یک لندینگ شلوغ با وعده‌های مبهم. مسیر شروع، خرید و ادامه استفاده در FaralYar با زبان ساده و نزدیک به تجربه واقعی توضیح داده می‌شود.' hero_primary_url=home_chat_url hero_primary_label='شروع گفتگو' hero_secondary_url=home_pricing_url hero_secondary_label='مرور پلن‌ها' hero_note_badge='لایه اعتماد عمومی' hero_note_title='توضیح محصول با زبان خود FaralYar' hero_note_body='در صفحات عمومی، درباره تجربه استفاده حرف می‌زنیم؛ نه درباره پیچیدگی سرویس‌های پشت‌صحنه و جزئیات فنی پنهان. این یعنی انتظار کاربر از همان ابتدا با محصول واقعی هم‌راستا می‌ماند.' hero_note_item_one_title='مسیر شروع روشن' hero_note_item_one_body='ورود به چت، مرور پلن‌ها و ساخت حساب، هرکدام جای مشخص و بدون شلوغی دارند.' hero_note_item_two_title='دسترسی‌ها با متن محصولی' hero_note_item_two_body='اگر دسترسی به پلن، ورک‌اسپیس یا سیاست وابسته باشد، متن عمومی نیز همین واقعیت را منعکس می‌کند.' hero_note_item_three_title='موبایل‌محور و آرام' hero_note_item_three_body='بخش‌های مهم صفحه در موبایل زودتر دیده می‌شوند و ریتم مطالعه و اقدام با هم تداخل پیدا نمی‌کنند.' %}
+  <div class="home-landing">
+    <section class="section-shell home-hero-shell">
+      <div class="home-hero-grid">
+        <div class="home-hero-copy">
+          <div class="home-kicker-row">
+            <span class="badge">فارسی اول و راست چین</span>
+            <span class="soft-chip">گفت‌وگو، فایل و تصویر</span>
+            <span class="soft-chip">طراحی شده برای موبایل و دسکتاپ</span>
+          </div>
 
-  <section class="section-shell pt-6">
-    <div class="grid gap-3 sm:grid-cols-3">
-      <div class="panel-soft p-4 sm:p-5">
-        <div class="text-2xl font-black text-slate-950 dark:text-white">{{ featured_models|length }}</div>
-        <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">انتخاب آماده برای شروع یا مقایسه اولیه</p>
-      </div>
-      <div class="panel-soft p-4 sm:p-5">
-        <div class="text-2xl font-black text-slate-950 dark:text-white">{{ plans|length }}</div>
-        <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">پلن فعال برای تصمیم‌گیری روشن پیش از خرید</p>
-      </div>
-      <div class="panel-soft p-4 sm:p-5">
-        <div class="text-2xl font-black text-slate-950 dark:text-white">{{ site_settings.free_guest_message_limit|default:5 }}</div>
-        <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">پیام مهمان برای آشنایی اولیه با تجربه</p>
-      </div>
-    </div>
-  </section>
+          <div>
+            <p class="home-eyebrow">فضای کاری هوش مصنوعی برای کار واقعی</p>
+            <h1 class="home-hero-title">یک فضای روشن و فارسی برای گفت‌وگو، تحلیل و ادامه‌دادن کار با هوش مصنوعی.</h1>
+            <p class="home-hero-body">
+              FaralYar برای این ساخته شده که از همان برخورد اول بدانید چه چیزی دریافت می‌کنید، چرا می‌توانید به آن اعتماد کنید و قدم بعدی کجاست.
+              صفحه‌ی اصلی قرار نیست همه‌چیز را با هیجان اغراق‌آمیز روی شما بریزد؛ قرار است محصول را آرام، روشن و قابل‌تصمیم توضیح بدهد.
+            </p>
+          </div>
 
-  <section class="section-shell pt-14">
-    <div class="grid gap-4 lg:grid-cols-3">
-      <article class="panel-soft p-6">
-        <span class="badge">اعتماد در توضیح</span>
-        <h2 class="mt-4 text-xl font-black text-slate-950 dark:text-white">FaralYar چیزی را وعده می‌دهد که واقعاً بتواند تحویل بدهد.</h2>
-        <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">توضیح‌ها به‌جای اغراق روی «همه‌چیزدان بودن AI»، روی مسیر واقعی استفاده، سطح دسترسی و تصمیم‌گیری بهتر متمرکز می‌مانند.</p>
-      </article>
-      <article class="panel-soft p-6">
-        <span class="badge">ریتم موبایل</span>
-        <h2 class="mt-4 text-xl font-black text-slate-950 dark:text-white">هر بخش باید روی گوشی هم همان‌قدر قابل‌فهم بماند.</h2>
-        <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">ترتیب بخش‌ها طوری نگه داشته شده که کاربر اول تصویر کلی را بگیرد، بعد به اعتماد، بعد به انتخاب و در نهایت به اقدام برسد.</p>
-      </article>
-      <article class="panel-soft p-6">
-        <span class="badge">خرید و ادامه استفاده</span>
-        <h2 class="mt-4 text-xl font-black text-slate-950 dark:text-white">از قیمت‌گذاری تا چک‌اوت، زبان محصول یکدست باقی می‌ماند.</h2>
-        <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">اگر سطح دسترسی یا رفتار یک قابلیت به پلن، حساب یا ورک‌اسپیس وابسته باشد، همین مسئله در صفحات عمومی هم به‌صورت روشن بازتاب پیدا می‌کند.</p>
-      </article>
-    </div>
-  </section>
+          <div class="home-hero-actions">
+            <a href="{{ home_chat_url }}" class="btn-primary w-full sm:w-auto">شروع گفتگو</a>
+            <a href="{{ home_pricing_url }}" class="btn-secondary w-full sm:w-auto">مرور پلن‌ها</a>
+          </div>
 
-  <section class="section-shell pt-14">
-    <div class="grid gap-4 lg:grid-cols-[1.02fr_0.98fr]">
-      <div class="panel-soft p-6 sm:p-8">
-        <span class="badge">توضیح تجربه</span>
-        <h2 class="mt-4 text-2xl font-black text-slate-950 dark:text-white">FaralYar برای چه نوع استفاده‌ای مناسب است؟</h2>
-        <div class="mt-6 grid gap-4 sm:grid-cols-2">
-          <article class="rounded-[1.75rem] border border-slate-200/80 bg-white/80 p-5 dark:border-slate-700 dark:bg-slate-900/50">
-            <h3 class="text-lg font-black text-slate-950 dark:text-white">گفتگو و جمع‌بندی سریع</h3>
-            <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">برای وقتی که می‌خواهید ایده‌ای را روشن کنید، متن را جمع‌بندی بگیرید یا از یک موضوع مسیر بعدی بسازید.</p>
-          </article>
-          <article class="rounded-[1.75rem] border border-slate-200/80 bg-white/80 p-5 dark:border-slate-700 dark:bg-slate-900/50">
-            <h3 class="text-lg font-black text-slate-950 dark:text-white">تحلیل فایل و تصویر در مسیر واقعی کار</h3>
-            <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">صفحه عمومی به‌جای نمایش خام قابلیت‌های فنی، روی نتیجه قابل‌فهم برای کاربر تمرکز می‌کند: ارسال، دریافت و ادامه.</p>
-          </article>
-          <article class="rounded-[1.75rem] border border-slate-200/80 bg-white/80 p-5 dark:border-slate-700 dark:bg-slate-900/50">
-            <h3 class="text-lg font-black text-slate-950 dark:text-white">ورود آرام به ورک‌اسپیس</h3>
-            <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">پس از آشنایی اولیه، کاربر می‌تواند وارد فضای کاری شود و همان زبان شفاف را در صورتحساب، دستیارها و گفتگوها ادامه دهد.</p>
-          </article>
-          <article class="rounded-[1.75rem] border border-slate-200/80 bg-white/80 p-5 dark:border-slate-700 dark:bg-slate-900/50">
-            <h3 class="text-lg font-black text-slate-950 dark:text-white">بدون پیچیدگی پشت‌صحنه</h3>
-            <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">در صفحه عمومی لازم نیست کاربر با ساختار سرویس‌های پشت‌صحنه درگیر شود. FaralYar ابتدا انتخاب را ساده می‌کند و بعد جزئیات را در جای درست نشان می‌دهد.</p>
-          </article>
-        </div>
-      </div>
-
-      <div class="grid gap-4">
-        <div class="panel-soft p-6">
-          <span class="badge">شروع در سه قدم</span>
-          <h2 class="mt-4 text-2xl font-black text-slate-950 dark:text-white">اول تصویر کلی را بگیرید، بعد وارد اجرا شوید.</h2>
-          <div class="mt-5 space-y-3">
-            <div class="flex gap-3 rounded-[1.5rem] bg-slate-100/80 p-4 dark:bg-slate-800/60">
-              <span class="badge">۱</span>
-              <p class="text-sm leading-7 text-slate-600 dark:text-slate-300">پلن یا نقطه شروع مناسب را ببینید و بدون فشار فروش تصمیم اولیه بگیرید.</p>
+          <div class="home-inline-trust-list">
+            <div class="home-inline-trust-item">
+              <strong>محصول روشن</strong>
+              <span>توضیح صفحه با تجربه‌ی واقعی استفاده هم‌راستا می‌ماند.</span>
             </div>
-            <div class="flex gap-3 rounded-[1.5rem] bg-slate-100/80 p-4 dark:bg-slate-800/60">
-              <span class="badge">۲</span>
-              <p class="text-sm leading-7 text-slate-600 dark:text-slate-300">گفتگو، فایل یا تصویر را در همان مسیر مشخص ارسال کنید و نتیجه را با زبان روشن دریافت کنید.</p>
+            <div class="home-inline-trust-item">
+              <strong>شروع بدون آشفتگی</strong>
+              <span>ورود به گفتگو و تصمیم برای خرید، هرکدام مسیر مشخص خود را دارند.</span>
             </div>
-            <div class="flex gap-3 rounded-[1.5rem] bg-slate-100/80 p-4 dark:bg-slate-800/60">
-              <span class="badge">۳</span>
-              <p class="text-sm leading-7 text-slate-600 dark:text-slate-300">اگر نیاز بیشتر شد، از صفحه قیمت‌گذاری و خرید به مسیر حرفه‌ای‌تر بروید؛ بدون اینکه متن محصول ناگهان تغییر لحن بدهد.</p>
+            <div class="home-inline-trust-item">
+              <strong>ریتم مناسب موبایل</strong>
+              <span>CTAها و بخش‌های کلیدی بدون وابستگی به چیدمان سنگین دیده می‌شوند.</span>
             </div>
           </div>
         </div>
 
-        <div class="panel-soft p-6">
-          <span class="badge">انتخاب‌های آماده</span>
-          <h2 class="mt-4 text-2xl font-black text-slate-950 dark:text-white">چند مسیر پیشنهادی برای شروع</h2>
-          <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">این فهرست برای معرفی مسیرهای شروع است. دسترسی نهایی هر مورد می‌تواند به پلن، حساب، ورک‌اسپیس یا سیاست فعال وابسته باشد.</p>
-          <div class="mt-5 grid gap-3">
+        <aside class="home-hero-panel">
+          <div class="home-hero-panel-head">
+            <span class="badge">محصول در یک نگاه</span>
+            <p class="home-panel-note">همه‌چیز از توضیح روشن شروع می‌شود، نه از شلوغی.</p>
+          </div>
+
+          <div class="home-journey-list">
+            <article class="home-journey-step">
+              <span class="home-journey-index">۱</span>
+              <div>
+                <h2>نقطه‌ی شروع را بدون ابهام انتخاب کنید</h2>
+                <p>اگر می‌خواهید فقط حس محصول را ببینید، از گفتگو شروع کنید. اگر باید درباره دسترسی تصمیم بگیرید، اول پلن‌ها را مرور کنید.</p>
+              </div>
+            </article>
+            <article class="home-journey-step">
+              <span class="home-journey-index">۲</span>
+              <div>
+                <h2>در همان مسیر گفتگو، فایل یا تصویر بفرستید</h2>
+                <p>FaralYar ورودی‌ها را در یک تجربه‌ی واحد نگه می‌دارد تا کاربر به‌جای حدس‌زدن ساختار، روی نتیجه تمرکز کند.</p>
+              </div>
+            </article>
+            <article class="home-journey-step">
+              <span class="home-journey-index">۳</span>
+              <div>
+                <h2>اگر نیاز بیشتر شد، مسیر حرفه‌ای‌تر روشن است</h2>
+                <p>از صفحه‌ی قیمت‌گذاری تا خرید، همان زبان آرام و محصولی ادامه پیدا می‌کند و ناگهان به متن فروشنده‌محور تبدیل نمی‌شود.</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="home-metric-grid">
+            <div class="home-metric-card">
+              <div class="home-metric-value">{{ featured_models|length }}</div>
+              <p class="home-metric-label">مدل منتخب برای شروع یا مقایسه اولیه</p>
+            </div>
+            <div class="home-metric-card">
+              <div class="home-metric-value">{{ plans|length }}</div>
+              <p class="home-metric-label">مسیر پلن فعال برای تصمیم‌گیری روشن</p>
+            </div>
+            <div class="home-metric-card">
+              <div class="home-metric-value">{{ site_settings.free_guest_message_limit|default:5 }}</div>
+              <p class="home-metric-label">پیام مهمان برای آشنایی اولیه با تجربه</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section-shell home-trust-shell">
+      <div class="home-trust-band">
+        <div class="home-trust-intro">
+          <p class="home-section-label">لایه اعتماد فوری</p>
+          <h2>پیش از دیدن قابلیت‌ها، باید معلوم باشد این محصول چطور قابل اعتماد فهمیده می‌شود.</h2>
+        </div>
+
+        <div class="home-trust-grid">
+          <article class="home-trust-card">
+            <h3>متن عمومی با دسترسی‌های واقعی هماهنگ است</h3>
+            <p>اگر چیزی به پلن، حساب یا سیاست وابسته باشد، صفحه‌ی خانه هم همان واقعیت را بازتاب می‌دهد و وعده‌ی اضافه نمی‌سازد.</p>
+          </article>
+          <article class="home-trust-card">
+            <h3>محصول مثل یک پوسته‌ی مبهم روی مدل‌ها معرفی نمی‌شود</h3>
+            <p>تمرکز روی نتیجه، تصمیم و تجربه‌ی کاربر است؛ نه روی فهرست بلندبالای ادعاهایی که به فهم بهتر محصول کمکی نمی‌کنند.</p>
+          </article>
+          <article class="home-trust-card">
+            <h3>آرامش رابط بخشی از اعتماد عمومی است</h3>
+            <p>وقتی سلسله‌مراتب روشن باشد، کاربر از همان اول می‌فهمد باید بخواند، مقایسه کند یا اقدام بعدی را انجام دهد.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell home-story-shell">
+      <div class="home-story-grid">
+        <div class="home-story-copy">
+          <p class="home-section-label">توضیح هسته محصول</p>
+          <h2>FaralYar برای کوتاه‌کردن فاصله‌ی بین پرسش، بررسی و اقدام بعدی طراحی شده است.</h2>
+          <p class="home-story-lead">
+            کاربر نباید بین چندین بلوک مشابه حدس بزند که محصول چه‌کار می‌کند. در FaralYar روایت اصلی این است:
+            اول مسئله‌ات را وارد کن، بعد پاسخ را در همان مسیر ادامه بده، و اگر لازم بود از آشنایی اولیه به سطح حرفه‌ای‌تر برو.
+          </p>
+
+          <div class="home-story-points">
+            <article class="home-story-point">
+              <strong>گفت‌وگو، فایل و تصویر در یک زبان واحد</strong>
+              <p>صفحه‌ی خانه از نتیجه‌ی قابل‌فهم حرف می‌زند: ارسال، دریافت، جمع‌بندی و ادامه. نه از پیچیدگی پیاده‌سازی پشت‌صحنه.</p>
+            </article>
+            <article class="home-story-point">
+              <strong>شروع آرام، ادامه‌ی پیش‌بینی‌پذیر</strong>
+              <p>ورود اولیه می‌تواند سبک و سریع باشد، اما مسیر ارتقا و خرید هم در همان ساختار توضیح داده می‌شود تا تصمیم‌گیری ناگهانی نشود.</p>
+            </article>
+            <article class="home-story-point">
+              <strong>روایت محصول‌محور، نه کارت‌محور</strong>
+              <p>هر بخش این صفحه یک نقش دارد: معرفی، اعتماد، توضیح، نمونه استفاده، جهت‌دهی پلن و دعوت نهایی به اقدام.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="home-process-card">
+          <div class="home-process-head">
+            <span class="badge">چطور شروع می‌شود؟</span>
+            <h3>سه قدم برای رسیدن از آشنایی تا استفاده</h3>
+          </div>
+
+          <div class="home-process-list">
+            <article class="home-process-step">
+              <span>شناخت</span>
+              <p>اول بفهمید FaralYar دقیقاً برای چه‌نوع کاری مناسب است و قرار نیست چه چیزی را به شما تحمیل کند.</p>
+            </article>
+            <article class="home-process-step">
+              <span>تجربه</span>
+              <p>یک گفت‌وگوی واقعی را شروع کنید یا ورودی واقعی خودتان را بفرستید تا لحن و کیفیت تجربه را از نزدیک ببینید.</p>
+            </article>
+            <article class="home-process-step">
+              <span>تصمیم</span>
+              <p>اگر نیازتان جدی‌تر شد، با مرور پلن‌ها سطح دسترسی مناسب را انتخاب کنید؛ بدون اینکه مجبور باشید صفحه‌ای جدید را از نو رمزگشایی کنید.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell home-usecases-shell">
+      <div class="home-section-head">
+        <div>
+          <p class="home-section-label">موارد استفاده معنادار</p>
+          <h2>این صفحه باید نشان بدهد FaralYar در چه موقعیت‌هایی به کار می‌آید، نه فقط چه قابلیت‌هایی روی کاغذ دارد.</h2>
+        </div>
+        <p class="home-section-summary">نمونه‌های زیر با زبان نتیجه نوشته شده‌اند تا کاربر بتواند سریع خودش را داخل تجربه تصور کند.</p>
+      </div>
+
+      <div class="home-usecase-grid">
+        <article class="home-usecase-card">
+          <p class="home-usecase-tag">برای روشن‌کردن ایده و متن</p>
+          <h3>وقتی لازم است موضوعی را سریع جمع‌بندی کنید یا از یک فکر خام به متن قابل‌استفاده برسید.</h3>
+          <p>از سوال اولیه تا بازنویسی، خلاصه‌سازی یا ساختن مسیر بعدی، تجربه باید سریع، فارسی و قابل‌پیگیری بماند.</p>
+        </article>
+        <article class="home-usecase-card">
+          <p class="home-usecase-tag">برای بررسی فایل و تصویر</p>
+          <h3>وقتی می‌خواهید فقط یک پیام متنی نفرستید و ورودی واقعی‌تری را در همان جریان تحلیل کنید.</h3>
+          <p>به‌جای پخش‌کردن کار بین چند مسیر جدا، فایل و تصویر هم در کنار گفتگو به‌عنوان بخشی از همان تجربه دیده می‌شوند.</p>
+        </article>
+        <article class="home-usecase-card">
+          <p class="home-usecase-tag">برای ادامه‌دادن کار، نه فقط یک پاسخ</p>
+          <h3>وقتی خروجی باید به تصمیم بعدی، خرید پلن مناسب یا حرکت به فضای کاری جدی‌تر منتهی شود.</h3>
+          <p>FaralYar فقط صفحه‌ی شروع نیست؛ صفحه‌ی خانه باید کاربر را به قدم بعدی درست برساند، نه اینکه او را در معرفی رها کند.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-shell home-capability-shell">
+      <div class="home-capability-grid">
+        <div class="home-snapshot-panel">
+          <div class="home-section-head compact">
+            <div>
+              <p class="home-section-label">نمای ارزش و قابلیت</p>
+              <h2>آنچه کاربر قبل از ورود عمیق باید بداند، در یک نمای جمع‌وجور دیده می‌شود.</h2>
+            </div>
+          </div>
+
+          <div class="home-snapshot-grid">
+            <article class="home-snapshot-card">
+              <strong>شروع سبک برای آشنایی</strong>
+              <p>تا {{ site_settings.free_guest_message_limit|default:5 }} پیام مهمان برای لمس اولیه تجربه در دسترس است تا کاربر قبل از تعهد، حس محصول را ببیند.</p>
+            </article>
+            <article class="home-snapshot-card">
+              <strong>پلن‌ها برای انتخاب، نه گیج‌کردن</strong>
+              <p>{{ plans|length }} مسیر فعال روی صفحه‌ی خانه فقط نقش جهت‌دهی دارند و تصمیم کامل را به صفحه‌ی قیمت‌گذاری شفاف‌تر می‌سپارند.</p>
+            </article>
+            <article class="home-snapshot-card">
+              <strong>ترتیب محتوا بر مبنای تصمیم واقعی</strong>
+              <p>اول معرفی، بعد اعتماد، سپس نمونه استفاده و بعد از آن جهت‌دهی پلن؛ این نظم کمک می‌کند CTAها طبیعی‌تر دیده شوند.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="home-model-panel">
+          <div class="home-process-head">
+            <span class="badge">مدل‌های منتخب</span>
+            <h3>چند مسیر آماده برای شروع یا مقایسه اولیه</h3>
+            <p>این بخش فقط برای جهت‌دهی سریع است. تصمیم نهایی درباره هر مدل یا دسترسی ممکن است به پلن و حساب وابسته باشد.</p>
+          </div>
+
+          <div class="home-model-list">
             {% for model in featured_models %}
-              <a href="{% url 'ai_platform:model_detail' model.slug %}" class="model-pill block">
-                <div class="font-bold text-slate-900 dark:text-white">{{ model.name }}</div>
-                <div class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ model.summary|default:'برای شروع گفتگو، تحلیل یا بررسی سریع یک موضوع در FaralYar.'|truncatechars:95 }}</div>
+              <a href="{% url 'ai_platform:model_detail' model.slug %}" class="home-model-item">
+                <div>
+                  <strong>{{ model.name }}</strong>
+                  <p>{{ model.summary|default:'برای شروع گفتگو، تحلیل یا بررسی سریع یک موضوع در FaralYar.'|truncatechars:110 }}</p>
+                </div>
+                <span>مشاهده</span>
               </a>
             {% empty %}
-              <div class="rounded-2xl border border-dashed border-slate-300 px-4 py-6 text-center text-sm text-slate-500 dark:border-slate-700">هنوز انتخابی برای نمایش در صفحه خانه فعال نشده است.</div>
+              <div class="home-empty-card">
+                هنوز مدلی برای نمایش در صفحه‌ی خانه انتخاب نشده است، اما مسیر اصلی شروع همچنان از گفتگو و صفحه‌ی پلن‌ها روشن می‌ماند.
+              </div>
             {% endfor %}
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section-shell pt-14">
-    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-      <div class="max-w-2xl">
-        <span class="badge">مرور پلن‌ها</span>
-        <h2 class="mt-4 text-2xl font-black text-slate-950 dark:text-white">برای شروع، لازم نیست بین ده‌ها گزینه گم شوید.</h2>
-        <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">پیش‌نمایش پلن‌ها فقط برای گرفتن تصویر کلی است. جزئیات کامل‌تر و تفاوت‌ها در صفحه قیمت‌گذاری با ریتم خواناتری توضیح داده شده‌اند.</p>
-      </div>
-      <a href="{{ home_pricing_url }}" class="btn-secondary w-full sm:w-auto">مشاهده صفحه قیمت‌گذاری</a>
-    </div>
-
-    <div class="grid gap-4 xl:grid-cols-3">
-      {% for plan in plans %}
-        <article class="panel-soft p-6">
-          <div class="flex items-center justify-between gap-3">
-            <h3 class="text-xl font-black text-slate-950 dark:text-white">{{ plan.name }}</h3>
-            {% if forloop.first %}<span class="badge">پیشنهاد شروع</span>{% endif %}
+    <section class="section-shell home-pricing-shell">
+      <div class="home-pricing-wrap">
+        <div class="home-section-head">
+          <div>
+            <p class="home-section-label">جهت‌دهی پلن</p>
+            <h2>برای انتخاب پلن، لازم نیست از همین‌جا وارد مقایسه‌ی سنگین شوید.</h2>
           </div>
-          <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ plan.description|default:'پلنی برای استفاده روشن و قابل‌پیش‌بینی در مسیر روزمره یا حرفه‌ای.' }}</p>
-          <div class="mt-6 text-4xl font-black text-slate-950 dark:text-white">{{ plan.price|floatformat:0 }}</div>
-          <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">تومان</div>
-          <ul class="mt-5 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-            <li>اعتبار: {{ plan.duration_days }} روز</li>
-            <li>سقف هر بازه: {{ plan.token_limit_per_window }}</li>
-            <li>بازنشانی هر {{ plan.reset_interval_hours }} ساعت</li>
-          </ul>
-          <a href="{% url 'billing:checkout' plan.slug %}" class="btn-primary mt-6 w-full">انتخاب پلن</a>
-        </article>
-      {% empty %}
-        <div class="panel-soft p-6 text-sm leading-7 text-slate-600 dark:text-slate-300 xl:col-span-3">هنوز پلنی برای نمایش در صفحه خانه آماده نشده است.</div>
-      {% endfor %}
-    </div>
-  </section>
-
-  <section class="section-shell pt-14">
-    <div class="panel-soft p-6 sm:p-8">
-      <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div class="max-w-2xl">
-          <span class="badge">بلاگ و یادگیری</span>
-          <h2 class="mt-4 text-3xl font-black text-slate-950 dark:text-white">از مطالعه مستقیم وارد اجرا شوید.</h2>
-          <p class="mt-4 text-base leading-8 text-slate-600 dark:text-slate-300">محتوای بلاگ در FaralYar فقط برای پرکردن صفحه نیست. مقاله‌ها باید مسیر ورود به تجربه محصول، تصمیم بهتر و شروع گفتگو را هموارتر کنند.</p>
+          <p class="home-section-summary">
+            این پیش‌نمایش فقط برای فهم جهت کلی است. اگر آماده‌ی بررسی دقیق‌تر هستید، صفحه‌ی قیمت‌گذاری ریتم کامل تصمیم را در اختیارتان می‌گذارد.
+          </p>
         </div>
-        <a href="{{ home_blog_url }}" class="btn-secondary w-full sm:w-auto">رفتن به بلاگ</a>
-      </div>
 
-      <div class="mt-8 grid gap-4 lg:grid-cols-3">
-        {% for post in featured_posts %}
-          <article class="rounded-[1.75rem] border border-slate-200/80 bg-white/85 p-6 dark:border-slate-700 dark:bg-slate-900/50">
-            <div class="text-xs text-slate-500 dark:text-slate-400">{{ post.author.name }}{% if post.reading_time_minutes %} • {{ post.reading_time_minutes }} دقیقه مطالعه{% endif %}</div>
-            <h3 class="mt-3 text-lg font-black text-slate-950 dark:text-white">{{ post.title }}</h3>
-            <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ post.excerpt|default:post.content|truncatechars:140 }}</p>
-            <a href="{% url 'blog:detail' post.slug %}" class="mt-4 inline-flex text-sm font-bold text-brand-primary">مطالعه مقاله</a>
-          </article>
-        {% empty %}
-          <div class="rounded-[1.75rem] border border-dashed border-slate-300 p-6 text-sm leading-7 text-slate-500 dark:border-slate-700 lg:col-span-3">بخش بلاگ آماده است و با انتشار مقاله‌های جدید، همین‌جا به‌عنوان مسیر اعتماد و یادگیری FaralYar فعال‌تر می‌شود.</div>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
+        <div class="home-pricing-grid">
+          {% for plan in plans %}
+            <article class="home-plan-card {% if forloop.first %}is-recommended{% endif %}">
+              <div class="home-plan-head">
+                <div>
+                  <h3>{{ plan.name }}</h3>
+                  <p>{{ plan.description|default:'پلنی برای استفاده روشن و قابل‌پیش‌بینی در مسیر روزمره یا حرفه‌ای.'|truncatechars:120 }}</p>
+                </div>
+                {% if forloop.first %}
+                  <span class="badge">پیشنهاد شروع</span>
+                {% endif %}
+              </div>
 
-  {% include 'public/_cta_band.html' with cta_badge='شروع آرام' cta_title='اگر می‌خواهید با FaralYar آشنا شوید، بهترین قدم شروع یک گفتگوی واقعی است.' cta_body='این مسیر برای آشنایی با حس محصول، زبان پاسخ و فضای کلی تجربه طراحی شده است. اگر قبل از آن ترجیح می‌دهید هزینه و سطح دسترسی را ببینید، صفحه قیمت‌گذاری نقطه بعدی مناسب است.' cta_primary_url=home_chat_url cta_primary_label='شروع گفتگو' cta_secondary_url=home_pricing_url cta_secondary_label='مرور پلن‌ها' cta_note='برای ورود عمیق‌تر، بعد از اولین تجربه می‌توانید از داخل فضای کاری ادامه دهید.' %}
+              <div class="home-plan-price">{{ plan.price|floatformat:0 }} <span>تومان</span></div>
+
+              <div class="home-plan-meta">
+                <span>{{ plan.duration_days }} روز اعتبار</span>
+                <span>{{ plan.token_limit_per_window }} سقف هر بازه</span>
+                <span>بازنشانی هر {{ plan.reset_interval_hours }} ساعت</span>
+              </div>
+
+              <div class="home-plan-actions">
+                <a href="{% url 'billing:checkout' plan.slug %}" class="btn-primary w-full">انتخاب این پلن</a>
+              </div>
+            </article>
+          {% empty %}
+            <div class="home-empty-card home-empty-card-wide">
+              هنوز پلنی برای پیش‌نمایش در صفحه‌ی خانه آماده نشده است. مسیر قیمت‌گذاری و خرید می‌تواند در Stage بعد با داده‌های واقعی کامل‌تر شود.
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="home-pricing-footnote">
+          <p>اگر هنوز بین «شروع سریع» و «بررسی پلن‌ها» مردد هستید، گفتگو بهترین نقطه برای لمس لحن و کیفیت تجربه است و قیمت‌گذاری بهترین نقطه برای تصمیم خرید.</p>
+          <a href="{{ home_pricing_url }}" class="btn-secondary w-full sm:w-auto">مشاهده صفحه قیمت‌گذاری</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell home-final-shell">
+      <div class="home-final-cta">
+        <div class="home-final-copy">
+          <p class="home-section-label on-dark">قدم بعدی روشن است</p>
+          <h2>اگر می‌خواهید FaralYar را بفهمید، از تجربه‌ی واقعی شروع کنید. اگر می‌خواهید برای استفاده تصمیم بگیرید، پلن‌ها را ببینید.</h2>
+          <p>
+            صفحه‌ی اصلی باید همین‌قدر روشن تمام شود: یک دعوت مشخص برای شروع، و یک مسیر دوم برای تصمیم‌گیری.
+            نه بیشتر، نه شلوغ‌تر.
+          </p>
+        </div>
+
+        <div class="home-final-actions">
+          <a href="{{ home_chat_url }}" class="btn-primary w-full sm:w-auto">شروع گفتگو</a>
+          <a href="{{ home_pricing_url }}" class="btn-secondary w-full sm:w-auto">مرور پلن‌ها</a>
+        </div>
+      </div>
+    </section>
+  </div>
 {% endblock %}

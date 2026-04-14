@@ -40,15 +40,15 @@
   <script defer src="{% static 'js/app.js' %}"></script>
 </head>
 {% with ns=request.resolver_match.namespace|default:'' %}
-<body class="app-body min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-50">
+<body class="app-body min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-50 {% if ns != 'ai_platform' and ns != 'dashboard' and ns != 'billing' and ns != 'accounts' %}public-body{% endif %}">
   <div class="relative isolate min-h-screen overflow-x-clip">
     {% if ns == 'ai_platform' or ns == 'dashboard' or ns == 'billing' or ns == 'accounts' %}
       <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[24rem] bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.12),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.12),transparent_28%),linear-gradient(180deg,rgba(248,250,252,0.98),rgba(241,245,249,0.86))] dark:bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.14),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.20),transparent_28%),linear-gradient(180deg,rgba(2,10,24,0.98),rgba(10,20,36,0.92))]"></div>
       <div class="pointer-events-none absolute inset-x-0 top-[18rem] -z-10 h-[34rem] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.56),transparent_55%)] dark:bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.28),transparent_58%)]"></div>
     {% else %}
-      <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.17),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.12),transparent_26%),linear-gradient(180deg,rgba(255,255,255,0.90),transparent_82%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_30%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.20),transparent_26%),linear-gradient(180deg,rgba(15,23,42,0.82),transparent_76%)]"></div>
-      <div class="pointer-events-none absolute left-0 top-32 -z-10 h-56 w-56 rounded-full bg-brand-secondary/10 blur-3xl dark:bg-brand-secondary/20"></div>
-      <div class="pointer-events-none absolute right-0 top-56 -z-10 h-72 w-72 rounded-full bg-brand-primary/10 blur-3xl dark:bg-brand-primary/18"></div>
+      <div class="public-shell-backdrop public-shell-backdrop-top"></div>
+      <div class="public-shell-backdrop public-shell-backdrop-start"></div>
+      <div class="public-shell-backdrop public-shell-backdrop-end"></div>
     {% endif %}
 
     {% if not hide_site_chrome and ns != 'ai_platform' and ns != 'dashboard' and ns != 'billing' and ns != 'accounts' %}
@@ -57,7 +57,7 @@
 
     {% include 'partials/messages.html' %}
 
-    <main class="{% if ns == 'ai_platform' or ns == 'dashboard' or ns == 'billing' or ns == 'accounts' %}pb-0{% else %}pb-24 md:pb-28{% endif %}">
+    <main class="{% if ns == 'ai_platform' or ns == 'dashboard' or ns == 'billing' or ns == 'accounts' %}pb-0{% else %}public-main-shell pb-24 md:pb-28{% endif %}">
       {% block content %}{% endblock %}
     </main>
 

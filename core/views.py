@@ -4,7 +4,6 @@ from django.views.decorators.http import require_POST
 
 from ai_platform.models import AIModel
 from billing.models import Plan
-from blog.models import BlogPost
 
 from .forms import ContactForm
 from .models import FAQItem, SiteSetting, StaticPage
@@ -22,8 +21,6 @@ def home(request):
     context = {
         "featured_models": AIModel.objects.filter(is_active=True, is_featured=True)[:6],
         "plans": Plan.objects.filter(is_active=True)[:3],
-        "featured_posts": BlogPost.objects.filter(status=BlogPost.PUBLISHED)[:3],
-        "faqs": FAQItem.objects.filter(is_active=True)[:6],
     }
     return render(request, "core/home.html", context)
 
