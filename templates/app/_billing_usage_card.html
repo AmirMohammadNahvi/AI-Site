@@ -1,89 +1,98 @@
-<section class="rounded-[1.85rem] border border-slate-200/80 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
-  <div class="flex flex-col gap-4">
-    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-      <div class="min-w-0">
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مصرف و سهمیه</div>
-        <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">
-          {{ billing_usage.title|default:"وضعیت مصرف دوره فعلی" }}
-        </h2>
-        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-          {{ billing_usage.description|default:"این بخش برای دیدن مصرف فعلی، باقیمانده سهمیه و زمان ریست بعدی طراحی شده است تا بدون نیاز به محاسبه دستی، وضعیت دوره فعلی روشن بماند." }}
-        </p>
-      </div>
-
-      {% if billing_usage.status_label %}
-        <span class="shrink-0 rounded-full px-3 py-1.5 text-[11px] font-bold {% if billing_usage.tone == 'warning' %}bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300{% elif billing_usage.tone == 'critical' %}bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-300{% elif billing_usage.tone == 'good' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300{% else %}bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300{% endif %}">
-          {{ billing_usage.status_label }}
-        </span>
-      {% endif %}
+<section class="billing-panel billing-panel--muted">
+  <div class="billing-panel__head">
+    <div class="min-w-0">
+      <div class="billing-section-label">مصرف و سهمیه</div>
+      <h2 class="billing-section-title">{{ billing_usage.title|default:"وضعیت مصرف دوره فعلی" }}</h2>
+      <p class="billing-section-body">
+        {{ billing_usage.description|default:"این بخش فقط برای فهم وضعیت بازه فعلی است تا بدون محاسبه دستی بدانید چه مقدار مصرف شده، چه چیزی باقی مانده و زمان مرجع بعدی کِی است." }}
+      </p>
     </div>
 
-    <div class="rounded-[1.45rem] border border-slate-200/80 bg-white/88 p-4 dark:border-slate-700/70 dark:bg-slate-900/55">
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ billing_usage.metric_label|default:"مصرف این بازه" }}</div>
-          <div class="mt-1 text-2xl font-black text-slate-900 dark:text-white sm:text-3xl">{{ billing_usage.used_label|default:"-" }}</div>
-          {% if billing_usage.total_label %}
-            <div class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">از {{ billing_usage.total_label }}</div>
-          {% endif %}
-        </div>
-
-        <div class="rounded-[1.15rem] bg-slate-50 px-3 py-2 text-sm dark:bg-slate-950/50">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">باقیمانده</div>
-          <div class="mt-1 font-black text-slate-900 dark:text-white">{{ billing_usage.remaining_label|default:"-" }}</div>
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <div class="h-2.5 overflow-hidden rounded-full bg-slate-200/80 dark:bg-slate-800">
-          <div
-            class="h-full rounded-full {% if billing_usage.tone == 'warning' %}bg-amber-500{% elif billing_usage.tone == 'critical' %}bg-rose-500{% else %}bg-emerald-500{% endif %}"
-            style="width: {{ billing_usage.progress_percent|default:0 }}%;"
-          ></div>
-        </div>
-        {% if billing_usage.progress_caption %}
-          <div class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ billing_usage.progress_caption }}</div>
-        {% endif %}
-      </div>
-
-      <div class="mt-4 grid gap-3 sm:grid-cols-2">
-        <div class="rounded-[1.15rem] border border-slate-200/80 bg-slate-50/85 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-950/35">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">ریست بعدی</div>
-          <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ billing_usage.reset_label|default:"ثبت نشده" }}</div>
-          {% if billing_usage.reset_note %}
-            <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ billing_usage.reset_note }}</div>
-          {% endif %}
-        </div>
-
-        <div class="rounded-[1.15rem] border border-slate-200/80 bg-slate-50/85 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-950/35">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">بازه مصرف</div>
-          <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ billing_usage.window_label|default:"دوره فعلی" }}</div>
-          {% if billing_usage.window_note %}
-            <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ billing_usage.window_note }}</div>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-
-    {% if billing_usage.helper_text %}
-      <div class="rounded-[1.25rem] border border-slate-200/80 bg-white/72 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-300">
-        {{ billing_usage.helper_text }}
-      </div>
-    {% endif %}
-
-    {% if billing_usage.primary_cta_label or billing_usage.secondary_cta_label %}
-      <div class="flex flex-col gap-2 sm:flex-row">
-        {% if billing_usage.primary_cta_label %}
-          <a href="{{ billing_usage.primary_cta_url|default:'#' }}" class="btn-primary w-full sm:w-auto">
-            {{ billing_usage.primary_cta_label }}
-          </a>
-        {% endif %}
-        {% if billing_usage.secondary_cta_label %}
-          <a href="{{ billing_usage.secondary_cta_url|default:'#' }}" class="btn-secondary w-full sm:w-auto">
-            {{ billing_usage.secondary_cta_label }}
-          </a>
-        {% endif %}
-      </div>
+    {% if billing_usage.status_label %}
+      <span class="billing-state-pill {% if billing_usage.tone == 'warning' %}billing-state-pill--warning{% elif billing_usage.tone == 'critical' %}billing-state-pill--danger{% elif billing_usage.tone == 'good' %}billing-state-pill--success{% endif %}">
+        {{ billing_usage.status_label }}
+      </span>
     {% endif %}
   </div>
+
+  <div class="billing-usage-shell">
+    <div class="billing-usage-shell__summary">
+      <div class="billing-usage-shell__metric">
+        <span>{{ billing_usage.metric_label|default:"مصرف این بازه" }}</span>
+        <strong>{{ billing_usage.used_label|default:"-" }}</strong>
+        {% if billing_usage.total_label %}
+          <small>از {{ billing_usage.total_label }}</small>
+        {% endif %}
+      </div>
+
+      <div class="billing-usage-shell__remaining">
+        <span>باقی‌مانده</span>
+        <strong>{{ billing_usage.remaining_label|default:"-" }}</strong>
+      </div>
+    </div>
+
+    <div class="billing-progress-track">
+      <div
+        class="billing-progress-bar {% if billing_usage.tone == 'warning' %}is-warning{% elif billing_usage.tone == 'critical' %}is-danger{% else %}is-success{% endif %}"
+        style="width: {{ billing_usage.progress_percent|default:0 }}%;"
+      ></div>
+    </div>
+
+    {% if billing_usage.progress_caption %}
+      <div class="billing-progress-caption">{{ billing_usage.progress_caption }}</div>
+    {% endif %}
+
+    <div class="billing-key-grid billing-key-grid--compact">
+      <div class="billing-key-item">
+        <span>ریست بعدی</span>
+        <strong>{{ billing_usage.reset_label|default:"ثبت نشده" }}</strong>
+        {% if billing_usage.reset_note %}
+          <small>{{ billing_usage.reset_note }}</small>
+        {% endif %}
+      </div>
+
+      <div class="billing-key-item">
+        <span>بازه مصرف</span>
+        <strong>{{ billing_usage.window_label|default:"دوره فعلی" }}</strong>
+        {% if billing_usage.window_note %}
+          <small>{{ billing_usage.window_note }}</small>
+        {% endif %}
+      </div>
+
+      <div class="billing-key-item">
+        <span>برداشت ساده</span>
+        <strong>
+          {% if billing_usage.tone == 'critical' %}
+            باید با دقت بیشتری این بازه را رصد کنید
+          {% elif billing_usage.tone == 'warning' %}
+            مصرف این بازه از حالت معمول بالاتر است
+          {% else %}
+            فعلاً مصرف در محدوده قابل پیش‌بینی است
+          {% endif %}
+        </strong>
+        <small>مبنای هر تغییر فقط همین پنجره فعال و نتیجه نهایی سفارش‌هاست.</small>
+      </div>
+    </div>
+  </div>
+
+  {% if billing_usage.helper_text %}
+    <div class="billing-inline-note">
+      {{ billing_usage.helper_text }}
+    </div>
+  {% endif %}
+
+  {% if billing_usage.primary_cta_label or billing_usage.secondary_cta_label %}
+    <div class="billing-cta-row">
+      {% if billing_usage.primary_cta_label %}
+        <a href="{{ billing_usage.primary_cta_url|default:'#' }}" class="btn-primary w-full sm:w-auto">
+          {{ billing_usage.primary_cta_label }}
+        </a>
+      {% endif %}
+      {% if billing_usage.secondary_cta_label %}
+        <a href="{{ billing_usage.secondary_cta_url|default:'#' }}" class="btn-secondary w-full sm:w-auto">
+          {{ billing_usage.secondary_cta_label }}
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
 </section>

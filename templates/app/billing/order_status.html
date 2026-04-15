@@ -4,78 +4,103 @@
 {% block meta_description %}{{ payment_status_page_description|default:'نتیجه آخرین وضعیت سفارش و پرداخت شما، همراه با خلاصه سفارش، تاریخچه ثبت‌شده و مسیر اقدام بعدی.' }}{% endblock %}
 
 {% block app_content %}
-  <div class="mx-auto max-w-4xl space-y-4 sm:space-y-5">
-    <section class="rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
-      <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-        <div class="min-w-0 max-w-3xl">
-          <div class="flex flex-wrap gap-2">
+  <div class="billing-stage billing-stage--status">
+    <section class="billing-hero billing-hero--status">
+      <div class="billing-hero__grid">
+        <div class="min-w-0">
+          <div class="billing-kicker-row">
             <span class="badge">{{ payment_status_page_badge|default:'وضعیت سفارش' }}</span>
             {% if payment_status_short_label %}
-              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ payment_status_short_label }}</span>
+              <span class="billing-chip">{{ payment_status_short_label }}</span>
             {% endif %}
             {% if payment_order_context_label %}
-              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ payment_order_context_label }}</span>
+              <span class="billing-chip">{{ payment_order_context_label }}</span>
             {% endif %}
           </div>
 
-          <h1 class="mt-3 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
+          <h1 class="billing-hero__title">
             {{ payment_status_page_title|default:'نتیجه این سفارش به‌صورت شفاف ثبت شده است' }}
           </h1>
 
-          <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
-            {{ payment_status_page_intro|default:'این صفحه مرجع اصلی همین سفارش است و نتیجه را مستقل از پیام‌های موقت نشان می‌دهد. اگر تغییری در پرداخت یا تایید نهایی ثبت شود، همین بخش باید آخرین وضعیت را نمایش دهد.' }}
+          <p class="billing-hero__lead">
+            {{ payment_status_page_intro|default:'این صفحه مرجع اصلی همین سفارش است و نتیجه را مستقل از پیام‌های موقت نشان می‌دهد. هر تغییری در پلن، سهمیه یا دسترسی فقط باید از وضعیت نهایی همین سفارش خوانده شود.' }}
           </p>
+
+          <ol class="billing-journey" aria-label="مسیر پرداخت">
+            <li class="billing-journey__step">مرکز اشتراک</li>
+            <li class="billing-journey__step">مرور خرید</li>
+            <li class="billing-journey__step is-current">وضعیت سفارش</li>
+          </ol>
         </div>
 
-        <div class="w-full lg:w-auto lg:min-w-[18rem]">
-          <div class="rounded-[1.4rem] border border-slate-200/80 bg-slate-50/85 p-4 dark:border-slate-700/70 dark:bg-slate-950/40">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">وضعیت این صفحه</div>
-            <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">{{ payment_status_surface_title|default:'آخرین نتیجه ثبت‌شده برای همین سفارش' }}</div>
-            <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-              {{ payment_status_surface_note|default:'هر تغییر در پلن، سهمیه یا دسترسی فقط بر اساس وضعیت نهایی همین سفارش اعمال می‌شود؛ نه صرفاً بازگشت از درگاه یا پیام‌های موقت.' }}
+        <aside class="billing-hero__aside">
+          <div class="billing-summary-card">
+            <div class="billing-summary-card__label">مرجع این صفحه</div>
+            <div class="billing-summary-card__title">{{ payment_status_surface_title|default:'آخرین نتیجه ثبت‌شده برای همین سفارش' }}</div>
+            <p class="billing-summary-card__body">
+              {{ payment_status_surface_note|default:'بازگشت از درگاه یا پیام‌های موقت به‌تنهایی مبنای تغییر حساب نیست. همین صفحه باید نتیجه نهایی را روشن کند.' }}
             </p>
+
+            <div class="billing-mini-list">
+              {% if payment_order_context_label %}
+                <div class="billing-mini-list__item">
+                  <span>مرجع سفارش</span>
+                  <strong>{{ payment_order_context_label }}</strong>
+                </div>
+              {% endif %}
+              {% if payment_status_short_label %}
+                <div class="billing-mini-list__item">
+                  <span>وضعیت فعلی</span>
+                  <strong>{{ payment_status_short_label }}</strong>
+                </div>
+              {% endif %}
+              {% if payment_order_plan_name %}
+                <div class="billing-mini-list__item">
+                  <span>پلن مربوط</span>
+                  <strong>{{ payment_order_plan_name }}</strong>
+                </div>
+              {% endif %}
+            </div>
           </div>
-        </div>
+        </aside>
       </div>
     </section>
 
     {% include 'app/_payment_status_block.html' %}
+    {% include 'app/_payment_next_actions.html' %}
 
-    <section class="rounded-[1.85rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
-      <div class="grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_18rem] lg:items-start">
+    <section class="billing-panel billing-panel--review">
+      <div class="billing-review-grid">
         <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">خلاصه سفارش</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">
-            {{ payment_order_title|default:'جزئیاتی که این وضعیت به آن مربوط است' }}
-          </h2>
+          <div class="billing-section-label">خلاصه سفارش</div>
+          <h2 class="billing-section-title">{{ payment_order_title|default:'جزئیاتی که این وضعیت به آن مربوط است' }}</h2>
 
-          <div class="mt-4 rounded-[1.5rem] border border-slate-200/80 bg-slate-50/85 p-4 dark:border-slate-700/70 dark:bg-slate-950/40">
-            <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div class="billing-focus-card billing-focus-card--review">
+            <div class="billing-focus-card__top">
               <div class="min-w-0">
-                <div class="text-sm font-black text-slate-900 dark:text-white">{{ payment_order_plan_name|default:'سفارش انتخاب‌شده' }}</div>
-                <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                  {{ payment_order_intro|default:'این بخش برای مرور همین سفارش است تا بدون رجوع به پیام‌های گذرا، مشخص باشد چه چیزی ثبت شده و نتیجه به کدام پرداخت مربوط است.' }}
+                <div class="billing-focus-card__label">سفارش ثبت‌شده</div>
+                <h3 class="billing-focus-card__title">{{ payment_order_plan_name|default:'سفارش انتخاب‌شده' }}</h3>
+                <p class="billing-focus-card__body">
+                  {{ payment_order_intro|default:'این بخش برای مرور همین سفارش است تا بدون رجوع به پیام‌های گذرا، روشن بماند چه چیزی ثبت شده و نتیجه به کدام پرداخت مربوط است.' }}
                 </p>
               </div>
               {% if payment_order_snapshot_label %}
-                <span class="rounded-full bg-white px-3 py-1 text-[11px] font-bold text-slate-600 shadow-sm dark:bg-slate-900 dark:text-slate-300">
-                  {{ payment_order_snapshot_label }}
-                </span>
+                <span class="billing-state-pill">{{ payment_order_snapshot_label }}</span>
               {% endif %}
             </div>
 
             {% if payment_order_description %}
-              <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ payment_order_description }}</p>
+              <div class="billing-inline-note">{{ payment_order_description }}</div>
             {% endif %}
 
             {% if payment_order_summary_items %}
-              <div class="mt-4 grid gap-3 sm:grid-cols-2">
+              <div class="billing-key-grid billing-key-grid--compact">
                 {% for item in payment_order_summary_items %}
-                  <div class="rounded-[1.2rem] border border-slate-200/80 bg-white/88 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-900/55">
-                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ item.label }}</div>
-                    <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ item.value }}</div>
+                  <div class="billing-key-item">
+                    <span>{{ item.label }}</span>
+                    <strong>{{ item.value }}</strong>
                     {% if item.note %}
-                      <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ item.note }}</div>
+                      <small>{{ item.note }}</small>
                     {% endif %}
                   </div>
                 {% endfor %}
@@ -85,21 +110,30 @@
         </div>
 
         <aside class="min-w-0">
-          <div class="rounded-[1.5rem] border border-slate-200/80 bg-slate-50/85 p-4 dark:border-slate-700/70 dark:bg-slate-950/40">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مبلغ این سفارش</div>
-            <div class="mt-3 flex items-end gap-2">
-              <div class="text-3xl font-black text-slate-900 dark:text-white sm:text-4xl">{{ payment_order_amount|default:'-' }}</div>
-              <div class="pb-1 text-sm font-medium text-slate-500 dark:text-slate-400">{{ payment_order_currency_label|default:'تومان' }}</div>
-            </div>
-            <div class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">
+          <div class="billing-proof-card">
+            <div class="billing-proof-card__label">مبلغ این سفارش</div>
+            <div class="billing-proof-card__amount">{{ payment_order_amount|default:'-' }}</div>
+            <div class="billing-proof-card__currency">{{ payment_order_currency_label|default:'تومان' }}</div>
+            <p class="billing-proof-card__body">
               {{ payment_order_amount_caption|default:'مبلغی که نتیجه این وضعیت به آن مربوط است' }}
-            </div>
+            </p>
 
             {% if payment_order_amount_note %}
-              <p class="mt-3 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ payment_order_amount_note }}</p>
+              <div class="billing-inline-note">{{ payment_order_amount_note }}</div>
             {% endif %}
 
-            <div class="mt-4 rounded-[1.2rem] border border-slate-200/80 bg-white/88 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-300">
+            {% if payment_status_meta_items %}
+              <div class="billing-proof-list">
+                {% for item in payment_status_meta_items %}
+                  <div class="billing-proof-list__item">
+                    <span>{{ item.label }}</span>
+                    <strong>{{ item.value }}</strong>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="billing-inline-note">
               {{ payment_order_access_note|default:'هر تغییری در پلن، سهمیه یا دسترسی فقط بعد از ثبت وضعیت نهایی همین سفارش اعمال می‌شود.' }}
             </div>
           </div>
@@ -108,6 +142,5 @@
     </section>
 
     {% include 'app/_payment_timeline.html' %}
-    {% include 'app/_payment_next_actions.html' %}
   </div>
 {% endblock %}

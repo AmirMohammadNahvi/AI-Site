@@ -1,9 +1,9 @@
 {% with status_key=payment_status_key|default:'pending' %}
-  <section class="rounded-[1.85rem] border p-4 shadow-sm shadow-slate-900/5 sm:p-5 lg:p-6 {% if status_key == 'success' %}border-emerald-200/80 bg-emerald-50/75 dark:border-emerald-500/20 dark:bg-emerald-500/10{% elif status_key == 'failed' %}border-rose-200/80 bg-rose-50/75 dark:border-rose-500/20 dark:bg-rose-500/10{% elif status_key == 'canceled' %}border-slate-200/80 bg-slate-50/78 dark:border-slate-700/70 dark:bg-slate-900/50{% else %}border-amber-200/80 bg-amber-50/75 dark:border-amber-500/20 dark:bg-amber-500/10{% endif %}">
-    <div class="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_18rem] lg:items-start">
+  <section class="billing-status-shell" data-tone="{{ status_key }}">
+    <div class="billing-status-shell__grid">
       <div class="min-w-0">
-        <div class="flex items-start gap-3">
-          <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.2rem] border {% if status_key == 'success' %}border-emerald-200 bg-white/85 text-emerald-700 dark:border-emerald-400/20 dark:bg-slate-950/35 dark:text-emerald-300{% elif status_key == 'failed' %}border-rose-200 bg-white/85 text-rose-700 dark:border-rose-400/20 dark:bg-slate-950/35 dark:text-rose-300{% elif status_key == 'canceled' %}border-slate-200 bg-white/85 text-slate-600 dark:border-slate-600/50 dark:bg-slate-950/35 dark:text-slate-300{% else %}border-amber-200 bg-white/85 text-amber-700 dark:border-amber-400/20 dark:bg-slate-950/35 dark:text-amber-300{% endif %}">
+        <div class="billing-status-shell__head">
+          <span class="billing-status-shell__icon">
             {% if status_key == 'success' %}
               <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
                 <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -26,8 +26,8 @@
           </span>
 
           <div class="min-w-0">
-            <div class="flex flex-wrap gap-2">
-              <span class="rounded-full px-3 py-1 text-[11px] font-black {% if status_key == 'success' %}bg-white/90 text-emerald-700 dark:bg-slate-950/35 dark:text-emerald-300{% elif status_key == 'failed' %}bg-white/90 text-rose-700 dark:bg-slate-950/35 dark:text-rose-300{% elif status_key == 'canceled' %}bg-white/90 text-slate-700 dark:bg-slate-950/35 dark:text-slate-300{% else %}bg-white/90 text-amber-800 dark:bg-slate-950/35 dark:text-amber-200{% endif %}">
+            <div class="billing-kicker-row">
+              <span class="billing-state-pill {% if status_key == 'success' %}billing-state-pill--success{% elif status_key == 'failed' %}billing-state-pill--danger{% elif status_key == 'canceled' %}billing-state-pill{% else %}billing-state-pill--warning{% endif %}">
                 {% if payment_status_badge %}
                   {{ payment_status_badge }}
                 {% elif status_key == 'success' %}
@@ -42,11 +42,11 @@
               </span>
 
               {% if payment_status_secondary_badge %}
-                <span class="rounded-full bg-white/85 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-950/35 dark:text-slate-300">{{ payment_status_secondary_badge }}</span>
+                <span class="billing-chip billing-chip--soft">{{ payment_status_secondary_badge }}</span>
               {% endif %}
             </div>
 
-            <h2 class="mt-3 text-lg font-black text-slate-900 dark:text-white sm:text-xl">
+            <h2 class="billing-status-shell__title">
               {% if payment_status_title %}
                 {{ payment_status_title }}
               {% elif status_key == 'success' %}
@@ -60,63 +60,117 @@
               {% endif %}
             </h2>
 
-            <p class="mt-3 text-sm leading-8 text-slate-700 dark:text-slate-200">
+            <p class="billing-status-shell__body">
               {% if payment_status_summary %}
                 {{ payment_status_summary }}
               {% elif status_key == 'success' %}
-                ثبت پرداخت با موفقیت انجام شده است. اگر این سفارش برای فعال‌سازی، تمدید یا ارتقا باشد، هر تغییر در پلن، سهمیه یا دسترسی فقط بعد از تایید نهایی همین سفارش اعمال می‌شود.
+                نتیجه موفق این سفارش ثبت شده است. اگر این سفارش برای فعال‌سازی، تمدید یا ارتقا بوده، مرجع مشاهده اثر آن مرکز اشتراک همین حساب است.
               {% elif status_key == 'failed' %}
-                پرداخت به نتیجه نهایی قابل قبول نرسیده و برای این سفارش هیچ تغییری در پلن، سهمیه یا دسترسی اعمال نشده است. اگر مبلغی از حساب شما کسر شده، فقط از مسیر پیگیری رسمی بررسی می‌شود.
+                پرداخت به نتیجه نهایی قابل قبول نرسیده و برای این سفارش هیچ تغییری در پلن، سهمیه یا دسترسی اعمال نشده است.
               {% elif status_key == 'canceled' %}
-                این سفارش به مرحله تایید پرداخت نرسیده است. تا زمانی که وضعیت نهایی به موفق تغییر نکند، هیچ تغییری در پلن، سهمیه یا دسترسی ثبت نمی‌شود.
+                این سفارش به مرحله تایید پرداخت نرسیده است. تا وقتی نتیجه نهایی موفق ثبت نشود، نباید تغییری روی حساب از آن انتظار داشته باشید.
               {% else %}
-                نتیجه اولیه دریافت شده اما هنوز به تطبیق یا تایید نهایی نیاز دارد. تا قبل از جمع‌بندی همین سفارش، تغییری در پلن، سهمیه یا دسترسی اعمال نمی‌شود. در این وضعیت معمولاً نیازی به تلاش دوباره برای پرداخت نیست مگر اینکه راهنمایی مشخصی دریافت کنید.
+                نتیجه اولیه دریافت شده اما هنوز به جمع‌بندی نهایی نیاز دارد. در این وضعیت معمولاً نباید صرفاً بر اساس بازگشت از درگاه، تغییری را قطعی بدانید.
               {% endif %}
             </p>
 
             {% if payment_status_detail %}
-              <div class="mt-4 rounded-[1.25rem] border border-white/70 bg-white/70 px-4 py-3 text-sm leading-7 text-slate-700 dark:border-slate-800/60 dark:bg-slate-950/30 dark:text-slate-200">
-                {{ payment_status_detail }}
-              </div>
+              <div class="billing-inline-note">{{ payment_status_detail }}</div>
             {% endif %}
           </div>
         </div>
 
-        {% if payment_status_meta_items %}
-          <div class="mt-4 grid gap-3 sm:grid-cols-2">
-            {% for item in payment_status_meta_items %}
-              <div class="rounded-[1.2rem] border border-white/70 bg-white/78 px-4 py-3 dark:border-slate-800/60 dark:bg-slate-950/30">
-                <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ item.label }}</div>
-                <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ item.value }}</div>
-                {% if item.note %}
-                  <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ item.note }}</div>
-                {% endif %}
-              </div>
-            {% endfor %}
+        <div class="billing-key-grid">
+          <div class="billing-key-item">
+            <span>اکنون روی حساب</span>
+            <strong>
+              {% if status_key == 'success' %}
+                نتیجه این سفارش مبنای بررسی در مرکز اشتراک است
+              {% elif status_key == 'pending' %}
+                هنوز هیچ تغییر قطعی اعمال نشده است
+              {% else %}
+                این سفارش تغییری روی حساب اعمال نکرده است
+              {% endif %}
+            </strong>
+            <small>
+              {% if status_key == 'success' %}
+                اگر تغییری انتظار دارید، باید در مرکز اشتراک همین حساب دیده شود.
+              {% elif status_key == 'pending' %}
+                تا قبل از جمع‌بندی نهایی، پلن و سهمیه باید در وضعیت قبلی باقی بمانند.
+              {% else %}
+                برای تغییر حساب باید سفارش موفق دیگری ثبت و تایید شود.
+              {% endif %}
+            </small>
           </div>
-        {% endif %}
+
+          <div class="billing-key-item">
+            <span>برداشت درست از این وضعیت</span>
+            <strong>
+              {% if status_key == 'success' %}
+                سفارش به نتیجه نهایی رسیده است
+              {% elif status_key == 'pending' %}
+                هنوز باید منتظر جمع‌بندی نهایی بمانید
+              {% elif status_key == 'failed' %}
+                لازم است مسیر خرید را از ابتدا دوباره شروع کنید
+              {% else %}
+                این فرایند متوقف شده و ادامه پیدا نکرده است
+              {% endif %}
+            </strong>
+            <small>
+              {% if status_key == 'success' %}
+                مرجع بعدی شما برای فهم اثر سفارش، مرکز اشتراک است.
+              {% elif status_key == 'pending' %}
+                عجله برای پرداخت دوباره معمولاً تصمیم درستی نیست مگر این‌که راهنمای مشخصی دریافت کنید.
+              {% else %}
+                پیام‌های موقت یا بازگشت از درگاه نباید جایگزین نتیجه نهایی این صفحه شوند.
+              {% endif %}
+            </small>
+          </div>
+        </div>
       </div>
 
-      <aside class="min-w-0">
-        <div class="rounded-[1.5rem] border border-white/70 bg-white/78 p-4 dark:border-slate-800/60 dark:bg-slate-950/30">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مسیر پشتیبانی</div>
-          <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">
-            {{ payment_support_title|default:'اگر نیاز به پیگیری دارید' }}
+      <aside class="billing-stack">
+        <section class="billing-note-card">
+          <div class="billing-note-card__label">اقدام مناسب</div>
+          <div class="billing-note-card__title">
+            {% if status_key == 'success' %}
+              اثر سفارش را از مرکز اشتراک بررسی کنید
+            {% elif status_key == 'pending' %}
+              فعلاً منتظر نتیجه نهایی بمانید
+            {% elif status_key == 'failed' %}
+              برای اقدام دوباره، فرایند خرید را از ابتدا شروع کنید
+            {% else %}
+              اگر هنوز نیاز دارید، سفارش جدیدی را جداگانه آغاز کنید
+            {% endif %}
           </div>
-          <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-            {{ payment_support_note|default:'برای بررسی دقیق‌تر، کد سفارش، زمان ثبت و نتیجه‌ای که در همین صفحه می‌بینید را برای پشتیبانی ارسال کنید تا پیگیری روی همان سفارش انجام شود.' }}
+          <p class="billing-note-card__body">
+            {% if status_key == 'success' %}
+              این سفارش به نتیجه نهایی رسیده و صفحه بعدی برای فهم اثر آن، مرکز اشتراک همین حساب است.
+            {% elif status_key == 'pending' %}
+              تا وقتی نتیجه نهایی ثبت نشده، تغییری روی پلن یا سهمیه قطعی نیست و تصمیم عجولانه لازم نیست.
+            {% elif status_key == 'failed' %}
+              چون این سفارش موفق نشده، برای هر اقدام تازه بهتر است یک سفارش جدید و مستقل ثبت شود.
+            {% else %}
+              این فرایند متوقف شده و برای ادامه باید از مسیر رسمی خرید دوباره شروع شود.
+            {% endif %}
           </p>
+        </section>
 
+        <section class="billing-note-card">
+          <div class="billing-note-card__label">پشتیبانی</div>
+          <div class="billing-note-card__title">{{ payment_support_title|default:'اگر نیاز به پیگیری دارید' }}</div>
+          <p class="billing-note-card__body">
+            {{ payment_support_note|default:'برای بررسی دقیق‌تر، شناسه سفارش و نتیجه‌ای را که در همین صفحه می‌بینید برای پشتیبانی ارسال کنید تا پیگیری روی همان سفارش انجام شود.' }}
+          </p>
           {% if payment_support_helper_note %}
-            <p class="mt-3 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ payment_support_helper_note }}</p>
+            <p class="billing-inline-meta">{{ payment_support_helper_note }}</p>
           {% endif %}
-
           {% if payment_support_cta_label %}
             <a href="{{ payment_support_cta_url|default:'#' }}" class="btn-secondary mt-4 w-full">
               {{ payment_support_cta_label }}
             </a>
           {% endif %}
-        </div>
+        </section>
       </aside>
     </div>
   </section>

@@ -4,38 +4,65 @@
 {% block meta_description %}مرور نهایی خرید پلن فارال‌یار پیش از انتقال به پرداخت؛ با توضیح روشن درباره مبلغ، تغییرات پس از تایید و مواردی که ثابت می‌مانند.{% endblock %}
 
 {% block app_content %}
-  <div class="mx-auto max-w-4xl space-y-4 sm:space-y-5">
-    <section class="rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
-      <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-        <div class="min-w-0 max-w-3xl">
-          <div class="flex flex-wrap gap-2">
+  <div class="billing-stage billing-stage--checkout">
+    <section class="billing-hero billing-hero--checkout">
+      <div class="billing-hero__grid">
+        <div class="min-w-0">
+          <div class="billing-kicker-row">
             <span class="badge">{{ checkout_page_badge|default:'مرور خرید' }}</span>
             {% if checkout_plan.badge %}
-              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ checkout_plan.badge }}</span>
+              <span class="billing-chip">{{ checkout_plan.badge }}</span>
             {% endif %}
             {% if checkout_current_plan_label %}
-              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">پلن فعلی: {{ checkout_current_plan_label }}</span>
+              <span class="billing-chip">پلن فعلی: {{ checkout_current_plan_label }}</span>
             {% endif %}
           </div>
 
-          <h1 class="mt-3 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
+          <h1 class="billing-hero__title">
             {{ checkout_page_title|default:'بررسی نهایی خرید پیش از پرداخت' }}
           </h1>
 
-          <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
-            {{ checkout_page_intro|default:'این صفحه فقط برای مرور همین سفارش پیش از رفتن به درگاه پرداخت است. تا قبل از ثبت موفق و تایید نهایی، هیچ تغییری در پلن، سهمیه یا دسترسی اعمال نمی‌شود.' }}
+          <p class="billing-hero__lead">
+            {{ checkout_page_intro|default:'این صفحه ادامه قیمت‌گذاری نیست؛ مرحله بررسی دقیق همین سفارش است. تا قبل از ثبت موفق و تایید نهایی، هیچ تغییری در پلن، سهمیه یا دسترسی اعمال نمی‌شود.' }}
           </p>
-        </div>
 
-        <div class="w-full lg:w-auto lg:min-w-[17rem]">
-          <div class="rounded-[1.4rem] border border-slate-200/80 bg-slate-50/85 p-4 dark:border-slate-700/70 dark:bg-slate-950/40">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مرحله بعد</div>
-            <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">{{ checkout_next_step_title|default:'در مرحله بعد به درگاه پرداخت هدایت می‌شوید' }}</div>
-            <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-              {{ checkout_next_step_summary|default:'پس از ثبت پرداخت، نتیجه نهایی در صفحه وضعیت سفارش مشخص می‌شود. هر تغییر در پلن، سهمیه یا دسترسی فقط بعد از ثبت موفق و تایید نهایی همین سفارش اعمال می‌شود.' }}
-            </p>
+          <ol class="billing-journey" aria-label="مسیر خرید">
+            <li class="billing-journey__step">مرکز اشتراک</li>
+            <li class="billing-journey__step is-current">مرور خرید</li>
+            <li class="billing-journey__step">وضعیت سفارش</li>
+          </ol>
+
+          <div class="billing-chip-row">
+            <span class="billing-chip billing-chip--soft">اکنون فعال: {{ checkout_current_plan_label|default:'بدون پلن فعال' }}</span>
+            <span class="billing-chip billing-chip--soft">پس از تایید: {{ checkout_plan.name }}</span>
+            <span class="billing-chip billing-chip--soft">تا قبل از نتیجه: بدون تغییر در حساب</span>
           </div>
         </div>
+
+        <aside class="billing-hero__aside">
+          <div class="billing-summary-card">
+            <div class="billing-summary-card__label">مرحله فعلی</div>
+            <div class="billing-summary-card__title">{{ checkout_next_step_title|default:'پس از این مرحله وارد درگاه پرداخت می‌شوید' }}</div>
+            <p class="billing-summary-card__body">
+              {{ checkout_next_step_summary|default:'پس از ثبت پرداخت، نتیجه نهایی فقط در صفحه وضعیت سفارش مشخص می‌شود. تغییر پلن یا سهمیه قبل از آن نباید از این صفحه برداشت شود.' }}
+            </p>
+
+            <div class="billing-mini-list">
+              <div class="billing-mini-list__item">
+                <span>مبلغ این سفارش</span>
+                <strong>{{ checkout_amount }} {{ checkout_currency_label|default:'تومان' }}</strong>
+              </div>
+              <div class="billing-mini-list__item">
+                <span>مرجع بعدی</span>
+                <strong>صفحه وضعیت سفارش</strong>
+              </div>
+              <div class="billing-mini-list__item">
+                <span>وضعیت حساب تا قبل از نتیجه</span>
+                <strong>بدون تغییر</strong>
+              </div>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
 
@@ -43,22 +70,20 @@
     {% include 'app/_checkout_entitlement_delta.html' %}
     {% include 'app/_checkout_trust_block.html' %}
 
-    <section class="rounded-[1.85rem] border border-slate-200/80 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5 lg:p-6">
-      <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <section class="billing-panel billing-panel--action">
+      <div class="billing-action-shell">
         <div class="min-w-0 max-w-3xl">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">ادامه فرایند</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">
-            {{ checkout_action_title|default:'اگر اطلاعات این صفحه درست است، ادامه دهید' }}
-          </h2>
-          <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+          <div class="billing-section-label">ادامه فرایند</div>
+          <h2 class="billing-section-title">{{ checkout_action_title|default:'اگر اطلاعات این صفحه درست است، ادامه دهید' }}</h2>
+          <p class="billing-section-body">
             {{ checkout_action_body|default:'در مرحله بعد مبلغ برای پرداخت نمایش داده می‌شود و نتیجه نهایی پس از بازگشت از درگاه در صفحه وضعیت سفارش ثبت خواهد شد.' }}
           </p>
           {% if checkout_activation_note %}
-            <p class="mt-3 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ checkout_activation_note }}</p>
+            <p class="billing-inline-meta">{{ checkout_activation_note }}</p>
           {% endif %}
         </div>
 
-        <div class="flex w-full flex-col gap-3 lg:w-auto lg:min-w-[16rem]">
+        <div class="billing-cta-stack billing-cta-stack--wide">
           <a href="{{ checkout_primary_cta_url|default:'#' }}" class="btn-primary w-full">
             {{ checkout_primary_cta_label|default:'ادامه به پرداخت' }}
           </a>

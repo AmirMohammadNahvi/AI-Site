@@ -461,6 +461,992 @@ table.responsive-table {
   color: rgb(203 213 225);
 }
 
+.billing-stage {
+  display: grid;
+  gap: 1rem;
+}
+
+.billing-hero,
+.billing-panel,
+.billing-status-shell {
+  border: 1px solid rgba(208, 219, 232, 0.9);
+  border-radius: 2rem;
+  box-shadow:
+    0 24px 64px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.billing-hero {
+  overflow: hidden;
+  padding: clamp(1.2rem, 2.4vw, 1.8rem);
+  background:
+    radial-gradient(circle at top right, rgba(40, 171, 136, 0.13), transparent 22rem),
+    radial-gradient(circle at top left, rgba(1, 51, 102, 0.08), transparent 20rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(247, 250, 253, 0.95));
+}
+
+.billing-hero--checkout {
+  background:
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 22rem),
+    radial-gradient(circle at bottom left, rgba(1, 51, 102, 0.08), transparent 18rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(245, 249, 252, 0.95));
+}
+
+.billing-hero--status {
+  background:
+    radial-gradient(circle at top right, rgba(51, 65, 85, 0.1), transparent 22rem),
+    radial-gradient(circle at bottom left, rgba(40, 171, 136, 0.08), transparent 18rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(247, 250, 253, 0.95));
+}
+
+.billing-hero__grid,
+.billing-review-grid,
+.billing-support-grid,
+.billing-split-grid,
+.billing-status-shell__grid,
+.billing-grid--support {
+  display: grid;
+  gap: 1rem;
+}
+
+.billing-kicker-row,
+.billing-chip-row,
+.billing-action-list,
+.billing-guidance-list,
+.billing-cta-stack,
+.billing-stack,
+.billing-proof-list,
+.billing-timeline,
+.billing-activity-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.billing-kicker-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.billing-chip-row {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.billing-chip-row--compact {
+  margin-top: 0.9rem;
+}
+
+.billing-chip,
+.billing-state-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.billing-chip {
+  border: 1px solid rgba(203, 213, 225, 0.78);
+  background: rgba(255, 255, 255, 0.88);
+  color: rgb(71 85 105);
+}
+
+.billing-chip--soft {
+  background: rgba(248, 250, 252, 0.92);
+}
+
+.billing-state-pill {
+  border: 1px solid rgba(203, 213, 225, 0.72);
+  background: rgba(241, 245, 249, 0.96);
+  color: rgb(71 85 105);
+}
+
+.billing-state-pill--success {
+  border-color: rgba(52, 211, 153, 0.32);
+  background: rgba(236, 253, 245, 0.96);
+  color: rgb(4 120 87);
+}
+
+.billing-state-pill--warning {
+  border-color: rgba(251, 191, 36, 0.36);
+  background: rgba(255, 251, 235, 0.98);
+  color: rgb(146 64 14);
+}
+
+.billing-state-pill--danger {
+  border-color: rgba(244, 63, 94, 0.28);
+  background: rgba(255, 241, 242, 0.98);
+  color: rgb(190 24 93);
+}
+
+.billing-hero__title {
+  margin-top: 0.85rem;
+  font-size: clamp(1.75rem, 3.6vw, 2.85rem);
+  line-height: 1.18;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.billing-hero__lead,
+.billing-section-body,
+.billing-summary-card__body,
+.billing-focus-card__body,
+.billing-note-card__body,
+.billing-timeline__summary,
+.billing-activity-row__summary,
+.billing-activity-row__note,
+.billing-proof-card__body,
+.billing-status-shell__body {
+  font-size: 0.95rem;
+  line-height: 1.95;
+  color: rgb(71 85 105);
+}
+
+.billing-hero__lead {
+  margin-top: 1rem;
+}
+
+.billing-journey {
+  margin-top: 1.15rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0;
+  list-style: none;
+}
+
+.billing-journey__step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(203, 213, 225, 0.74);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 0.55rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: rgb(100 116 139);
+}
+
+.billing-journey__step::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.68);
+}
+
+.billing-journey__step.is-current {
+  border-color: rgba(40, 171, 136, 0.34);
+  background: rgba(236, 253, 245, 0.88);
+  color: rgb(4 120 87);
+}
+
+.billing-journey__step.is-current::before {
+  background: rgb(16 185 129);
+}
+
+.billing-summary-card,
+.billing-proof-card,
+.billing-note-card,
+.billing-focus-card,
+.billing-usage-shell,
+.billing-empty-card,
+.billing-tone-card,
+.billing-action-list__item,
+.billing-activity-row,
+.billing-timeline__item {
+  border: 1px solid rgba(208, 219, 232, 0.88);
+  border-radius: 1.6rem;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.billing-summary-card,
+.billing-proof-card,
+.billing-note-card,
+.billing-empty-card {
+  padding: 1.1rem;
+}
+
+.billing-summary-card__label,
+.billing-section-label,
+.billing-focus-card__label,
+.billing-note-card__label,
+.billing-proof-card__label,
+.billing-mini-list__item span,
+.billing-key-item span,
+.billing-inline-meta,
+.billing-caption {
+  font-size: 0.76rem;
+  font-weight: 900;
+  color: rgb(100 116 139);
+}
+
+.billing-summary-card__title,
+.billing-section-title,
+.billing-focus-card__title,
+.billing-note-card__title,
+.billing-tone-card__title,
+.billing-status-shell__title,
+.billing-action-list__title,
+.billing-activity-row__title,
+.billing-timeline__title,
+.billing-empty-card__title {
+  color: rgb(15 23 42);
+}
+
+.billing-summary-card__title,
+.billing-note-card__title,
+.billing-proof-card__currency,
+.billing-action-list__title,
+.billing-activity-row__title,
+.billing-timeline__title,
+.billing-empty-card__title {
+  margin-top: 0.35rem;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.billing-section-title {
+  margin-top: 0.35rem;
+  font-size: 1.3rem;
+  line-height: 1.35;
+  font-weight: 900;
+}
+
+.billing-panel,
+.billing-status-shell {
+  padding: clamp(1.05rem, 2.2vw, 1.5rem);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 252, 0.95));
+}
+
+.billing-panel--muted,
+.billing-panel--aside,
+.billing-panel--action {
+  background:
+    linear-gradient(180deg, rgba(249, 251, 252, 0.98), rgba(243, 247, 250, 0.95));
+}
+
+.billing-panel__head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  justify-content: space-between;
+}
+
+.billing-focus-card,
+.billing-usage-shell {
+  padding: 1.15rem;
+}
+
+.billing-focus-card__top,
+.billing-usage-shell__summary,
+.billing-activity-row__top,
+.billing-timeline__head,
+.billing-mini-list__item,
+.billing-proof-list__item {
+  display: flex;
+  gap: 0.9rem;
+  justify-content: space-between;
+}
+
+.billing-focus-card__title,
+.billing-status-shell__title {
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.4;
+}
+
+.billing-focus-card__body {
+  margin-top: 0.55rem;
+}
+
+.billing-emphasis-amount {
+  min-width: min(100%, 14rem);
+  border-radius: 1.4rem;
+  border: 1px solid rgba(191, 219, 254, 0.72);
+  background: linear-gradient(180deg, rgba(239, 246, 255, 0.94), rgba(247, 250, 252, 0.88));
+  padding: 0.95rem 1rem;
+  text-align: right;
+}
+
+.billing-emphasis-amount span,
+.billing-emphasis-amount small {
+  display: block;
+}
+
+.billing-emphasis-amount span,
+.billing-emphasis-amount small {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: rgb(100 116 139);
+}
+
+.billing-emphasis-amount strong,
+.billing-proof-card__amount,
+.billing-usage-shell__metric strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: clamp(1.55rem, 3vw, 2.3rem);
+  line-height: 1.15;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.billing-key-grid {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.billing-key-item {
+  border-radius: 1.35rem;
+  border: 1px solid rgba(208, 219, 232, 0.86);
+  background: rgba(255, 255, 255, 0.88);
+  padding: 0.95rem 1rem;
+}
+
+.billing-key-item strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.billing-key-item small,
+.billing-progress-caption,
+.billing-note-card__body + .billing-inline-meta,
+.billing-proof-card__body + .billing-inline-note {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: rgb(100 116 139);
+}
+
+.billing-key-item--emphasis {
+  border-color: rgba(40, 171, 136, 0.28);
+  background:
+    radial-gradient(circle at top right, rgba(40, 171, 136, 0.12), transparent 15rem),
+    rgba(240, 253, 250, 0.94);
+}
+
+.billing-inline-note {
+  margin-top: 0.95rem;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(208, 219, 232, 0.82);
+  background: rgba(248, 250, 252, 0.9);
+  padding: 0.9rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.9;
+  color: rgb(71 85 105);
+}
+
+.billing-inline-meta {
+  margin-top: 0.7rem;
+  line-height: 1.8;
+}
+
+.billing-mini-list {
+  margin-top: 0.95rem;
+}
+
+.billing-mini-list__item {
+  align-items: center;
+  border-top: 1px solid rgba(226, 232, 240, 0.78);
+  padding-top: 0.75rem;
+}
+
+.billing-mini-list__item strong,
+.billing-proof-list__item strong {
+  font-size: 0.84rem;
+  font-weight: 900;
+  color: rgb(30 41 59);
+}
+
+.billing-cta-row {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.billing-cta-stack--wide {
+  width: 100%;
+}
+
+.billing-empty-card {
+  border-style: dashed;
+}
+
+.billing-empty-card__body {
+  margin-top: 0.5rem;
+  font-size: 0.93rem;
+  line-height: 1.9;
+  color: rgb(71 85 105);
+}
+
+.billing-usage-shell__metric span,
+.billing-usage-shell__remaining span,
+.billing-proof-card__currency {
+  font-size: 0.76rem;
+  font-weight: 900;
+  color: rgb(100 116 139);
+}
+
+.billing-usage-shell__remaining {
+  min-width: 9rem;
+  border-radius: 1.2rem;
+  background: rgba(248, 250, 252, 0.92);
+  padding: 0.8rem 0.9rem;
+}
+
+.billing-usage-shell__remaining strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1rem;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.billing-progress-track {
+  margin-top: 1rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(226, 232, 240, 0.88);
+  height: 0.7rem;
+}
+
+.billing-progress-bar {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.96), rgba(5, 150, 105, 0.92));
+}
+
+.billing-progress-bar.is-warning {
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.95), rgba(217, 119, 6, 0.92));
+}
+
+.billing-progress-bar.is-danger {
+  background: linear-gradient(90deg, rgba(244, 63, 94, 0.96), rgba(225, 29, 72, 0.92));
+}
+
+.billing-guidance-list__item,
+.billing-action-list__item {
+  padding: 0.95rem 1rem;
+}
+
+.billing-guidance-list__item {
+  border-radius: 1.2rem;
+  border: 1px solid rgba(208, 219, 232, 0.84);
+  background: rgba(248, 250, 252, 0.92);
+  font-size: 0.9rem;
+  line-height: 1.9;
+  color: rgb(51 65 85);
+}
+
+.billing-proof-card__amount {
+  margin-top: 0.4rem;
+}
+
+.billing-proof-card__currency {
+  margin-top: 0.15rem;
+}
+
+.billing-proof-list {
+  margin-top: 0.9rem;
+}
+
+.billing-proof-list__item {
+  align-items: start;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+  padding-top: 0.7rem;
+}
+
+.billing-proof-list__item span {
+  font-size: 0.76rem;
+  font-weight: 900;
+  color: rgb(100 116 139);
+}
+
+.billing-status-note {
+  margin-top: 0.9rem;
+  border-radius: 1.2rem;
+  padding: 0.9rem 1rem;
+  font-size: 0.88rem;
+  line-height: 1.9;
+}
+
+.billing-status-note--warning {
+  border: 1px solid rgba(251, 191, 36, 0.36);
+  background: rgba(255, 251, 235, 0.96);
+  color: rgb(146 64 14);
+}
+
+.billing-tone-card {
+  padding: 1.1rem;
+}
+
+.billing-tone-card--success {
+  border-color: rgba(52, 211, 153, 0.28);
+  background:
+    radial-gradient(circle at top right, rgba(40, 171, 136, 0.14), transparent 15rem),
+    rgba(236, 253, 245, 0.88);
+}
+
+.billing-tone-card__head {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.billing-tone-card__body {
+  margin-top: 0.75rem;
+  font-size: 0.93rem;
+  line-height: 1.95;
+  color: rgb(51 65 85);
+}
+
+.billing-action-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.billing-action-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  justify-content: space-between;
+}
+
+.billing-action-list__body {
+  margin-top: 0.4rem;
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: rgb(71 85 105);
+}
+
+.billing-activity-row {
+  display: grid;
+  grid-template-columns: 0.4rem minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.billing-activity-row__state {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+.billing-activity-row[data-tone="success"] .billing-activity-row__state {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.96), rgba(5, 150, 105, 0.88));
+}
+
+.billing-activity-row[data-tone="warning"] .billing-activity-row__state {
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.95), rgba(217, 119, 6, 0.9));
+}
+
+.billing-activity-row[data-tone="danger"] .billing-activity-row__state {
+  background: linear-gradient(180deg, rgba(244, 63, 94, 0.96), rgba(225, 29, 72, 0.9));
+}
+
+.billing-activity-row__body {
+  padding: 1rem 1rem 1rem 1.05rem;
+}
+
+.billing-activity-row__heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.billing-activity-row__summary,
+.billing-activity-row__note {
+  margin-top: 0.55rem;
+}
+
+.billing-activity-row__side {
+  display: grid;
+  gap: 0.75rem;
+  min-width: min(100%, 12rem);
+}
+
+.billing-activity-row__amount {
+  border-radius: 1.15rem;
+  background: rgba(248, 250, 252, 0.94);
+  padding: 0.75rem 0.9rem;
+  font-size: 0.94rem;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.billing-status-shell {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(247, 250, 252, 0.95));
+}
+
+.billing-status-shell[data-tone="success"] {
+  border-color: rgba(52, 211, 153, 0.32);
+  background:
+    radial-gradient(circle at top right, rgba(40, 171, 136, 0.16), transparent 20rem),
+    linear-gradient(180deg, rgba(236, 253, 245, 0.98), rgba(245, 252, 249, 0.94));
+}
+
+.billing-status-shell[data-tone="pending"] {
+  border-color: rgba(251, 191, 36, 0.3);
+  background:
+    radial-gradient(circle at top right, rgba(245, 158, 11, 0.12), transparent 20rem),
+    linear-gradient(180deg, rgba(255, 251, 235, 0.97), rgba(252, 248, 239, 0.94));
+}
+
+.billing-status-shell[data-tone="failed"] {
+  border-color: rgba(244, 63, 94, 0.28);
+  background:
+    radial-gradient(circle at top right, rgba(244, 63, 94, 0.12), transparent 20rem),
+    linear-gradient(180deg, rgba(255, 241, 242, 0.97), rgba(252, 247, 248, 0.94));
+}
+
+.billing-status-shell[data-tone="canceled"] {
+  background:
+    radial-gradient(circle at top right, rgba(100, 116, 139, 0.1), transparent 20rem),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(243, 246, 249, 0.95));
+}
+
+.billing-status-shell__head {
+  display: flex;
+  gap: 1rem;
+}
+
+.billing-status-shell__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.15rem;
+  height: 3.15rem;
+  flex-shrink: 0;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  background: rgba(255, 255, 255, 0.78);
+  color: rgb(71 85 105);
+}
+
+.billing-status-shell[data-tone="success"] .billing-status-shell__icon {
+  color: rgb(4 120 87);
+}
+
+.billing-status-shell[data-tone="pending"] .billing-status-shell__icon {
+  color: rgb(146 64 14);
+}
+
+.billing-status-shell[data-tone="failed"] .billing-status-shell__icon {
+  color: rgb(190 24 93);
+}
+
+.billing-timeline__item {
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.billing-timeline__dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 999px;
+  margin-top: 0.35rem;
+  background: rgba(148, 163, 184, 0.7);
+}
+
+.billing-timeline__item[data-tone="success"] .billing-timeline__dot {
+  background: rgb(16 185 129);
+}
+
+.billing-timeline__item[data-tone="failed"] .billing-timeline__dot {
+  background: rgb(244 63 94);
+}
+
+.billing-timeline__item[data-tone="canceled"] .billing-timeline__dot {
+  background: rgb(100 116 139);
+}
+
+.billing-timeline__item[data-tone="pending"] .billing-timeline__dot {
+  background: rgb(245 158 11);
+}
+
+.billing-timeline__body {
+  min-width: 0;
+}
+
+@media (min-width: 720px) {
+  .billing-panel__head {
+    flex-direction: row;
+    align-items: start;
+  }
+
+  .billing-key-grid,
+  .billing-key-grid--compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .billing-cta-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .billing-action-list__item {
+    flex-direction: row;
+    align-items: start;
+  }
+
+  .billing-action-list__item .btn-primary,
+  .billing-action-list__item .btn-secondary {
+    flex-shrink: 0;
+  }
+}
+
+@media (min-width: 980px) {
+  .billing-hero__grid,
+  .billing-status-shell__grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(17rem, 0.85fr);
+    align-items: start;
+  }
+
+  .billing-grid--support,
+  .billing-support-grid,
+  .billing-split-grid,
+  .billing-review-grid {
+    grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.92fr);
+    align-items: start;
+  }
+
+  .billing-action-shell {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 1160px) {
+  .billing-key-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .billing-key-grid--compact {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .billing-activity-row__top {
+    align-items: start;
+  }
+}
+
+@media (max-width: 719px) {
+  .billing-hero,
+  .billing-panel,
+  .billing-status-shell {
+    border-radius: 1.65rem;
+  }
+
+  .billing-status-shell__head {
+    flex-direction: column;
+  }
+
+  .billing-focus-card__top,
+  .billing-usage-shell__summary,
+  .billing-activity-row__top,
+  .billing-proof-list__item,
+  .billing-mini-list__item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .billing-activity-row__side {
+    min-width: 0;
+  }
+
+  .billing-journey {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.2rem;
+  }
+
+  .billing-journey__step {
+    white-space: nowrap;
+  }
+}
+
+.dark .billing-hero,
+.dark .billing-panel,
+.dark .billing-status-shell {
+  border-color: rgba(71, 85, 105, 0.55);
+  box-shadow:
+    0 24px 64px rgba(2, 6, 23, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.dark .billing-hero {
+  background:
+    radial-gradient(circle at top right, rgba(40, 171, 136, 0.16), transparent 22rem),
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.1), transparent 18rem),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.72));
+}
+
+.dark .billing-hero--checkout {
+  background:
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.15), transparent 22rem),
+    radial-gradient(circle at bottom left, rgba(30, 41, 59, 0.18), transparent 18rem),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.72));
+}
+
+.dark .billing-hero--status,
+.dark .billing-panel,
+.dark .billing-panel--muted,
+.dark .billing-panel--aside,
+.dark .billing-panel--action,
+.dark .billing-status-shell {
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.75));
+}
+
+.dark .billing-summary-card,
+.dark .billing-proof-card,
+.dark .billing-note-card,
+.dark .billing-focus-card,
+.dark .billing-usage-shell,
+.dark .billing-empty-card,
+.dark .billing-tone-card,
+.dark .billing-action-list__item,
+.dark .billing-activity-row,
+.dark .billing-timeline__item,
+.dark .billing-key-item,
+.dark .billing-guidance-list__item,
+.dark .billing-inline-note,
+.dark .billing-emphasis-amount,
+.dark .billing-usage-shell__remaining {
+  border-color: rgba(71, 85, 105, 0.55);
+  background: rgba(15, 23, 42, 0.58);
+}
+
+.dark .billing-key-item--emphasis,
+.dark .billing-tone-card--success {
+  background:
+    radial-gradient(circle at top right, rgba(40, 171, 136, 0.16), transparent 14rem),
+    rgba(6, 78, 59, 0.22);
+}
+
+.dark .billing-chip {
+  border-color: rgba(71, 85, 105, 0.55);
+  background: rgba(15, 23, 42, 0.54);
+  color: rgb(203 213 225);
+}
+
+.dark .billing-state-pill {
+  border-color: rgba(71, 85, 105, 0.56);
+  background: rgba(30, 41, 59, 0.78);
+  color: rgb(203 213 225);
+}
+
+.dark .billing-state-pill--success {
+  border-color: rgba(16, 185, 129, 0.32);
+  background: rgba(6, 95, 70, 0.32);
+  color: rgb(167 243 208);
+}
+
+.dark .billing-state-pill--warning {
+  border-color: rgba(245, 158, 11, 0.28);
+  background: rgba(146, 64, 14, 0.3);
+  color: rgb(253 230 138);
+}
+
+.dark .billing-state-pill--danger {
+  border-color: rgba(244, 63, 94, 0.24);
+  background: rgba(136, 19, 55, 0.3);
+  color: rgb(251 207 232);
+}
+
+.dark .billing-hero__title,
+.dark .billing-summary-card__title,
+.dark .billing-section-title,
+.dark .billing-focus-card__title,
+.dark .billing-note-card__title,
+.dark .billing-tone-card__title,
+.dark .billing-status-shell__title,
+.dark .billing-action-list__title,
+.dark .billing-activity-row__title,
+.dark .billing-timeline__title,
+.dark .billing-empty-card__title,
+.dark .billing-emphasis-amount strong,
+.dark .billing-proof-card__amount,
+.dark .billing-key-item strong,
+.dark .billing-mini-list__item strong,
+.dark .billing-proof-list__item strong,
+.dark .billing-usage-shell__metric strong,
+.dark .billing-usage-shell__remaining strong {
+  color: rgb(248 250 252);
+}
+
+.dark .billing-hero__lead,
+.dark .billing-section-body,
+.dark .billing-summary-card__body,
+.dark .billing-focus-card__body,
+.dark .billing-note-card__body,
+.dark .billing-timeline__summary,
+.dark .billing-activity-row__summary,
+.dark .billing-activity-row__note,
+.dark .billing-proof-card__body,
+.dark .billing-status-shell__body,
+.dark .billing-empty-card__body,
+.dark .billing-inline-note,
+.dark .billing-tone-card__body,
+.dark .billing-action-list__body,
+.dark .billing-guidance-list__item {
+  color: rgb(203 213 225);
+}
+
+.dark .billing-summary-card__label,
+.dark .billing-section-label,
+.dark .billing-focus-card__label,
+.dark .billing-note-card__label,
+.dark .billing-proof-card__label,
+.dark .billing-mini-list__item span,
+.dark .billing-key-item span,
+.dark .billing-inline-meta,
+.dark .billing-caption,
+.dark .billing-emphasis-amount span,
+.dark .billing-emphasis-amount small,
+.dark .billing-usage-shell__metric span,
+.dark .billing-usage-shell__remaining span,
+.dark .billing-proof-card__currency,
+.dark .billing-progress-caption,
+.dark .billing-key-item small,
+.dark .billing-proof-list__item span {
+  color: rgb(148 163 184);
+}
+
+.dark .billing-progress-track {
+  background: rgba(51, 65, 85, 0.72);
+}
+
+.dark .billing-mini-list__item,
+.dark .billing-proof-list__item {
+  border-top-color: rgba(71, 85, 105, 0.48);
+}
+
+.dark .billing-status-note--warning {
+  border-color: rgba(245, 158, 11, 0.26);
+  background: rgba(146, 64, 14, 0.22);
+  color: rgb(253 230 138);
+}
+
 /* Stage 8: assistants, models, memory */
 
 .surface-state-badge {

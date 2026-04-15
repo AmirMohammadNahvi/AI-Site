@@ -4,81 +4,106 @@
 {% block meta_description %}{{ billing_page_description|default:"مرور پلن فعال، مصرف سهمیه، تاریخچه سفارش‌ها و اقدام بعدی در بخش مدیریت اشتراک FaralYar." }}{% endblock %}
 
 {% block app_content %}
-  <div class="space-y-6">
-    <section class="page-hero-card relative overflow-hidden p-4 sm:p-5 lg:p-6">
-      <div class="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_52%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.12),transparent_42%)]"></div>
-
-      <div class="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-        <div class="min-w-0 max-w-3xl">
-          <div class="flex flex-wrap gap-2">
-            <span class="badge">{{ billing_page_badge|default:"مدیریت اشتراک" }}</span>
+  <div class="billing-stage billing-stage--center">
+    <section class="billing-hero billing-hero--account">
+      <div class="billing-hero__grid">
+        <div class="min-w-0">
+          <div class="billing-kicker-row">
+            <span class="badge">{{ billing_page_badge|default:"مرکز اشتراک" }}</span>
             {% if current_plan.badge %}
-              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ current_plan.badge }}</span>
+              <span class="billing-chip">{{ current_plan.badge }}</span>
             {% endif %}
             {% if current_plan.status_label %}
-              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ current_plan.status_label }}</span>
+              <span class="billing-chip">{{ current_plan.status_label }}</span>
             {% endif %}
           </div>
 
-          <h1 class="mt-3 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
+          <h1 class="billing-hero__title">
             {{ billing_page_title|default:"اشتراک و پرداخت" }}
           </h1>
 
-          <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
-            {{ billing_page_intro|default:"این صفحه برای مدیریت وضعیت واقعی اشتراک شما در همین حساب و ورک‌اسپیس است؛ از همین‌جا می‌توانید پلن فعال، مصرف سهمیه، زمان ریست یا پایان اعتبار، و آخرین سفارش‌ها و تراکنش‌ها را یک‌جا مرور کنید." }}
+          <p class="billing-hero__lead">
+            {{ billing_page_intro|default:"این بخش برای مدیریت وضعیت واقعی همین حساب است؛ نه برای مقایسه بازاری پلن‌ها. از همین‌جا می‌توانید ببینید چه چیزی الان فعال است، چه چیزی تغییر کرده، چه چیزی در انتظار نتیجه است و اگر لازم باشد قدم بعدی چه باید باشد." }}
           </p>
 
-          <div class="info-panel mt-4 px-4 py-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
-            {{ billing_page_hint|default:"صفحه قیمت‌گذاری مرجع عمومی مقایسه پلن‌هاست؛ اما وضعیت واقعی حساب، ورک‌اسپیس، سفارش و محدودیت‌های فعال فقط از همین صفحه و صفحه وضعیت سفارش خوانده می‌شود." }}
-          </div>
+          <ol class="billing-journey" aria-label="پیوستگی مسیر پرداخت">
+            <li class="billing-journey__step is-current">مرکز اشتراک</li>
+            <li class="billing-journey__step">مرور خرید</li>
+            <li class="billing-journey__step">وضعیت سفارش</li>
+          </ol>
 
-          <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-bold">
+          <div class="billing-chip-row">
             {% if current_plan.name %}
-              <span class="rounded-full bg-white/88 px-3 py-1.5 text-slate-600 dark:bg-slate-950/55 dark:text-slate-300">پلن فعال: {{ current_plan.name }}</span>
+              <span class="billing-chip billing-chip--soft">اکنون فعال: {{ current_plan.name }}</span>
             {% endif %}
             {% if billing_usage.used_label %}
-              <span class="rounded-full bg-sky-50 px-3 py-1.5 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300">مصرف فعلی: {{ billing_usage.used_label }}</span>
+              <span class="billing-chip billing-chip--soft">مصرف این بازه: {{ billing_usage.used_label }}</span>
             {% endif %}
             {% if billing_usage.reset_label %}
-              <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">ریست بعدی: {{ billing_usage.reset_label }}</span>
+              <span class="billing-chip billing-chip--soft">ریست بعدی: {{ billing_usage.reset_label }}</span>
             {% elif current_plan.expires_at_label %}
-              <span class="rounded-full bg-amber-50 px-3 py-1.5 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300">پایان اعتبار: {{ current_plan.expires_at_label }}</span>
+              <span class="billing-chip billing-chip--soft">پایان اعتبار: {{ current_plan.expires_at_label }}</span>
             {% endif %}
           </div>
         </div>
 
-        <div class="w-full lg:w-auto lg:min-w-[17rem]">
-          <div class="info-panel p-4">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">نمای کلی فعلی</div>
-            <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">
+        <aside class="billing-hero__aside">
+          <div class="billing-summary-card">
+            <div class="billing-summary-card__label">آنچه اکنون مبناست</div>
+            <div class="billing-summary-card__title">
               {% if current_plan.name %}
                 {{ current_plan.name }}
               {% else %}
-                {{ billing_overview_title|default:"پلن فعال ثبت نشده است" }}
+                {{ billing_overview_title|default:"بدون پلن فعال" }}
               {% endif %}
             </div>
-            <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+            <p class="billing-summary-card__body">
               {% if billing_overview_note %}
                 {{ billing_overview_note }}
               {% elif current_plan.summary %}
                 {{ current_plan.summary }}
               {% else %}
-                {{ billing_overview_fallback|default:"اگر وضعیت اشتراک، سهمیه یا سفارش اخیر شما تغییر کند، همین صفحه باید مرجع اصلی مشاهده آخرین وضعیت باشد." }}
+                {{ billing_overview_fallback|default:"تا وقتی سفارشی با نتیجه نهایی موفق ثبت نشود، همین صفحه فقط وضعیت فعلی و مسیر بعدی را برای شما روشن می‌کند." }}
               {% endif %}
             </p>
+
+            <div class="billing-mini-list">
+              {% if current_plan.status_label %}
+                <div class="billing-mini-list__item">
+                  <span>وضعیت فعلی</span>
+                  <strong>{{ current_plan.status_label }}</strong>
+                </div>
+              {% endif %}
+              {% if billing_usage.reset_label %}
+                <div class="billing-mini-list__item">
+                  <span>مرجع سهمیه</span>
+                  <strong>{{ billing_usage.reset_label }}</strong>
+                </div>
+              {% elif current_plan.expires_at_label %}
+                <div class="billing-mini-list__item">
+                  <span>پایان اعتبار</span>
+                  <strong>{{ current_plan.expires_at_label }}</strong>
+                </div>
+              {% endif %}
+              {% if current_plan.order_reference %}
+                <div class="billing-mini-list__item">
+                  <span>آخرین مرجع</span>
+                  <strong>{{ current_plan.order_reference }}</strong>
+                </div>
+              {% endif %}
+            </div>
           </div>
-        </div>
+        </aside>
       </div>
     </section>
 
-    <div class="grid gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-      {% include 'app/_billing_current_plan_card.html' %}
-      {% include 'app/_billing_usage_card.html' %}
-    </div>
+    {% include 'app/_billing_current_plan_card.html' %}
 
-    <div class="grid gap-4 xl:grid-cols-[minmax(0,1.1fr)_19rem] xl:items-start">
-      {% include 'app/_billing_activity_list.html' %}
+    <div class="billing-grid billing-grid--support">
+      {% include 'app/_billing_usage_card.html' %}
       {% include 'app/_billing_recommendation_card.html' %}
     </div>
+
+    {% include 'app/_billing_activity_list.html' %}
   </div>
 {% endblock %}

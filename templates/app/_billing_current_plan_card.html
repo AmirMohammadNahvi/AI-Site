@@ -1,105 +1,122 @@
-<section class="rounded-[1.85rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
-  <div class="flex flex-col gap-4">
-    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-      <div class="min-w-0">
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">پلن فعال</div>
-        <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">
-          {% if current_plan.title %}
-            {{ current_plan.title }}
-          {% elif current_plan.name %}
-            {{ current_plan.name }}
-          {% else %}
-            {{ billing_current_plan_title|default:"اشتراک فعالی برای این حساب ثبت نشده است" }}
-          {% endif %}
-        </h2>
-        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-          {% if current_plan.description %}
-            {{ current_plan.description }}
-          {% elif current_plan.name %}
-            {{ billing_current_plan_intro|default:"جزئیات پلن فعلی و وضعیت تمدید یا پایان اعتبار را از همین بخش بررسی کنید." }}
-          {% else %}
-            {{ billing_current_plan_empty_body|default:"اگر هنوز اشتراک فعالی برای این حساب ثبت نشده باشد، وضعیت آن از همین‌جا روشن نمایش داده می‌شود و اقدام بعدی باید از بخش پیشنهاد پایین صفحه انجام شود." }}
-          {% endif %}
-        </p>
-      </div>
-
-      {% if current_plan.status_label %}
-        <span class="shrink-0 rounded-full bg-emerald-50 px-3 py-1.5 text-[11px] font-bold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">
-          {{ current_plan.status_label }}
-        </span>
-      {% elif current_plan.name %}
-        <span class="shrink-0 rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-          {{ billing_current_plan_default_badge|default:"وضعیت فعال" }}
-        </span>
-      {% endif %}
+<section class="billing-panel billing-panel--anchor">
+  <div class="billing-panel__head">
+    <div class="min-w-0">
+      <div class="billing-section-label">پلن فعال</div>
+      <h2 class="billing-section-title">
+        {% if current_plan.title %}
+          {{ current_plan.title }}
+        {% elif current_plan.name %}
+          {{ current_plan.name }}
+        {% else %}
+          {{ billing_current_plan_title|default:"هنوز پلن فعالی برای این حساب ثبت نشده است" }}
+        {% endif %}
+      </h2>
+      <p class="billing-section-body">
+        {% if current_plan.description %}
+          {{ current_plan.description }}
+        {% elif current_plan.name %}
+          {{ billing_current_plan_intro|default:"این کارت باید مرجع اصلی شما برای فهم وضعیت واقعی پلن، زمان پایان اعتبار، مرجع سفارش و اقدام بعدی باشد." }}
+        {% else %}
+          {{ billing_current_plan_empty_body|default:"تا وقتی پلن فعالی برای این حساب ثبت نشده باشد، همین بخش روشن می‌گوید چیزی فعال نیست و مسیر بعدی باید از همین‌جا شروع شود." }}
+        {% endif %}
+      </p>
     </div>
 
-    {% if current_plan.name %}
-      <div class="rounded-[1.45rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-950/35">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div class="min-w-0">
-            <div class="text-sm font-black text-slate-900 dark:text-white">{{ current_plan.name }}</div>
-            {% if current_plan.summary %}
-              <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ current_plan.summary }}</p>
-            {% endif %}
-          </div>
+    {% if current_plan.status_label %}
+      <span class="billing-state-pill billing-state-pill--success">{{ current_plan.status_label }}</span>
+    {% elif current_plan.name %}
+      <span class="billing-state-pill">{{ billing_current_plan_default_badge|default:"وضعیت فعال" }}</span>
+    {% endif %}
+  </div>
 
-          {% if current_plan.price_label %}
-            <div class="shrink-0 text-right">
-              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">وضعیت مالی</div>
-              <div class="mt-1 text-lg font-black text-slate-900 dark:text-white">{{ current_plan.price_label }}</div>
-              {% if current_plan.cycle_label %}
-                <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ current_plan.cycle_label }}</div>
-              {% endif %}
-            </div>
+  {% if current_plan.name %}
+    <div class="billing-focus-card">
+      <div class="billing-focus-card__top">
+        <div class="min-w-0">
+          <div class="billing-focus-card__label">اکنون روی این حساب فعال است</div>
+          <h3 class="billing-focus-card__title">{{ current_plan.name }}</h3>
+          {% if current_plan.summary %}
+            <p class="billing-focus-card__body">{{ current_plan.summary }}</p>
           {% endif %}
         </div>
 
-        <div class="mt-4 grid gap-3 sm:grid-cols-2">
-          <div class="rounded-[1.2rem] border border-slate-200/80 bg-white/88 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-900/55">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">زمان شروع</div>
-            <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ current_plan.started_at_label|default:"ثبت نشده" }}</div>
-            {% if current_plan.started_at_note %}
-              <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ current_plan.started_at_note }}</div>
+        {% if current_plan.price_label %}
+          <div class="billing-emphasis-amount">
+            <span>مبنای این پلن</span>
+            <strong>{{ current_plan.price_label }}</strong>
+            {% if current_plan.cycle_label %}
+              <small>{{ current_plan.cycle_label }}</small>
             {% endif %}
           </div>
-
-          <div class="rounded-[1.2rem] border border-slate-200/80 bg-white/88 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-900/55">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">پایان اعتبار</div>
-            <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ current_plan.expires_at_label|default:current_plan.renews_at_label|default:"ثبت نشده" }}</div>
-            {% if current_plan.expires_at_note %}
-              <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ current_plan.expires_at_note }}</div>
-            {% elif current_plan.renews_at_note %}
-              <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ current_plan.renews_at_note }}</div>
-            {% endif %}
-          </div>
-
-          <div class="rounded-[1.2rem] border border-slate-200/80 bg-white/88 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-900/55">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مرجع سفارش</div>
-            <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ current_plan.order_reference|default:current_plan.order_label|default:"در دسترس نیست" }}</div>
-            {% if current_plan.invoice_note %}
-              <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ current_plan.invoice_note }}</div>
-            {% endif %}
-          </div>
-
-          <div class="rounded-[1.2rem] border border-slate-200/80 bg-white/88 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-900/55">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">وضعیت تمدید</div>
-            <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">{{ current_plan.renewal_label|default:current_plan.next_action_label|default:"نیازمند بررسی" }}</div>
-            {% if current_plan.renewal_note %}
-              <div class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ current_plan.renewal_note }}</div>
-            {% endif %}
-          </div>
-        </div>
+        {% endif %}
       </div>
 
-      {% if current_plan.helper_text %}
-        <div class="rounded-[1.25rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/35 dark:text-slate-300">
-          {{ current_plan.helper_text }}
+      <div class="billing-key-grid">
+        <div class="billing-key-item">
+          <span>از چه زمانی فعال است</span>
+          <strong>{{ current_plan.started_at_label|default:"ثبت نشده" }}</strong>
+          {% if current_plan.started_at_note %}
+            <small>{{ current_plan.started_at_note }}</small>
+          {% endif %}
         </div>
-      {% endif %}
+
+        <div class="billing-key-item">
+          <span>پایان اعتبار فعلی</span>
+          <strong>{{ current_plan.expires_at_label|default:current_plan.renews_at_label|default:"ثبت نشده" }}</strong>
+          {% if current_plan.expires_at_note %}
+            <small>{{ current_plan.expires_at_note }}</small>
+          {% elif current_plan.renews_at_note %}
+            <small>{{ current_plan.renews_at_note }}</small>
+          {% endif %}
+        </div>
+
+        <div class="billing-key-item">
+          <span>مرجع آخرین سفارش موثر</span>
+          <strong>{{ current_plan.order_reference|default:current_plan.order_label|default:"در دسترس نیست" }}</strong>
+          {% if current_plan.invoice_note %}
+            <small>{{ current_plan.invoice_note }}</small>
+          {% endif %}
+        </div>
+
+        <div class="billing-key-item">
+          <span>اگر بخواهید کاری انجام دهید</span>
+          <strong>{{ current_plan.renewal_label|default:current_plan.next_action_label|default:"نیازمند بررسی" }}</strong>
+          {% if current_plan.renewal_note %}
+            <small>{{ current_plan.renewal_note }}</small>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if current_plan.helper_text %}
+      <div class="billing-inline-note">
+        {{ current_plan.helper_text }}
+      </div>
+    {% endif %}
+
+    {% if current_plan.primary_cta_label or current_plan.secondary_cta_label %}
+      <div class="billing-cta-row">
+        {% if current_plan.primary_cta_label %}
+          <a href="{{ current_plan.primary_cta_url|default:'#' }}" class="btn-primary w-full sm:w-auto">
+            {{ current_plan.primary_cta_label }}
+          </a>
+        {% endif %}
+        {% if current_plan.secondary_cta_label %}
+          <a href="{{ current_plan.secondary_cta_url|default:'#' }}" class="btn-secondary w-full sm:w-auto">
+            {{ current_plan.secondary_cta_label }}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% else %}
+    <div class="billing-empty-card">
+      <div class="billing-empty-card__title">{{ billing_current_plan_empty_title|default:"پلن فعالی برای نمایش وجود ندارد" }}</div>
+      <p class="billing-empty-card__body">
+        {{ billing_current_plan_empty_note|default:"وقتی اشتراک فعال یا سفارش تاییدشده‌ای برای این حساب ثبت شود، جزئیات آن از همین کارت قابل مشاهده خواهد بود." }}
+      </p>
 
       {% if current_plan.primary_cta_label or current_plan.secondary_cta_label %}
-        <div class="flex flex-col gap-2 sm:flex-row">
+        <div class="billing-cta-row">
           {% if current_plan.primary_cta_label %}
             <a href="{{ current_plan.primary_cta_url|default:'#' }}" class="btn-primary w-full sm:w-auto">
               {{ current_plan.primary_cta_label }}
@@ -112,28 +129,6 @@
           {% endif %}
         </div>
       {% endif %}
-    {% else %}
-      <div class="rounded-[1.45rem] border border-dashed border-slate-300/90 bg-slate-50/82 px-4 py-5 dark:border-slate-700/80 dark:bg-slate-950/35">
-        <div class="text-sm font-black text-slate-900 dark:text-white">{{ billing_current_plan_empty_title|default:"پلن فعالی برای نمایش وجود ندارد" }}</div>
-        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-          {{ billing_current_plan_empty_note|default:"وقتی اشتراک فعال یا سفارش تاییدشده‌ای برای این حساب ثبت شود، جزئیات آن از همین کارت قابل مشاهده خواهد بود." }}
-        </p>
-
-        {% if current_plan.primary_cta_label or current_plan.secondary_cta_label %}
-          <div class="mt-4 flex flex-col gap-2 sm:flex-row">
-            {% if current_plan.primary_cta_label %}
-              <a href="{{ current_plan.primary_cta_url|default:'#' }}" class="btn-primary w-full sm:w-auto">
-                {{ current_plan.primary_cta_label }}
-              </a>
-            {% endif %}
-            {% if current_plan.secondary_cta_label %}
-              <a href="{{ current_plan.secondary_cta_url|default:'#' }}" class="btn-secondary w-full sm:w-auto">
-                {{ current_plan.secondary_cta_label }}
-              </a>
-            {% endif %}
-          </div>
-        {% endif %}
-      </div>
-    {% endif %}
-  </div>
+    </div>
+  {% endif %}
 </section>

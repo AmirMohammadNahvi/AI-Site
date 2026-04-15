@@ -1,61 +1,53 @@
-<aside class="min-w-0">
-  <section class="rounded-[1.85rem] border border-slate-200/80 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
-    <div class="flex flex-col gap-4">
-      <div>
-        <div class="flex flex-wrap items-center gap-2">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">اقدام پیشنهادی</div>
-          {% if billing_recommendation.badge %}
-            <span class="rounded-full px-2.5 py-1 text-[10px] font-bold {% if billing_recommendation.tone == 'warning' %}bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300{% elif billing_recommendation.tone == 'critical' %}bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300{% elif billing_recommendation.tone == 'good' %}bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300{% else %}bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300{% endif %}">
-              {{ billing_recommendation.badge }}
-            </span>
-          {% endif %}
-        </div>
+<aside class="billing-panel billing-panel--aside">
+  <div class="billing-panel__head">
+    <div class="min-w-0">
+      <div class="billing-section-label">اقدام بعدی</div>
+      <h2 class="billing-section-title">{{ billing_recommendation.title|default:"در این لحظه چه کاری منطقی‌تر است؟" }}</h2>
+      <p class="billing-section-body">
+        {{ billing_recommendation.body|default:"این بخش فقط یک مسیر کوتاه و عملی را بر اساس وضعیت همین حساب پیشنهاد می‌دهد؛ نه تبلیغ، نه مقایسه شلوغ." }}
+      </p>
+    </div>
 
-        <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">
-          {{ billing_recommendation.title|default:"اقدام بعدی بر اساس وضعیت فعلی شما" }}
-        </h2>
-        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-          {{ billing_recommendation.body|default:"این بخش کوتاه‌ترین مسیر بعدی را بر اساس وضعیت فعلی شما نشان می‌دهد؛ چه ادامه استفاده باشد، چه تمدید، چه بررسی گزینه ارتقا یا پیگیری پرداخت." }}
-        </p>
+    {% if billing_recommendation.badge %}
+      <span class="billing-state-pill {% if billing_recommendation.tone == 'warning' %}billing-state-pill--warning{% elif billing_recommendation.tone == 'critical' %}billing-state-pill--danger{% elif billing_recommendation.tone == 'good' %}billing-state-pill--success{% endif %}">
+        {{ billing_recommendation.badge }}
+      </span>
+    {% endif %}
+  </div>
+
+  <div class="billing-note-card">
+    <div class="billing-note-card__label">جمع‌بندی کوتاه</div>
+    <div class="billing-note-card__title">
+      {{ billing_recommendation.summary|default:billing_recommendation.title|default:"مسیر بعدی از همین‌جا روشن می‌شود" }}
+    </div>
+
+    {% if billing_recommendation.helper_text %}
+      <p class="billing-note-card__body">{{ billing_recommendation.helper_text }}</p>
+    {% elif billing_recommendation.note %}
+      <p class="billing-note-card__body">{{ billing_recommendation.note }}</p>
+    {% endif %}
+
+    {% if billing_recommendation.items %}
+      <div class="billing-guidance-list">
+        {% for item in billing_recommendation.items %}
+          <div class="billing-guidance-list__item">{{ item }}</div>
+        {% endfor %}
       </div>
+    {% endif %}
+  </div>
 
-      <div class="rounded-[1.35rem] border border-slate-200/80 bg-white/88 p-4 dark:border-slate-700/70 dark:bg-slate-900/55">
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">راهنمای کوتاه</div>
-        <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">
-          {{ billing_recommendation.summary|default:billing_recommendation.title|default:"مسیر بعدی از همین‌جا روشن می‌شود" }}
-        </div>
-
-        {% if billing_recommendation.helper_text %}
-          <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ billing_recommendation.helper_text }}</p>
-        {% elif billing_recommendation.note %}
-          <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ billing_recommendation.note }}</p>
-        {% endif %}
-
-        {% if billing_recommendation.items %}
-          <div class="mt-3 space-y-2">
-            {% for item in billing_recommendation.items %}
-              <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/85 px-3 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/35 dark:text-slate-300">
-                {{ item }}
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
-      </div>
-
-      {% if billing_recommendation.primary_cta_label or billing_recommendation.secondary_cta_label %}
-        <div class="flex flex-col gap-2">
-          {% if billing_recommendation.primary_cta_label %}
-            <a href="{{ billing_recommendation.primary_cta_url|default:'#' }}" class="btn-primary w-full">
-              {{ billing_recommendation.primary_cta_label }}
-            </a>
-          {% endif %}
-          {% if billing_recommendation.secondary_cta_label %}
-            <a href="{{ billing_recommendation.secondary_cta_url|default:'#' }}" class="btn-secondary w-full">
-              {{ billing_recommendation.secondary_cta_label }}
-            </a>
-          {% endif %}
-        </div>
+  {% if billing_recommendation.primary_cta_label or billing_recommendation.secondary_cta_label %}
+    <div class="billing-cta-stack">
+      {% if billing_recommendation.primary_cta_label %}
+        <a href="{{ billing_recommendation.primary_cta_url|default:'#' }}" class="btn-primary w-full">
+          {{ billing_recommendation.primary_cta_label }}
+        </a>
+      {% endif %}
+      {% if billing_recommendation.secondary_cta_label %}
+        <a href="{{ billing_recommendation.secondary_cta_url|default:'#' }}" class="btn-secondary w-full">
+          {{ billing_recommendation.secondary_cta_label }}
+        </a>
       {% endif %}
     </div>
-  </section>
+  {% endif %}
 </aside>
