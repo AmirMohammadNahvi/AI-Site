@@ -1,10 +1,10 @@
 <section class="billing-panel">
   <div class="billing-panel__head">
     <div class="min-w-0 max-w-3xl">
-      <div class="billing-section-label">تاریخچه وضعیت</div>
-      <h2 class="billing-section-title">{{ payment_timeline_title|default:'رویدادهایی که برای این سفارش ثبت شده‌اند' }}</h2>
+      <div class="billing-section-label">تاریخچه ثبت‌شده</div>
+      <h2 class="billing-section-title">{{ payment_timeline_title|default:'اگر رویدادی برای این سفارش ثبت شده باشد، از اینجا خوانده می‌شود' }}</h2>
       <p class="billing-section-body">
-        {{ payment_timeline_intro|default:'اگر برای این سفارش رویداد ثبت شده باشد، در همین بخش نمایش داده می‌شود تا مسیر پرداخت و بررسی به‌صورت قابل پیگیری باقی بماند.' }}
+        {{ payment_timeline_intro|default:'این بخش فقط برای پیگیری جزئیات ثبت‌شده همین سفارش است و جایگزین نتیجه فعلی بالای صفحه نیست.' }}
       </p>
     </div>
   </div>
@@ -46,7 +46,7 @@
     <div class="billing-empty-card">
       <div class="billing-empty-card__title">هنوز رویداد جزئی‌تری ثبت نشده است</div>
       <p class="billing-empty-card__body">
-        {{ payment_timeline_empty_state|default:'اگر بعداً بررسی یا تاییدی برای این سفارش انجام شود، همین بخش می‌تواند تاریخچه به‌روزشده را نمایش دهد.' }}
+        {{ payment_timeline_empty_state|default:'اگر بعداً بررسی یا تاییدی برای این سفارش انجام شود، همین بخش تاریخچه به‌روزشده را نمایش می‌دهد. فعلاً نتیجه فعلی بالای صفحه مبنای تصمیم شماست.' }}
       </p>
     </div>
   {% endif %}

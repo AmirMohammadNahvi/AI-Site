@@ -2,8 +2,8 @@
   <section class="billing-panel billing-panel--muted">
     <div class="billing-panel__head">
       <div class="min-w-0 max-w-3xl">
-        <div class="billing-section-label">اقدام بعدی</div>
-        <h2 class="billing-section-title">{{ payment_actions_title|default:'بر اساس همین نتیجه، قدم بعدی چه باید باشد؟' }}</h2>
+        <div class="billing-section-label">قدم بعدی</div>
+        <h2 class="billing-section-title">{{ payment_actions_title|default:'بر اساس همین نتیجه، بهترین مسیر بعدی چیست؟' }}</h2>
         <p class="billing-section-body">
           {{ payment_actions_intro|default:'این بخش فقط مسیرهای ضروری را نگه می‌دارد تا تصمیم‌گیری بعد از نتیجه سفارش آرام‌تر و دقیق‌تر باشد.' }}
         </p>
@@ -16,10 +16,12 @@
           <div class="billing-action-list">
             {% for action in payment_next_actions %}
               <article class="billing-action-list__item">
+                <span class="billing-action-list__index">{{ forloop.counter }}</span>
+
                 <div class="min-w-0">
                   <div class="billing-action-list__title">
                     {% if status_key != 'success' and forloop.first %}
-                      برای اقدام دوباره، اول به مرکز اشتراک برگردید
+                      قبل از تکرار خرید، اول وضعیت حساب را ببینید
                     {% else %}
                       {{ action.title }}
                     {% endif %}
@@ -55,6 +57,7 @@
           </div>
         {% else %}
           <div class="billing-note-card">
+            <div class="billing-note-card__label">مسیر پیشنهادی</div>
             <div class="billing-note-card__title">
               {% if status_key == 'success' %}
                 ادامه کار از مرکز اشتراک یا جریان استفاده روزمره
@@ -82,8 +85,9 @@
       </div>
 
       <aside class="billing-note-card">
-        <div class="billing-note-card__label">راهنمای پیگیری</div>
+        <div class="billing-note-card__label">اگر نیاز به پیگیری دارید</div>
         <div class="billing-note-card__title">{{ payment_help_title|default:'برای پیگیری چه چیزهایی را آماده نگه دارید؟' }}</div>
+        <p class="billing-note-card__body">اگر لازم شد با پشتیبانی یا تیم پرداخت صحبت کنید، این چند مورد پیگیری را دقیق‌تر و آرام‌تر می‌کند.</p>
 
         {% if payment_help_items %}
           <div class="billing-guidance-list">

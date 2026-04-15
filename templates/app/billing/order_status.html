@@ -1,7 +1,7 @@
 {% extends 'app/layouts/app_shell.html' %}
 
 {% block title %}{{ payment_status_page_title|default:'وضعیت سفارش' }} | {{ site_settings.site_name_fa }}{% endblock %}
-{% block meta_description %}{{ payment_status_page_description|default:'نتیجه آخرین وضعیت سفارش و پرداخت شما، همراه با خلاصه سفارش، تاریخچه ثبت‌شده و مسیر اقدام بعدی.' }}{% endblock %}
+{% block meta_description %}{{ payment_status_page_description|default:'مرجع نهایی نتیجه همین سفارش، همراه با اقدام بعدی، خلاصه سفارش و تاریخچه ثبت‌شده.' }}{% endblock %}
 
 {% block app_content %}
   <div class="billing-stage billing-stage--status">
@@ -23,7 +23,7 @@
           </h1>
 
           <p class="billing-hero__lead">
-            {{ payment_status_page_intro|default:'این صفحه مرجع اصلی همین سفارش است و نتیجه را مستقل از پیام‌های موقت نشان می‌دهد. هر تغییری در پلن، سهمیه یا دسترسی فقط باید از وضعیت نهایی همین سفارش خوانده شود.' }}
+            {{ payment_status_page_intro|default:'این صفحه مرجع رسمی همین سفارش است و نتیجه را مستقل از پیام‌های موقت نشان می‌دهد. هر تغییری در پلن، سهمیه یا دسترسی فقط باید از وضعیت نهایی همین سفارش خوانده شود.' }}
           </p>
 
           <ol class="billing-journey" aria-label="مسیر پرداخت">
@@ -31,27 +31,39 @@
             <li class="billing-journey__step">مرور خرید</li>
             <li class="billing-journey__step is-current">وضعیت سفارش</li>
           </ol>
+
+          <div class="billing-chip-row">
+            {% if payment_status_short_label %}
+              <span class="billing-chip billing-chip--soft">وضعیت فعلی: {{ payment_status_short_label }}</span>
+            {% endif %}
+            {% if payment_order_plan_name %}
+              <span class="billing-chip billing-chip--soft">پلن سفارش: {{ payment_order_plan_name }}</span>
+            {% endif %}
+            {% if payment_order_context_label %}
+              <span class="billing-chip billing-chip--soft">{{ payment_order_context_label }}</span>
+            {% endif %}
+          </div>
         </div>
 
         <aside class="billing-hero__aside">
           <div class="billing-summary-card">
-            <div class="billing-summary-card__label">مرجع این صفحه</div>
+            <div class="billing-summary-card__label">جمع‌بندی همین سفارش</div>
             <div class="billing-summary-card__title">{{ payment_status_surface_title|default:'آخرین نتیجه ثبت‌شده برای همین سفارش' }}</div>
             <p class="billing-summary-card__body">
               {{ payment_status_surface_note|default:'بازگشت از درگاه یا پیام‌های موقت به‌تنهایی مبنای تغییر حساب نیست. همین صفحه باید نتیجه نهایی را روشن کند.' }}
             </p>
 
             <div class="billing-mini-list">
-              {% if payment_order_context_label %}
-                <div class="billing-mini-list__item">
-                  <span>مرجع سفارش</span>
-                  <strong>{{ payment_order_context_label }}</strong>
-                </div>
-              {% endif %}
               {% if payment_status_short_label %}
                 <div class="billing-mini-list__item">
                   <span>وضعیت فعلی</span>
                   <strong>{{ payment_status_short_label }}</strong>
+                </div>
+              {% endif %}
+              {% if payment_order_context_label %}
+                <div class="billing-mini-list__item">
+                  <span>مرجع سفارش</span>
+                  <strong>{{ payment_order_context_label }}</strong>
                 </div>
               {% endif %}
               {% if payment_order_plan_name %}

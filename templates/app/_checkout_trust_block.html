@@ -1,8 +1,8 @@
 <section class="billing-panel">
   <div class="billing-panel__head">
     <div class="min-w-0 max-w-3xl">
-      <div class="billing-section-label">پرداخت و پشتیبانی</div>
-      <h2 class="billing-section-title">{{ checkout_trust_title|default:'پیش از رفتن به پرداخت فقط همین چند نکته را نگه دارید' }}</h2>
+      <div class="billing-section-label">اعتماد و پیگیری</div>
+      <h2 class="billing-section-title">{{ checkout_trust_title|default:'ادامه پرداخت فقط وقتی معنا دارد که همین مرور برای شما روشن باشد' }}</h2>
       <p class="billing-section-body">
         {{ checkout_trust_intro|default:'مرجع مبلغ، نتیجه نهایی سفارش و مسیر پیگیری باید از همین صفحه و صفحه وضعیت سفارش خوانده شود؛ نه از برداشت‌های موقت در میانه فرایند.' }}
       </p>
@@ -12,7 +12,7 @@
   <div class="billing-support-grid">
     <section class="billing-note-card">
       <div class="billing-note-card__label">در مسیر بعدی چه می‌بینید</div>
-      <div class="billing-note-card__title">از اینجا به بعد فقط فرایند پرداخت همین سفارش دنبال می‌شود</div>
+      <div class="billing-note-card__title">از اینجا به بعد فقط پرداخت همین سفارش دنبال می‌شود</div>
       <div class="billing-guidance-list">
         {% for item in checkout_next_step_items %}
           <div class="billing-guidance-list__item">{{ item }}</div>
@@ -26,15 +26,15 @@
 
     <div class="billing-stack">
       <section class="billing-note-card">
-        <div class="billing-note-card__label">مرجع مبلغ و ثبت</div>
-        <div class="billing-note-card__title">{{ checkout_payment_method_label|default:'درگاه پرداخت' }}</div>
+        <div class="billing-note-card__label">مرجع مبلغ و سفارش</div>
+        <div class="billing-note-card__title">{{ checkout_payment_method_label|default:'همین مرور مبنای تطبیق مبلغ است' }}</div>
         <p class="billing-note-card__body">
           {{ checkout_trust_note|default:'پیش از ادامه، عنوان پلن و مبلغ را با همین صفحه تطبیق دهید. هر پرداختی که انجام می‌شود باید فقط برای همین سفارش باشد.' }}
         </p>
       </section>
 
       <section class="billing-note-card">
-        <div class="billing-note-card__label">اگر نیاز به توقف دارید</div>
+        <div class="billing-note-card__label">اگر چیزی ناهماهنگ است</div>
         <div class="billing-note-card__title">{{ checkout_support_title|default:'وقتی چیزی با انتظار شما هم‌خوان نیست، قبل از پرداخت مکث کنید' }}</div>
         <p class="billing-note-card__body">
           {{ checkout_support_note|default:'اگر عنوان پلن، مبلغ یا توضیح این صفحه با انتظار شما هم‌خوان نیست، موضوع را پیش از پرداخت با پشتیبانی در میان بگذارید.' }}

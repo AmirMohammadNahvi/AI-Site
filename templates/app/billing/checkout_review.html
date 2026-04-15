@@ -1,7 +1,7 @@
 {% extends 'app/layouts/app_shell.html' %}
 
 {% block title %}مرور خرید{% if checkout_plan.name %} {{ checkout_plan.name }}{% endif %} | {{ site_settings.site_name_fa }}{% endblock %}
-{% block meta_description %}مرور نهایی خرید پلن فارال‌یار پیش از انتقال به پرداخت؛ با توضیح روشن درباره مبلغ، تغییرات پس از تایید و مواردی که ثابت می‌مانند.{% endblock %}
+{% block meta_description %}مرور نهایی همین سفارش پیش از پرداخت؛ با توضیح روشن درباره مبلغ، دامنه تغییر و مرجع نتیجه نهایی.{% endblock %}
 
 {% block app_content %}
   <div class="billing-stage billing-stage--checkout">
@@ -19,11 +19,11 @@
           </div>
 
           <h1 class="billing-hero__title">
-            {{ checkout_page_title|default:'بررسی نهایی خرید پیش از پرداخت' }}
+            {{ checkout_page_title|default:'مرور نهایی این سفارش پیش از پرداخت' }}
           </h1>
 
           <p class="billing-hero__lead">
-            {{ checkout_page_intro|default:'این صفحه ادامه قیمت‌گذاری نیست؛ مرحله بررسی دقیق همین سفارش است. تا قبل از ثبت موفق و تایید نهایی، هیچ تغییری در پلن، سهمیه یا دسترسی اعمال نمی‌شود.' }}
+            {{ checkout_page_intro|default:'این صفحه ادامه قیمت‌گذاری نیست؛ مرحله بررسی دقیق همین سفارش است. تا قبل از ثبت موفق و تایید نهایی، هیچ تغییری در پلن، سهمیه یا دسترسی اعمال نمی‌شود و مرجع نتیجه فقط صفحه وضعیت سفارش خواهد بود.' }}
           </p>
 
           <ol class="billing-journey" aria-label="مسیر خرید">
@@ -41,8 +41,8 @@
 
         <aside class="billing-hero__aside">
           <div class="billing-summary-card">
-            <div class="billing-summary-card__label">مرحله فعلی</div>
-            <div class="billing-summary-card__title">{{ checkout_next_step_title|default:'پس از این مرحله وارد درگاه پرداخت می‌شوید' }}</div>
+            <div class="billing-summary-card__label">در این مرحله چه چیزی مبناست</div>
+            <div class="billing-summary-card__title">{{ checkout_next_step_title|default:'بعد از این مرور، وارد پرداخت همین سفارش می‌شوید' }}</div>
             <p class="billing-summary-card__body">
               {{ checkout_next_step_summary|default:'پس از ثبت پرداخت، نتیجه نهایی فقط در صفحه وضعیت سفارش مشخص می‌شود. تغییر پلن یا سهمیه قبل از آن نباید از این صفحه برداشت شود.' }}
             </p>
@@ -53,12 +53,12 @@
                 <strong>{{ checkout_amount }} {{ checkout_currency_label|default:'تومان' }}</strong>
               </div>
               <div class="billing-mini-list__item">
-                <span>مرجع بعدی</span>
-                <strong>صفحه وضعیت سفارش</strong>
+                <span>پس از تایید موفق</span>
+                <strong>{{ checkout_plan.name }}</strong>
               </div>
               <div class="billing-mini-list__item">
-                <span>وضعیت حساب تا قبل از نتیجه</span>
-                <strong>بدون تغییر</strong>
+                <span>مرجع بعدی</span>
+                <strong>صفحه وضعیت سفارش</strong>
               </div>
             </div>
           </div>
@@ -73,10 +73,10 @@
     <section class="billing-panel billing-panel--action">
       <div class="billing-action-shell">
         <div class="min-w-0 max-w-3xl">
-          <div class="billing-section-label">ادامه فرایند</div>
-          <h2 class="billing-section-title">{{ checkout_action_title|default:'اگر اطلاعات این صفحه درست است، ادامه دهید' }}</h2>
+          <div class="billing-section-label">ادامه امن</div>
+          <h2 class="billing-section-title">{{ checkout_action_title|default:'اگر همین مرور برای شما روشن و درست است، ادامه دهید' }}</h2>
           <p class="billing-section-body">
-            {{ checkout_action_body|default:'در مرحله بعد مبلغ برای پرداخت نمایش داده می‌شود و نتیجه نهایی پس از بازگشت از درگاه در صفحه وضعیت سفارش ثبت خواهد شد.' }}
+            {{ checkout_action_body|default:'در مرحله بعد فقط فرایند پرداخت همین سفارش دنبال می‌شود و نتیجه نهایی پس از بازگشت از درگاه در صفحه وضعیت سفارش ثبت خواهد شد.' }}
           </p>
           {% if checkout_activation_note %}
             <p class="billing-inline-meta">{{ checkout_activation_note }}</p>
@@ -88,7 +88,7 @@
             {{ checkout_primary_cta_label|default:'ادامه به پرداخت' }}
           </a>
           <a href="{{ checkout_secondary_cta_url|default:'#' }}" class="btn-secondary w-full">
-            {{ checkout_secondary_cta_label|default:'بازگشت' }}
+            {{ checkout_secondary_cta_label|default:'بازگشت به مرکز اشتراک' }}
           </a>
         </div>
       </div>

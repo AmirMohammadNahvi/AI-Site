@@ -80,10 +80,36 @@
           </div>
         </div>
 
-        <div class="billing-key-grid">
-          <div class="billing-key-item">
-            <span>اکنون روی حساب</span>
-            <strong>
+        <div class="billing-truth-grid billing-truth-grid--compact">
+          <article class="billing-truth-card">
+            <div class="billing-truth-card__label">برداشت درست از نتیجه</div>
+            <div class="billing-truth-card__value">
+              {% if status_key == 'success' %}
+                سفارش به نتیجه نهایی رسیده است
+              {% elif status_key == 'pending' %}
+                هنوز باید منتظر جمع‌بندی نهایی بمانید
+              {% elif status_key == 'failed' %}
+                این پرداخت نهایی قابل قبول نداشته است
+              {% else %}
+                این فرایند پیش از نتیجه موفق متوقف شده است
+              {% endif %}
+            </div>
+            <p class="billing-truth-card__body">
+              {% if status_key == 'success' %}
+                مرجع بعدی شما برای فهم اثر سفارش، مرکز اشتراک همین حساب است.
+              {% elif status_key == 'pending' %}
+                پیام بازگشت از درگاه هنوز جایگزین نتیجه نهایی این صفحه نیست.
+              {% elif status_key == 'failed' %}
+                برای هر اقدام تازه بهتر است مسیر خرید را دوباره و جداگانه شروع کنید.
+              {% else %}
+                اگر هنوز به همان پلن نیاز دارید، باید سفارش تازه‌ای را از مسیر رسمی شروع کنید.
+              {% endif %}
+            </p>
+          </article>
+
+          <article class="billing-truth-card">
+            <div class="billing-truth-card__label">اکنون روی حساب</div>
+            <div class="billing-truth-card__value">
               {% if status_key == 'success' %}
                 نتیجه این سفارش مبنای بررسی در مرکز اشتراک است
               {% elif status_key == 'pending' %}
@@ -91,8 +117,8 @@
               {% else %}
                 این سفارش تغییری روی حساب اعمال نکرده است
               {% endif %}
-            </strong>
-            <small>
+            </div>
+            <p class="billing-truth-card__body">
               {% if status_key == 'success' %}
                 اگر تغییری انتظار دارید، باید در مرکز اشتراک همین حساب دیده شود.
               {% elif status_key == 'pending' %}
@@ -100,32 +126,34 @@
               {% else %}
                 برای تغییر حساب باید سفارش موفق دیگری ثبت و تایید شود.
               {% endif %}
-            </small>
-          </div>
+            </p>
+          </article>
 
-          <div class="billing-key-item">
-            <span>برداشت درست از این وضعیت</span>
-            <strong>
+          <article class="billing-truth-card">
+            <div class="billing-truth-card__label">قدم بعدی</div>
+            <div class="billing-truth-card__value">
               {% if status_key == 'success' %}
-                سفارش به نتیجه نهایی رسیده است
+                اثر سفارش را از مرکز اشتراک ببینید
               {% elif status_key == 'pending' %}
-                هنوز باید منتظر جمع‌بندی نهایی بمانید
+                فعلاً منتظر نتیجه نهایی بمانید
               {% elif status_key == 'failed' %}
-                لازم است مسیر خرید را از ابتدا دوباره شروع کنید
+                پیش از تلاش دوباره، وضعیت حساب را بررسی کنید
               {% else %}
-                این فرایند متوقف شده و ادامه پیدا نکرده است
+                اگر هنوز نیاز دارید، سفارش تازه‌ای را جداگانه شروع کنید
               {% endif %}
-            </strong>
-            <small>
+            </div>
+            <p class="billing-truth-card__body">
               {% if status_key == 'success' %}
-                مرجع بعدی شما برای فهم اثر سفارش، مرکز اشتراک است.
+                نتیجه نهایی ثبت شده و مسیر بعدی شما از همین حساب ادامه پیدا می‌کند.
               {% elif status_key == 'pending' %}
                 عجله برای پرداخت دوباره معمولاً تصمیم درستی نیست مگر این‌که راهنمای مشخصی دریافت کنید.
+              {% elif status_key == 'failed' %}
+                بهتر است ابتدا وضعیت فعلی حساب را ببینید و بعد در صورت نیاز سفارش تازه‌ای آغاز کنید.
               {% else %}
-                پیام‌های موقت یا بازگشت از درگاه نباید جایگزین نتیجه نهایی این صفحه شوند.
+                این سفارش متوقف شده و برای ادامه باید از مسیر رسمی خرید دوباره شروع شود.
               {% endif %}
-            </small>
-          </div>
+            </p>
+          </article>
         </div>
       </div>
 
@@ -154,10 +182,22 @@
               این فرایند متوقف شده و برای ادامه باید از مسیر رسمی خرید دوباره شروع شود.
             {% endif %}
           </p>
+
+          <div class="billing-cta-row">
+            <a href="{% url 'ai_platform:billing' %}" class="btn-primary w-full">
+              {% if status_key == 'success' %}
+                مرکز اشتراک
+              {% elif status_key == 'pending' %}
+                بازگشت به مرکز اشتراک
+              {% else %}
+                بررسی وضعیت حساب
+              {% endif %}
+            </a>
+          </div>
         </section>
 
         <section class="billing-note-card">
-          <div class="billing-note-card__label">پشتیبانی</div>
+          <div class="billing-note-card__label">پشتیبانی و پیگیری</div>
           <div class="billing-note-card__title">{{ payment_support_title|default:'اگر نیاز به پیگیری دارید' }}</div>
           <p class="billing-note-card__body">
             {{ payment_support_note|default:'برای بررسی دقیق‌تر، شناسه سفارش و نتیجه‌ای را که در همین صفحه می‌بینید برای پشتیبانی ارسال کنید تا پیگیری روی همان سفارش انجام شود.' }}

@@ -1,10 +1,10 @@
 <section class="billing-panel billing-panel--muted">
   <div class="billing-panel__head">
     <div class="min-w-0 max-w-3xl">
-      <div class="billing-section-label">تغییر دسترسی</div>
-      <h2 class="billing-section-title">{{ checkout_entitlement_title|default:'بعد از تایید موفق چه چیزی تغییر می‌کند و چه چیزی ثابت می‌ماند؟' }}</h2>
+      <div class="billing-section-label">مرز این سفارش</div>
+      <h2 class="billing-section-title">{{ checkout_entitlement_title|default:'این خرید چه چیزی را تغییر می‌دهد و چه چیزی را تغییر نمی‌دهد؟' }}</h2>
       <p class="billing-section-body">
-        {{ checkout_entitlement_intro|default:'این بخش فقط تفاوت عملی این سفارش را نگه می‌دارد تا بدانید بعد از نتیجه نهایی چه چیزی فعال می‌شود و چه چیزهایی همچنان خارج از دامنه این خرید می‌مانند.' }}
+        {{ checkout_entitlement_intro|default:'این بخش فقط مرز عملی همین سفارش را روشن می‌کند تا بدانید بعد از نتیجه نهایی چه چیزی فعال می‌شود و چه چیزهایی همچنان خارج از دامنه این خرید می‌مانند.' }}
       </p>
     </div>
   </div>
@@ -12,8 +12,8 @@
   <div class="billing-split-grid">
     <section class="billing-tone-card billing-tone-card--success">
       <div class="billing-tone-card__head">
-        {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label='بعد از تایید فعال می‌شود' %}
-        <div class="billing-tone-card__title">آنچه این سفارش به حساب اضافه می‌کند</div>
+        {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label='پس از نتیجه موفق' %}
+        <div class="billing-tone-card__title">آنچه با همین سفارش روی حساب فعال می‌شود</div>
       </div>
 
       {% if checkout_activation_note %}
@@ -33,8 +33,8 @@
 
     <section class="billing-tone-card">
       <div class="billing-tone-card__head">
-        {% include 'app/_entitlement_status_badge.html' with entitlement_state='limited' entitlement_tone='limited' entitlement_label='با این خرید تغییر نمی‌کند' %}
-        <div class="billing-tone-card__title">آنچه همچنان خارج از دامنه این سفارش است</div>
+        {% include 'app/_entitlement_status_badge.html' with entitlement_state='limited' entitlement_tone='limited' entitlement_label='خارج از دامنه این سفارش' %}
+        <div class="billing-tone-card__title">آنچه با این خرید همچنان ثابت می‌ماند</div>
       </div>
 
       <p class="billing-tone-card__body">این موارد با ثبت همین خرید به‌تنهایی تغییر نمی‌کنند مگر این‌که در جای دیگری صریحاً اعلام شده باشد.</p>

@@ -463,48 +463,54 @@ table.responsive-table {
 
 .billing-stage {
   display: grid;
-  gap: 1rem;
+  gap: clamp(1rem, 2vw, 1.3rem);
 }
 
 .billing-hero,
 .billing-panel,
 .billing-status-shell {
-  border: 1px solid rgba(208, 219, 232, 0.9);
+  border: 1px solid rgba(203, 213, 225, 0.86);
   border-radius: 2rem;
   box-shadow:
-    0 24px 64px rgba(15, 23, 42, 0.06),
+    0 18px 48px rgba(15, 23, 42, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.78);
 }
 
 .billing-hero {
   overflow: hidden;
-  padding: clamp(1.2rem, 2.4vw, 1.8rem);
+  padding: clamp(1.25rem, 2.6vw, 1.9rem);
   background:
-    radial-gradient(circle at top right, rgba(40, 171, 136, 0.13), transparent 22rem),
-    radial-gradient(circle at top left, rgba(1, 51, 102, 0.08), transparent 20rem),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(247, 250, 253, 0.95));
+    radial-gradient(circle at top right, rgba(15, 118, 110, 0.13), transparent 22rem),
+    radial-gradient(circle at bottom left, rgba(30, 64, 175, 0.06), transparent 18rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(246, 249, 252, 0.95));
 }
 
 .billing-hero--checkout {
   background:
-    radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 22rem),
-    radial-gradient(circle at bottom left, rgba(1, 51, 102, 0.08), transparent 18rem),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(245, 249, 252, 0.95));
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.13), transparent 22rem),
+    radial-gradient(circle at bottom left, rgba(15, 23, 42, 0.06), transparent 18rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(244, 248, 252, 0.95));
 }
 
 .billing-hero--status {
   background:
-    radial-gradient(circle at top right, rgba(51, 65, 85, 0.1), transparent 22rem),
-    radial-gradient(circle at bottom left, rgba(40, 171, 136, 0.08), transparent 18rem),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(247, 250, 253, 0.95));
+    radial-gradient(circle at top right, rgba(51, 65, 85, 0.13), transparent 22rem),
+    radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.08), transparent 18rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(246, 249, 252, 0.95));
 }
 
 .billing-hero__grid,
+.billing-grid--anchor,
 .billing-review-grid,
 .billing-support-grid,
 .billing-split-grid,
 .billing-status-shell__grid,
 .billing-grid--support {
+  display: grid;
+  gap: 1rem;
+}
+
+.billing-hero__aside {
   display: grid;
   gap: 1rem;
 }
@@ -661,6 +667,7 @@ table.responsive-table {
 .billing-usage-shell,
 .billing-empty-card,
 .billing-tone-card,
+.billing-truth-card,
 .billing-action-list__item,
 .billing-activity-row,
 .billing-timeline__item {
@@ -717,7 +724,7 @@ table.responsive-table {
 
 .billing-section-title {
   margin-top: 0.35rem;
-  font-size: 1.3rem;
+  font-size: 1.32rem;
   line-height: 1.35;
   font-weight: 900;
 }
@@ -734,6 +741,12 @@ table.responsive-table {
 .billing-panel--action {
   background:
     linear-gradient(180deg, rgba(249, 251, 252, 0.98), rgba(243, 247, 250, 0.95));
+}
+
+.billing-panel--anchor {
+  background:
+    radial-gradient(circle at top right, rgba(15, 118, 110, 0.08), transparent 18rem),
+    linear-gradient(180deg, rgba(248, 252, 251, 0.99), rgba(244, 248, 247, 0.95));
 }
 
 .billing-panel__head {
@@ -807,10 +820,20 @@ table.responsive-table {
   gap: 0.75rem;
 }
 
+.billing-truth-grid {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
 .billing-key-item {
   border-radius: 1.35rem;
   border: 1px solid rgba(208, 219, 232, 0.86);
   background: rgba(255, 255, 255, 0.88);
+  padding: 0.95rem 1rem;
+}
+
+.billing-truth-card {
   padding: 0.95rem 1rem;
 }
 
@@ -821,6 +844,27 @@ table.responsive-table {
   line-height: 1.65;
   font-weight: 900;
   color: rgb(15 23 42);
+}
+
+.billing-truth-card__label {
+  font-size: 0.76rem;
+  font-weight: 900;
+  color: rgb(100 116 139);
+}
+
+.billing-truth-card__value {
+  margin-top: 0.38rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.billing-truth-card__body {
+  margin-top: 0.38rem;
+  font-size: 0.84rem;
+  line-height: 1.85;
+  color: rgb(100 116 139);
 }
 
 .billing-key-item small,
@@ -1023,10 +1067,23 @@ table.responsive-table {
 }
 
 .billing-action-list__item {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 0.85rem;
-  justify-content: space-between;
+  align-items: start;
+}
+
+.billing-action-list__index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(191, 219, 254, 0.78);
+  background: rgba(239, 246, 255, 0.92);
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: rgb(30 64 175);
 }
 
 .billing-action-list__body {
@@ -1116,6 +1173,7 @@ table.responsive-table {
 }
 
 .billing-status-shell[data-tone="canceled"] {
+  border-color: rgba(148, 163, 184, 0.34);
   background:
     radial-gradient(circle at top right, rgba(100, 116, 139, 0.1), transparent 20rem),
     linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(243, 246, 249, 0.95));
@@ -1149,6 +1207,10 @@ table.responsive-table {
 
 .billing-status-shell[data-tone="failed"] .billing-status-shell__icon {
   color: rgb(190 24 93);
+}
+
+.billing-status-shell[data-tone="canceled"] .billing-status-shell__icon {
+  color: rgb(71 85 105);
 }
 
 .billing-timeline__item {
@@ -1193,6 +1255,7 @@ table.responsive-table {
   }
 
   .billing-key-grid,
+  .billing-truth-grid,
   .billing-key-grid--compact {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1203,8 +1266,7 @@ table.responsive-table {
   }
 
   .billing-action-list__item {
-    flex-direction: row;
-    align-items: start;
+    grid-template-columns: auto minmax(0, 1fr) auto;
   }
 
   .billing-action-list__item .btn-primary,
@@ -1220,6 +1282,7 @@ table.responsive-table {
     align-items: start;
   }
 
+  .billing-grid--anchor,
   .billing-grid--support,
   .billing-support-grid,
   .billing-split-grid,
@@ -1240,7 +1303,15 @@ table.responsive-table {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .billing-truth-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .billing-key-grid--compact {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .billing-truth-grid--compact {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -1271,6 +1342,15 @@ table.responsive-table {
 
   .billing-activity-row__side {
     min-width: 0;
+  }
+
+  .billing-action-list__item {
+    grid-template-columns: 1fr;
+  }
+
+  .billing-action-list__index {
+    width: 1.85rem;
+    height: 1.85rem;
   }
 
   .billing-journey {
@@ -1307,6 +1387,12 @@ table.responsive-table {
     linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.72));
 }
 
+.dark .billing-panel--anchor {
+  background:
+    radial-gradient(circle at top right, rgba(16, 185, 129, 0.12), transparent 18rem),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.78));
+}
+
 .dark .billing-hero--status,
 .dark .billing-panel,
 .dark .billing-panel--muted,
@@ -1324,6 +1410,7 @@ table.responsive-table {
 .dark .billing-usage-shell,
 .dark .billing-empty-card,
 .dark .billing-tone-card,
+.dark .billing-truth-card,
 .dark .billing-action-list__item,
 .dark .billing-activity-row,
 .dark .billing-timeline__item,
@@ -1387,6 +1474,7 @@ table.responsive-table {
 .dark .billing-emphasis-amount strong,
 .dark .billing-proof-card__amount,
 .dark .billing-key-item strong,
+.dark .billing-truth-card__value,
 .dark .billing-mini-list__item strong,
 .dark .billing-proof-list__item strong,
 .dark .billing-usage-shell__metric strong,
@@ -1407,6 +1495,7 @@ table.responsive-table {
 .dark .billing-empty-card__body,
 .dark .billing-inline-note,
 .dark .billing-tone-card__body,
+.dark .billing-truth-card__body,
 .dark .billing-action-list__body,
 .dark .billing-guidance-list__item {
   color: rgb(203 213 225);
@@ -1419,6 +1508,7 @@ table.responsive-table {
 .dark .billing-proof-card__label,
 .dark .billing-mini-list__item span,
 .dark .billing-key-item span,
+.dark .billing-truth-card__label,
 .dark .billing-inline-meta,
 .dark .billing-caption,
 .dark .billing-emphasis-amount span,
@@ -1445,6 +1535,12 @@ table.responsive-table {
   border-color: rgba(245, 158, 11, 0.26);
   background: rgba(146, 64, 14, 0.22);
   color: rgb(253 230 138);
+}
+
+.dark .billing-action-list__index {
+  border-color: rgba(59, 130, 246, 0.3);
+  background: rgba(30, 41, 59, 0.78);
+  color: rgb(191 219 254);
 }
 
 /* Stage 8: assistants, models, memory */

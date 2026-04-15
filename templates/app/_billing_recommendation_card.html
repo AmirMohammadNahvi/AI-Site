@@ -4,7 +4,7 @@
       <div class="billing-section-label">اقدام بعدی</div>
       <h2 class="billing-section-title">{{ billing_recommendation.title|default:"در این لحظه چه کاری منطقی‌تر است؟" }}</h2>
       <p class="billing-section-body">
-        {{ billing_recommendation.body|default:"این بخش فقط یک مسیر کوتاه و عملی را بر اساس وضعیت همین حساب پیشنهاد می‌دهد؛ نه تبلیغ، نه مقایسه شلوغ." }}
+        {{ billing_recommendation.body|default:"این بخش فقط یک پیشنهاد کوتاه و عملی بر اساس وضعیت همین حساب می‌دهد؛ نه تبلیغ، نه مقایسه شلوغ، نه فشار برای تصمیم عجولانه." }}
       </p>
     </div>
 
@@ -16,7 +16,7 @@
   </div>
 
   <div class="billing-note-card">
-    <div class="billing-note-card__label">جمع‌بندی کوتاه</div>
+    <div class="billing-note-card__label">جمع‌بندی این لحظه</div>
     <div class="billing-note-card__title">
       {{ billing_recommendation.summary|default:billing_recommendation.title|default:"مسیر بعدی از همین‌جا روشن می‌شود" }}
     </div>
@@ -25,16 +25,18 @@
       <p class="billing-note-card__body">{{ billing_recommendation.helper_text }}</p>
     {% elif billing_recommendation.note %}
       <p class="billing-note-card__body">{{ billing_recommendation.note }}</p>
-    {% endif %}
-
-    {% if billing_recommendation.items %}
-      <div class="billing-guidance-list">
-        {% for item in billing_recommendation.items %}
-          <div class="billing-guidance-list__item">{{ item }}</div>
-        {% endfor %}
-      </div>
+    {% else %}
+      <p class="billing-note-card__body">این پیشنهاد فقط برای آرام‌تر شدن تصمیم بعدی است و جای مرجع‌های اصلی حساب را نمی‌گیرد.</p>
     {% endif %}
   </div>
+
+  {% if billing_recommendation.items %}
+    <div class="billing-guidance-list">
+      {% for item in billing_recommendation.items %}
+        <div class="billing-guidance-list__item">{{ item }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
 
   {% if billing_recommendation.primary_cta_label or billing_recommendation.secondary_cta_label %}
     <div class="billing-cta-stack">

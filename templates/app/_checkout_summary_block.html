@@ -1,17 +1,24 @@
 <section class="billing-panel billing-panel--review">
+  <div class="billing-panel__head">
+    <div class="min-w-0 max-w-3xl">
+      <div class="billing-section-label">مرور دقیق سفارش</div>
+      <h2 class="billing-section-title">{{ checkout_summary_title|default:'پیش از پرداخت، فقط همین سفارش را با دقت مرور کنید' }}</h2>
+      <p class="billing-section-body">
+        {{ checkout_summary_intro|default:'در این بخش باید روشن باشد چه چیزی الان فعال است، این سفارش بعد از تایید چه اثری می‌گذارد و تا قبل از وضعیت نهایی چه چیزی ثابت می‌ماند.' }}
+      </p>
+    </div>
+  </div>
+
   <div class="billing-review-grid">
     <div class="min-w-0">
-      <div class="billing-section-label">خلاصه سفارش</div>
-      <h2 class="billing-section-title">{{ checkout_summary_title|default:'سفارشی که در حال بررسی آن هستید' }}</h2>
-
       <div class="billing-focus-card billing-focus-card--review">
         <div class="billing-focus-card__top">
           <div class="min-w-0">
             <div class="billing-focus-card__label">سفارش در حال بررسی</div>
             <h3 class="billing-focus-card__title">{{ checkout_plan.name }}</h3>
-            {% if checkout_plan.fit_statement %}
-              <p class="billing-focus-card__body">{{ checkout_plan.fit_statement }}</p>
-            {% endif %}
+            <p class="billing-focus-card__body">
+              {{ checkout_plan.fit_statement|default:'این بخش فقط برای مرور نهایی همین سفارش است و هنوز چیزی را روی حساب تغییر نمی‌دهد.' }}
+            </p>
           </div>
 
           {% if checkout_plan.snapshot_label %}
@@ -19,24 +26,24 @@
           {% endif %}
         </div>
 
-        <div class="billing-key-grid">
-          <div class="billing-key-item">
-            <span>اکنون فعال</span>
-            <strong>{{ checkout_current_plan_label|default:'بدون پلن فعال' }}</strong>
-            <small>وضعیت حساب تا قبل از نتیجه نهایی همین سفارش همین مقدار باقی می‌ماند.</small>
-          </div>
+        <div class="billing-truth-grid billing-truth-grid--compact">
+          <article class="billing-truth-card">
+            <div class="billing-truth-card__label">اکنون روی حساب</div>
+            <div class="billing-truth-card__value">{{ checkout_current_plan_label|default:'بدون پلن فعال' }}</div>
+            <p class="billing-truth-card__body">تا قبل از ثبت نتیجه نهایی همین سفارش، وضعیت حساب همین مقدار باقی می‌ماند.</p>
+          </article>
 
-          <div class="billing-key-item billing-key-item--emphasis">
-            <span>پس از تایید موفق</span>
-            <strong>{{ checkout_plan.name }}</strong>
-            <small>فقط نتیجه نهایی همین سفارش می‌تواند مبنای تغییر پلن و سهمیه باشد.</small>
-          </div>
+          <article class="billing-truth-card">
+            <div class="billing-truth-card__label">پس از نتیجه موفق</div>
+            <div class="billing-truth-card__value">{{ checkout_plan.name }}</div>
+            <p class="billing-truth-card__body">فقط نتیجه نهایی همین سفارش می‌تواند مبنای تغییر پلن و سهمیه باشد.</p>
+          </article>
 
-          <div class="billing-key-item">
-            <span>تا قبل از صفحه وضعیت</span>
-            <strong>تغییری اعمال نمی‌شود</strong>
-            <small>بازگشت از درگاه به‌تنهایی به معنی فعال شدن پلن نیست.</small>
-          </div>
+          <article class="billing-truth-card">
+            <div class="billing-truth-card__label">تا قبل از وضعیت سفارش</div>
+            <div class="billing-truth-card__value">تغییری اعمال نمی‌شود</div>
+            <p class="billing-truth-card__body">بازگشت از درگاه یا پیام موقت به‌تنهایی به معنی فعال شدن پلن نیست.</p>
+          </article>
         </div>
 
         {% if checkout_plan.summary %}
@@ -46,12 +53,15 @@
         {% endif %}
 
         {% if checkout_plan.snapshot_items %}
-          <div class="billing-key-grid billing-key-grid--compact">
+          <div class="billing-truth-grid billing-truth-grid--compact">
             {% for item in checkout_plan.snapshot_items %}
-              <div class="billing-key-item">
-                <span>{{ item.label }}</span>
-                <strong>{{ item.value }}</strong>
-              </div>
+              <article class="billing-truth-card">
+                <div class="billing-truth-card__label">{{ item.label }}</div>
+                <div class="billing-truth-card__value">{{ item.value }}</div>
+                {% if item.note %}
+                  <p class="billing-truth-card__body">{{ item.note }}</p>
+                {% endif %}
+              </article>
             {% endfor %}
           </div>
         {% endif %}
@@ -68,7 +78,7 @@
 
     <aside class="min-w-0">
       <div class="billing-proof-card billing-proof-card--checkout">
-        <div class="billing-proof-card__label">مبلغ این سفارش</div>
+        <div class="billing-proof-card__label">مبلغ قابل پرداخت</div>
         <div class="billing-proof-card__amount">{{ checkout_amount }}</div>
         <div class="billing-proof-card__currency">{{ checkout_currency_label|default:'تومان' }}</div>
         <p class="billing-proof-card__body">{{ checkout_period_label|default:'برای همین دوره‌ای که در این صفحه مرور می‌کنید' }}</p>
@@ -76,6 +86,21 @@
         {% if checkout_amount_note %}
           <div class="billing-inline-note">{{ checkout_amount_note }}</div>
         {% endif %}
+
+        <div class="billing-proof-list">
+          <div class="billing-proof-list__item">
+            <span>پلن پس از تایید</span>
+            <strong>{{ checkout_plan.name }}</strong>
+          </div>
+          <div class="billing-proof-list__item">
+            <span>مرجع بعدی</span>
+            <strong>صفحه وضعیت سفارش</strong>
+          </div>
+          <div class="billing-proof-list__item">
+            <span>تا قبل از نتیجه</span>
+            <strong>بدون تغییر در حساب</strong>
+          </div>
+        </div>
 
         {% if checkout_warning_note %}
           <div class="billing-status-note billing-status-note--warning">{{ checkout_warning_note }}</div>

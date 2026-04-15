@@ -1,7 +1,7 @@
 <section class="billing-panel billing-panel--anchor">
   <div class="billing-panel__head">
     <div class="min-w-0">
-      <div class="billing-section-label">پلن فعال</div>
+      <div class="billing-section-label">آنچه اکنون فعال است</div>
       <h2 class="billing-section-title">
         {% if current_plan.title %}
           {{ current_plan.title }}
@@ -15,7 +15,7 @@
         {% if current_plan.description %}
           {{ current_plan.description }}
         {% elif current_plan.name %}
-          {{ billing_current_plan_intro|default:"این کارت باید مرجع اصلی شما برای فهم وضعیت واقعی پلن، زمان پایان اعتبار، مرجع سفارش و اقدام بعدی باشد." }}
+          {{ billing_current_plan_intro|default:"این کارت باید مرجع اصلی شما برای فهم وضعیت واقعی پلن، زمان اعتبار، آخرین مرجع موثر و اقدام بعدی روی همین حساب باشد." }}
         {% else %}
           {{ billing_current_plan_empty_body|default:"تا وقتی پلن فعالی برای این حساب ثبت نشده باشد، همین بخش روشن می‌گوید چیزی فعال نیست و مسیر بعدی باید از همین‌جا شروع شود." }}
         {% endif %}
@@ -33,16 +33,16 @@
     <div class="billing-focus-card">
       <div class="billing-focus-card__top">
         <div class="min-w-0">
-          <div class="billing-focus-card__label">اکنون روی این حساب فعال است</div>
+          <div class="billing-focus-card__label">پلنی که اکنون مبنای دسترسی و سهمیه است</div>
           <h3 class="billing-focus-card__title">{{ current_plan.name }}</h3>
-          {% if current_plan.summary %}
-            <p class="billing-focus-card__body">{{ current_plan.summary }}</p>
-          {% endif %}
+          <p class="billing-focus-card__body">
+            {{ current_plan.summary|default:"همین پلن باید مرجع خواندن دسترسی و سهمیه فعلی این حساب باشد." }}
+          </p>
         </div>
 
         {% if current_plan.price_label %}
           <div class="billing-emphasis-amount">
-            <span>مبنای این پلن</span>
+            <span>مرجع ارزش این پلن</span>
             <strong>{{ current_plan.price_label }}</strong>
             {% if current_plan.cycle_label %}
               <small>{{ current_plan.cycle_label }}</small>
@@ -51,40 +51,48 @@
         {% endif %}
       </div>
 
-      <div class="billing-key-grid">
-        <div class="billing-key-item">
-          <span>از چه زمانی فعال است</span>
-          <strong>{{ current_plan.started_at_label|default:"ثبت نشده" }}</strong>
-          {% if current_plan.started_at_note %}
-            <small>{{ current_plan.started_at_note }}</small>
-          {% endif %}
-        </div>
+      <div class="billing-chip-row billing-chip-row--compact">
+        {% if current_plan.started_at_label %}
+          <span class="billing-chip billing-chip--soft">شروع اعتبار: {{ current_plan.started_at_label }}</span>
+        {% endif %}
+        {% if current_plan.cycle_label %}
+          <span class="billing-chip billing-chip--soft">{{ current_plan.cycle_label }}</span>
+        {% endif %}
+        {% if current_plan.order_reference %}
+          <span class="billing-chip billing-chip--soft">مرجع موثر: {{ current_plan.order_reference }}</span>
+        {% endif %}
+      </div>
 
-        <div class="billing-key-item">
-          <span>پایان اعتبار فعلی</span>
-          <strong>{{ current_plan.expires_at_label|default:current_plan.renews_at_label|default:"ثبت نشده" }}</strong>
-          {% if current_plan.expires_at_note %}
-            <small>{{ current_plan.expires_at_note }}</small>
-          {% elif current_plan.renews_at_note %}
-            <small>{{ current_plan.renews_at_note }}</small>
-          {% endif %}
-        </div>
+      <div class="billing-truth-grid">
+        <article class="billing-truth-card">
+          <div class="billing-truth-card__label">اکنون روی حساب</div>
+          <div class="billing-truth-card__value">{{ current_plan.status_label|default:"فعال" }}</div>
+          <p class="billing-truth-card__body">این حساب هم‌اکنون با پلن {{ current_plan.name }} خوانده می‌شود.</p>
+        </article>
 
-        <div class="billing-key-item">
-          <span>مرجع آخرین سفارش موثر</span>
-          <strong>{{ current_plan.order_reference|default:current_plan.order_label|default:"در دسترس نیست" }}</strong>
-          {% if current_plan.invoice_note %}
-            <small>{{ current_plan.invoice_note }}</small>
-          {% endif %}
-        </div>
+        <article class="billing-truth-card">
+          <div class="billing-truth-card__label">اعتبار فعلی</div>
+          <div class="billing-truth-card__value">{{ current_plan.expires_at_label|default:current_plan.renews_at_label|default:"ثبت نشده" }}</div>
+          <p class="billing-truth-card__body">
+            {{ current_plan.expires_at_note|default:current_plan.renews_at_note|default:"اگر سفارش تازه‌ای ثبت نشود، همین مرجع مبنای پایان یا ادامه پلن است." }}
+          </p>
+        </article>
 
-        <div class="billing-key-item">
-          <span>اگر بخواهید کاری انجام دهید</span>
-          <strong>{{ current_plan.renewal_label|default:current_plan.next_action_label|default:"نیازمند بررسی" }}</strong>
-          {% if current_plan.renewal_note %}
-            <small>{{ current_plan.renewal_note }}</small>
-          {% endif %}
-        </div>
+        <article class="billing-truth-card">
+          <div class="billing-truth-card__label">آخرین سفارش موثر</div>
+          <div class="billing-truth-card__value">{{ current_plan.order_reference|default:current_plan.order_label|default:"در دسترس نیست" }}</div>
+          <p class="billing-truth-card__body">
+            {{ current_plan.invoice_note|default:"اگر تغییری روی پلن یا سهمیه رخ داده باشد، مرجع آن باید همین سفارش موثر باشد." }}
+          </p>
+        </article>
+
+        <article class="billing-truth-card">
+          <div class="billing-truth-card__label">اگر کاری لازم باشد</div>
+          <div class="billing-truth-card__value">{{ current_plan.renewal_label|default:current_plan.next_action_label|default:"نیازمند بررسی" }}</div>
+          <p class="billing-truth-card__body">
+            {{ current_plan.renewal_note|default:"اگر بخواهید تغییری بدهید، از مسیر رسمی خرید یا تمدید اقدام می‌شود." }}
+          </p>
+        </article>
       </div>
     </div>
 
@@ -114,6 +122,11 @@
       <p class="billing-empty-card__body">
         {{ billing_current_plan_empty_note|default:"وقتی اشتراک فعال یا سفارش تاییدشده‌ای برای این حساب ثبت شود، جزئیات آن از همین کارت قابل مشاهده خواهد بود." }}
       </p>
+
+      <div class="billing-guidance-list">
+        <div class="billing-guidance-list__item">تا قبل از سفارش موفق، سهمیه یا دسترسی تازه‌ای برای این حساب ثبت نمی‌شود.</div>
+        <div class="billing-guidance-list__item">وقتی خرید نهایی شود، همین کارت پلن فعال، زمان اعتبار و مرجع سفارش را نشان می‌دهد.</div>
+      </div>
 
       {% if current_plan.primary_cta_label or current_plan.secondary_cta_label %}
         <div class="billing-cta-row">

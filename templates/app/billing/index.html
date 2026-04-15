@@ -1,7 +1,7 @@
 {% extends 'app/layouts/app_shell.html' %}
 
-{% block title %}{{ billing_page_title|default:"اشتراک و پرداخت" }} | {{ site_settings.site_name_fa }}{% endblock %}
-{% block meta_description %}{{ billing_page_description|default:"مرور پلن فعال، مصرف سهمیه، تاریخچه سفارش‌ها و اقدام بعدی در بخش مدیریت اشتراک FaralYar." }}{% endblock %}
+{% block title %}{{ billing_page_title|default:"مرکز اشتراک" }} | {{ site_settings.site_name_fa }}{% endblock %}
+{% block meta_description %}{{ billing_page_description|default:"مرجع زنده پلن فعال، مصرف سهمیه، سفارش‌های اخیر و اقدام بعدی برای همین حساب." }}{% endblock %}
 
 {% block app_content %}
   <div class="billing-stage billing-stage--center">
@@ -19,11 +19,11 @@
           </div>
 
           <h1 class="billing-hero__title">
-            {{ billing_page_title|default:"اشتراک و پرداخت" }}
+            {{ billing_page_title|default:"مرکز اشتراک این حساب" }}
           </h1>
 
           <p class="billing-hero__lead">
-            {{ billing_page_intro|default:"این بخش برای مدیریت وضعیت واقعی همین حساب است؛ نه برای مقایسه بازاری پلن‌ها. از همین‌جا می‌توانید ببینید چه چیزی الان فعال است، چه چیزی تغییر کرده، چه چیزی در انتظار نتیجه است و اگر لازم باشد قدم بعدی چه باید باشد." }}
+            {{ billing_page_intro|default:"این صفحه برای اداره وضعیت واقعی همین حساب است؛ نه ادامه لحن قیمت‌گذاری. از همین‌جا باید روشن باشد اکنون چه چیزی فعال است، کدام سفارش آخرین مرجع معتبر بوده، چه چیزی در انتظار نتیجه مانده و اگر لازم باشد قدم بعدی چه باید باشد." }}
           </p>
 
           <ol class="billing-journey" aria-label="پیوستگی مسیر پرداخت">
@@ -35,26 +35,28 @@
           <div class="billing-chip-row">
             {% if current_plan.name %}
               <span class="billing-chip billing-chip--soft">اکنون فعال: {{ current_plan.name }}</span>
+            {% else %}
+              <span class="billing-chip billing-chip--soft">اکنون فعال: بدون پلن فعال</span>
             {% endif %}
-            {% if billing_usage.used_label %}
-              <span class="billing-chip billing-chip--soft">مصرف این بازه: {{ billing_usage.used_label }}</span>
+            {% if billing_usage.status_label %}
+              <span class="billing-chip billing-chip--soft">وضعیت مصرف: {{ billing_usage.status_label }}</span>
             {% endif %}
             {% if billing_usage.reset_label %}
-              <span class="billing-chip billing-chip--soft">ریست بعدی: {{ billing_usage.reset_label }}</span>
+              <span class="billing-chip billing-chip--soft">مرجع بعدی: {{ billing_usage.reset_label }}</span>
             {% elif current_plan.expires_at_label %}
-              <span class="billing-chip billing-chip--soft">پایان اعتبار: {{ current_plan.expires_at_label }}</span>
+              <span class="billing-chip billing-chip--soft">اعتبار فعلی تا: {{ current_plan.expires_at_label }}</span>
             {% endif %}
           </div>
         </div>
 
         <aside class="billing-hero__aside">
           <div class="billing-summary-card">
-            <div class="billing-summary-card__label">آنچه اکنون مبناست</div>
+            <div class="billing-summary-card__label">جمع‌بندی همین لحظه</div>
             <div class="billing-summary-card__title">
               {% if current_plan.name %}
                 {{ current_plan.name }}
               {% else %}
-                {{ billing_overview_title|default:"بدون پلن فعال" }}
+                {{ billing_overview_title|default:"هنوز پلن فعالی روی این حساب ثبت نشده است" }}
               {% endif %}
             </div>
             <p class="billing-summary-card__body">
@@ -63,17 +65,15 @@
               {% elif current_plan.summary %}
                 {{ current_plan.summary }}
               {% else %}
-                {{ billing_overview_fallback|default:"تا وقتی سفارشی با نتیجه نهایی موفق ثبت نشود، همین صفحه فقط وضعیت فعلی و مسیر بعدی را برای شما روشن می‌کند." }}
+                {{ billing_overview_fallback|default:"تا وقتی سفارشی با نتیجه نهایی موفق ثبت نشود، همین صفحه فقط وضعیت فعلی حساب و مسیر بعدی را روشن می‌کند." }}
               {% endif %}
             </p>
 
             <div class="billing-mini-list">
-              {% if current_plan.status_label %}
-                <div class="billing-mini-list__item">
-                  <span>وضعیت فعلی</span>
-                  <strong>{{ current_plan.status_label }}</strong>
-                </div>
-              {% endif %}
+              <div class="billing-mini-list__item">
+                <span>اکنون روی حساب</span>
+                <strong>{{ current_plan.status_label|default:"بدون پلن فعال" }}</strong>
+              </div>
               {% if billing_usage.reset_label %}
                 <div class="billing-mini-list__item">
                   <span>مرجع سهمیه</span>
@@ -81,28 +81,26 @@
                 </div>
               {% elif current_plan.expires_at_label %}
                 <div class="billing-mini-list__item">
-                  <span>پایان اعتبار</span>
+                  <span>اعتبار فعلی</span>
                   <strong>{{ current_plan.expires_at_label }}</strong>
                 </div>
               {% endif %}
-              {% if current_plan.order_reference %}
-                <div class="billing-mini-list__item">
-                  <span>آخرین مرجع</span>
-                  <strong>{{ current_plan.order_reference }}</strong>
-                </div>
-              {% endif %}
+              <div class="billing-mini-list__item">
+                <span>آخرین مرجع موثر</span>
+                <strong>{{ current_plan.order_reference|default:"ثبت نشده" }}</strong>
+              </div>
             </div>
           </div>
         </aside>
       </div>
     </section>
 
-    {% include 'app/_billing_current_plan_card.html' %}
-
-    <div class="billing-grid billing-grid--support">
-      {% include 'app/_billing_usage_card.html' %}
+    <div class="billing-grid billing-grid--anchor">
+      {% include 'app/_billing_current_plan_card.html' %}
       {% include 'app/_billing_recommendation_card.html' %}
     </div>
+
+    {% include 'app/_billing_usage_card.html' %}
 
     {% include 'app/_billing_activity_list.html' %}
   </div>
