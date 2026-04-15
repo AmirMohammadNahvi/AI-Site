@@ -4,77 +4,84 @@
 {% block meta_description %}ورود آرام و روشن به حساب FaralYar با ایمیل یا شماره موبایل.{% endblock %}
 
 {% block content %}
-  <section class="section-shell py-8 sm:py-10">
-    <div class="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start">
-      <section class="page-hero-card overflow-hidden p-5 sm:p-7 lg:p-8">
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="badge">ورود امن</span>
-          <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">ایمیل یا موبایل</span>
-        </div>
+  {% url 'accounts:otp_request' as otp_request_url %}
+  {% url 'accounts:signup' as signup_url %}
 
-        <div class="mt-4 flex flex-col gap-4 border-b border-slate-200/80 pb-5 dark:border-slate-700/70 sm:flex-row sm:items-start sm:justify-between">
-          <div class="min-w-0 max-w-2xl">
-            <h1 class="text-2xl font-black text-slate-900 dark:text-white sm:text-3xl">
-              {{ auth_title|default:'ورود به FaralYar' }}
-            </h1>
-            <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
-              {{ auth_subtitle|default:'برای ادامه، ایمیل یا شماره موبایل و رمز عبور حساب خود را وارد کنید. اگر ترجیح می‌دهید بدون رمز عبور وارد شوید، مسیر کد تایید موبایل هم در دسترس است.' }}
-            </p>
-          </div>
+  <section class="section-shell auth-stage auth-stage-login py-6 sm:py-8 lg:py-10">
+    <div class="auth-layout">
+      <section class="auth-main-card auth-main-card-login">
+        <div class="auth-main-glow" aria-hidden="true"></div>
 
-          <div class="w-full sm:w-auto sm:min-w-[13rem]">
-            <a href="{% url 'accounts:otp_request' %}" class="btn-secondary w-full">ورود با کد موبایل</a>
-          </div>
-        </div>
-
-        <form method="post" class="mt-5 space-y-4" novalidate>
-          {% csrf_token %}
-
-          {% if next_url %}
-            <input type="hidden" name="next" value="{{ next_url }}">
-          {% endif %}
-
-          {% if form.non_field_errors %}
-            <ul class="errorlist">{{ form.non_field_errors }}</ul>
-          {% endif %}
-
-          {% for hidden in form.hidden_fields %}
-            {{ hidden }}
-          {% endfor %}
-
-          {% for field in form.visible_fields %}
-            <div>
-              <div class="mb-2 flex items-center justify-between gap-3">
-                <label for="{{ field.id_for_label }}" class="block text-sm font-bold text-slate-900 dark:text-white">{{ field.label }}</label>
-                {% if field.name == 'identifier' %}
-                  <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400">هم ایمیل و هم موبایل پذیرفته می‌شود</span>
-                {% endif %}
-              </div>
-              {{ field }}
-              {% if field.help_text %}
-                <p class="helptext">{{ field.help_text }}</p>
-              {% endif %}
-              {{ field.errors }}
+        <div class="auth-main-content">
+          <header class="auth-hero">
+            <div class="auth-kicker-row">
+              <span class="badge">ورود امن</span>
+              <span class="auth-mode-pill">حساب موجود</span>
             </div>
-          {% endfor %}
 
-          <div class="info-panel p-4">
-            <div class="text-sm font-black text-slate-900 dark:text-white">نکته اعتماد</div>
-            <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">
-              اطلاعات تماس شما فقط برای ورود، اطلاع‌رسانی‌های ضروری حساب و حفظ دسترسی استفاده می‌شود.
-            </p>
-          </div>
+            <div class="auth-hero-grid">
+              <div class="min-w-0">
+                <p class="auth-eyebrow">برای ادامه به فضای کاری</p>
+                <h1 class="auth-display-title">{{ auth_title|default:'ورود به حساب FaralYar' }}</h1>
+                <p class="auth-lead">
+                  {{ auth_subtitle|default:'فقط اطلاعات ورود حساب خود را وارد کنید. اگر رمز عبور در دسترس نیست، مسیر ورود با کد موبایل هم آماده است تا بدون شلوغی و تردید ادامه دهید.' }}
+                </p>
+              </div>
 
-          <button class="btn-primary w-full" type="submit">ورود به حساب</button>
-        </form>
+              <aside class="auth-context-card">
+                <div class="auth-context-label">راه جایگزین</div>
+                <h2 class="auth-context-title">بدون رمز عبور هم می‌توانید وارد شوید</h2>
+                <p class="auth-context-body">اگر ترجیح می‌دهید با پیامک ادامه دهید، ابتدا کد را می‌گیرید و در مرحله بعد همان کد را وارد می‌کنید.</p>
+                <a href="{{ otp_request_url }}{% if next_url %}?next={{ next_url|urlencode }}{% endif %}" class="btn-secondary w-full">ورود با کد موبایل</a>
+              </aside>
+            </div>
+          </header>
 
-        <div class="mt-5 flex flex-col gap-3 border-t border-slate-200/80 pt-5 text-sm dark:border-slate-700/70 sm:flex-row sm:items-center sm:justify-between">
-          <p class="text-slate-600 dark:text-slate-300">هنوز حساب ندارید؟</p>
-          <a href="{% url 'accounts:signup' %}" class="font-bold text-brand-primary">ساخت حساب جدید</a>
+          <div class="auth-divider"></div>
+
+          <form method="post" class="auth-form" novalidate>
+            {% csrf_token %}
+
+            {% if next_url %}
+              <input type="hidden" name="next" value="{{ next_url }}">
+            {% endif %}
+
+            {% if form.non_field_errors %}
+              {% include 'accounts/_otp_status_note.html' with otp_note_tone='danger' otp_note_title='ورود انجام نشد' otp_note_body=form.non_field_errors|join:' ' %}
+            {% endif %}
+
+            {% for hidden in form.hidden_fields %}
+              {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+              {% if field.name == 'identifier' %}
+                {% include 'accounts/_auth_field.html' with field=field auth_field_tag='ایمیل یا موبایل' auth_field_hint='از همان ایمیل یا شماره موبایلی استفاده کنید که با آن حساب را ساخته‌اید.' %}
+              {% elif field.name == 'password' %}
+                {% include 'accounts/_auth_field.html' with field=field auth_field_tag='رمز عبور' auth_field_hint='اگر رمز را در اختیار ندارید، از مسیر ورود با کد موبایل استفاده کنید.' %}
+              {% else %}
+                {% include 'accounts/_auth_field.html' with field=field %}
+              {% endif %}
+            {% endfor %}
+
+            <div class="auth-trust-band">
+              <div>
+                <div class="auth-trust-title">اطلاعات تماس فقط برای دسترسی امن حساب استفاده می‌شود.</div>
+                <p class="auth-trust-body">این صفحه برای تصمیم های جانبی، پلن، یا شخصی سازی عمیق نیست. فقط وارد شوید و بقیه را داخل محصول ادامه دهید.</p>
+              </div>
+            </div>
+
+            <button class="btn-primary w-full" type="submit">ورود به حساب</button>
+          </form>
+
+          <footer class="auth-footer-row">
+            <p class="auth-footer-copy">حساب ندارید؟</p>
+            <a href="{{ signup_url }}{% if next_url %}?next={{ next_url|urlencode }}{% endif %}" class="auth-footer-link">ساخت حساب جدید</a>
+          </footer>
         </div>
       </section>
 
-      {% include 'accounts/_auth_intro_panel.html' with auth_intro_badge='لایه ورود' auth_intro_title='ورود باید کوتاه، روشن و قابل اعتماد باشد.' auth_intro_body='در این مرحله قرار نیست درباره ورک‌اسپیس، پلن یا تنظیمات پیشرفته تصمیم بگیرید. فقط وارد شوید و بعد ادامه تجربه را داخل محیط اصلی تنظیم کنید.' auth_intro_point_one_title='ورود با موبایل هم در دسترس است' auth_intro_point_one_body='اگر ورود با رمز عبور برایتان مناسب نیست، می‌توانید با دریافت کد تایید وارد شوید.' auth_intro_point_two_title='یک کار، یک صفحه' auth_intro_point_two_body='این صفحه فقط برای ورود طراحی شده و مسیرهای کمکی در حد نیاز و بدون شلوغی نگه داشته شده‌اند.' auth_intro_meta_title='بعد از ورود' auth_intro_meta_body='تنظیم نام ترجیحی، لحن پاسخ و ترجیحات شخصی را می‌توانید بعداً در فضای کاری انجام دهید.' %}
+      {% include 'accounts/_auth_intro_panel.html' with auth_intro_badge='ورود آرام' auth_intro_title='ورود باید کوتاه، روشن و قابل اعتماد باشد.' auth_intro_body='در این مرحله قرار نیست درباره ورک اسپیس، پلن یا تنظیمات طولانی تصمیم بگیرید. تنها هدف این صفحه رساندن شما به همان جایی است که قصد ادامه دارید.' auth_intro_point_one_title='یک کار، یک صفحه' auth_intro_point_one_body='فرم، راه جایگزین، و پیام های کمکی هرکدام نقش مشخص دارند تا مسیر ورود گم نشود.' auth_intro_point_two_title='اگر رمز همراهتان نیست' auth_intro_point_two_body='ورود با کد موبایل به عنوان مسیر جایگزین واضح نگه داشته شده تا مجبور به جست وجو یا حدس زدن نباشید.' auth_intro_meta_title='بعد از ورود' auth_intro_meta_body='نام ترجیحی، لحن پاسخ و ترجیحات پایدار را می توانید بعداً داخل فضای کاری تنظیم کنید.' auth_intro_alt_label='رفتن به ساخت حساب' auth_intro_alt_url=signup_url %}
     </div>
   </section>
 {% endblock %}

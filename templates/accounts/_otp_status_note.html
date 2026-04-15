@@ -1,8 +1,11 @@
-<div class="rounded-[1.35rem] border px-4 py-3 text-sm leading-7 {% if otp_note_tone == 'danger' %}border-rose-200/80 bg-rose-50/82 text-rose-800 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-200{% elif otp_note_tone == 'warning' %}border-amber-200/80 bg-amber-50/82 text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-100{% else %}border-slate-200/80 bg-slate-50/82 text-slate-700 dark:border-slate-700/70 dark:bg-slate-950/35 dark:text-slate-300{% endif %}">
-  {% if otp_note_title %}
-    <div class="font-black">{{ otp_note_title }}</div>
-  {% endif %}
-  {% if otp_note_body %}
-    <p class="{% if otp_note_title %}mt-1{% endif %}">{{ otp_note_body }}</p>
-  {% endif %}
-</div>
+<article class="auth-note{% if otp_note_tone %} is-{{ otp_note_tone }}{% endif %}">
+  <span class="auth-note-marker" aria-hidden="true"></span>
+  <div class="min-w-0">
+    {% if otp_note_title %}
+      <h3 class="auth-note-title">{{ otp_note_title }}</h3>
+    {% endif %}
+    {% if otp_note_body %}
+      <p class="auth-note-body{% if otp_note_title %} mt-1{% endif %}">{{ otp_note_body }}</p>
+    {% endif %}
+  </div>
+</article>

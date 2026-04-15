@@ -12,6 +12,44 @@ class SignUpForm(forms.ModelForm):
         model = User
         fields = ["full_name", "email", "mobile"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["full_name"].widget.attrs.update(
+            {
+                "placeholder": "نام و نام خانوادگی",
+                "autocomplete": "name",
+                "autofocus": True,
+            }
+        )
+        self.fields["email"].widget.attrs.update(
+            {
+                "placeholder": "you@example.com",
+                "autocomplete": "email",
+                "dir": "ltr",
+                "inputmode": "email",
+            }
+        )
+        self.fields["mobile"].widget.attrs.update(
+            {
+                "placeholder": "0912 000 0000",
+                "autocomplete": "tel",
+                "dir": "ltr",
+                "inputmode": "tel",
+            }
+        )
+        self.fields["password1"].widget.attrs.update(
+            {
+                "placeholder": "رمز عبور مطمئن",
+                "autocomplete": "new-password",
+            }
+        )
+        self.fields["password2"].widget.attrs.update(
+            {
+                "placeholder": "تکرار رمز عبور",
+                "autocomplete": "new-password",
+            }
+        )
+
     def clean_email(self):
         email = self.cleaned_data["email"].lower()
         if User.objects.filter(email=email).exists():
@@ -41,6 +79,19 @@ class LoginForm(forms.Form):
         self.request = request
         self.user = None
         super().__init__(*args, **kwargs)
+        self.fields["identifier"].widget.attrs.update(
+            {
+                "placeholder": "ایمیل یا شماره موبایل",
+                "autocomplete": "username",
+                "autofocus": True,
+            }
+        )
+        self.fields["password"].widget.attrs.update(
+            {
+                "placeholder": "رمز عبور",
+                "autocomplete": "current-password",
+            }
+        )
 
     def clean(self):
         cleaned = super().clean()
@@ -56,10 +107,35 @@ class LoginForm(forms.Form):
 class OTPRequestForm(forms.Form):
     mobile = forms.CharField(label="شماره موبایل")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["mobile"].widget.attrs.update(
+            {
+                "placeholder": "0912 000 0000",
+                "autocomplete": "tel",
+                "dir": "ltr",
+                "inputmode": "tel",
+                "autofocus": True,
+            }
+        )
+
 
 class OTPVerifyForm(forms.Form):
     mobile = forms.CharField(widget=forms.HiddenInput)
     code = forms.CharField(label="کد تایید")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["code"].widget.attrs.update(
+            {
+                "placeholder": "کد تایید را وارد کنید",
+                "autocomplete": "one-time-code",
+                "dir": "ltr",
+                "inputmode": "numeric",
+                "pattern": "[0-9]*",
+                "autofocus": True,
+            }
+        )
 
 
 class ProfileForm(forms.ModelForm):
@@ -77,6 +153,31 @@ class ProfileForm(forms.ModelForm):
             "custom_instructions",
             "memory_enabled",
         ]
+        widgets = {
+            "full_name": forms.TextInput(attrs={"placeholder": "نام و نام خانوادگی", "autocomplete": "name"}),
+            "email": forms.EmailInput(
+                attrs={
+                    "placeholder": "you@example.com",
+                    "autocomplete": "email",
+                    "dir": "ltr",
+                    "inputmode": "email",
+                }
+            ),
+            "mobile": forms.TextInput(
+                attrs={
+                    "placeholder": "0912 000 0000",
+                    "autocomplete": "tel",
+                    "dir": "ltr",
+                    "inputmode": "tel",
+                }
+            ),
+            "preferred_name": forms.TextInput(attrs={"placeholder": "مثلاً امیر"}),
+            "job_title": forms.TextInput(attrs={"placeholder": "مثلاً مدیر محصول"}),
+            "interests": forms.Textarea(attrs={"rows": 4, "placeholder": "علایق، سبک کار و چیزهایی که بهتر است در نظر گرفته شوند"}),
+            "custom_instructions": forms.Textarea(
+                attrs={"rows": 4, "placeholder": "ترجیح لحن، میزان اختصار، یا هر پیش فرض پایداری که می خواهید حفظ شود"}
+            ),
+        }
 
 
 class PersonalizationForm(forms.ModelForm):
@@ -95,7 +196,7 @@ class PersonalizationForm(forms.ModelForm):
             "custom_instructions": "دستورات",
             "preferred_name": "فارال یار شما را چه صدا کند",
             "job_title": "شغل شما",
-            "interests": "علایق، ارزش‌ها و سلیقه‌ها که فارال یار در نظر بگیرد",
+            "interests": "علایق، ارزش ها و سلیقه ها که فارال یار در نظر بگیرد",
             "memory_enabled": "حافظه (آزمایشی)",
         }
         widgets = {

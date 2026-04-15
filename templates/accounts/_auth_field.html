@@ -1,0 +1,18 @@
+<div class="auth-field{% if field.errors %} has-error{% endif %}">
+  <div class="auth-field-head">
+    <label for="{{ field.id_for_label }}" class="auth-field-label">{{ auth_label|default:field.label }}</label>
+    {% if auth_field_tag %}
+      <span class="auth-field-tag">{{ auth_field_tag }}</span>
+    {% endif %}
+  </div>
+
+  {{ field }}
+
+  {% if auth_field_hint %}
+    <p class="auth-field-hint">{{ auth_field_hint }}</p>
+  {% elif field.help_text %}
+    <p class="auth-field-hint">{{ field.help_text }}</p>
+  {% endif %}
+
+  {{ field.errors }}
+</div>

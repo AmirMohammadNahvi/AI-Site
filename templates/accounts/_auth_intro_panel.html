@@ -1,53 +1,51 @@
-<aside class="space-y-4">
-  <section class="page-section-card relative overflow-hidden p-4 sm:p-5">
-    <div class="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_52%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.10),transparent_42%)]"></div>
+<aside class="auth-side-stack">
+  <section class="auth-side-panel">
+    <div class="auth-side-glow" aria-hidden="true"></div>
 
     <div class="relative">
       {% if auth_intro_badge %}
         <span class="badge">{{ auth_intro_badge }}</span>
       {% endif %}
 
-      <h2 class="mt-3 text-lg font-black text-slate-900 dark:text-white sm:text-xl">
-        {{ auth_intro_title }}
-      </h2>
+      <h2 class="auth-side-title">{{ auth_intro_title }}</h2>
+      <p class="auth-side-body">{{ auth_intro_body }}</p>
 
-      <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
-        {{ auth_intro_body }}
-      </p>
-
-      <div class="mt-5 space-y-3">
+      <div class="auth-side-list">
         {% if auth_intro_point_one_title or auth_intro_point_one_body %}
-          <div class="feature-card p-4">
+          <article class="auth-side-item">
             {% if auth_intro_point_one_title %}
-              <div class="text-sm font-black text-slate-900 dark:text-white">{{ auth_intro_point_one_title }}</div>
+              <h3>{{ auth_intro_point_one_title }}</h3>
             {% endif %}
             {% if auth_intro_point_one_body %}
-              <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ auth_intro_point_one_body }}</p>
+              <p>{{ auth_intro_point_one_body }}</p>
             {% endif %}
-          </div>
+          </article>
         {% endif %}
 
         {% if auth_intro_point_two_title or auth_intro_point_two_body %}
-          <div class="feature-card p-4">
+          <article class="auth-side-item">
             {% if auth_intro_point_two_title %}
-              <div class="text-sm font-black text-slate-900 dark:text-white">{{ auth_intro_point_two_title }}</div>
+              <h3>{{ auth_intro_point_two_title }}</h3>
             {% endif %}
             {% if auth_intro_point_two_body %}
-              <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ auth_intro_point_two_body }}</p>
+              <p>{{ auth_intro_point_two_body }}</p>
             {% endif %}
-          </div>
+          </article>
         {% endif %}
       </div>
     </div>
   </section>
 
-  {% if auth_intro_meta_title or auth_intro_meta_body %}
-    <section class="info-panel p-4 sm:p-5">
+  {% if auth_intro_meta_title or auth_intro_meta_body or auth_intro_alt_label %}
+    <section class="auth-side-meta">
       {% if auth_intro_meta_title %}
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ auth_intro_meta_title }}</div>
+        <div class="auth-side-meta-title">{{ auth_intro_meta_title }}</div>
       {% endif %}
       {% if auth_intro_meta_body %}
-        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ auth_intro_meta_body }}</p>
+        <p class="auth-side-meta-body">{{ auth_intro_meta_body }}</p>
+      {% endif %}
+      {% if auth_intro_alt_label and auth_intro_alt_url %}
+        <a href="{{ auth_intro_alt_url }}" class="btn-secondary w-full">{{ auth_intro_alt_label }}</a>
       {% endif %}
     </section>
   {% endif %}

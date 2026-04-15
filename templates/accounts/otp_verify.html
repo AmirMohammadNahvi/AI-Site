@@ -4,105 +4,105 @@
 {% block meta_description %}تایید کد پیامک برای تکمیل ورود به FaralYar.{% endblock %}
 
 {% block content %}
-  <section class="section-shell py-8 sm:py-10">
-    <div class="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start">
-      <section class="page-hero-card overflow-hidden p-5 sm:p-7 lg:p-8" x-data="{ helpOpen: false }">
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="badge">کد تایید</span>
-          <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">مرحله ۲ از ۲</span>
-        </div>
+  {% url 'accounts:otp_request' as otp_request_url %}
+  {% url 'accounts:login' as login_url %}
 
-        <div class="mt-4 flex flex-col gap-4 border-b border-slate-200/80 pb-5 dark:border-slate-700/70 sm:flex-row sm:items-start sm:justify-between">
-          <div class="min-w-0 max-w-2xl">
-            <h1 class="text-2xl font-black text-slate-900 dark:text-white sm:text-3xl">
-              {{ auth_title|default:'تایید کد و ورود' }}
-            </h1>
-            <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
-              {{ auth_subtitle|default:'کد ارسال‌شده به شماره زیر را وارد کنید. اگر کد قبلی منقضی شده یا اشتباه وارد شده باشد، می‌توانید دوباره درخواست کد بدهید.' }}
-            </p>
-          </div>
+  <section class="section-shell auth-stage auth-stage-otp py-6 sm:py-8 lg:py-10">
+    <div class="auth-layout">
+      <section class="auth-main-card auth-main-card-otp">
+        <div class="auth-main-glow" aria-hidden="true"></div>
 
-          <div class="w-full sm:w-auto sm:min-w-[14rem]">
-            <div class="info-panel px-4 py-3 text-sm">
-              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">شماره مقصد</div>
-              <div class="mt-1 font-black text-slate-900 dark:text-white">{{ otp_phone_masked|default:mobile }}</div>
+        <div class="auth-main-content">
+          <header class="auth-hero">
+            <div class="auth-kicker-row">
+              <span class="badge">تکمیل ورود</span>
+              <span class="auth-mode-pill">مرحله ۲ از ۲</span>
             </div>
-          </div>
-        </div>
 
-        <form method="post" class="mt-5 space-y-4" novalidate>
-          {% csrf_token %}
-
-          {% if form.non_field_errors %}
-            <ul class="errorlist">{{ form.non_field_errors }}</ul>
-          {% endif %}
-
-          {% for field in form %}
-            {% if field.is_hidden %}
-              {{ field }}
-            {% else %}
-              <div>
-                <div class="mb-2 flex items-center justify-between gap-3">
-                  <label for="{{ field.id_for_label }}" class="block text-sm font-bold text-slate-900 dark:text-white">{{ field.label }}</label>
-                  <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400">کد پیامک</span>
+            <ol class="auth-stepper" aria-label="مراحل ورود با موبایل">
+              <li class="is-complete">
+                <span class="auth-step-index">۱</span>
+                <div>
+                  <div class="auth-step-title">درخواست کد</div>
+                  <p class="auth-step-copy">شماره ثبت شد</p>
                 </div>
-                {{ field }}
-                <p class="helptext">اگر چند کد دریافت کرده‌اید، آخرین کد را وارد کنید.</p>
-                {{ field.errors }}
-              </div>
-            {% endif %}
-          {% endfor %}
+              </li>
+              <li class="is-active">
+                <span class="auth-step-index">۲</span>
+                <div>
+                  <div class="auth-step-title">تایید و ورود</div>
+                  <p class="auth-step-copy">فقط کد را وارد کنید</p>
+                </div>
+              </li>
+            </ol>
 
-          {% if otp_error_note %}
-            {% include 'accounts/_otp_status_note.html' with otp_note_tone='danger' otp_note_title='نیاز به بازبینی' otp_note_body=otp_error_note %}
-          {% else %}
-            {% include 'accounts/_otp_status_note.html' with otp_note_title='اگر کد معتبر نبود' otp_note_body='احتمال دارد کد قبلی منقضی شده باشد یا بعد از درخواست تازه، کد جدیدتری برای شما ارسال شده باشد. در این حالت دوباره کد بگیرید.' %}
-          {% endif %}
-
-          <button class="btn-primary w-full" type="submit">تایید و ورود</button>
-        </form>
-
-        <div class="mt-5 space-y-3 border-t border-slate-200/80 pt-5 dark:border-slate-700/70">
-          <div class="info-panel p-4">
-            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="auth-hero-grid">
               <div class="min-w-0">
-                <div class="text-sm font-black text-slate-900 dark:text-white">نیاز به کد جدید دارید؟</div>
-                <p class="mt-1 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                  {{ otp_resend_note|default:'اگر پیامک نرسید، کد اشتباه بود یا زمانش گذشت، از همین‌جا دوباره درخواست کد بدهید.' }}
+                <p class="auth-eyebrow">قدم دوم از همان جریان ورود</p>
+                <h1 class="auth-display-title">{{ auth_title|default:'تایید کد و ورود' }}</h1>
+                <p class="auth-lead">
+                  {{ auth_subtitle|default:'کد ارسال شده به شماره زیر را وارد کنید. اگر کد قبلی منقضی شده یا اشتباه وارد شده باشد، می توانید دوباره کد تازه بگیرید یا به مرحله قبل برگردید.' }}
                 </p>
               </div>
-              <a href="{% url 'accounts:otp_request' %}" class="btn-secondary w-full sm:w-auto">درخواست کد جدید</a>
+
+              <aside class="auth-context-card auth-context-card-focus">
+                <div class="auth-context-label">شماره مقصد</div>
+                <h2 class="auth-context-title">{{ otp_phone_masked|default:mobile }}</h2>
+                <p class="auth-context-body">اگر این شماره درست نیست، به مرحله قبل برگردید و شماره را اصلاح کنید. اعتبار کد فعلی {{ otp_expiry_minutes }} دقیقه است.</p>
+                <a href="{{ otp_request_url }}{% if next_url %}?next={{ next_url|urlencode }}{% endif %}" class="btn-secondary w-full">تغییر شماره یا دریافت کد تازه</a>
+              </aside>
             </div>
+          </header>
+
+          <div class="auth-divider"></div>
+
+          <form method="post" class="auth-form" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              {% include 'accounts/_otp_status_note.html' with otp_note_tone='danger' otp_note_title='تایید انجام نشد' otp_note_body=form.non_field_errors|join:' ' %}
+            {% endif %}
+
+            {% for field in form %}
+              {% if field.is_hidden %}
+                {{ field }}
+              {% else %}
+                {% include 'accounts/_auth_field.html' with field=field auth_field_tag='کد تایید' auth_field_hint='فقط آخرین کد دریافتی را وارد کنید. این کد {{ otp_code_length }} رقمی است.' %}
+              {% endif %}
+            {% endfor %}
+
+            {% if otp_error_note %}
+              {% include 'accounts/_otp_status_note.html' with otp_note_tone='danger' otp_note_title='نیاز به بازبینی' otp_note_body=otp_error_note %}
+            {% else %}
+              {% include 'accounts/_otp_status_note.html' with otp_note_title='اگر چند کد دریافت کرده اید' otp_note_body='معمولاً فقط آخرین کد معتبر است. اگر بعد از درخواست جدید، کد قبلی را وارد کنید ممکن است تایید نشود.' %}
+            {% endif %}
+
+            <button class="btn-primary w-full" type="submit">تایید و ورود</button>
+          </form>
+
+          <div class="auth-actions-row">
+            <a href="{{ otp_request_url }}{% if next_url %}?next={{ next_url|urlencode }}{% endif %}" class="btn-secondary w-full sm:w-auto">درخواست کد جدید</a>
+            <a href="{{ login_url }}{% if next_url %}?next={{ next_url|urlencode }}{% endif %}" class="btn-ghost w-full text-center sm:w-auto">بازگشت به ورود معمولی</a>
           </div>
 
-          <div class="page-section-card p-4">
-            <button
-              type="button"
-              class="flex w-full items-center justify-between gap-3 text-right"
-              @click="helpOpen = !helpOpen"
-              :aria-expanded="helpOpen.toString()"
-            >
-              <div>
-                <div class="text-sm font-black text-slate-900 dark:text-white">اگر کد نرسید یا سرویس در دسترس نبود</div>
-                <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">راهنمای کوتاه برای انتظار، تلاش دوباره و خطاهای رایج</p>
-              </div>
-              <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[1rem] border border-slate-200/80 bg-slate-50/90 text-slate-500 transition dark:border-slate-700/70 dark:bg-slate-950/45 dark:text-slate-300" :class="helpOpen ? 'rotate-180' : ''">
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                  <path d="M5 8.5l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"></path>
-                </svg>
-              </span>
-            </button>
-
-            <div x-cloak x-show="helpOpen" x-transition class="mt-4 grid gap-3">
-              {% include 'accounts/_otp_status_note.html' with otp_note_title='تاخیر در دریافت' otp_note_body='گاهی رسیدن پیامک کمی زمان می‌برد. چند لحظه صبر کنید و بعد از همان شماره مطمئن شوید.' %}
-              {% include 'accounts/_otp_status_note.html' with otp_note_title='کد نامعتبر یا منقضی' otp_note_body='آخرین کد دریافتی را وارد کنید. اگر چند بار درخواست داده‌اید، کدهای قبلی ممکن است دیگر معتبر نباشند.' %}
-              {% include 'accounts/_otp_status_note.html' with otp_note_tone='warning' otp_note_title='اختلال سرویس پیامک' otp_note_body='اگر سرویس پیامک موقتاً در دسترس نباشد، بهترین اقدام درخواست دوباره در چند دقیقه بعد یا استفاده از مسیر ورود معمولی است.' %}
-            </div>
+          <div class="auth-support-grid auth-support-grid-compact">
+            <article class="auth-support-card">
+              <h3>اگر پیامک هنوز نرسیده</h3>
+              <p>چند لحظه صبر کنید و بعد دوباره صندوق پیامک را بررسی کنید. در صورت نیاز از همین صفحه کد تازه بگیرید.</p>
+            </article>
+            <article class="auth-support-card">
+              <h3>اگر شماره اشتباه است</h3>
+              <p>به مرحله قبل برگردید، شماره را اصلاح کنید، و دوباره همان جریان ورود را شروع کنید.</p>
+            </article>
+            <article class="auth-support-card">
+              <h3>اگر کد معتبر نبود</h3>
+              <p>ممکن است زمان اعتبار کد گذشته باشد یا بعد از درخواست جدید، کد قبلی دیگر پذیرفته نشود.</p>
+            </article>
           </div>
         </div>
       </section>
 
-      {% include 'accounts/_auth_intro_panel.html' with auth_intro_badge='تکمیل ورود' auth_intro_title='تایید کد باید شفاف باشد، نه استرس‌زا.' auth_intro_body='این مرحله فقط برای تایید دسترسی شماره موبایل شماست. در صورت خطا، صفحه باید دلیل محتمل و مسیر بعدی را روشن بگوید: دوباره تلاش کنید یا کد تازه بگیرید.' auth_intro_point_one_title='فقط آخرین کد را وارد کنید' auth_intro_point_one_body='اگر چند پیامک گرفته‌اید، معمولاً آخرین کد معتبر است و کدهای قبلی دیگر پذیرفته نمی‌شوند.' auth_intro_point_two_title='ورود یا ساخت خودکار حساب' auth_intro_point_two_body='پس از تایید موفق، اگر این شماره قبلاً حساب نداشته باشد حساب پایه ایجاد می‌شود و سپس وارد محیط اصلی می‌شوید.' auth_intro_meta_title='پیشنهاد بعد از ورود' auth_intro_meta_body='بعد از تکمیل ورود، بهتر است نام ترجیحی و چند پیش‌فرض کوچک را در فضای کاری خود تنظیم کنید؛ نه در این مرحله.' %}
+      {% include 'accounts/_auth_intro_panel.html' with auth_intro_badge='تایید شفاف' auth_intro_title='تایید کد باید روشن باشد، نه استرس زا.' auth_intro_body='این مرحله فقط برای اثبات دسترسی شما به همان شماره است. وقتی همه چیز شفاف چیده شود، کاربر دقیقاً می فهمد باید کد را وارد کند، شماره را اصلاح کند، یا کد تازه بگیرد.' auth_intro_point_one_title='فقط آخرین کد را وارد کنید' auth_intro_point_one_body='اگر چند پیامک پشت سر هم گرفته اید، معمولاً جدیدترین کد معتبر است و کدهای قبلی پذیرفته نمی شوند.' auth_intro_point_two_title='ورود یا ساخت حساب پایه' auth_intro_point_two_body='اگر این شماره قبلاً حساب نداشته باشد، بعد از تایید موفق یک حساب پایه ساخته می شود و سپس وارد محصول می شوید.' auth_intro_meta_title='بعد از ورود' auth_intro_meta_body='تنظیم نام ترجیحی و سایر پیش فرض های شخصی را بهتر است داخل محصول و با زمان بیشتر انجام دهید.' auth_intro_alt_label='بازگشت به مرحله قبل' auth_intro_alt_url=otp_request_url %}
     </div>
   </section>
 {% endblock %}
