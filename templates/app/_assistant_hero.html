@@ -1,115 +1,108 @@
-<section class="relative overflow-hidden rounded-[1.95rem] border border-slate-200/80 bg-white/80 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
-  <div class="absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.18),transparent_48%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.14),transparent_42%)]"></div>
-
-  <div class="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-    <div class="min-w-0 max-w-3xl">
-      <div class="flex flex-wrap items-center gap-2">
-        {% if assistant.scope_label %}
-          <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ assistant.scope_label }}</span>
-        {% endif %}
-        {% if assistant.owner_label %}
-          <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ assistant.owner_label }}</span>
-        {% endif %}
-
-        {% if assistant.availability_state == 'available' %}
-          <span class="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">آماده استفاده</span>
-        {% elif assistant.availability_state == 'locked' %}
-          <span class="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-bold text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">با ارتقا قابل استفاده</span>
-        {% elif assistant.availability_state == 'unavailable' %}
-          <span class="rounded-full bg-slate-200 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">در این ورک‌اسپیس فعال نیست</span>
-        {% elif assistant.availability_state == 'draft' %}
-          <span class="rounded-full bg-sky-100 px-3 py-1 text-[11px] font-bold text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">پیش‌نویس</span>
-        {% elif assistant.availability_state == 'archived' %}
-          <span class="rounded-full bg-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">آرشیوشده</span>
-        {% elif assistant.availability_state == 'deprecated' %}
-          <span class="rounded-full bg-rose-100 px-3 py-1 text-[11px] font-bold text-rose-700 dark:bg-rose-500/15 dark:text-rose-300">برای شروع جدید توصیه نمی‌شود</span>
-        {% else %}
-          <span class="rounded-full bg-slate-300 px-3 py-1 text-[11px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">وضعیت ثبت‌شده</span>
-        {% endif %}
-      </div>
-
-      <div class="mt-4 flex items-start gap-3">
-        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.3rem] bg-slate-900 text-base font-black text-white shadow-sm shadow-slate-900/10 dark:bg-white dark:text-slate-900">
-          {% if assistant.initials %}
-            {{ assistant.initials }}
-          {% elif assistant.name %}
-            {{ assistant.name|slice:":2" }}
-          {% else %}
-            AI
+{% with assistant_state=assistant.availability_state|default:'available' %}
+  <section class="page-hero-card relative overflow-hidden p-4 sm:p-5 lg:p-6">
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
+      <div class="min-w-0">
+        <div class="surface-meta-list">
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state=assistant_state entitlement_label=assistant.availability_label entitlement_note=assistant.availability_reason %}
+          {% if assistant.scope_label %}
+            <span class="soft-chip px-3 py-1 text-[11px]">{{ assistant.scope_label }}</span>
+          {% endif %}
+          {% if assistant.owner_label %}
+            <span class="soft-chip px-3 py-1 text-[11px]">{{ assistant.owner_label }}</span>
           {% endif %}
         </div>
 
-        <div class="min-w-0">
-          <h1 class="text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
-            {{ assistant.name|default:"دستیار بدون عنوان" }}
-          </h1>
-          <p class="mt-2 text-sm leading-8 text-slate-600 dark:text-slate-300">
-            {{ assistant.promise|default:assistant.summary|default:"یک پروفایل کاری قابل‌استفاده‌مجدد برای انجام بهتر یک نوع کار مشخص." }}
-          </p>
+        <div class="mt-4 flex items-start gap-3">
+          <div class="catalog-item__mark">
+            {% if assistant.initials %}
+              {{ assistant.initials }}
+            {% elif assistant.name %}
+              {{ assistant.name|slice:":2" }}
+            {% else %}
+              AI
+            {% endif %}
+          </div>
+
+          <div class="min-w-0">
+            <h1 class="text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
+              {{ assistant.name|default:"دستیار بدون عنوان" }}
+            </h1>
+            <p class="mt-2 text-sm leading-8 text-slate-600 dark:text-slate-300">
+              {{ assistant.promise|default:assistant.summary|default:"یک هویت کاری قابل استفاده مجدد برای انجام منظم‌تر یک نوع کار مشخص." }}
+            </p>
+          </div>
         </div>
+
+        <div class="surface-meta-list mt-4 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+          {% if assistant.memory_short_label %}
+            <span class="meta-chip px-3 py-1">{{ assistant.memory_short_label }}</span>
+          {% endif %}
+          {% if assistant.model_short_label %}
+            <span class="meta-chip px-3 py-1">{{ assistant.model_short_label }}</span>
+          {% endif %}
+          {% if assistant.updated_label %}
+            <span class="meta-chip px-3 py-1">{{ assistant.updated_label }}</span>
+          {% endif %}
+        </div>
+
+        {% if assistant.hero_capabilities or assistant.capability_badges %}
+          <div class="surface-meta-list mt-4 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+            {% if assistant.hero_capabilities %}
+              {% for capability in assistant.hero_capabilities|slice:":4" %}
+                <span class="soft-chip px-3 py-1">{{ capability.label|default:capability }}</span>
+              {% endfor %}
+            {% else %}
+              {% for capability in assistant.capability_badges|slice:":4" %}
+                <span class="soft-chip px-3 py-1">{{ capability.label|default:capability }}</span>
+              {% endfor %}
+            {% endif %}
+            {% if assistant.hero_capability_more_label %}
+              <span class="soft-chip px-3 py-1">{{ assistant.hero_capability_more_label }}</span>
+            {% elif assistant.capability_overflow_label %}
+              <span class="soft-chip px-3 py-1">{{ assistant.capability_overflow_label }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
       </div>
 
-      <div class="mt-4 flex flex-wrap gap-2">
-        {% if assistant.hero_capabilities %}
-          {% for capability in assistant.hero_capabilities|slice:":3" %}
-            <span class="rounded-full border border-slate-200/80 bg-white/85 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/55 dark:text-slate-300">
-              {{ capability.label|default:capability }}
-            </span>
-          {% endfor %}
-        {% elif assistant.capability_badges %}
-          {% for capability in assistant.capability_badges|slice:":3" %}
-            <span class="rounded-full border border-slate-200/80 bg-white/85 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/55 dark:text-slate-300">
-              {{ capability.label|default:capability }}
-            </span>
-          {% endfor %}
-        {% endif %}
+      <div class="space-y-4">
+        <section class="surface-slab" data-tone="muted">
+          <div class="surface-slab__eyebrow">این دستیار را چطور بخوانید؟</div>
+          <div class="surface-slab__title">اول نقش را بفهمید، بعد مسیر اجرا را انتخاب کنید</div>
+          <p class="surface-slab__body">
+            این صفحه برای شناخت هویت، محدوده و تنظیمات دستیار است. اجرای واقعی همچنان داخل چت همان فضای مقصد انجام می‌شود.
+          </p>
+          <div class="surface-bullet-list">
+            <div class="surface-bullet">اگر وضعیت دسترسی روشن نیست، از همین صفحه دلیلش را ببینید.</div>
+            <div class="surface-bullet">اگر از قبل اسپیس فعالی دارید، همان معمولاً سریع‌ترین نقطه شروع است.</div>
+            <div class="surface-bullet">اگر این نسخه قدیمی یا محدود شده باشد، جایگزین یا مسیر بعدی باید مشخص بماند.</div>
+          </div>
+        </section>
 
-        {% if assistant.hero_capability_more_label %}
-          <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ assistant.hero_capability_more_label }}</span>
-        {% elif assistant.capability_overflow_label %}
-          <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ assistant.capability_overflow_label }}</span>
-        {% endif %}
-      </div>
+        <div class="flex flex-col gap-2">
+          {% if assistant_launch_url %}
+            <a href="{{ assistant_launch_url }}" class="btn-primary w-full">
+              {{ assistant_launch_label|default:"رفتن به مسیر استفاده" }}
+            </a>
+          {% endif %}
 
-      <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
-        {% if assistant.memory_short_label %}
-          <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ assistant.memory_short_label }}</span>
-        {% endif %}
-        {% if assistant.model_short_label %}
-          <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ assistant.model_short_label }}</span>
-        {% endif %}
-        {% if assistant.updated_label %}
-          <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ assistant.updated_label }}</span>
-        {% endif %}
+          {% if assistant_secondary_url %}
+            <a href="{{ assistant_secondary_url }}" class="btn-secondary w-full">
+              {{ assistant_secondary_label|default:"بازگشت" }}
+            </a>
+          {% endif %}
+        </div>
+
+        <p class="text-xs leading-6 text-slate-500 dark:text-slate-400">
+          {% if assistant_meta_note %}
+            {{ assistant_meta_note }}
+          {% elif assistant.availability_reason %}
+            {{ assistant.availability_reason }}
+          {% else %}
+            این صفحه باید بدون ایجاد شلوغی، رابطه این دستیار با اجرا، مدل و حافظه را روشن نگه دارد.
+          {% endif %}
+        </p>
       </div>
     </div>
-
-    <div class="flex w-full flex-col gap-2 lg:w-auto lg:min-w-[15rem]">
-      {% if assistant_launch_url %}
-        <a href="{{ assistant_launch_url }}" class="btn-primary w-full lg:w-auto">
-          {{ assistant_launch_label|default:"استفاده از این دستیار" }}
-        </a>
-      {% endif %}
-
-      {% if assistant_secondary_url %}
-        <a href="{{ assistant_secondary_url }}" class="btn-secondary w-full lg:w-auto">
-          {{ assistant_secondary_label|default:"مشاهده جزئیات بیشتر" }}
-        </a>
-      {% endif %}
-
-      <div class="rounded-[1.25rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 text-xs leading-6 text-slate-500 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-400">
-        {% if assistant_meta_note %}
-          {{ assistant_meta_note }}
-        {% elif assistant.availability_state == 'locked' %}
-          این دستیار برای حساب فعلی قابل مشاهده است، اما استفاده از آن به پلن یا دسترسی بالاتری نیاز دارد.
-        {% elif assistant.availability_state == 'unavailable' %}
-          این دستیار در این ورک‌اسپیس فعال نشده است. جزئیات کامل‌تر در بخش‌های پایین صفحه آمده است.
-        {% elif assistant.availability_state == 'deprecated' %}
-          این نسخه برای استفاده جدید پیشنهاد نمی‌شود. اگر جایگزین ثبت شده باشد، در بخش وضعیت دسترسی نمایش داده می‌شود.
-        {% else %}
-          این صفحه برای شناخت و تنظیم رفتار دستیار است؛ اجرای واقعی همچنان در چت انجام می‌شود.
-        {% endif %}
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
+{% endwith %}

@@ -1,35 +1,17 @@
 {% with model_state=model.availability_state|default:'available' %}
-  <section class="relative overflow-hidden rounded-[1.95rem] border border-slate-200/80 bg-white/80 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
-    <div class="absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.18),transparent_48%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.14),transparent_42%)]"></div>
-
-    <div class="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-      <div class="min-w-0 max-w-3xl">
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="badge">{{ model_hero_badge|default:'کاتالوگ مدل‌ها' }}</span>
-
+  <section class="page-hero-card relative overflow-hidden p-4 sm:p-5 lg:p-6">
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
+      <div class="min-w-0">
+        <div class="surface-meta-list">
+          <span class="badge">{{ model_hero_badge|default:"راهنمای انتخاب مدل" }}</span>
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state=model_state entitlement_label=model.availability_label entitlement_note=model.availability_note %}
           {% if model.family_label %}
-            <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ model.family_label }}</span>
-          {% endif %}
-
-          {% if model_state == 'available' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=model.availability_label|default:'آماده استفاده' entitlement_note=model.availability_note %}
-          {% elif model_state == 'upgradeable' or model_state == 'locked' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=model.availability_label|default:'با ارتقا قابل استفاده' entitlement_note=model.availability_note %}
-          {% elif model_state == 'workspace' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='workspace' entitlement_tone='workspace' entitlement_label=model.availability_label|default:'در این ورک‌اسپیس فعال نیست' entitlement_note=model.availability_note %}
-          {% elif model_state == 'policy' or model_state == 'policy_disabled' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=model.availability_label|default:'با سیاست دسترسی محدود شده' entitlement_note=model.availability_note %}
-          {% elif model_state == 'disabled' or model_state == 'admin_disabled' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='disabled' entitlement_tone='disabled' entitlement_label=model.availability_label|default:'فعلاً غیرفعال' entitlement_note=model.availability_note %}
-          {% elif model_state == 'deprecated' %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='limited' entitlement_tone='warning' entitlement_label=model.availability_label|default:'برای شروع جدید توصیه نمی‌شود' entitlement_note=model.availability_note %}
-          {% else %}
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=model.availability_label|default:'در دسترس نیست' entitlement_note=model.availability_note %}
+            <span class="soft-chip px-3 py-1 text-[11px]">{{ model.family_label }}</span>
           {% endif %}
         </div>
 
         <div class="mt-4 flex items-start gap-3">
-          <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.3rem] bg-slate-900 text-base font-black text-white shadow-sm shadow-slate-900/10 dark:bg-white dark:text-slate-900">
+          <div class="catalog-item__mark">
             {% if model.initials %}
               {{ model.initials }}
             {% elif model.name %}
@@ -41,90 +23,93 @@
 
           <div class="min-w-0">
             <h1 class="text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
-              {{ model.name|default:'مدل بدون عنوان' }}
+              {{ model.name|default:"مدل بدون عنوان" }}
             </h1>
             {% if model.fit_statement %}
-              <p class="mt-2 text-sm font-bold leading-7 text-slate-900 dark:text-white">
-                {{ model.fit_statement }}
-              </p>
+              <p class="mt-2 text-sm font-bold leading-7 text-slate-900 dark:text-white">{{ model.fit_statement }}</p>
             {% endif %}
             <p class="mt-2 text-sm leading-8 text-slate-600 dark:text-slate-300">
-              {{ model.summary|default:'این صفحه برای شناختن تناسب واقعی مدل با کار شماست؛ نه برای مرور مشخصات خام یا ادعاهای فنی.' }}
+              {{ model.summary|default:"این صفحه برای انتخاب آگاهانه مدل است؛ نه برای مرور مشخصات خام. باید سریع بفهمید این مدل برای چه نوع نتیجه‌ای مناسب‌تر است." }}
             </p>
           </div>
         </div>
 
+        <div class="surface-meta-list mt-4 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+          {% if current_workspace.name %}
+            <span class="meta-chip px-3 py-1">ورک‌اسپیس: {{ current_workspace.name }}</span>
+          {% endif %}
+          {% if current_plan.name %}
+            <span class="meta-chip px-3 py-1">پلن: {{ current_plan.name }}</span>
+          {% endif %}
+          {% if model.workspace_note and model_state == 'available' %}
+            <span class="meta-chip px-3 py-1">{{ model.workspace_note }}</span>
+          {% endif %}
+        </div>
+
         {% if model.badges or model.capabilities %}
-          <div class="mt-4 flex flex-wrap gap-2">
+          <div class="surface-meta-list mt-4 text-[11px] font-bold text-slate-500 dark:text-slate-400">
             {% if model.badges %}
               {% for badge in model.badges|slice:":4" %}
-                <span class="rounded-full border border-slate-200/80 bg-white/85 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/55 dark:text-slate-300">
-                  {{ badge.label|default:badge }}
-                </span>
+                <span class="soft-chip px-3 py-1">{{ badge.label|default:badge }}</span>
               {% endfor %}
             {% else %}
               {% for capability in model.capabilities|slice:":4" %}
-                <span class="rounded-full border border-slate-200/80 bg-white/85 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/55 dark:text-slate-300">
-                  {{ capability.short_label|default:capability.label|default:capability.name|default:capability }}
-                </span>
+                <span class="soft-chip px-3 py-1">{{ capability.short_label|default:capability.label|default:capability.name|default:capability }}</span>
               {% endfor %}
             {% endif %}
           </div>
         {% endif %}
-
-        <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
-          {% if current_workspace.name %}
-            <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">ورک‌اسپیس: {{ current_workspace.name }}</span>
-          {% endif %}
-          {% if current_plan.name %}
-            <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">پلن: {{ current_plan.name }}</span>
-          {% endif %}
-          {% if model.workspace_note and model_state == 'available' %}
-            <span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ model.workspace_note }}</span>
-          {% endif %}
-        </div>
       </div>
 
-      <div class="flex w-full flex-col gap-2 lg:w-auto lg:min-w-[16rem]">
-        {% if model.primary_cta_url and model_state == 'available' %}
-          <a href="{{ model.primary_cta_url }}" class="btn-primary w-full lg:w-auto">
-            {{ model.primary_cta_label|default:'استفاده از این مدل' }}
-          </a>
-        {% elif model.primary_cta_url and model_state == 'upgradeable' %}
-          <a href="{{ model.primary_cta_url }}" class="btn-primary w-full lg:w-auto">
-            {{ model.primary_cta_label|default:'بررسی گزینه ارتقا' }}
-          </a>
-        {% elif model.primary_cta_url and model_state == 'locked' %}
-          <a href="{{ model.primary_cta_url }}" class="btn-primary w-full lg:w-auto">
-            {{ model.primary_cta_label|default:'بررسی گزینه ارتقا' }}
-          </a>
-        {% endif %}
+      <div class="space-y-4">
+        <section class="surface-slab" data-tone="muted">
+          <div class="surface-slab__eyebrow">چطور تصمیم بگیرید؟</div>
+          <div class="surface-slab__title">اول تناسب کاری را ببینید، بعد دسترسی را</div>
+          <p class="surface-slab__body">
+            مدل خوب در FaralYar مدلی است که برای نوع کار شما روشن باشد. اگر در این زمینه فعال نیست، همین صفحه باید دلیلش را بی‌ابهام توضیح دهد.
+          </p>
+          <div class="surface-bullet-list">
+            <div class="surface-bullet">اگر برای شروع سریع می‌خواهید، به وضعیت و Fit Statement نگاه کنید.</div>
+            <div class="surface-bullet">اگر برای کار جدید مناسب نیست، باید همان‌جا صریحاً گفته شود.</div>
+            <div class="surface-bullet">اگر محدودیت از ورک‌اسپیس یا سیاست است، نباید شبیه پیشنهاد خرید دیده شود.</div>
+          </div>
+        </section>
 
-        {% if model.secondary_cta_url %}
-          <a href="{{ model.secondary_cta_url }}" class="btn-secondary w-full lg:w-auto">
-            {{ model.secondary_cta_label|default:'مقایسه با گزینه‌های دیگر' }}
-          </a>
-        {% elif model.detail_back_url %}
-          <a href="{{ model.detail_back_url }}" class="btn-secondary w-full lg:w-auto">
-            {{ model.detail_back_label|default:'بازگشت به کاتالوگ مدل‌ها' }}
-          </a>
-        {% endif %}
+        <div class="flex flex-col gap-2">
+          {% if model.primary_cta_url and model_state == 'available' %}
+            <a href="{{ model.primary_cta_url }}" class="btn-primary w-full">
+              {{ model.primary_cta_label|default:"رفتن به مسیر استفاده" }}
+            </a>
+          {% elif model.primary_cta_url and model_state == 'upgradeable' %}
+            <a href="{{ model.primary_cta_url }}" class="btn-secondary w-full">
+              {{ model.primary_cta_label|default:"بررسی گزینه ارتقا" }}
+            </a>
+          {% elif model.primary_cta_url and model_state == 'locked' %}
+            <a href="{{ model.primary_cta_url }}" class="btn-secondary w-full">
+              {{ model.primary_cta_label|default:"بررسی گزینه ارتقا" }}
+            </a>
+          {% endif %}
 
-        <div class="rounded-[1.25rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 text-xs leading-6 text-slate-500 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-400">
-          {% if model.hero_note %}
-            {{ model.hero_note }}
-          {% elif model_state == 'upgradeable' or model_state == 'locked' %}
-            این مدل برای شما مخفی نشده است؛ فقط در سطح فعلی کامل فعال نیست و اگر لازم باشد مسیر ارتقا از همین صفحه روشن می‌شود.
-          {% elif model_state == 'workspace' %}
-            این مدل از نظر محصولی شناخته‌شده است، اما برای همین ورک‌اسپیس فعال نشده و نباید به‌عنوان انتخاب فوری نشان داده شود.
-          {% elif model_state == 'policy' or model_state == 'policy_disabled' or model_state == 'disabled' or model_state == 'admin_disabled' %}
-            این وضعیت از تنظیمات دسترسی یا مدیریت می‌آید و به‌عنوان گزینه خرید یا ارتقا نمایش داده نمی‌شود.
-          {% elif model_state == 'deprecated' %}
-            اگر هنوز برای کار خاصی به این مدل رجوع می‌کنید، صفحه وضعیت پایین توضیح می‌دهد چه زمانی بهتر است سراغ جایگزین بروید.
-          {% else %}
-            این صفحه کمک می‌کند قبل از شروع کار، تناسب مدل با نوع درخواست، محدودیت‌ها و وضعیت دسترسی را یک‌جا ببینید.
+          {% if model.secondary_cta_url %}
+            <a href="{{ model.secondary_cta_url }}" class="btn-secondary w-full">
+              {{ model.secondary_cta_label|default:"مقایسه با گزینه‌های دیگر" }}
+            </a>
+          {% elif model.detail_back_url %}
+            <a href="{{ model.detail_back_url }}" class="btn-secondary w-full">
+              {{ model.detail_back_label|default:"بازگشت به کاتالوگ مدل‌ها" }}
+            </a>
           {% endif %}
         </div>
+
+        <p class="text-xs leading-6 text-slate-500 dark:text-slate-400">
+          {% if model.hero_note %}
+            {{ model.hero_note }}
+          {% elif model.availability_note %}
+            {{ model.availability_note }}
+          {% else %}
+            این صفحه باید قبل از ورود به اجرا، تناسب مدل، محدودیت‌ها و وضعیت واقعی دسترسی را یک‌جا نشان دهد.
+          {% endif %}
+        </p>
       </div>
     </div>
   </section>

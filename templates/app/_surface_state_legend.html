@@ -1,0 +1,53 @@
+<section class="page-section-card p-4 sm:p-5">
+  <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+    <div class="min-w-0">
+      <div class="text-xs font-bold text-slate-500 dark:text-slate-400">
+        {{ legend_eyebrow|default:"معنای وضعیت‌ها" }}
+      </div>
+      <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">
+        {{ legend_title|default:"هر وضعیت دقیقاً چه معنی‌ای دارد؟" }}
+      </h2>
+      <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
+        {{ legend_body|default:"همه این صفحه‌ها از همین زبان مشترک برای توضیح دسترسی، چرخه عمر و محدودیت‌ها استفاده می‌کنند." }}
+      </p>
+    </div>
+    {% if legend_note %}
+      <div class="text-xs leading-6 text-slate-500 dark:text-slate-400">{{ legend_note }}</div>
+    {% endif %}
+  </div>
+
+  <div class="state-legend mt-4">
+    <article class="state-legend__item">
+      {% include 'app/_entitlement_status_badge.html' with entitlement_state='available' %}
+      <p class="state-legend__copy">همین حالا در زمینه فعلی می‌توانید وارد جزئیات یا مسیر اجرا شوید.</p>
+    </article>
+    <article class="state-legend__item">
+      {% include 'app/_entitlement_status_badge.html' with entitlement_state='current' %}
+      <p class="state-legend__copy">این گزینه همین حالا در زمینه یا مسیر فعلی شما انتخاب شده است.</p>
+    </article>
+    <article class="state-legend__item">
+      {% include 'app/_entitlement_status_badge.html' with entitlement_state='locked' %}
+      <p class="state-legend__copy">قابل مشاهده است اما برای استفاده کامل به سطح دسترسی بالاتری نیاز دارد.</p>
+    </article>
+    <article class="state-legend__item">
+      {% include 'app/_entitlement_status_badge.html' with entitlement_state='workspace' %}
+      <p class="state-legend__copy">محدودیت از تنظیمات همین ورک‌اسپیس یا مسیر فعلی می‌آید، نه لزوماً از پلن.</p>
+    </article>
+    <article class="state-legend__item">
+      {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' %}
+      <p class="state-legend__copy">سیاست دسترسی یا تصمیم مدیریتی اجازه استفاده مستقیم را نمی‌دهد.</p>
+    </article>
+    <article class="state-legend__item">
+      {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' %}
+      <p class="state-legend__copy">در این سطح یا مسیر، راه استفاده مستقیمی برای آن ثبت نشده است.</p>
+    </article>
+    <article class="state-legend__item">
+      {% include 'app/_entitlement_status_badge.html' with entitlement_state='archived' %}
+      <p class="state-legend__copy">برای سابقه نگه داشته شده و دیگر در جریان اصلی شروع کار پیشنهاد نمی‌شود.</p>
+    </article>
+    <article class="state-legend__item">
+      {% include 'app/_entitlement_status_badge.html' with entitlement_state='deprecated' %}
+      <p class="state-legend__copy">هنوز ممکن است دیده شود، اما برای شروع جدید بهتر است سراغ گزینه تازه‌تر بروید.</p>
+    </article>
+  </div>
+</section>

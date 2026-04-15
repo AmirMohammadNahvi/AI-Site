@@ -7,16 +7,16 @@
   <div class="space-y-6">
     {% include 'app/_model_detail_hero.html' with model=model current_workspace=current_workspace current_plan=current_plan %}
 
-    <section class="grid gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(18.5rem,0.88fr)]">
+    <section class="grid gap-4 xl:grid-cols-[minmax(0,1.08fr)_minmax(18.5rem,0.92fr)]">
       <div class="space-y-4">
-        <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+        <section class="page-section-card p-4 sm:p-5">
           <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div class="min-w-0">
-              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">خلاصه مدل</div>
+              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">خلاصه انتخاب</div>
               <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">این مدل برای چه جور کاری انتخاب بهتری است؟</h2>
             </div>
             {% if model.category_label %}
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ model.category_label }}</span>
+              <span class="soft-chip px-3 py-1 text-[11px]">{{ model.category_label }}</span>
             {% endif %}
           </div>
 
@@ -25,66 +25,52 @@
           </p>
 
           {% if model.badges %}
-            <div class="mt-4 flex flex-wrap gap-2">
+            <div class="surface-meta-list mt-4 text-[11px] font-bold text-slate-500 dark:text-slate-400">
               {% for badge in model.badges %}
-                <span class="rounded-full border border-slate-200/80 bg-slate-50/90 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300">
-                  {{ badge.label|default:badge }}
-                </span>
+                <span class="soft-chip px-3 py-1">{{ badge.label|default:badge }}</span>
               {% endfor %}
             </div>
           {% endif %}
-        </section>
 
-        <section class="rounded-[1.8rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
-          <div class="grid gap-4 lg:grid-cols-2">
-            <div class="rounded-[1.4rem] border border-emerald-200/80 bg-emerald-50/80 p-4 dark:border-emerald-500/20 dark:bg-emerald-500/10">
-              <div class="text-xs font-bold text-emerald-700 dark:text-emerald-300">نقاط قوت</div>
-              <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">کجا به شما کمک بیشتری می‌کند</div>
-
+          <div class="surface-slab-grid mt-5">
+            <article class="surface-slab" data-tone="success">
+              <div class="surface-slab__eyebrow">نقاط قوت</div>
+              <div class="surface-slab__title">کجا بیشتر به شما کمک می‌کند</div>
               {% if model.strengths %}
-                <div class="mt-4 space-y-2">
+                <div class="surface-bullet-list">
                   {% for item in model.strengths %}
-                    <div class="rounded-[1.1rem] bg-white/75 px-3 py-3 text-sm leading-7 text-slate-700 dark:bg-slate-950/40 dark:text-slate-200">
-                      {{ item.label|default:item }}
-                    </div>
+                    <div class="surface-bullet">{{ item.label|default:item }}</div>
                   {% endfor %}
                 </div>
               {% else %}
-                <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                  {{ model.strengths_summary|default:'اگر درخواست شما روشن، مشخص و خروجی‌محور باشد، این بخش می‌تواند روشن کند چرا این مدل انتخاب مناسبی است.' }}
-                </p>
+                <p class="surface-slab__body">{{ model.strengths_summary|default:'اگر خروجی موردنظر شما روشن و نوع مسئله مشخص باشد، این بخش باید دلیل انتخاب این مدل را روشن کند.' }}</p>
               {% endif %}
-            </div>
+            </article>
 
-            <div class="rounded-[1.4rem] border border-amber-200/80 bg-amber-50/80 p-4 dark:border-amber-500/20 dark:bg-amber-500/10">
-              <div class="text-xs font-bold text-amber-700 dark:text-amber-300">محدودیت‌ها</div>
-              <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">کجا بهتر است انتظار را دقیق نگه دارید</div>
-
+            <article class="surface-slab" data-tone="warning">
+              <div class="surface-slab__eyebrow">مرزها و محدودیت‌ها</div>
+              <div class="surface-slab__title">کجا بهتر است انتظار را دقیق‌تر نگه دارید</div>
               {% if model.limitations %}
-                <div class="mt-4 space-y-2">
+                <div class="surface-bullet-list">
                   {% for item in model.limitations %}
-                    <div class="rounded-[1.1rem] bg-white/75 px-3 py-3 text-sm leading-7 text-slate-700 dark:bg-slate-950/40 dark:text-slate-200">
-                      {{ item.label|default:item }}
-                    </div>
+                    <div class="surface-bullet">{{ item.label|default:item }}</div>
                   {% endfor %}
                 </div>
               {% else %}
-                <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                  {{ model.limitations_summary|default:'اگر کار شما به دقت، دامنه یا رفتار متفاوتی نیاز دارد، همین بخش باید کمک کند سریع‌تر متوجه شوید آیا این مدل مناسب نیست.' }}
-                </p>
+                <p class="surface-slab__body">{{ model.limitations_summary|default:'اگر کار شما به دامنه، دقت یا رفتار متفاوتی نیاز دارد، همین‌جا باید سریع‌تر متوجه شوید آیا این مدل مناسب نیست.' }}</p>
               {% endif %}
-            </div>
+            </article>
           </div>
         </section>
 
-        {% include 'app/_model_capability_list.html' with capabilities=model.capabilities capability_title='قابلیت‌های پشتیبانی‌شده در FaralYar' capability_caption=model.capabilities_caption|default:'این فهرست قرار نیست ادعاهای خام فنی را تکرار کند. فقط چیزهایی را نشان می‌دهد که در تجربه محصولی FaralYar برای شما معنا دارد.' capability_badge='قابلیت‌های مدل' capability_empty_title='هنوز قابلیت مشخصی برای این مدل ثبت نشده است' capability_empty_body='وقتی قابلیت‌های این مدل آماده نمایش باشند، همین بخش آن‌ها را به زبان محصولی و قابل تصمیم‌گیری نشان می‌دهد.' %}
+        {% include 'app/_model_capability_list.html' with capabilities=model.capabilities capability_title='قابلیت‌های پشتیبانی‌شده در FaralYar' capability_caption=model.capabilities_caption|default:'این فهرست فقط چیزهایی را نشان می‌دهد که در تجربه محصولی FaralYar برای شما معنا دارد.' capability_badge='قابلیت‌های مدل' capability_empty_title='هنوز قابلیت مشخصی برای این مدل ثبت نشده است' capability_empty_body='وقتی قابلیت‌های این مدل آماده نمایش باشند، همین‌جا با زبان محصولی و قابل تصمیم‌گیری دیده می‌شوند.' %}
       </div>
 
       <div class="space-y-4">
-        {% include 'app/_model_use_card.html' with model=model model_use_context=model_use_context state=model.availability_state title="این مدل را کجا می‌توانید وارد جریان کار کنید؟" body=model.use_summary|default:"این صفحه برای شناخت تناسب و وضعیت دسترسی مدل است. برای استفاده واقعی، باید آن را داخل یک دستیار، اسپیس یا مسیر گفتگوی قابل استفاده انتخاب کنید." helper=model.use_helper|default:"اگر یک گفتگوی فعال دارید، از همان زمینه ادامه دهید. اگر هنوز مقصد اجرا مشخص نیست، ابتدا مسیر اجرا را انتخاب کنید." primary_cta_url=model.primary_cta_url primary_cta_label=model.primary_cta_label|default:"مشاهده مسیرهای اجرا" secondary_cta_url=model.secondary_cta_url|default:model.detail_back_url secondary_cta_label=model.secondary_cta_label|default:model.detail_back_label|default:"بازگشت" %}
+        {% include 'app/_model_use_card.html' with model=model model_use_context=model_use_context state=model.availability_state title="این مدل را از کجا وارد جریان کار می‌کنید؟" body=model.use_summary|default:"این صفحه برای شناخت تناسب و وضعیت دسترسی مدل است. برای استفاده واقعی، باید آن را داخل یک دستیار، اسپیس یا مسیر گفتگوی قابل استفاده انتخاب کنید." helper=model.use_helper|default:"اگر یک گفتگوی فعال دارید، از همان زمینه ادامه دهید. اگر هنوز مقصد اجرا مشخص نیست، ابتدا مسیر اجرا را انتخاب کنید." primary_cta_url=model.primary_cta_url primary_cta_label=model.primary_cta_label|default:"مشاهده مسیرهای اجرا" secondary_cta_url=model.secondary_cta_url|default:model.detail_back_url secondary_cta_label=model.secondary_cta_label|default:model.detail_back_label|default:"بازگشت" %}
 
         {% if conversation_entry_context or current_space or current_conversation %}
-          {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="اگر می‌خواهید همین حالا وارد اجرا شوید" body="مدل به‌تنهایی گفتگو را شروع نمی‌کند. یکی از مسیرهای آماده را انتخاب کنید تا همان‌جا مدل معنا پیدا کند." helper="اگر این مدل در زمینه فعلی محدود باشد، از همین کارت فقط مسیرهای واقعاً قابل استفاده نمایش داده می‌شوند." %}
+          {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="اگر می‌خواهید همین حالا وارد اجرا شوید" body="مدل به‌تنهایی گفتگو را شروع نمی‌کند. یک مسیر آماده را انتخاب کنید تا همان‌جا مدل معنا پیدا کند و در زمینه درست اجرا شود." helper="اگر این مدل در زمینه فعلی محدود باشد، فقط مسیرهای واقعاً قابل استفاده نمایش داده می‌شوند." %}
         {% endif %}
 
         {% include 'app/_model_availability_panel.html' with model=model current_workspace=current_workspace current_plan=current_plan %}

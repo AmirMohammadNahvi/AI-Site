@@ -5,38 +5,42 @@
 
 {% block app_content %}
   <div class="space-y-6">
-    <section class="relative overflow-hidden rounded-[1.9rem] border border-slate-200/80 bg-white/80 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
-      <div class="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_52%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.12),transparent_42%)]"></div>
-
-      <div class="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-        <div class="min-w-0 max-w-3xl">
-          <div class="flex flex-wrap gap-2">
+    <section class="page-hero-card relative overflow-hidden p-4 sm:p-5 lg:p-6">
+      <div class="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+        <div class="min-w-0">
+          <div class="surface-meta-list">
             <span class="badge">مرکز حافظه</span>
             {% if memory_scope_label %}
-              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ memory_scope_label }}</span>
+              <span class="soft-chip px-3 py-1 text-[11px]">{{ memory_scope_label }}</span>
             {% endif %}
           </div>
 
-          <h1 class="mt-3 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
+          <h1 class="mt-4 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
             {{ memory_page_title|default:"حافظه‌های ذخیره‌شده" }}
           </h1>
 
           <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
-            {{ memory_page_intro|default:"حافظه در FaralYar یک ویژگی روشن، قابل‌مشاهده و محدود به دامنه مشخص است. این صفحه برای درک وضعیت فعال، دیدن موارد ذخیره‌شده و حذف آن‌ها طراحی شده است؛ نه برای گفتگو و نه برای ساخت خودکار حافظه." }}
+            {{ memory_page_intro|default:"حافظه در FaralYar یک ویژگی روشن، قابل مشاهده و محدود به دامنه مشخص است. این صفحه برای درک وضعیت فعال، دیدن موارد ذخیره‌شده و حذف آن‌ها طراحی شده است؛ نه برای گفتگو و نه برای ساخت خودکار حافظه." }}
           </p>
 
-          <div class="mt-4 rounded-[1.35rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-300">
-            {{ memory_page_hint|default:"هر چیزی که در این صفحه می‌بینید باید روشن و قابل توضیح باشد. اگر حافظه‌ای ذخیره نشده باشد، یا دسترسی آن محدود باشد، وضعیت آن مستقیم و بدون ابهام نمایش داده می‌شود." }}
-          </div>
+          <p class="mt-3 rounded-[1.35rem] border border-slate-200/80 bg-white/80 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/35 dark:text-slate-300">
+            {{ memory_page_hint|default:"هر چیزی که در این صفحه می‌بینید باید روشن و قابل توضیح باشد. اگر حافظه‌ای ذخیره نشده باشد یا دسترسی آن محدود باشد، وضعیت آن مستقیم و بدون ابهام نمایش داده می‌شود." }}
+          </p>
         </div>
 
-        <div class="w-full lg:w-auto lg:min-w-[16rem]">
-          <div class="rounded-[1.35rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-950/40">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">اعتماد و شفافیت</div>
-            <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-              {{ memory_privacy_note|default:"حافظه فقط وقتی معنا دارد که برای شما قابل‌فهم، قابل‌کنترل و متناسب با دامنه دسترسی‌تان باشد." }}
+        <div class="space-y-4">
+          <section class="surface-slab" data-tone="muted">
+            <div class="surface-slab__eyebrow">اعتماد و شفافیت</div>
+            <div class="surface-slab__title">حافظه فقط وقتی معنی دارد که قابل فهم و قابل کنترل باشد</div>
+            <p class="surface-slab__body">
+              {{ memory_privacy_note|default:"این مرکز باید به شما نشان دهد چه چیزی ذخیره شده، در چه دامنه‌ای اثر دارد، و چطور می‌توانید آن را مدیریت یا حذف کنید." }}
             </p>
-          </div>
+            <div class="surface-bullet-list">
+              <div class="surface-bullet">اگر چیزی ذخیره نشده باشد، این صفحه باید خالی‌بودن را صریح بگوید.</div>
+              <div class="surface-bullet">اگر دسترسی محدود باشد، باید فرق بین پلن، سیاست و خاموش‌بودن روشن بماند.</div>
+              <div class="surface-bullet">این صفحه حافظه‌ای خلق نمی‌کند؛ فقط آنچه وجود دارد را نشان می‌دهد.</div>
+            </div>
+          </section>
         </div>
       </div>
     </section>
@@ -48,11 +52,11 @@
     {% elif memory_state == 'disabled' %}
       {% include 'app/_memory_blocked_state.html' with memory_state='disabled' memory_blocked=memory_blocked %}
     {% else %}
-      <section class="rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
+      <section class="page-section-card p-4 sm:p-5 lg:p-6">
         <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div class="min-w-0">
             <div class="text-xs font-bold text-slate-500 dark:text-slate-400">آیتم‌های ذخیره‌شده</div>
-            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">حافظه‌های قابل‌مدیریت</h2>
+            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">حافظه‌های قابل مدیریت</h2>
             <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
               {{ memory_items_intro|default:"این بخش فقط مواردی را نشان می‌دهد که واقعاً به‌عنوان حافظه ذخیره شده‌اند. هر مورد را می‌توانید مرور، حذف یا در صورت نیاز همه را پاک کنید." }}
             </p>
@@ -85,13 +89,13 @@
         {% if memory_groups %}
           <div class="mt-5 space-y-4">
             {% for group in memory_groups %}
-              <section class="rounded-[1.7rem] border border-slate-200/80 bg-slate-50/72 p-3 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-4">
+              <section class="page-section-card p-4 sm:p-5">
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div class="min-w-0">
                     <div class="flex flex-wrap items-center gap-2">
                       <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ group.eyebrow|default:"گروه حافظه" }}</div>
                       {% if group.badge %}
-                        <span class="rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold text-slate-600 dark:bg-slate-950/55 dark:text-slate-300">{{ group.badge }}</span>
+                        <span class="soft-chip px-3 py-1 text-[11px]">{{ group.badge }}</span>
                       {% endif %}
                     </div>
                     <h3 class="mt-1 text-base font-black text-slate-900 dark:text-white">{{ group.title }}</h3>
@@ -101,11 +105,11 @@
                   </div>
 
                   {% if group.count or group.count == 0 %}
-                    <span class="rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ group.count }} مورد</span>
+                    <span class="soft-chip px-3 py-1 text-[11px]">{{ group.count }} مورد</span>
                   {% endif %}
                 </div>
 
-                <div class="mt-4 space-y-3">
+                <div class="surface-table-list mt-4">
                   {% for memory_item in group.items %}
                     {% include 'app/_memory_item_row.html' with memory_item=memory_item %}
                   {% empty %}

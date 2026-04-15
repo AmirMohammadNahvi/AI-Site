@@ -1,105 +1,124 @@
 {% extends 'app/layouts/app_shell.html' %}
 
 {% block title %}{{ models_page_title|default:'مدل‌ها' }} | {{ site_settings.site_name_fa }}{% endblock %}
-{% block meta_description %}{{ models_page_description|default:'مرور مدل‌های قابل استفاده در FaralYar با تاکید بر تناسب کاری، قابلیت‌های محصولی و وضعیت دسترسی در همین ورک‌اسپیس.' }}{% endblock %}
+{% block meta_description %}{{ models_page_description|default:'مرور مدل‌های قابل استفاده در FaralYar با تاکید بر تناسب کاری، قابلیت‌های محصولی و وضعیت دسترسی.' }}{% endblock %}
 
 {% block app_content %}
   <div class="space-y-6" x-data="{ activeFilter: '{{ models_active_filter|default:'all'|escapejs }}' }">
-    <section class="relative overflow-hidden rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5 lg:p-6">
-      <div class="absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.16),transparent_52%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.12),transparent_42%)]"></div>
-
-      <div class="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-        <div class="min-w-0 max-w-3xl">
-          <div class="flex flex-wrap gap-2">
+    <section class="page-hero-card relative overflow-hidden p-4 sm:p-5 lg:p-6">
+      <div class="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
+        <div class="min-w-0">
+          <div class="surface-meta-list">
             <span class="badge">{{ models_page_badge|default:'FaralYar v1.5' }}</span>
-            <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-              {{ models_page_context_label|default:'کاتالوگ مدل‌ها' }}
-            </span>
+            <span class="soft-chip px-3 py-1 text-[11px]">{{ models_page_context_label|default:'راهنمای انتخاب مدل' }}</span>
             {% if current_workspace.name %}
-              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">ورک‌اسپیس: {{ current_workspace.name }}</span>
+              <span class="soft-chip px-3 py-1 text-[11px]">ورک‌اسپیس: {{ current_workspace.name }}</span>
             {% endif %}
             {% if current_plan.name %}
-              <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">پلن: {{ current_plan.name }}</span>
+              <span class="soft-chip px-3 py-1 text-[11px]">پلن: {{ current_plan.name }}</span>
             {% endif %}
           </div>
 
-          <h1 class="mt-3 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
+          <h1 class="mt-4 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
             {{ models_page_title|default:'مدل‌ها' }}
           </h1>
 
           <p class="mt-3 text-sm leading-8 text-slate-600 dark:text-slate-300">
-            {{ models_page_intro|default:'این صفحه برای انتخاب آگاهانه مدل است. هر کارت باید روشن کند این مدل برای چه نوع کاری مناسب‌تر است، چه قابلیت‌هایی را در زبان FaralYar خوب پشتیبانی می‌کند، و آیا همین حالا در زمینه فعلی شما قابل استفاده است یا نه.' }}
+            {{ models_page_intro|default:'این صفحه برای انتخاب آگاهانه مدل است. باید روشن کند این مدل برای چه نوع نتیجه‌ای مناسب‌تر است، در زبان محصولی FaralYar چه قابلیت معناداری دارد، و آیا همین حالا در زمینه فعلی شما قابل استفاده است یا نه.' }}
           </p>
 
-          <div class="mt-4 rounded-[1.4rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/40 dark:text-slate-300">
-            {{ models_page_hint|default:'مدل‌هایی که با سیاست یا مدیریت غیرفعال شده‌اند، مثل گزینه خرید یا ارتقا نمایش داده نمی‌شوند. اگر مدلی فقط در زمینه فعلی شما در دسترس نباشد، توضیح آرام و مشخص خودش را خواهد داشت.' }}
-          </div>
+          <p class="mt-3 rounded-[1.35rem] border border-slate-200/80 bg-white/80 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/35 dark:text-slate-300">
+            {{ models_page_hint|default:'مدل‌هایی که با سیاست یا تنظیمات مدیریتی غیرفعال شده‌اند نباید شبیه گزینه خرید یا ارتقا دیده شوند. اگر مدل فقط در زمینه فعلی شما در دسترس نیست، دلیل آن همین‌جا باید آرام و دقیق توضیح داده شود.' }}
+          </p>
 
-          <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-bold">
-            {% if models_summary_label %}
-              <span class="rounded-full bg-white/88 px-3 py-1.5 text-slate-600 dark:bg-slate-950/55 dark:text-slate-300">{{ models_summary_label }}</span>
-            {% endif %}
-            {% if models_available_label %}
-              <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">{{ models_available_label }}</span>
-            {% endif %}
-            {% if models_upgradeable_label %}
-              <span class="rounded-full bg-sky-50 px-3 py-1.5 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300">{{ models_upgradeable_label }}</span>
-            {% endif %}
-            {% if models_unavailable_label %}
-              <span class="rounded-full bg-slate-100 px-3 py-1.5 text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ models_unavailable_label }}</span>
-            {% endif %}
+          <div class="surface-metric-grid mt-5" data-columns="3">
+            <article class="surface-stat">
+              <div class="surface-stat__label">مبنای انتخاب</div>
+              <div class="surface-stat__value">تناسب کاری قبل از مشخصات خام</div>
+              <p class="surface-stat__hint">مدل را با نوع خروجی و شیوه کارتان انتخاب کنید، نه با انبوهی از واژه‌های فنی.</p>
+            </article>
+            <article class="surface-stat">
+              <div class="surface-stat__label">وضعیت باید چه بگوید؟</div>
+              <div class="surface-stat__value">الآن واقعاً چه کاری می‌توانید بکنید</div>
+              <p class="surface-stat__hint">آماده استفاده است، به ارتقا نیاز دارد، یا در همین زمینه مجاز نیست.</p>
+            </article>
+            <article class="surface-stat">
+              <div class="surface-stat__label">آنچه نباید رخ دهد</div>
+              <div class="surface-stat__value">تبدیل‌شدن صفحه به کاتالوگ مکانیکی</div>
+              <p class="surface-stat__hint">این صفحه باید تصمیم‌ساز باشد، نه انبار کارت‌های شبیه‌به‌هم.</p>
+            </article>
           </div>
         </div>
 
-        <div class="w-full lg:w-auto lg:min-w-[17rem]">
-          <div class="rounded-[1.4rem] border border-slate-200/80 bg-slate-50/85 p-4 dark:border-slate-700/70 dark:bg-slate-950/40">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">چطور این صفحه را بخوانیم؟</div>
-            <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">
-              {{ models_guide_title|default:'اول تناسب کاری را ببینید، بعد وضعیت دسترسی را' }}
-            </div>
-            <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-              {{ models_guide_body|default:'در FaralYar مدل خوب مدلی است که برای کار شما روشن و مناسب باشد. اگر مدلی برای حساب یا ورک‌اسپیس فعلی آماده نیست، همین صفحه باید دلیل را بدون ابهام و بدون اغراق نشان دهد.' }}
+        <div class="space-y-4">
+          <section class="surface-slab" data-tone="muted">
+            <div class="surface-slab__eyebrow">چطور این فهرست را بخوانید؟</div>
+            <div class="surface-slab__title">{{ models_guide_title|default:'اول تناسب کاری را ببینید، بعد وضعیت دسترسی را' }}</div>
+            <p class="surface-slab__body">
+              {{ models_guide_body|default:'در FaralYar مدل خوب مدلی است که برای کار شما روشن و مناسب باشد. اگر مدلی برای حساب یا ورک‌اسپیس فعلی آماده نیست، همین صفحه باید دلیل آن را بدون اغراق و بدون ابهام نشان دهد.' }}
             </p>
+            <div class="surface-bullet-list">
+              <div class="surface-bullet">به Fit Statement هر مدل نگاه کنید تا بفهمید برای چه خروجی‌ای مناسب است.</div>
+              <div class="surface-bullet">اگر وضعیت محدود است، دلیل آن باید همان‌جا قابل فهم باشد.</div>
+              <div class="surface-bullet">وقتی تصمیم گرفتید، تازه از همان نقطه وارد مسیر اجرا شوید.</div>
+            </div>
+          </section>
+
+          <div class="surface-meta-list text-[11px] font-bold text-slate-500 dark:text-slate-400">
+            {% if models_summary_label %}
+              <span class="meta-chip px-3 py-1">{{ models_summary_label }}</span>
+            {% endif %}
+            {% if models_available_label %}
+              <span class="meta-chip px-3 py-1">{{ models_available_label }}</span>
+            {% endif %}
+            {% if models_upgradeable_label %}
+              <span class="meta-chip px-3 py-1">{{ models_upgradeable_label }}</span>
+            {% endif %}
+            {% if models_unavailable_label %}
+              <span class="meta-chip px-3 py-1">{{ models_unavailable_label }}</span>
+            {% endif %}
           </div>
         </div>
       </div>
     </section>
 
-    <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/72 p-3 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-4">
+    {% include 'app/_surface_state_legend.html' with legend_title="معنای وضعیت‌های مدل" legend_body="همه مدل‌ها با همین زبان مشترک وضعیت‌گذاری می‌شوند تا کاتالوگ، صفحه جزئیات و مسیرهای اجرا از هم جدا حرف نزنند." %}
+
+    <section class="page-section-card p-4 sm:p-5">
       <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div class="min-w-0">
           <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مرور هدفمند</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">فهرست را بر اساس وضعیت استفاده مرور کنید</h2>
+          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white sm:text-lg">فهرست را بر اساس وضعیت فعلی ساده‌تر مرور کنید</h2>
           <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
-            اگر فهرست از قبل مرتب شده باشد، مدل‌های آماده استفاده زودتر دیده می‌شوند. این فیلتر فقط برای ساده‌تر شدن مرور در موبایل و صفحه‌های شلوغ است.
+            فیلترها فقط برای کم‌کردن نویز هستند و قرار نیست حقیقت محصول را عوض کنند.
           </p>
         </div>
       </div>
 
       <div class="horizontal-scroll -mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1">
-        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'all' ? 'border-emerald-200 bg-emerald-50 text-slate-900 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'all'">
+        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'all' ? 'border-slate-900 bg-slate-900 text-white shadow-sm dark:border-white dark:bg-white dark:text-slate-900' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'all'">
           <div class="text-sm font-black">همه</div>
-          <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">مرور کل فهرست</div>
+          <div class="mt-1 text-[11px] opacity-80">کل فهرست</div>
         </button>
 
-        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'available' ? 'border-emerald-200 bg-emerald-50 text-slate-900 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'available'">
+        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'available' ? 'border-slate-900 bg-slate-900 text-white shadow-sm dark:border-white dark:bg-white dark:text-slate-900' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'available'">
           <div class="text-sm font-black">آماده استفاده</div>
-          <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">برای شروع سریع</div>
+          <div class="mt-1 text-[11px] opacity-80">برای شروع سریع</div>
         </button>
 
-        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'upgradeable' ? 'border-sky-200 bg-sky-50 text-slate-900 shadow-sm shadow-sky-100/70 dark:border-sky-500/25 dark:bg-sky-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'upgradeable'">
-          <div class="text-sm font-black">قابل ارتقا</div>
-          <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">اگر بعداً نیاز شد</div>
+        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'upgradeable' ? 'border-slate-900 bg-slate-900 text-white shadow-sm dark:border-white dark:bg-white dark:text-slate-900' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'upgradeable'">
+          <div class="text-sm font-black">نیازمند ارتقا</div>
+          <div class="mt-1 text-[11px] opacity-80">اگر بعداً لازم شد</div>
         </button>
 
-        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'unavailable' ? 'border-slate-300 bg-slate-100 text-slate-900 shadow-sm shadow-slate-100/70 dark:border-slate-600 dark:bg-slate-800 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'unavailable'">
-          <div class="text-sm font-black">فعلاً خارج از دسترس</div>
-          <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">با توضیح زمینه‌ای</div>
+        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'unavailable' ? 'border-slate-900 bg-slate-900 text-white shadow-sm dark:border-white dark:bg-white dark:text-slate-900' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'unavailable'">
+          <div class="text-sm font-black">محدود در این زمینه</div>
+          <div class="mt-1 text-[11px] opacity-80">با توضیح روشن</div>
         </button>
 
-        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'deprecated' ? 'border-rose-200 bg-rose-50 text-slate-900 shadow-sm shadow-rose-100/70 dark:border-rose-500/25 dark:bg-rose-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'deprecated'">
+        <button type="button" class="shrink-0 rounded-[1.2rem] border px-4 py-3 text-right transition" :class="activeFilter === 'deprecated' ? 'border-slate-900 bg-slate-900 text-white shadow-sm dark:border-white dark:bg-white dark:text-slate-900' : 'border-slate-200/80 bg-white/90 text-slate-600 hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white'" @click="activeFilter = 'deprecated'">
           <div class="text-sm font-black">در حال خروج</div>
-          <div class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">برای کار جدید نه</div>
+          <div class="mt-1 text-[11px] opacity-80">برای کار جدید نه</div>
         </button>
       </div>
     </section>
@@ -107,7 +126,7 @@
     {% if model_groups %}
       <div class="space-y-4">
         {% for group in model_groups %}
-          <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
+          <section class="page-section-card p-4 sm:p-5 lg:p-6">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
               <div class="min-w-0">
                 {% if group.eyebrow %}
@@ -123,20 +142,20 @@
               {% endif %}
             </div>
 
-            <div class="mt-4 grid gap-4 xl:grid-cols-2">
+            <div class="catalog-list mt-5">
               {% for model in group.models %}
                 {% with group_state=model.availability_state|default:'available' %}
                   {% if group_state != 'hidden' and group_state != 'admin_disabled' and group_state != 'policy_disabled' %}
                     {% if group_state != 'unavailable' and group_state != 'workspace' or model.availability_note or model.workspace_note or model.plan_note or model.detail_url %}
-                      <div x-cloak x-show="activeFilter === 'all' || (activeFilter === 'available' && '{{ group_state|escapejs }}' === 'available') || (activeFilter === 'upgradeable' && ('{{ group_state|escapejs }}' === 'upgradeable' || '{{ group_state|escapejs }}' === 'locked')) || (activeFilter === 'unavailable' && ('{{ group_state|escapejs }}' === 'unavailable' || '{{ group_state|escapejs }}' === 'workspace')) || (activeFilter === 'deprecated' && '{{ group_state|escapejs }}' === 'deprecated')">
+                      <div x-cloak x-show="activeFilter === 'all' || (activeFilter === 'available' && '{{ group_state|escapejs }}' === 'available') || (activeFilter === 'upgradeable' && ('{{ group_state|escapejs }}' === 'upgradeable' || '{{ group_state|escapejs }}' === 'locked')) || (activeFilter === 'unavailable' && ('{{ group_state|escapejs }}' === 'unavailable' || '{{ group_state|escapejs }}' === 'workspace' || '{{ group_state|escapejs }}' === 'policy' || '{{ group_state|escapejs }}' === 'restricted')) || (activeFilter === 'deprecated' && '{{ group_state|escapejs }}' === 'deprecated')">
                         {% include 'app/_model_card.html' with model=model %}
                       </div>
                     {% endif %}
                   {% endif %}
                 {% endwith %}
               {% empty %}
-                <div class="xl:col-span-2">
-                  {% include 'app/_empty_state.html' with empty_badge='بدون مدل' empty_title='هنوز مدلی برای این دسته ثبت نشده است' empty_body='وقتی این گروه با مدل‌های قابل نمایش پر شود، کارت‌ها از همین ساختار استفاده می‌کنند.' empty_compact=True %}
+                <div>
+                  {% include 'app/_empty_state.html' with empty_badge='بدون مدل' empty_title='هنوز مدلی برای این دسته ثبت نشده است' empty_body='وقتی این گروه با مدل‌های قابل نمایش پر شود، همین فهرست بدون ساختار موازی از آن‌ها استفاده می‌کند.' empty_compact=True %}
                 </div>
               {% endfor %}
             </div>
@@ -144,21 +163,23 @@
         {% endfor %}
       </div>
     {% elif models %}
-      <section class="grid gap-4 xl:grid-cols-2">
-        {% for model in models %}
-          {% with model_state=model.availability_state|default:'available' %}
-            {% if model_state != 'hidden' and model_state != 'admin_disabled' and model_state != 'policy_disabled' %}
-              {% if model_state != 'unavailable' and model_state != 'workspace' or model.availability_note or model.workspace_note or model.plan_note or model.detail_url %}
-                <div x-cloak x-show="activeFilter === 'all' || (activeFilter === 'available' && '{{ model_state|escapejs }}' === 'available') || (activeFilter === 'upgradeable' && ('{{ model_state|escapejs }}' === 'upgradeable' || '{{ model_state|escapejs }}' === 'locked')) || (activeFilter === 'unavailable' && ('{{ model_state|escapejs }}' === 'unavailable' || '{{ model_state|escapejs }}' === 'workspace')) || (activeFilter === 'deprecated' && '{{ model_state|escapejs }}' === 'deprecated')">
-                  {% include 'app/_model_card.html' with model=model %}
-                </div>
+      <section class="page-section-card p-4 sm:p-5 lg:p-6">
+        <div class="catalog-list">
+          {% for model in models %}
+            {% with model_state=model.availability_state|default:'available' %}
+              {% if model_state != 'hidden' and model_state != 'admin_disabled' and model_state != 'policy_disabled' %}
+                {% if model_state != 'unavailable' and model_state != 'workspace' or model.availability_note or model.workspace_note or model.plan_note or model.detail_url %}
+                  <div x-cloak x-show="activeFilter === 'all' || (activeFilter === 'available' && '{{ model_state|escapejs }}' === 'available') || (activeFilter === 'upgradeable' && ('{{ model_state|escapejs }}' === 'upgradeable' || '{{ model_state|escapejs }}' === 'locked')) || (activeFilter === 'unavailable' && ('{{ model_state|escapejs }}' === 'unavailable' || '{{ model_state|escapejs }}' === 'workspace' || '{{ model_state|escapejs }}' === 'policy' || '{{ model_state|escapejs }}' === 'restricted')) || (activeFilter === 'deprecated' && '{{ model_state|escapejs }}' === 'deprecated')">
+                    {% include 'app/_model_card.html' with model=model %}
+                  </div>
+                {% endif %}
               {% endif %}
-            {% endif %}
-          {% endwith %}
-        {% endfor %}
+            {% endwith %}
+          {% endfor %}
+        </div>
       </section>
     {% else %}
-      {% include 'app/_empty_state.html' with empty_badge='بدون مدل' empty_title=models_empty_title|default:'هنوز مدلی برای نمایش اینجا آماده نشده است' empty_body=models_empty_body|default:'وقتی کاتالوگ مدل‌ها برای این حساب یا ورک‌اسپیس تکمیل شود، از همین‌جا می‌توانید مدل مناسب را مرور و مقایسه کنید.' empty_hint=models_empty_hint|default:'این قالب با داده‌های ساده مدل‌ها یا گروه‌های مدل کار می‌کند؛ فقط کافی است اطلاعات لازم به آن برسد.' %}
+      {% include 'app/_empty_state.html' with empty_badge='بدون مدل' empty_title=models_empty_title|default:'هنوز مدلی برای نمایش اینجا آماده نشده است' empty_body=models_empty_body|default:'وقتی کاتالوگ مدل‌ها برای این حساب یا ورک‌اسپیس تکمیل شود، از همین‌جا می‌توانید مدل مناسب را با توضیح روشن و وضعیت واقعی مرور کنید.' empty_hint=models_empty_hint|default:'این قالب با فهرست ساده مدل‌ها یا گروه‌های مدل کار می‌کند و قرار نیست به کاتالوگ خام تبدیل شود.' %}
     {% endif %}
   </div>
 {% endblock %}

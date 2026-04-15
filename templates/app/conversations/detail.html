@@ -3,136 +3,183 @@
 {% block title %}{{ conversation.title|default:conversation_title|default:"گفتگو" }} | {{ site_settings.site_name_fa }}{% endblock %}
 
 {% block app_shell_header_extra %}
-  <div class="space-y-3">
+  <div class="conversation-stage-header">
     {% include 'app/_context_bar.html' %}
-    {% include 'app/_migration_banner.html' %}
-
-    {% if conversation_assistant_notice %}
-      <section class="app-shell-inline-note text-sm leading-7 text-slate-600 dark:text-slate-300">
-        {{ conversation_assistant_notice }}
-      </section>
-    {% endif %}
   </div>
 {% endblock %}
 
 {% block app_content %}
-  <div class="space-y-4">
-    {% if conversation_loading %}
-      <section class="chat-thread-area overflow-hidden rounded-[1.8rem] border border-slate-200/80 bg-white/72 dark:border-slate-700/70 dark:bg-slate-900/45">
-        <div class="mx-auto flex w-full max-w-4xl flex-col gap-4 px-4 py-6 sm:px-6">
-          <div class="mr-auto max-w-[88%] sm:max-w-[76%]">
-            <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/90 p-4 dark:border-slate-700/70 dark:bg-slate-900/70">
-              <div class="h-3 w-20 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
-              <div class="mt-3 space-y-2">
-                <div class="h-3 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
-                <div class="h-3 w-5/6 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
-                <div class="h-3 w-2/3 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
-              </div>
-            </div>
-          </div>
+  <div class="conversation-stage">
+    <div class="xl:hidden">
+      {% include 'app/_conversation_rail.html' with conversation_rail_mode='execution' %}
+    </div>
 
-          <div class="ml-auto max-w-[82%] sm:max-w-[68%]">
-            <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/90 p-4 dark:border-slate-700/70 dark:bg-slate-900/70">
-              <div class="mr-auto h-3 w-16 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
-              <div class="mt-3 space-y-2">
-                <div class="h-3 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
-                <div class="h-3 w-4/5 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
-              </div>
-            </div>
-          </div>
+    <section class="conversation-stage-shell">
+      <div class="conversation-stage-notes">
+        {% include 'app/_migration_banner.html' %}
 
-          <div class="mr-auto max-w-[86%] sm:max-w-[72%]">
-            <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/90 p-4 dark:border-slate-700/70 dark:bg-slate-900/70">
-              <div class="h-3 w-24 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
-              <div class="mt-3 space-y-2">
-                <div class="h-3 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
-                <div class="h-3 w-5/6 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
-                <div class="h-3 w-1/2 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    {% else %}
-      <section class="chat-thread-area overflow-hidden rounded-[1.8rem] border border-slate-200/80 bg-white/72 dark:border-slate-700/70 dark:bg-slate-900/45">
-        {% if conversation_messages %}
-          <div class="mx-auto flex w-full max-w-4xl flex-col gap-5 px-4 py-6 sm:px-6">
-            {% for message in conversation_messages %}
-              <article class="{% if message.role == 'assistant' %}mr-auto max-w-[94%] sm:max-w-[80%]{% elif message.role == 'user' %}ml-auto max-w-[94%] sm:max-w-[75%]{% elif message.is_user %}ml-auto max-w-[94%] sm:max-w-[75%]{% else %}mr-auto max-w-[94%] sm:max-w-[80%]{% endif %}">
-                <div class="{% if message.role == 'user' or message.is_user %}chat-message user{% else %}chat-message assistant{% endif %}">
-                  <div class="text-[11px] opacity-60">
-                    {% if message.label %}
-                      {{ message.label }}
-                    {% elif message.role_label %}
-                      {{ message.role_label }}
-                    {% elif message.role %}
-                      {{ message.role }}
-                    {% else %}
-                      پیام
-                    {% endif %}
-                  </div>
-
-                  {% if message.html %}
-                    <div class="mt-2 leading-8">{{ message.html|safe }}</div>
-                  {% else %}
-                    <div class="mt-2 whitespace-pre-line">{{ message.content }}</div>
-                  {% endif %}
-
-                  {% if message.attachment_url %}
-                    <a href="{{ message.attachment_url }}" class="mt-3 inline-flex text-xs font-bold underline">
-                      {{ message.attachment_label|default:"فایل پیوست" }}
-                    </a>
-                  {% elif message.attachment %}
-                    <a href="{{ message.attachment.url }}" class="mt-3 inline-flex text-xs font-bold underline">
-                      {{ message.attachment.name|default:"فایل پیوست" }}
-                    </a>
-                  {% endif %}
-                </div>
-              </article>
-            {% endfor %}
-          </div>
-        {% else %}
-          <div class="mx-auto flex min-h-[24rem] w-full max-w-4xl flex-col items-center justify-center px-6 py-12 text-center">
-            <div class="chat-empty-mark">
-              <div class="chat-empty-core"></div>
-              <div class="chat-empty-ring ring-one"></div>
-              <div class="chat-empty-ring ring-two"></div>
-            </div>
-            <h2 class="mt-8 text-2xl font-black text-slate-900 dark:text-white sm:text-3xl">
-              هنوز پیامی در این گفتگو ثبت نشده است
-            </h2>
-            <p class="mt-4 max-w-2xl text-sm leading-8 text-slate-600 dark:text-slate-300">
-              از بخش نوشتن پایین صفحه برای شروع یا ادامه همین گفتگو استفاده کنید. اگر موضوع تازه‌ای دارید، آن را در گفتگوی جداگانه همان اسپیس نگه دارید.
+        {% if conversation_is_archived %}
+          <section class="conversation-status-note conversation-status-note--archived">
+            <div class="conversation-status-note__eyebrow">حالت گفتگو</div>
+            <p>
+              این گفتگو در آرشیو است و فعلاً فقط برای مرور، استناد و بازگشت به سابقه باز می‌شود.
             </p>
-          </div>
+          </section>
         {% endif %}
-      </section>
-    {% endif %}
 
-    {% include 'app/_composer.html' %}
+        {% if conversation_assistant_notice %}
+          <section class="conversation-status-note conversation-status-note--assistant">
+            <div class="conversation-status-note__eyebrow">یادداشت اجرا</div>
+            <p>{{ conversation_assistant_notice }}</p>
+          </section>
+        {% endif %}
+      </div>
 
-    {% if conversation_entry_context %}
-      <section class="app-shell-inline-note">
-        <div class="text-sm font-black text-slate-900 dark:text-white">اگر موضوع تازه‌ای دارید، آن را جدا نگه دارید</div>
-        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
-          ادامه این صفحه برای اجرای همین گفتگو است. فقط وقتی زمینه تازه یا مقصد دیگری لازم دارید از مسیرهای زیر استفاده کنید.
-        </p>
-        <div class="app-shell-inline-actions">
-          {% if conversation_entry_context.new_cta_url %}
+      {% if conversation_loading %}
+        <section class="chat-thread-area conversation-thread-panel overflow-hidden">
+          <div class="conversation-thread conversation-thread--loading">
+            <article class="chat-turn chat-turn--assistant">
+              <div class="chat-turn-meta">
+                <div class="chat-turn-eyebrow">دستیار</div>
+                <div class="chat-turn-rule"></div>
+              </div>
+              <div class="chat-turn-bubble">
+                <div class="h-3 w-20 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                <div class="mt-4 space-y-3">
+                  <div class="h-3 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                  <div class="h-3 w-5/6 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                  <div class="h-3 w-2/3 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="chat-turn chat-turn--user">
+              <div class="chat-turn-meta">
+                <div class="chat-turn-rule"></div>
+                <div class="chat-turn-eyebrow">شما</div>
+              </div>
+              <div class="chat-turn-bubble">
+                <div class="mr-auto h-3 w-16 animate-pulse rounded-full bg-slate-300/70 dark:bg-slate-600"></div>
+                <div class="mt-4 space-y-3">
+                  <div class="h-3 animate-pulse rounded-full bg-slate-300/70 dark:bg-slate-600"></div>
+                  <div class="h-3 w-4/5 animate-pulse rounded-full bg-slate-300/70 dark:bg-slate-600"></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="chat-turn chat-turn--assistant">
+              <div class="chat-turn-meta">
+                <div class="chat-turn-eyebrow">دستیار</div>
+                <div class="chat-turn-rule"></div>
+              </div>
+              <div class="chat-turn-bubble">
+                <div class="h-3 w-24 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                <div class="mt-4 space-y-3">
+                  <div class="h-3 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                  <div class="h-3 w-5/6 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                  <div class="h-3 w-1/2 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      {% else %}
+        <section class="chat-thread-area conversation-thread-panel overflow-hidden">
+          {% if conversation_messages %}
+            <div class="conversation-thread-scroll">
+              <div class="conversation-thread">
+                {% for message in conversation_messages %}
+                  <article class="chat-turn {% if message.role == 'user' or message.is_user %}chat-turn--user{% else %}chat-turn--assistant{% endif %}">
+                    <div class="chat-turn-meta">
+                      {% if message.role == 'user' or message.is_user %}
+                        <div class="chat-turn-rule"></div>
+                      {% endif %}
+                      <div class="chat-turn-eyebrow">
+                        {% if message.label %}
+                          {{ message.label }}
+                        {% elif message.role_label %}
+                          {{ message.role_label }}
+                        {% elif message.role == 'user' or message.is_user %}
+                          شما
+                        {% elif message.role %}
+                          {{ message.role }}
+                        {% else %}
+                          پیام
+                        {% endif %}
+                      </div>
+                      {% if message.role != 'user' and not message.is_user %}
+                        <div class="chat-turn-rule"></div>
+                      {% endif %}
+                    </div>
+
+                    <div class="chat-turn-bubble">
+                      {% if message.html %}
+                        <div class="chat-turn-content">{{ message.html|safe }}</div>
+                      {% else %}
+                        <div class="chat-turn-content whitespace-pre-line">{{ message.content }}</div>
+                      {% endif %}
+
+                      {% if message.attachment_url %}
+                        <div class="chat-turn-attachment">
+                          <a href="{{ message.attachment_url }}">{{ message.attachment_label|default:"فایل پیوست" }}</a>
+                        </div>
+                      {% elif message.attachment %}
+                        <div class="chat-turn-attachment">
+                          <a href="{{ message.attachment.url }}">{{ message.attachment.name|default:"فایل پیوست" }}</a>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </article>
+                {% endfor %}
+              </div>
+            </div>
+          {% else %}
+            <div class="conversation-empty-state">
+              <div class="conversation-empty-mark" aria-hidden="true">
+                <div class="conversation-empty-glow"></div>
+                <div class="conversation-empty-core"></div>
+              </div>
+              <div class="conversation-empty-copy">
+                <div class="conversation-empty-kicker">آماده برای اجرا</div>
+                <h2>همین‌جا رشته‌ی اصلی کار را شروع کنید</h2>
+                <p>
+                  درخواست را کوتاه، روشن و اجرایی بنویسید. اگر موضوع تازه‌ای دارید، آن را در گفتگوی جدا نگه دارید تا این رشته متمرکز بماند.
+                </p>
+                <div class="conversation-empty-hint">
+                  نوشتن از پایین صفحه شروع می‌شود و بقیه‌ی این سطح فقط برای کمک به ادامه‌ی همان زمینه کنار شما می‌ماند.
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </section>
+      {% endif %}
+
+      {% include 'app/_composer.html' %}
+
+      {% if conversation_entry_context and conversation_entry_context.new_cta_url %}
+        <section class="conversation-status-note conversation-status-note--branch">
+          <div class="conversation-status-note__eyebrow">مرز گفتگو</div>
+          <div class="conversation-status-note__split">
+            <p>
+              این صفحه برای ادامه‌ی همین رشته است. اگر مقصد یا موضوع عوض شده، گفتگوی تازه را جدا شروع کنید.
+            </p>
             <a href="{{ conversation_entry_context.new_cta_url }}" class="btn-secondary !px-4 !py-2 text-xs">
               {{ conversation_entry_context.new_cta_label|default:"گفتگوی جدید" }}
             </a>
-          {% endif %}
-        </div>
-      </section>
-    {% endif %}
+          </div>
+        </section>
+      {% endif %}
 
-    <div class="xl:hidden">
-      {% include 'app/_archived_list.html' %}
+      <div class="xl:hidden">
+        {% include 'app/_archived_list.html' %}
+      </div>
     </div>
   </div>
 {% endblock %}
 
 {% block app_context_panel %}
-  {% include 'app/_archived_list.html' %}
+  <div class="space-y-4">
+    {% include 'app/_conversation_rail.html' with conversation_rail_mode='execution' %}
+    {% include 'app/_archived_list.html' %}
+  </div>
 {% endblock %}

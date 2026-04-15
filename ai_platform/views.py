@@ -53,6 +53,7 @@ def _conversation_template_context(
     *,
     form,
     conversation,
+    recent_conversations,
     archived_conversations,
     subscription,
     payment_history,
@@ -93,6 +94,20 @@ def _conversation_template_context(
             else "",
             "conversation_next_url": request.get_full_path(),
             "conversation_updated_label": conversation.updated_at.strftime("%Y/%m/%d %H:%M") if conversation else "",
+            "conversation_items": [
+                {
+                    "id": item.id,
+                    "title": item.title or "گفتگوی بدون عنوان",
+                    "url": reverse("ai_platform:chat_detail", args=[item.id]),
+                    "space_name": "گفتگوی شخصی",
+                    "project_name": "",
+                    "updated_label": item.updated_at.strftime("%Y/%m/%d %H:%M"),
+                    "assistant_label": item.model.name if item.model_id else "",
+                    "is_active": bool(conversation and item.id == conversation.id),
+                }
+                for item in recent_conversations
+            ],
+            "active_conversation_id": conversation.id if conversation else None,
             "conversation_entry_context": {
                 "state": "available",
                 "title": "اگر می‌خواهید موضوع تازه‌ای را جدا نگه دارید",
@@ -334,6 +349,7 @@ def chat_view(request, conversation_id=None):
         return redirect("ai_platform:chat_detail", conversation_id=conversation.id)
 
     conversation_queryset = _conversation_queryset(request)
+    recent_conversations = conversation_queryset.filter(is_archived=False).order_by("-updated_at")[:12]
     archived_conversations = conversation_queryset.filter(is_archived=True)[:50]
     subscription = get_active_subscription(request.user) if request.user.is_authenticated else None
     payment_history = request.user.orders.select_related("plan")[:10] if request.user.is_authenticated else []
@@ -342,6 +358,7 @@ def chat_view(request, conversation_id=None):
         request,
         form=form,
         conversation=conversation,
+        recent_conversations=recent_conversations,
         archived_conversations=archived_conversations,
         subscription=subscription,
         payment_history=payment_history,

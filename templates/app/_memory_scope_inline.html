@@ -1,11 +1,11 @@
 {% if memory_scope_inline %}
-  <div class="inline-flex max-w-full items-center gap-2 rounded-full border border-slate-200/80 bg-white/82 px-3 py-2 text-slate-700 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-200">
-    <span class="text-[11px] font-bold text-slate-500 dark:text-slate-400">حافظه</span>
-    <span class="max-w-[11rem] truncate text-sm font-bold">
+  <div class="chat-inline-meta">
+    <span class="chat-inline-meta-label">حافظه</span>
+    <span class="chat-inline-meta-value">
       {{ memory_scope_inline.label|default:"بدون دامنه فعال" }}
     </span>
     {% if memory_scope_inline.center_url %}
-      <a href="{{ memory_scope_inline.center_url }}" class="text-[11px] font-bold text-emerald-700 dark:text-emerald-300">
+      <a href="{{ memory_scope_inline.center_url }}" class="chat-inline-meta-link">
         {{ memory_scope_inline.center_label|default:"مرکز حافظه" }}
       </a>
     {% endif %}

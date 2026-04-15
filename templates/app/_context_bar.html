@@ -1,9 +1,9 @@
 <section
-  class="app-shell-hero"
+  class="app-shell-hero conversation-context-bar"
   x-data="{ assistantPickerOpen: false }"
   @keydown.escape.window="assistantPickerOpen = false"
 >
-  <div class="app-shell-path">
+  <div class="app-shell-path conversation-context-path">
     <span class="app-shell-path-pill">ورک‌اسپیس {{ current_workspace.name|default:"فضای شخصی" }}</span>
     <span class="app-shell-path-pill is-active">{{ space.name|default:conversation_space_name|default:"گفتگوی شخصی" }}</span>
     {% if conversation_is_archived %}
@@ -14,13 +14,22 @@
     {% endif %}
   </div>
 
-  <div class="app-shell-hero-body">
+  <div class="app-shell-hero-body conversation-context-body">
     <div class="app-shell-hero-copy min-w-0">
+      <div class="conversation-context-kicker">سطح اجرای گفتگو</div>
       <h2 class="truncate text-lg font-black text-slate-900 dark:text-white sm:text-xl">
         {{ conversation.title|default:conversation_title|default:"گفتگوی بدون عنوان" }}
       </h2>
 
-      <div class="app-shell-meta-list">
+      <p class="conversation-context-copy">
+        {% if conversation_is_archived %}
+          این رشته در آرشیو نگه داشته شده و فقط برای مرور و بازگشت به سابقه در دسترس است.
+        {% else %}
+          این صفحه فقط برای ادامه‌ی همین زمینه است تا خواندن و نوشتن در یک رشته‌ی متمرکز بماند.
+        {% endif %}
+      </p>
+
+      <div class="app-shell-meta-list conversation-context-meta">
         {% if assistant_chip or assistant_label or conversation_is_migrated %}
           <div class="relative">
             {% include 'app/_assistant_chip.html' with assistant_chip=assistant_chip assistant_label=assistant_label conversation_is_migrated=conversation_is_migrated %}
@@ -40,7 +49,7 @@
       </div>
     </div>
 
-    <div class="app-shell-hero-actions">
+    <div class="app-shell-hero-actions conversation-context-actions">
       {% if not conversation_is_archived and conversation_archive_url %}
         <form method="post" action="{{ conversation_archive_url }}">
           {% csrf_token %}
@@ -62,10 +71,4 @@
       {% endif %}
     </div>
   </div>
-
-  {% if conversation_is_archived %}
-    <div class="app-shell-note">
-      این گفتگو از جریان فعال خارج شده و فعلاً فقط برای مرور و بازگشت به سابقه در آرشیو نگه داشته می‌شود.
-    </div>
-  {% endif %}
 </section>

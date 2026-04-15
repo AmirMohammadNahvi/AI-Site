@@ -2,10 +2,7 @@
   class="chat-composer-shell sticky bottom-0 z-20 -mx-4 mt-6 sm:-mx-5 lg:-mx-6"
   x-data="{
     draftText: `{{ composer_prompt_value|default:''|escapejs }}`,
-    fileName: '',
-    get hasDraft() {
-      return this.draftText.trim().length > 0;
-    }
+    fileName: ''
   }"
 >
   <form method="post" action="{{ composer_action|default:request.get_full_path }}" enctype="multipart/form-data" class="mx-auto grid w-full max-w-4xl gap-3 px-4 sm:px-5 lg:px-6">
@@ -17,7 +14,8 @@
 
     <div class="chat-composer-card {% if composer_disabled or conversation_is_archived %}opacity-95{% endif %}">
       {% if composer_disabled or conversation_is_archived %}
-        <div class="mb-4 rounded-[1.25rem] border border-amber-200/80 bg-amber-50/90 px-4 py-3 text-sm leading-7 text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200">
+        <div class="conversation-status-note conversation-status-note--archived mb-4">
+          <div class="conversation-status-note__eyebrow">ارسال غیرفعال است</div>
           {{ composer_disabled_reason|default:"این گفتگو در حالت فقط‌خواندنی است و امکان ارسال پیام جدید ندارد." }}
         </div>
       {% endif %}
@@ -26,76 +24,87 @@
         {% include 'app/_memory_save_prompt.html' with memory_save_prompt=memory_save_prompt %}
       {% endif %}
 
-      <div class="rounded-[1.5rem] border border-slate-200 bg-white px-4 py-4 dark:border-slate-700 dark:bg-slate-900/70">
-        <textarea
-          name="{{ composer_prompt_name|default:'prompt' }}"
-          rows="{{ composer_rows|default:'4' }}"
-          x-model="draftText"
-          x-ref="promptField"
-          class="min-h-[7.5rem] w-full resize-none border-0 bg-transparent p-0 text-sm leading-8 text-slate-900 outline-none placeholder:text-slate-400 focus:ring-0 dark:text-slate-100 dark:placeholder:text-slate-500"
-          placeholder="{{ composer_placeholder|default:'درخواستت را کوتاه، روشن و اجرایی بنویس...' }}"
-          {% if composer_disabled or conversation_is_archived %}disabled{% endif %}
-        >{{ composer_prompt_value|default:'' }}</textarea>
-      </div>
-
-      {% if composer_prompt_errors %}
-        <ul class="errorlist">{{ composer_prompt_errors }}</ul>
-      {% endif %}
-
-      <div class="mt-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div class="flex flex-wrap items-center gap-3">
-          <div class="chat-inline-meta">
-            <span class="text-[11px] text-slate-500 dark:text-slate-400">اسپیس</span>
-            <span class="text-sm font-bold text-slate-900 dark:text-white">{{ space.name|default:composer_space_label|default:"بدون اسپیس" }}</span>
+      <div class="chat-composer-frame">
+        <div class="chat-composer-head">
+          <div class="min-w-0">
+            <div class="chat-composer-label">درخواست شما</div>
+            <p class="chat-composer-hint">
+              مسئله را روشن و اجرایی بنویسید تا این رشته متمرکز بماند.
+            </p>
           </div>
 
-          {% if conversation_is_migrated and not assistant_chip %}
-            <div class="chat-inline-meta">
-              <span class="text-[11px] text-slate-500 dark:text-slate-400">پروفایل گفتگو</span>
-              <span class="text-sm font-bold text-slate-900 dark:text-white">گفتگوی قدیمی</span>
-            </div>
-          {% elif assistant_chip and assistant_chip.state != 'legacy' %}
-            <div class="chat-inline-meta">
-              <span class="text-[11px] text-slate-500 dark:text-slate-400">دستیار</span>
-              <span class="text-sm font-bold text-slate-900 dark:text-white">{{ assistant_chip.label|default:assistant_label }}</span>
-            </div>
-          {% elif assistant_label %}
-            <div class="chat-inline-meta">
-              <span class="text-[11px] text-slate-500 dark:text-slate-400">دستیار</span>
-              <span class="text-sm font-bold text-slate-900 dark:text-white">{{ assistant_label }}</span>
-            </div>
-          {% endif %}
-
-          {% include 'app/_memory_scope_inline.html' with memory_scope_inline=composer_memory_scope_inline %}
-
-          <label class="chat-inline-meta cursor-pointer">
-            <input
-              type="file"
-              name="{{ composer_attachment_name|default:'attachment' }}"
-              class="hidden"
-              x-ref="fileInput"
-              @change="fileName = $event.target.files.length ? $event.target.files[0].name : ''"
-              {% if composer_disabled or conversation_is_archived %}disabled{% endif %}
-            >
-            <span class="text-[11px] text-slate-500 dark:text-slate-400">پیوست</span>
-            <span class="text-sm font-bold text-slate-900 dark:text-white" x-text="fileName || '{{ composer_attachment_label|default:'افزودن فایل' }}'"></span>
-          </label>
-
-          <div x-cloak x-show="hasDraft" class="rounded-full bg-slate-100 px-3 py-2 text-[11px] font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-            پیش‌نویس آماده ارسال است
+          <div class="chat-composer-state" x-cloak x-show="draftText.trim().length">
+            متن آماده‌ی ارسال است
           </div>
         </div>
 
-        <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
-          {% if composer_secondary_url %}
-            <a href="{{ composer_secondary_url }}" class="btn-secondary w-full sm:w-auto">
-              {{ composer_secondary_label|default:"بازگشت" }}
-            </a>
-          {% endif %}
+        <div class="chat-composer-input-shell">
+          <textarea
+            name="{{ composer_prompt_name|default:'prompt' }}"
+            rows="{{ composer_rows|default:'4' }}"
+            x-model="draftText"
+            x-ref="promptField"
+            class="chat-composer-textarea"
+            placeholder="{{ composer_placeholder|default:'درخواستت را کوتاه، روشن و اجرایی بنویس...' }}"
+            {% if composer_disabled or conversation_is_archived %}disabled{% endif %}
+          >{{ composer_prompt_value|default:'' }}</textarea>
+        </div>
 
-          <button class="btn-primary w-full sm:w-auto" type="submit" {% if composer_disabled or conversation_is_archived %}disabled aria-disabled="true"{% endif %}>
-            {{ composer_submit_label|default:"ارسال پیام" }}
-          </button>
+        {% if composer_prompt_errors %}
+          <ul class="errorlist">{{ composer_prompt_errors }}</ul>
+        {% endif %}
+
+        <div class="chat-composer-footer">
+          <div class="chat-composer-meta">
+            <div class="chat-inline-meta">
+              <span class="chat-inline-meta-label">اسپیس</span>
+              <span class="chat-inline-meta-value">{{ space.name|default:composer_space_label|default:"بدون اسپیس" }}</span>
+            </div>
+
+            {% if conversation_is_migrated and not assistant_chip %}
+              <div class="chat-inline-meta">
+                <span class="chat-inline-meta-label">پروفایل گفتگو</span>
+                <span class="chat-inline-meta-value">گفتگوی قدیمی</span>
+              </div>
+            {% elif assistant_chip and assistant_chip.state != 'legacy' %}
+              <div class="chat-inline-meta">
+                <span class="chat-inline-meta-label">دستیار</span>
+                <span class="chat-inline-meta-value">{{ assistant_chip.label|default:assistant_label }}</span>
+              </div>
+            {% elif assistant_label %}
+              <div class="chat-inline-meta">
+                <span class="chat-inline-meta-label">دستیار</span>
+                <span class="chat-inline-meta-value">{{ assistant_label }}</span>
+              </div>
+            {% endif %}
+
+            {% include 'app/_memory_scope_inline.html' with memory_scope_inline=composer_memory_scope_inline %}
+
+            <label class="chat-inline-meta chat-inline-meta--attachment cursor-pointer">
+              <input
+                type="file"
+                name="{{ composer_attachment_name|default:'attachment' }}"
+                class="hidden"
+                x-ref="fileInput"
+                @change="fileName = $event.target.files.length ? $event.target.files[0].name : ''"
+                {% if composer_disabled or conversation_is_archived %}disabled{% endif %}
+              >
+              <span class="chat-inline-meta-label">پیوست</span>
+              <span class="chat-inline-meta-value" x-text="fileName || '{{ composer_attachment_label|default:'افزودن فایل' }}'"></span>
+            </label>
+          </div>
+
+          <div class="chat-composer-actions">
+            {% if composer_secondary_url %}
+              <a href="{{ composer_secondary_url }}" class="btn-secondary w-full sm:w-auto">
+                {{ composer_secondary_label|default:"بازگشت" }}
+              </a>
+            {% endif %}
+
+            <button class="btn-primary chat-composer-submit w-full sm:w-auto" type="submit" {% if composer_disabled or conversation_is_archived %}disabled aria-disabled="true"{% endif %}>
+              {{ composer_submit_label|default:"ارسال پیام" }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
