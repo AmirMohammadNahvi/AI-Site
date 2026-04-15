@@ -1,182 +1,161 @@
 {% extends 'base.html' %}
 
 {% block title %}قیمت‌گذاری فارال‌یار | {{ site_settings.site_name_fa }}{% endblock %}
-{% block meta_description %}پلن‌های فارال‌یار برای شروع، کار حرفه‌ای و همکاری تیمی؛ با توضیح روشن درباره سطح دسترسی، تناسب استفاده و مسیر انتخاب.{% endblock %}
+{% block meta_description %}پلن‌های فارال‌یار با توضیح روشن درباره تناسب استفاده، سطح دسترسی، مسیر خرید و محدودیت‌های هر انتخاب.{% endblock %}
 
 {% block content %}
-  <section class="section-shell pt-8 sm:pt-10">
-    <div class="grid gap-5 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
-      <div class="space-y-6">
-        <div class="flex flex-wrap gap-2">
-          <span class="badge">{{ pricing_badges.0|default:'قیمت‌گذاری روشن و قابل‌فهم' }}</span>
-          <span class="badge">{{ pricing_badges.1|default:'بر پایه سبک استفاده، نه جدول فنی' }}</span>
-          {% if pricing_badges|length > 2 %}
-            <span class="badge">{{ pricing_badges.2 }}</span>
-          {% endif %}
-        </div>
-
-        <div class="max-w-3xl">
-          <h1 class="text-4xl font-black leading-[1.2] text-slate-950 dark:text-white sm:text-5xl lg:text-6xl">
-            {{ pricing_heading|default:'پلنی را انتخاب کنید که با ریتم کار شما جور باشد.' }}
-          </h1>
-          <p class="mt-5 max-w-2xl text-base leading-8 text-slate-600 dark:text-slate-300 sm:text-lg">
-            {{ pricing_subheading|default:'فارال‌یار بر اساس سطح دسترسی، نوع استفاده و میزان همراهی طراحی شده است؛ تا از همان ابتدا بدانید هر پلن برای چه کاری مناسب است و از آن چه انتظاری می‌توانید داشته باشید.' }}
-          </p>
-        </div>
-
-        {% if pricing_highlights %}
-          <div class="grid gap-3 sm:grid-cols-3">
-            {% for item in pricing_highlights %}
-              <article class="panel-soft p-4 sm:p-5">
-                <div class="text-sm font-black text-slate-900 dark:text-white">{{ item.title }}</div>
-                <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ item.body }}</p>
-              </article>
-            {% endfor %}
-          </div>
-        {% endif %}
-
-        <div class="flex flex-col gap-3 sm:flex-row">
-          <a href="{{ primary_cta_url|default:'#pricing-plans' }}" class="btn-primary w-full sm:w-auto">
-            {{ primary_cta_label|default:'مشاهده پلن‌ها' }}
-          </a>
-          <a href="{{ secondary_cta_url|default:'#pricing-faq' }}" class="btn-secondary w-full sm:w-auto">
-            {{ secondary_cta_label|default:'پرسش‌های رایج' }}
-          </a>
-        </div>
-      </div>
-
-      <aside class="panel-soft overflow-hidden p-6 sm:p-8">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <span class="badge">{{ hero_aside_badge|default:'راهنمای انتخاب' }}</span>
-            <h2 class="mt-4 text-2xl font-black text-slate-950 dark:text-white">
-              {{ hero_aside_title|default:'انتخاب پلن باید حس اطمینان بدهد، نه ابهام.' }}
-            </h2>
-          </div>
-          <div class="hidden h-14 w-14 rounded-3xl border border-brand-primary/20 bg-brand-primary/10 text-brand-primary sm:flex sm:items-center sm:justify-center">
-            <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3"></path>
-            </svg>
-          </div>
-        </div>
-
-        <div class="mt-6 space-y-4">
-          {% for point in hero_aside_points %}
-            <div class="rounded-[1.5rem] border border-slate-200/80 bg-white/75 p-4 dark:border-slate-700 dark:bg-slate-900/50">
-              <div class="text-sm font-black text-slate-900 dark:text-white">{{ point.title }}</div>
-              <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ point.body }}</p>
+  <div class="pricing-page">
+    <section class="section-shell pt-8 sm:pt-10">
+      <div class="pricing-hero panel-soft">
+        <div class="pricing-hero-grid">
+          <div class="pricing-hero-copy">
+            <div class="flex flex-wrap gap-2">
+              {% for badge in pricing_badges %}
+                <span class="badge">{{ badge }}</span>
+              {% endfor %}
             </div>
-          {% empty %}
-            <div class="rounded-[1.5rem] border border-slate-200/80 bg-white/75 p-4 dark:border-slate-700 dark:bg-slate-900/50">
-              <div class="text-sm font-black text-slate-900 dark:text-white">شفاف درباره آنچه دریافت می‌کنید</div>
-              <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">هر پلن به زبان ساده توضیح می‌دهد برای چه نوع کاری مناسب است، چه سطحی از دسترسی می‌دهد و مسیر بعدی شما چیست.</p>
-            </div>
-            <div class="rounded-[1.5rem] border border-slate-200/80 bg-white/75 p-4 dark:border-slate-700 dark:bg-slate-900/50">
-              <div class="text-sm font-black text-slate-900 dark:text-white">تمرکز بر تجربه استفاده</div>
-              <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">به‌جای حجم زیاد جزئیات فنی، تفاوت‌ها در قالب سناریوهای واقعی استفاده و سطح دسترسی بیان می‌شوند.</p>
-            </div>
-            <div class="rounded-[1.5rem] border border-slate-200/80 bg-white/75 p-4 dark:border-slate-700 dark:bg-slate-900/50">
-              <div class="text-sm font-black text-slate-900 dark:text-white">آماده برای رشد</div>
-              <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">اگر از شروع عبور کنید، مسیر ارتقا به پلن حرفه‌ای یا تیمی از همین صفحه روشن است.</p>
-            </div>
-          {% endfor %}
-        </div>
-      </aside>
-    </div>
-  </section>
 
-  <section id="pricing-plans" class="section-shell pt-14">
-    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-      <div class="max-w-2xl">
-        <h2 class="text-2xl font-black text-slate-950 dark:text-white sm:text-3xl">
-          {{ plans_section_title|default:'سطح دسترسی مناسب خودتان را پیدا کنید' }}
-        </h2>
-        <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
-          {{ plans_section_body|default:'کارت‌ها طوری نوشته شده‌اند که بتوانید خیلی سریع بفهمید هر پلن برای چه نوع استفاده‌ای مناسب است، چه ارزشی می‌گیرید و قدم بعدی چیست.' }}
-        </p>
-      </div>
-      {% if plans_section_note %}
-        <p class="text-sm leading-7 text-slate-500 dark:text-slate-400">{{ plans_section_note }}</p>
-      {% endif %}
-    </div>
-
-    <div class="grid gap-4 xl:grid-cols-3">
-      {% for plan in plans %}
-        {% include 'public/_pricing_plan_card.html' with plan=plan %}
-      {% empty %}
-        <div class="panel-soft p-6 text-sm leading-7 text-slate-600 dark:text-slate-300 xl:col-span-3">
-          هنوز پلنی برای نمایش روی این صفحه آماده نشده است.
-        </div>
-      {% endfor %}
-    </div>
-
-    {% if enterprise_teaser %}
-      <div class="mt-5">
-        <article class="panel-soft overflow-hidden p-6 sm:p-8">
-          <div class="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div>
-              <span class="badge">{{ enterprise_teaser.badge|default:'سازمانی' }}</span>
-              <h3 class="mt-4 text-2xl font-black text-slate-950 dark:text-white">
-                {{ enterprise_teaser.title|default:'برای نیازهای اختصاصی، مسیر سازمانی هم در دسترس است.' }}
-              </h3>
-              <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
-                {{ enterprise_teaser.body|default:'اگر به سیاست‌های دسترسی اختصاصی، هماهنگی عملیاتی یا همراهی نزدیک‌تر برای تیم‌های بزرگ‌تر نیاز دارید، می‌توانید با ما برای نسخه سازمانی در تماس باشید.' }}
+            <div class="max-w-3xl">
+              <h1 class="pricing-display-title text-slate-950 dark:text-white">
+                {{ pricing_heading }}
+              </h1>
+              <p class="pricing-hero-body">
+                {{ pricing_subheading }}
               </p>
             </div>
-            <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
-              <a href="{{ enterprise_teaser.cta_url|default:'#pricing-faq' }}" class="btn-secondary w-full sm:w-auto">
-                {{ enterprise_teaser.cta_label|default:'درخواست آشنایی بیشتر' }}
+
+            {% if pricing_highlights %}
+              <div class="pricing-highlight-grid">
+                {% for item in pricing_highlights %}
+                  <article class="pricing-highlight-card">
+                    <div class="pricing-highlight-title">{{ item.title }}</div>
+                    <p>{{ item.body }}</p>
+                  </article>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="pricing-action-row">
+              <a href="{{ primary_cta_url }}" class="btn-primary w-full sm:w-auto">
+                {{ primary_cta_label }}
+              </a>
+              <a href="{{ secondary_cta_url }}" class="btn-secondary w-full sm:w-auto">
+                {{ secondary_cta_label }}
               </a>
             </div>
           </div>
-        </article>
+
+          <aside class="pricing-hero-aside">
+            <span class="badge">{{ hero_aside_badge }}</span>
+            <h2 class="pricing-panel-title">{{ hero_aside_title }}</h2>
+
+            <div class="pricing-hero-points">
+              {% for point in hero_aside_points %}
+                <article class="pricing-hero-point">
+                  <div class="pricing-hero-point-title">{{ point.title }}</div>
+                  <p>{{ point.body }}</p>
+                </article>
+              {% endfor %}
+            </div>
+          </aside>
+        </div>
       </div>
-    {% endif %}
-  </section>
+    </section>
 
-  {% include 'public/_pricing_trust_block.html' %}
-
-  {% if comparison_sections %}
-    <section class="section-shell pt-14">
-      <div class="mb-6 max-w-2xl">
-        <h2 class="text-2xl font-black text-slate-950 dark:text-white sm:text-3xl">
-          {{ comparison_heading|default:'مقایسه‌ای که کمک می‌کند تصمیم بگیرید' }}
-        </h2>
-        <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
-          {{ comparison_subheading|default:'به‌جای یک جدول شلوغ، تفاوت پلن‌ها را در چند بخش کوتاه و کاربردی ببینید. هر بخش را در صورت نیاز باز کنید.' }}
-        </p>
+    <section id="pricing-plans" class="section-shell pt-14">
+      <div class="pricing-section-head">
+        <div class="max-w-3xl">
+          <h2 class="pricing-section-title">{{ plans_section_title }}</h2>
+          <p class="pricing-section-body">{{ plans_section_body }}</p>
+        </div>
+        {% if plans_section_note %}
+          <p class="pricing-section-note">{{ plans_section_note }}</p>
+        {% endif %}
       </div>
 
-      <div class="space-y-4">
-        {% for section in comparison_sections %}
-          {% include 'public/_pricing_comparison_section.html' with section=section %}
+      <div class="pricing-plan-grid">
+        {% for plan in plans %}
+          {% include 'public/_pricing_plan_card.html' with plan=plan %}
+        {% empty %}
+          <div class="panel-soft p-6 text-sm leading-8 text-slate-600 dark:text-slate-300 xl:col-span-3">
+            هنوز پلنی برای نمایش روی این صفحه آماده نشده است.
+          </div>
         {% endfor %}
       </div>
     </section>
-  {% endif %}
 
-  {% include 'public/_pricing_faq_block.html' %}
-
-  <section class="section-shell pb-8 pt-14">
-    <div class="panel-soft p-6 sm:p-8">
-      <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
-        <div class="max-w-3xl">
-          <h2 class="text-3xl font-black text-slate-950 dark:text-white">
-            {{ final_cta_title|default:'اگر هنوز بین دو پلن مردد هستید، از پلنی شروع کنید که فشار انتخاب را کم می‌کند.' }}
-          </h2>
-          <p class="mt-4 text-base leading-8 text-slate-600 dark:text-slate-300">
-            {{ final_cta_body|default:'برای بیشتر کاربران، شروع با پلنی که با ریتم فعلی کارشان سازگار است بهترین انتخاب است. هر زمان نیازتان تغییر کرد، مسیر ارتقا روشن و قابل‌پیش‌بینی خواهد بود.' }}
-          </p>
+    {% if audience_rows %}
+      <section class="section-shell pt-12">
+        <div class="pricing-section-head compact">
+          <div class="max-w-3xl">
+            <h2 class="pricing-section-title">این پلن‌ها برای چه کسانی طراحی شده‌اند؟</h2>
+            <p class="pricing-section-body">اگر کارت‌ها را دیده‌اید اما هنوز می‌خواهید سریع‌تر تصمیم بگیرید، این بخش هر پلن را با زبان موقعیت و نیاز واقعی خلاصه می‌کند.</p>
+          </div>
         </div>
-        <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
-          <a href="{{ final_cta_primary_url|default:'#pricing-plans' }}" class="btn-primary w-full sm:w-auto">
-            {{ final_cta_primary_label|default:'انتخاب پلن مناسب' }}
+
+        <div class="pricing-fit-list">
+          {% for row in audience_rows %}
+            <article class="pricing-fit-row is-{{ row.tone }}">
+              <div class="pricing-fit-plan">
+                <span class="badge">{{ row.badge }}</span>
+                <div class="mt-3 text-xl font-black text-slate-950 dark:text-white">{{ row.plan_name }}</div>
+              </div>
+              <div class="pricing-fit-copy">
+                <h3>{{ row.title }}</h3>
+                <p>{{ row.body }}</p>
+              </div>
+              <div class="pricing-fit-meta">
+                <div class="pricing-fit-note">
+                  <strong>انتخاب خوب است اگر</strong>
+                  <span>{{ row.good_for }}</span>
+                </div>
+                <div class="pricing-fit-note">
+                  <strong>انتخاب خوبی نیست اگر</strong>
+                  <span>{{ row.not_for }}</span>
+                </div>
+                <a href="{{ row.anchor }}" class="pricing-inline-link">مرور این پلن</a>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if comparison_sections %}
+      <section id="pricing-compare" class="section-shell pt-14">
+        <div class="pricing-section-head compact">
+          <div class="max-w-3xl">
+            <h2 class="pricing-section-title">{{ comparison_heading }}</h2>
+            <p class="pricing-section-body">{{ comparison_subheading }}</p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          {% for section in comparison_sections %}
+            {% include 'public/_pricing_comparison_section.html' with section=section %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% include 'public/_pricing_trust_block.html' %}
+    {% include 'public/_pricing_faq_block.html' %}
+
+    <section class="section-shell pb-8 pt-14">
+      <div class="pricing-final-shell">
+        <div class="max-w-3xl">
+          <h2 class="pricing-section-title">{{ final_cta_title }}</h2>
+          <p class="pricing-section-body">{{ final_cta_body }}</p>
+        </div>
+        <div class="pricing-final-actions">
+          <a href="{{ final_cta_primary_url }}" class="btn-primary w-full sm:w-auto">
+            {{ final_cta_primary_label }}
           </a>
-          <a href="{{ final_cta_secondary_url|default:'#pricing-faq' }}" class="btn-secondary w-full sm:w-auto">
-            {{ final_cta_secondary_label|default:'مرور سوالات متداول' }}
+          <a href="{{ final_cta_secondary_url }}" class="btn-secondary w-full sm:w-auto">
+            {{ final_cta_secondary_label }}
           </a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 {% endblock %}

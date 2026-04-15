@@ -1,25 +1,24 @@
 <section
-  class="panel-soft overflow-hidden"
+  class="pricing-compare-section"
   x-data="{ open: {% if section.open_by_default %}true{% else %}false{% endif %} }"
 >
   <button
     type="button"
-    class="flex w-full items-center justify-between gap-4 px-5 py-5 text-right sm:px-6"
+    class="pricing-compare-toggle"
     @click="open = !open"
     :aria-expanded="open.toString()"
   >
-    <div class="min-w-0">
-      <div class="flex flex-wrap gap-2">
-        {% if section.badge %}
-          <span class="badge">{{ section.badge }}</span>
-        {% endif %}
-      </div>
-      <h3 class="mt-3 text-xl font-black text-slate-950 dark:text-white sm:text-2xl">{{ section.title }}</h3>
+    <div class="pricing-compare-heading">
+      {% if section.badge %}
+        <span class="badge">{{ section.badge }}</span>
+      {% endif %}
+      <h3>{{ section.title }}</h3>
       {% if section.summary %}
-        <p class="mt-2 max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-300">{{ section.summary }}</p>
+        <p>{{ section.summary }}</p>
       {% endif %}
     </div>
-    <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-white/80 text-slate-500 transition dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-300" :class="open ? 'rotate-180' : ''">
+
+    <span class="pricing-compare-icon" :class="open ? 'is-open' : ''">
       <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"></path>
       </svg>
@@ -35,28 +34,26 @@
     x-transition:leave="transition ease-in duration-150"
     x-transition:leave-start="opacity-100 translate-y-0"
     x-transition:leave-end="opacity-0 -translate-y-1"
-    class="border-t border-slate-200/80 px-5 py-5 dark:border-slate-700 sm:px-6"
+    class="pricing-compare-body"
   >
     {% if section.items %}
-      <div class="space-y-3">
+      <div class="pricing-compare-stack">
         {% for item in section.items %}
-          <article class="rounded-[1.5rem] border border-slate-200/80 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-900/50 sm:p-5">
-            <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-              <div class="max-w-2xl">
-                <h4 class="text-sm font-black text-slate-900 dark:text-white sm:text-base">{{ item.label }}</h4>
-                {% if item.description %}
-                  <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ item.description }}</p>
-                {% endif %}
-              </div>
+          <article class="pricing-compare-item">
+            <div class="pricing-compare-copy">
+              <h4>{{ item.label }}</h4>
+              {% if item.description %}
+                <p>{{ item.description }}</p>
+              {% endif %}
+            </div>
 
-              <div class="grid gap-3 sm:grid-cols-3 lg:min-w-[30rem]">
-                {% for plan_point in item.plan_points %}
-                  <div class="rounded-[1.25rem] bg-slate-100/80 px-4 py-3 dark:bg-slate-800/60">
-                    <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ plan_point.plan_name }}</div>
-                    <div class="mt-2 text-sm leading-7 text-slate-700 dark:text-slate-200">{{ plan_point.value }}</div>
-                  </div>
-                {% endfor %}
-              </div>
+            <div class="pricing-compare-grid">
+              {% for plan_point in item.plan_points %}
+                <div class="pricing-compare-point">
+                  <div class="pricing-compare-plan-name">{{ plan_point.plan_name }}</div>
+                  <div class="pricing-compare-point-value">{{ plan_point.value }}</div>
+                </div>
+              {% endfor %}
             </div>
           </article>
         {% endfor %}
@@ -64,7 +61,7 @@
     {% endif %}
 
     {% if section.note %}
-      <p class="mt-4 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ section.note }}</p>
+      <p class="pricing-compare-note">{{ section.note }}</p>
     {% endif %}
   </div>
 </section>
