@@ -125,6 +125,7 @@ def _conversation_template_context(
             }
             if request.user.is_authenticated
             else None,
+            "app_has_context_panel": True,
             "archived_conversation_items": [
                 {
                     "id": item.id,

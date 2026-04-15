@@ -2,72 +2,65 @@
 
 {% block title %}{{ space.name|default:"اسپیس" }} | {{ site_settings.site_name_fa }}{% endblock %}
 
-{% block app_content %}
-  <div class="space-y-6">
-    <section class="grid gap-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
-      <div class="rounded-[1.8rem] border border-slate-200/80 bg-white/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">اسپیس فعال</div>
-        <h1 class="mt-2 text-xl font-black text-slate-900 dark:text-white sm:text-2xl">{{ space.name|default:"اسپیس بدون عنوان" }}</h1>
+{% block app_shell_header_extra %}
+  <section class="app-shell-hero">
+    <div class="app-shell-path">
+      {% if current_workspace.name %}
+        <span class="app-shell-path-pill">{{ current_workspace.name }}</span>
+      {% endif %}
+      <span class="app-shell-path-pill is-active">{{ space.name|default:"اسپیس بدون عنوان" }}</span>
+      {% if space.project_name %}
+        <span class="app-shell-path-pill">پروژه {{ space.project_name }}</span>
+      {% endif %}
+      {% if space.updated_label %}
+        <span class="app-shell-path-pill">{{ space.updated_label }}</span>
+      {% endif %}
+    </div>
 
-        <div class="mt-3 flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
-          {% if current_workspace.name %}<span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ current_workspace.name }}</span>{% endif %}
-          {% if space.project_name %}<span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">پروژه: {{ space.project_name }}</span>{% endif %}
-          {% if space.updated_label %}<span class="rounded-full bg-slate-100 px-3 py-1.5 dark:bg-slate-800">{{ space.updated_label }}</span>{% endif %}
-        </div>
-
-        <p class="mt-4 text-sm leading-8 text-slate-600 dark:text-slate-300">
+    <div class="app-shell-hero-body">
+      <div class="app-shell-hero-copy">
+        <p class="text-sm leading-8 text-slate-600 dark:text-slate-300">
           {{ space.summary|default:"این صفحه برای جمع‌کردن زمینه، مرور مسیرهای مرتبط و ورود به اجرای همین اسپیس است. اجرای اصلی همیشه در صفحه گفتگوی همین اسپیس ادامه پیدا می‌کند." }}
         </p>
       </div>
 
-      <div class="rounded-[1.8rem] border border-slate-200/80 bg-white/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
-        <div class="text-sm font-black text-slate-900 dark:text-white">زمینه این اسپیس</div>
-        <div class="mt-3 space-y-2">
-          {% for item in space_context_items %}
-            <div class="rounded-[1.2rem] bg-slate-100/85 px-3 py-3 text-sm leading-7 text-slate-600 dark:bg-slate-800/80 dark:text-slate-300">
-              {{ item }}
-            </div>
-          {% empty %}
-            <div class="rounded-[1.2rem] bg-slate-100/85 px-3 py-3 text-sm leading-7 text-slate-600 dark:bg-slate-800/80 dark:text-slate-300">
-              هنوز زمینه مشخصی برای این اسپیس ثبت نشده است. یک توضیح کوتاه، خروجی مورد انتظار یا محدودیت اصلی را به این فضا اضافه کنید.
-            </div>
-          {% endfor %}
+      <div class="app-shell-hero-actions">
+        {% if space_launch_url %}
+          <a href="{{ space_launch_url }}" class="btn-primary w-full sm:w-auto">شروع گفتگوی جدید</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="app-shell-note">
+      موضوع را کوتاه و اجرایی تعریف کنید تا گفتگوی بعدی دقیقاً در محدوده همین اسپیس بماند و تاریخچه آن برای ادامه کار قابل استفاده باشد.
+    </div>
+  </section>
+{% endblock %}
+
+{% block app_content %}
+  <div class="space-y-6">
+    <section class="page-section-card p-4 sm:p-5">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div class="min-w-0">
+          <div class="app-shell-kicker">زمینه این اسپیس</div>
+          <h2 class="mt-2 text-lg font-black text-slate-900 dark:text-white">قبل از اجرا، همین محدوده را روشن نگه دارید</h2>
+          <p class="mt-2 max-w-3xl text-sm leading-8 text-slate-600 dark:text-slate-300">
+            این بخش فقط برای جمع‌کردن نشانه‌های لازم است؛ نه برای مدیریت کامل. هرچه این زمینه کوتاه‌تر و شفاف‌تر باشد، اجرای گفتگو منظم‌تر می‌ماند.
+          </p>
         </div>
       </div>
-    </section>
 
-    <section class="space-y-4">
-      {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="ورود به اجرای این اسپیس" body="اگر موضوع تازه‌ای دارید، گفتگوی جدید را از همین اسپیس شروع کنید. اگر گفتگوی فعالی دارید، به همان اجرای جاری برگردید." helper="اسپیس نقطه آماده‌سازی و ورود است؛ اجرای اصلی در صفحه گفتگو انجام می‌شود." new_cta_url=space_launch_url new_cta_label="شروع گفتگوی جدید" new_note="برای موضوع تازه در همین اسپیس" existing_cta_label="ورود به این اسپیس" existing_note="برای برگشت به زمینه همین اسپیس" current_cta_label="ادامه گفتگوی فعلی" current_note="برای ادامه همان گفتگوی فعال" %}
-
-      <section class="rounded-[1.9rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
-        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div class="min-w-0">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">اگر آماده اجرا هستید</div>
-            <h2 class="mt-2 text-lg font-black text-slate-900 dark:text-white">شروع گفتگوی جدید در همین اسپیس</h2>
-            <p class="mt-2 max-w-3xl text-sm leading-8 text-slate-600 dark:text-slate-300">
-              موضوع را کوتاه و اجرایی بنویسید. بعد از شروع، مستقیم وارد صفحه گفتگوی همین اسپیس می‌شوید و ادامه کار آنجا انجام می‌شود.
-            </p>
+      <div class="mt-5 space-y-3">
+        {% for item in space_context_items %}
+          <div class="rounded-[1.3rem] border border-slate-200/80 bg-slate-50/82 px-4 py-4 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/50 dark:text-slate-300">
+            {{ item }}
           </div>
-
-          {% if space_launch_url %}
-            <a href="{{ space_launch_url }}" class="btn-primary w-full sm:w-auto">شروع گفتگوی جدید</a>
-          {% endif %}
-        </div>
-
-        <div class="mt-5 rounded-[1.5rem] border border-slate-200/80 bg-slate-50/80 p-4 dark:border-slate-700/70 dark:bg-slate-900/70">
-          <div class="rounded-[1.25rem] border border-slate-200/80 bg-white px-4 py-4 text-sm leading-7 text-slate-400 dark:border-slate-700 dark:bg-slate-950/70 dark:text-slate-500">
-            {{ composer_placeholder|default:"مثلاً: برای جلسه فردا یک برنامه اجرایی سه‌مرحله‌ای برای این اسپیس آماده کن..." }}
+        {% empty %}
+          <div class="rounded-[1.3rem] border border-dashed border-slate-300 px-4 py-5 text-sm leading-7 text-slate-500 dark:border-slate-700 dark:text-slate-300">
+            هنوز زمینه مشخصی برای این اسپیس ثبت نشده است. یک توضیح کوتاه، خروجی مورد انتظار یا محدودیت اصلی را به این فضا اضافه کنید.
           </div>
-
-          {% if space_starter_prompts %}
-            <div class="mt-4 flex flex-wrap gap-2">
-              {% for prompt in space_starter_prompts %}
-                <a href="{{ prompt.url|default:space_launch_url|default:'#' }}" class="prompt-chip">{{ prompt.label }}</a>
-              {% endfor %}
-            </div>
-          {% endif %}
-        </div>
-      </section>
+        {% endfor %}
+      </div>
     </section>
 
     {% if not space_recent_conversations %}

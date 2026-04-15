@@ -1,91 +1,72 @@
-<header class="chat-top-shell">
-  <div class="section-shell">
-    <div class="workspace-shell-card rounded-[1.9rem] px-3 py-3 sm:px-4">
-      <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div class="flex min-w-0 items-center gap-2 sm:gap-3">
-          <button
-            type="button"
-            class="icon-btn shrink-0 lg:hidden"
-            @click="mobileMenuOpen = true"
-            aria-label="باز کردن منوی موبایل"
-          >
-            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <path d="M3.5 5.5h13M3.5 10h13M3.5 14.5h13" stroke-linecap="round"></path>
-            </svg>
-          </button>
+<header class="app-shell-topbar">
+  <div class="app-shell-topbar-bar">
+    <div class="app-shell-topbar-leading">
+      <button
+        type="button"
+        class="icon-btn shrink-0 lg:hidden"
+        @click="mobileMenuOpen = true"
+        aria-label="باز کردن منوی موبایل"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M3.5 5.5h13M3.5 10h13M3.5 14.5h13" stroke-linecap="round"></path>
+        </svg>
+      </button>
 
-          <div class="min-w-0 flex-1 lg:max-w-sm">
-            {% include 'app/_workspace_switcher.html' %}
-          </div>
+      <div class="app-shell-switcher-slot">
+        {% include 'app/_workspace_switcher.html' %}
+      </div>
+    </div>
+
+    <div class="app-shell-heading">
+      <div class="app-shell-kicker">{{ app_page_eyebrow|default:"فضای کاری" }}</div>
+      <h1 class="app-shell-title">{{ app_page_title|default:"نمای کلی" }}</h1>
+      {% if app_page_description %}
+        <p class="app-shell-description">{{ app_page_description }}</p>
+      {% endif %}
+    </div>
+
+    <div class="app-shell-topbar-actions" x-data="{ overflowOpen: false }" @keydown.escape.window="overflowOpen = false">
+      <button
+        type="button"
+        class="icon-btn"
+        @click="overflowOpen = !overflowOpen"
+        :aria-expanded="overflowOpen.toString()"
+        aria-label="باز کردن منوی بیشتر"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <circle cx="4" cy="10" r="1.4"></circle>
+          <circle cx="10" cy="10" r="1.4"></circle>
+          <circle cx="16" cy="10" r="1.4"></circle>
+        </svg>
+      </button>
+
+      <div
+        class="app-shell-popover"
+        x-cloak
+        x-show="overflowOpen"
+        x-transition.opacity.scale.origin.top.left
+        @click.outside="overflowOpen = false"
+      >
+        <div class="px-1 pb-2">
+          <div class="app-shell-kicker">دسترسی‌های بیشتر</div>
         </div>
 
-        <div class="min-w-0 flex-1 lg:px-4">
-          {% if app_page_eyebrow %}
-            <div class="truncate text-[11px] font-bold text-slate-500 dark:text-slate-400">{{ app_page_eyebrow }}</div>
-          {% else %}
-            <div class="truncate text-[11px] font-bold text-slate-500 dark:text-slate-400">فضای فعال</div>
-          {% endif %}
-
-          <div class="mt-1 truncate text-base font-black text-slate-900 dark:text-white sm:text-lg">
-            {{ app_page_title|default:"نمای کلی" }}
-          </div>
-
-          {% if app_page_description %}
-            <div class="mt-1 hidden truncate text-xs text-slate-500 dark:text-slate-400 sm:block">
-              {{ app_page_description }}
+        <div class="space-y-1">
+          {% for item in app_overflow_items %}
+            <a
+              href="{{ item.url }}"
+              class="app-shell-popover-link {% if item.is_danger %}is-danger{% endif %}"
+            >
+              <span class="min-w-0 truncate">{{ item.label }}</span>
+              {% if item.badge %}
+                <span class="badge shrink-0">{{ item.badge }}</span>
+              {% endif %}
+            </a>
+          {% empty %}
+            <div class="rounded-[1.15rem] px-3 py-4 text-sm leading-7 text-slate-500 dark:text-slate-400">
+              فعلاً اکشن اضافه‌ای برای این صفحه تعریف نشده است.
             </div>
-          {% endif %}
-        </div>
-
-        <div class="relative flex shrink-0 items-center gap-2 self-start lg:self-auto" x-data="{ overflowOpen: false }" @keydown.escape.window="overflowOpen = false">
-          {% if app_page_notice %}
-            <span class="status-pill hidden px-3 py-2 text-[11px] xl:inline-flex" data-tone="success">
-              وضعیت صفحه آماده بررسی است
-            </span>
-          {% endif %}
-          <button
-            type="button"
-            class="icon-btn"
-            @click="overflowOpen = !overflowOpen"
-            :aria-expanded="overflowOpen.toString()"
-            aria-label="باز کردن منوی بیشتر"
-          >
-            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <circle cx="4" cy="10" r="1.4"></circle>
-              <circle cx="10" cy="10" r="1.4"></circle>
-              <circle cx="16" cy="10" r="1.4"></circle>
-            </svg>
-          </button>
-
-          <div
-            class="workspace-shell-card absolute left-0 top-[calc(100%+0.75rem)] z-40 w-72 rounded-[1.5rem] p-2 shadow-2xl shadow-slate-900/10 backdrop-blur-xl"
-            x-cloak
-            x-show="overflowOpen"
-            x-transition.opacity.scale.origin.top.left
-            @click.outside="overflowOpen = false"
-          >
-            <div class="px-3 pb-2 pt-1">
-              <div class="text-xs font-bold text-slate-500 dark:text-slate-400">دسترسی‌های سریع</div>
-            </div>
-
-            <div class="space-y-1">
-              {% for item in app_overflow_items %}
-                <a
-                  href="{{ item.url }}"
-                  class="flex items-center justify-between gap-3 rounded-[1.15rem] px-3 py-3 text-sm font-bold transition {% if item.is_danger %}text-rose-600 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-500/10{% else %}text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-900/70{% endif %}"
-                >
-                  <span class="min-w-0 truncate">{{ item.label }}</span>
-                  {% if item.badge %}
-                    <span class="badge shrink-0">{{ item.badge }}</span>
-                  {% endif %}
-                </a>
-              {% empty %}
-                <div class="rounded-[1.15rem] px-3 py-4 text-sm leading-7 text-slate-500 dark:text-slate-400">
-                  فعلاً اکشن اضافه‌ای برای این صفحه تعریف نشده است.
-                </div>
-              {% endfor %}
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </div>

@@ -5,120 +5,119 @@
 
 {% block content %}
   <section
-    class="relative min-h-screen overflow-x-clip"
+    class="app-shell-root"
     x-data="{ mobileMenuOpen: false }"
     x-init="window.addEventListener('resize', () => { if (window.innerWidth >= 1024) { mobileMenuOpen = false } })"
     @keydown.escape.window="mobileMenuOpen = false"
   >
-    <div class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.10),transparent_26%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.10),transparent_24%),linear-gradient(180deg,rgba(247,250,249,0.96),rgba(241,245,249,0.84))] dark:bg-[radial-gradient(circle_at_top_right,rgba(40,171,136,0.14),transparent_26%),radial-gradient(circle_at_top_left,rgba(1,51,102,0.18),transparent_24%),linear-gradient(180deg,rgba(6,22,44,0.96),rgba(10,29,54,0.94))]"></div>
-
     <div
-      class="fixed inset-0 z-40 bg-slate-950/45 backdrop-blur-sm lg:hidden"
+      class="app-shell-mobile-backdrop"
       x-cloak
       x-show="mobileMenuOpen"
       @click="mobileMenuOpen = false"
     ></div>
 
     <aside
-      class="workspace-shell-card fixed inset-y-0 right-0 z-50 flex w-[90vw] max-w-sm flex-col border-l shadow-2xl shadow-slate-900/12 backdrop-blur-xl lg:hidden"
+      class="app-shell-mobile-drawer lg:hidden"
       x-cloak
       x-show="mobileMenuOpen"
       x-transition:enter="transition duration-200 ease-out"
       x-transition:enter-start="translate-x-full opacity-0"
       x-transition:enter-end="translate-x-0 opacity-100"
     >
-      <div class="border-b border-slate-200/70 px-4 py-4 dark:border-slate-700/70">
-        <div class="flex items-start justify-between gap-3">
-          <div class="min-w-0">
-            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">منوی فضای کاری</div>
-            <div class="mt-1 truncate text-lg font-black text-slate-900 dark:text-white">
-              {{ current_workspace.name|default:"بدون ورک‌اسپیس" }}
-            </div>
-            {% if current_workspace.subtitle %}
-              <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.subtitle }}</div>
-            {% elif current_workspace.role_label %}
-              <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.role_label }}</div>
-            {% endif %}
+      <div class="app-shell-mobile-head">
+        <div class="min-w-0">
+          <div class="app-shell-kicker">فضای کاری</div>
+          <div class="mt-2 truncate text-lg font-black text-slate-950 dark:text-white">
+            {{ current_workspace.name|default:"بدون ورک‌اسپیس" }}
           </div>
-          <button type="button" class="icon-btn shrink-0" @click="mobileMenuOpen = false" aria-label="بستن منوی موبایل">
-            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <path d="M6 6l8 8M14 6l-8 8" stroke-linecap="round"></path>
-            </svg>
-          </button>
+          {% if current_workspace.subtitle %}
+            <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.subtitle }}</div>
+          {% elif current_workspace.role_label %}
+            <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.role_label }}</div>
+          {% endif %}
         </div>
+
+        <button type="button" class="icon-btn shrink-0" @click="mobileMenuOpen = false" aria-label="بستن منوی موبایل">
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M6 6l8 8M14 6l-8 8" stroke-linecap="round"></path>
+          </svg>
+        </button>
       </div>
 
-      <div class="flex-1 overflow-y-auto px-4 py-4">
-        <div class="workspace-shell-card rounded-[1.75rem] p-3">
-          <div class="mb-3 text-xs font-bold text-slate-500 dark:text-slate-400">فضای فعال</div>
-          <div class="flex items-center gap-3 rounded-[1.5rem] border border-emerald-200/70 bg-emerald-50/80 px-3 py-3 text-slate-900 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-white">
-            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-sm font-black text-white dark:bg-white dark:text-slate-900">
-              {% if current_workspace.initials %}
-                {{ current_workspace.initials }}
-              {% elif current_workspace.name %}
-                {{ current_workspace.name|slice:":2" }}
-              {% else %}
-                فا
-              {% endif %}
-            </div>
-            <div class="min-w-0">
-              <div class="truncate text-sm font-black">{{ current_workspace.name|default:"ورک‌اسپیس پیش‌فرض" }}</div>
-              {% if current_workspace.subtitle %}
-                <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.subtitle }}</div>
-              {% elif current_workspace.meta %}
-                <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.meta }}</div>
-              {% endif %}
-            </div>
+      <div class="app-shell-mobile-body">
+        <section class="app-shell-mobile-workspace">
+          <div class="app-shell-workspace-mark">
+            {% if current_workspace.initials %}
+              {{ current_workspace.initials }}
+            {% elif current_workspace.name %}
+              {{ current_workspace.name|slice:":2" }}
+            {% else %}
+              فا
+            {% endif %}
           </div>
-        </div>
 
-        <nav class="mt-4 space-y-2">
-          {% for item in app_sidebar_items %}
-            <a
-              href="{{ item.url }}"
-            class="workspace-nav-link {% if item.is_active %}is-active{% endif %}"
-            >
-              <div class="flex items-center justify-between gap-3">
-                <div class="min-w-0">
-                  <div class="truncate text-sm font-bold">{{ item.label }}</div>
-                  {% if item.caption %}
-                    <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ item.caption }}</div>
+          <div class="min-w-0 flex-1">
+            <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400">ورک‌اسپیس فعال</div>
+            <div class="mt-1 truncate text-sm font-black text-slate-950 dark:text-white">
+              {{ current_workspace.name|default:"ورک‌اسپیس پیش‌فرض" }}
+            </div>
+            {% if current_workspace.meta %}
+              <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.meta }}</div>
+            {% elif current_workspace.badge %}
+              <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.badge }}</div>
+            {% endif %}
+          </div>
+        </section>
+
+        <section class="space-y-3">
+          <div class="app-shell-nav-label">ناوبری اصلی</div>
+          <nav class="space-y-2">
+            {% for item in app_sidebar_items %}
+              <a
+                href="{{ item.url }}"
+                class="workspace-nav-link {% if item.is_active %}is-active{% endif %}"
+              >
+                <div class="flex items-start justify-between gap-3">
+                  <div class="min-w-0">
+                    <div class="truncate text-sm font-bold">{{ item.label }}</div>
+                    {% if item.caption %}
+                      <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ item.caption }}</div>
+                    {% endif %}
+                  </div>
+                  {% if item.badge %}
+                    <span class="badge shrink-0">{{ item.badge }}</span>
                   {% endif %}
                 </div>
-                {% if item.badge %}
-                  <span class="badge shrink-0">{{ item.badge }}</span>
-                {% endif %}
+              </a>
+            {% empty %}
+              <div class="rounded-[1.4rem] border border-dashed border-slate-300 px-4 py-5 text-sm leading-7 text-slate-500 dark:border-slate-700 dark:text-slate-300">
+                هنوز مسیری برای این بخش تعریف نشده است.
               </div>
-            </a>
-          {% empty %}
-            <div class="rounded-[1.5rem] border border-dashed border-slate-300 px-4 py-6 text-sm leading-7 text-slate-500 dark:border-slate-700 dark:text-slate-300">
-              هنوز آیتمی برای منوی این بخش تعریف نشده است.
-            </div>
-          {% endfor %}
-        </nav>
+            {% endfor %}
+          </nav>
+        </section>
 
         {% block app_mobile_menu_extra %}{% endblock %}
       </div>
 
-      <div class="border-t border-slate-200/70 px-4 py-4 dark:border-slate-700/70">
+      <div class="app-shell-mobile-foot">
         {% block app_mobile_menu_footer %}
           {% if app_mobile_footer_note %}
             <p class="text-xs leading-6 text-slate-500 dark:text-slate-400">{{ app_mobile_footer_note }}</p>
           {% else %}
-            <p class="text-xs leading-6 text-slate-500 dark:text-slate-400">این منو فقط برای جابه‌جایی بین بخش‌های اصلی فضای کاری استفاده می‌شود.</p>
+            <p class="text-xs leading-6 text-slate-500 dark:text-slate-400">این منو فقط برای جابه‌جایی بین مسیرهای اصلی فضای کاری است و سطح اجرا را شلوغ نمی‌کند.</p>
           {% endif %}
         {% endblock %}
       </div>
     </aside>
 
-    {% include 'app/_topbar.html' %}
-
-    <div class="section-shell pb-6 pt-4 sm:pb-8">
-      <div class="shell-grid xl:gap-6">
-        <aside class="hidden lg:block lg:self-start">
-          <div class="chat-app-sidebar sticky top-24 rounded-[2rem] p-4">
-            <div class="workspace-shell-card flex items-center gap-3 px-3 py-3">
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-sm font-black text-white dark:bg-white dark:text-slate-900">
+    <div class="section-shell app-shell-stage">
+      <div class="app-shell-grid">
+        <aside class="app-shell-rail hidden lg:block">
+          <div class="app-shell-rail-panel">
+            <section class="app-shell-rail-workspace">
+              <div class="app-shell-workspace-mark">
                 {% if current_workspace.initials %}
                   {{ current_workspace.initials }}
                 {% elif current_workspace.name %}
@@ -127,29 +126,33 @@
                   فا
                 {% endif %}
               </div>
-              <div class="min-w-0">
-                <div class="truncate text-sm font-black text-slate-900 dark:text-white">{{ current_workspace.name|default:"ورک‌اسپیس پیش‌فرض" }}</div>
+
+              <div class="min-w-0 flex-1">
+                <div class="app-shell-kicker">ورک‌اسپیس فعال</div>
+                <div class="mt-2 truncate text-base font-black text-slate-950 dark:text-white">
+                  {{ current_workspace.name|default:"ورک‌اسپیس پیش‌فرض" }}
+                </div>
                 {% if current_workspace.subtitle %}
-                  <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.subtitle }}</div>
+                  <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">{{ current_workspace.subtitle }}</div>
                 {% elif current_workspace.meta %}
-                  <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ current_workspace.meta }}</div>
+                  <div class="mt-1 text-sm text-slate-600 dark:text-slate-300">{{ current_workspace.meta }}</div>
                 {% endif %}
               </div>
-            </div>
+            </section>
 
-            <div class="mt-5">
-              <div class="mb-3 px-1 text-xs font-bold text-slate-500 dark:text-slate-400">بخش‌های اصلی</div>
+            <section class="space-y-3">
+              <div class="app-shell-nav-label">مسیرهای محصول</div>
               <nav class="space-y-2">
                 {% for item in app_sidebar_items %}
                   <a
                     href="{{ item.url }}"
                     class="workspace-nav-link {% if item.is_active %}is-active{% endif %}"
                   >
-                    <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-start justify-between gap-3">
                       <div class="min-w-0">
                         <div class="truncate text-sm font-bold">{{ item.label }}</div>
                         {% if item.caption %}
-                          <div class="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{{ item.caption }}</div>
+                          <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ item.caption }}</div>
                         {% endif %}
                       </div>
                       {% if item.badge %}
@@ -158,47 +161,48 @@
                     </div>
                   </a>
                 {% empty %}
-                  <div class="rounded-[1.5rem] border border-dashed border-slate-300 px-4 py-6 text-sm leading-7 text-slate-500 dark:border-slate-700 dark:text-slate-300">
-                    برای این workspace هنوز ناوبری اختصاصی تعریف نشده است.
+                  <div class="rounded-[1.4rem] border border-dashed border-slate-300 px-4 py-5 text-sm leading-7 text-slate-500 dark:border-slate-700 dark:text-slate-300">
+                    برای این ورک‌اسپیس هنوز ناوبری اختصاصی ثبت نشده است.
                   </div>
                 {% endfor %}
               </nav>
-            </div>
+            </section>
 
             {% if current_workspace.meta or current_workspace.role_label %}
-              <div class="surface-muted mt-5 px-4 py-4">
-                <div class="text-xs font-black text-slate-500 dark:text-slate-400">وضعیت فعلی</div>
+              <section class="app-shell-rail-note">
+                <div class="app-shell-nav-label">وضعیت فعلی</div>
                 {% if current_workspace.meta %}
                   <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ current_workspace.meta }}</p>
                 {% elif current_workspace.role_label %}
                   <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ current_workspace.role_label }}</p>
                 {% endif %}
-              </div>
+              </section>
             {% endif %}
 
             {% block app_sidebar_extra %}{% endblock %}
           </div>
         </aside>
 
-        <div class="min-w-0 space-y-4">
+        <div class="app-shell-column">
+          {% include 'app/_topbar.html' %}
+
+          {% block app_shell_header_extra %}{% endblock %}
+
           {% if app_page_notice %}
-            <div class="message-banner" data-tone="success">
-              {{ app_page_notice }}
-            </div>
+            <section class="app-shell-notice">
+              <div class="app-shell-kicker">یادداشت صفحه</div>
+              <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ app_page_notice }}</p>
+            </section>
           {% endif %}
 
-          <div class="{% if app_has_context_panel %}grid gap-4 xl:grid-cols-[minmax(0,1fr)_19rem] xl:items-start{% endif %}">
-            <main class="min-w-0">
-              <div class="workspace-page-card rounded-[2rem] p-4 sm:p-5 lg:p-6">
-                {% block app_content %}{% endblock %}
-              </div>
+          <div class="app-shell-main {% if app_has_context_panel %}app-shell-main--with-context{% endif %}">
+            <main class="app-shell-content">
+              {% block app_content %}{% endblock %}
             </main>
 
             {% if app_has_context_panel %}
-              <aside class="min-w-0 xl:sticky xl:top-24">
-                <div class="workspace-page-card rounded-[2rem] p-4 sm:p-5">
-                  {% block app_context_panel %}{% endblock %}
-                </div>
+              <aside class="app-shell-context">
+                {% block app_context_panel %}{% endblock %}
               </aside>
             {% endif %}
           </div>

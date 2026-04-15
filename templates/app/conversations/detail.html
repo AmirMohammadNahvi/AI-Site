@@ -2,21 +2,21 @@
 
 {% block title %}{{ conversation.title|default:conversation_title|default:"گفتگو" }} | {{ site_settings.site_name_fa }}{% endblock %}
 
-{% block app_content %}
-  <div class="space-y-4">
+{% block app_shell_header_extra %}
+  <div class="space-y-3">
     {% include 'app/_context_bar.html' %}
     {% include 'app/_migration_banner.html' %}
 
     {% if conversation_assistant_notice %}
-      <section class="rounded-[1.35rem] border border-slate-200/80 bg-slate-50/78 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-300">
+      <section class="app-shell-inline-note text-sm leading-7 text-slate-600 dark:text-slate-300">
         {{ conversation_assistant_notice }}
       </section>
     {% endif %}
+  </div>
+{% endblock %}
 
-    {% if conversation_entry_context %}
-      {% include 'app/_conversation_entry_card.html' with conversation_entry_context=conversation_entry_context title="اگر به زمینه دیگری نیاز دارید" body="ادامه همین گفتگو از همین صفحه انجام می‌شود. فقط وقتی موضوع تازه یا اسپیس دیگری لازم دارید از مسیرهای زیر استفاده کنید." helper="این کارت عمداً جمع‌وجور مانده تا تمرکز صفحه روی اجرای گفتگو بماند." %}
-    {% endif %}
-
+{% block app_content %}
+  <div class="space-y-4">
     {% if conversation_loading %}
       <section class="chat-thread-area overflow-hidden rounded-[1.8rem] border border-slate-200/80 bg-white/72 dark:border-slate-700/70 dark:bg-slate-900/45">
         <div class="mx-auto flex w-full max-w-4xl flex-col gap-4 px-4 py-6 sm:px-6">
@@ -109,11 +109,27 @@
       </section>
     {% endif %}
 
+    {% include 'app/_composer.html' %}
+
+    {% if conversation_entry_context %}
+      <section class="app-shell-inline-note">
+        <div class="text-sm font-black text-slate-900 dark:text-white">اگر موضوع تازه‌ای دارید، آن را جدا نگه دارید</div>
+        <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+          ادامه این صفحه برای اجرای همین گفتگو است. فقط وقتی زمینه تازه یا مقصد دیگری لازم دارید از مسیرهای زیر استفاده کنید.
+        </p>
+        <div class="app-shell-inline-actions">
+          {% if conversation_entry_context.new_cta_url %}
+            <a href="{{ conversation_entry_context.new_cta_url }}" class="btn-secondary !px-4 !py-2 text-xs">
+              {{ conversation_entry_context.new_cta_label|default:"گفتگوی جدید" }}
+            </a>
+          {% endif %}
+        </div>
+      </section>
+    {% endif %}
+
     <div class="xl:hidden">
       {% include 'app/_archived_list.html' %}
     </div>
-
-    {% include 'app/_composer.html' %}
   </div>
 {% endblock %}
 

@@ -22,7 +22,7 @@
     </div>
 
     {% if archived_conversations_url %}
-      <a href="{{ archived_conversations_url }}" class="hidden rounded-full border border-slate-200/80 bg-white/80 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/60 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white sm:inline-flex">
+      <a href="{{ archived_conversations_url }}" class="hidden rounded-full border border-slate-200/80 bg-white/82 px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-slate-300 hover:text-slate-900 dark:border-slate-700/70 dark:bg-slate-900/60 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white sm:inline-flex">
         {% if archived_conversation_count %}
           آرشیو {{ archived_conversation_count }}
         {% else %}
@@ -33,11 +33,11 @@
   </div>
 
   <div class="lg:hidden">
-    <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55">
+    <div class="conversation-rail-surface">
       <div class="flex items-center justify-between gap-3">
         <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">دسترسی سریع</div>
-          <div class="mt-1 text-sm font-black text-slate-900 dark:text-white">
+          <div class="app-shell-kicker">بازگشت به اجرا</div>
+          <div class="mt-2 text-sm font-black text-slate-900 dark:text-white">
             {% if conversation_items %}
               {{ conversation_items|length }} گفتگو در دسترس است
             {% else %}
@@ -46,19 +46,19 @@
           </div>
         </div>
         <button type="button" class="btn-secondary !px-4 !py-2 text-xs" @click="sheetOpen = true">
-          {{ conversation_rail_mobile_label|default:"لیست گفتگوها" }}
+          {{ conversation_rail_mobile_label|default:"فهرست گفتگوها" }}
         </button>
       </div>
 
       {% if conversation_items %}
-        <div class="mt-4 space-y-2">
+        <div class="conversation-rail-list mt-4">
           {% for item in conversation_items|slice:":2" %}
             <a
               href="{{ item.url|default:'#' }}"
-              class="block rounded-[1.2rem] border px-3 py-3 transition {% if item.is_active or item.id == active_conversation_id %}border-emerald-200 bg-emerald-50 dark:border-emerald-500/25 dark:bg-emerald-500/10{% else %}border-slate-200/80 bg-slate-50/80 dark:border-slate-700/70 dark:bg-slate-900/70{% endif %}"
+              class="conversation-rail-link {% if item.is_active or item.id == active_conversation_id %}is-active{% endif %}"
             >
-              <div class="truncate text-sm font-bold text-slate-900 dark:text-white">{{ item.title|default:"گفتگوی بدون عنوان" }}</div>
-              <div class="mt-1 flex flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+              <div class="truncate text-sm font-black text-slate-900 dark:text-white">{{ item.title|default:"گفتگوی بدون عنوان" }}</div>
+              <div class="mt-2 flex flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400">
                 {% if item.space_name %}<span>{{ item.space_name }}</span>{% endif %}
                 {% if item.updated_label %}<span>{{ item.updated_label }}</span>{% endif %}
               </div>
@@ -79,35 +79,44 @@
   </div>
 
   <div class="hidden lg:block">
-    <div class="rounded-[1.8rem] border border-slate-200/80 bg-white/84 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55">
-      <div class="mb-4">
-        <input
-          type="search"
-          x-model="query"
-          class="input !rounded-[1.2rem]"
-          placeholder="{{ conversation_search_placeholder|default:'جست‌وجو در گفتگوها' }}"
-        >
+    <div class="conversation-rail-surface">
+      <div class="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+        <div class="min-w-0">
+          <div class="app-shell-kicker">فقط گفتگوهای در جریان</div>
+          <div class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">
+            برای موضوع تازه دوباره از اسپیس شروع کنید و از این فهرست فقط برای برگشت به همان اجرا استفاده کنید.
+          </div>
+        </div>
+
+        <div class="w-full xl:w-[18rem]">
+          <input
+            type="search"
+            x-model="query"
+            class="input !rounded-[1.2rem]"
+            placeholder="{{ conversation_search_placeholder|default:'جست‌وجو در گفتگوها' }}"
+          >
+        </div>
       </div>
 
       {% if conversation_items %}
-        <div class="space-y-2">
+        <div class="conversation-rail-list">
           {% for item in conversation_items %}
             <a
               href="{{ item.url|default:'#' }}"
               x-show="matchesConversation('{{ item.title|default:'گفتگوی بدون عنوان'|escapejs }}', '{{ item.space_name|default:''|escapejs }}', '{{ item.project_name|default:''|escapejs }}')"
-              class="block rounded-[1.25rem] border px-3 py-3 transition {% if item.is_active or item.id == active_conversation_id %}border-emerald-200 bg-emerald-50 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10{% else %}border-slate-200/80 bg-slate-50/80 hover:border-slate-300 hover:bg-white dark:border-slate-700/70 dark:bg-slate-900/70 dark:hover:border-slate-600 dark:hover:bg-slate-900{% endif %}"
+              class="conversation-rail-link {% if item.is_active or item.id == active_conversation_id %}is-active{% endif %}"
             >
               <div class="flex items-start justify-between gap-3">
                 <div class="min-w-0">
                   <div class="truncate text-sm font-black text-slate-900 dark:text-white">{{ item.title|default:"گفتگوی بدون عنوان" }}</div>
-                  <div class="mt-1 flex flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+                  <div class="mt-2 flex flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400">
                     {% if item.space_name %}<span>{{ item.space_name }}</span>{% endif %}
                     {% if item.project_name %}<span>{{ item.project_name }}</span>{% endif %}
                     {% if item.updated_label %}<span>{{ item.updated_label }}</span>{% endif %}
                   </div>
                 </div>
                 {% if item.is_active or item.id == active_conversation_id %}
-                  <span class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">فعال</span>
+                  <span class="workspace-switcher-state">فعال</span>
                 {% endif %}
               </div>
             </a>
@@ -130,24 +139,24 @@
     </div>
   </div>
 
-  <div class="fixed inset-0 z-[70] bg-slate-950/45 backdrop-blur-sm lg:hidden" x-cloak x-show="sheetOpen" @click="sheetOpen = false"></div>
+  <div class="workspace-switcher-sheet-backdrop lg:hidden" x-cloak x-show="sheetOpen" @click="sheetOpen = false"></div>
 
   <div
-    class="fixed inset-x-3 bottom-3 z-[80] rounded-[2rem] border border-slate-200/90 bg-white/96 p-3 shadow-2xl shadow-slate-900/15 backdrop-blur-xl dark:border-slate-700/70 dark:bg-slate-950/94 lg:hidden"
+    class="workspace-switcher-sheet lg:hidden"
     x-cloak
     x-show="sheetOpen"
     x-transition:enter="transition duration-200 ease-out"
     x-transition:enter-start="translate-y-4 opacity-0"
     x-transition:enter-end="translate-y-0 opacity-100"
   >
-    <div class="mx-auto mb-3 h-1.5 w-14 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+    <div class="workspace-switcher-sheet-handle"></div>
 
     <div class="flex items-start justify-between gap-3 px-1 pb-3">
       <div class="min-w-0">
         <div class="text-sm font-black text-slate-900 dark:text-white">{{ conversation_rail_title|default:"گفتگوهای اخیر" }}</div>
         <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ conversation_rail_caption|default:"گفتگوهای اخیر را سریع پیدا کنید و از همان زمینه ادامه دهید." }}</div>
       </div>
-      <button type="button" class="icon-btn shrink-0" @click="sheetOpen = false" aria-label="بستن لیست گفتگوها">
+      <button type="button" class="icon-btn shrink-0" @click="sheetOpen = false" aria-label="بستن فهرست گفتگوها">
         <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M6 6l8 8M14 6l-8 8" stroke-linecap="round"></path>
         </svg>
@@ -169,20 +178,20 @@
           <a
             href="{{ item.url|default:'#' }}"
             x-show="matchesConversation('{{ item.title|default:'گفتگوی بدون عنوان'|escapejs }}', '{{ item.space_name|default:''|escapejs }}', '{{ item.project_name|default:''|escapejs }}')"
-            class="block rounded-[1.25rem] border px-3 py-3 transition {% if item.is_active or item.id == active_conversation_id %}border-emerald-200 bg-emerald-50 shadow-sm shadow-emerald-100/70 dark:border-emerald-500/25 dark:bg-emerald-500/10{% else %}border-slate-200/80 bg-white/78 dark:border-slate-700/70 dark:bg-slate-900/70{% endif %}"
+            class="conversation-rail-link {% if item.is_active or item.id == active_conversation_id %}is-active{% endif %}"
             @click="sheetOpen = false"
           >
             <div class="flex items-start justify-between gap-3">
               <div class="min-w-0">
                 <div class="truncate text-sm font-black text-slate-900 dark:text-white">{{ item.title|default:"گفتگوی بدون عنوان" }}</div>
-                <div class="mt-1 flex flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+                <div class="mt-2 flex flex-wrap gap-2 text-[11px] text-slate-500 dark:text-slate-400">
                   {% if item.space_name %}<span>{{ item.space_name }}</span>{% endif %}
                   {% if item.project_name %}<span>{{ item.project_name }}</span>{% endif %}
                   {% if item.updated_label %}<span>{{ item.updated_label }}</span>{% endif %}
                 </div>
               </div>
               {% if item.is_active or item.id == active_conversation_id %}
-                <span class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">فعال</span>
+                <span class="workspace-switcher-state">فعال</span>
               {% endif %}
             </div>
           </a>
