@@ -10,7 +10,7 @@
         {% elif assistant.name %}
           {{ assistant.name|slice:":2" }}
         {% else %}
-          AI
+          دس
         {% endif %}
       </div>
 
@@ -72,7 +72,7 @@
       {% else %}
         <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-slate-100/90 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-500">
           {% if assistant_state == 'locked' or assistant_state == 'upgradeable' %}
-            {{ assistant.primary_action_label|default:"نیازمند ارتقا" }}
+            {{ assistant.primary_action_label|default:"با ارتقا فعال می‌شود" }}
           {% elif assistant_state == 'workspace' or assistant_state == 'restricted' %}
             {{ assistant.primary_action_label|default:"در این ورک‌اسپیس فعال نیست" }}
           {% elif assistant_state == 'policy' or assistant_state == 'policy_restricted' %}
@@ -91,7 +91,7 @@
 
       {% if assistant.detail_url %}
         <a href="{{ assistant.detail_url }}" class="btn-secondary w-full">
-          {{ assistant.detail_label|default:"جزئیات و تنظیمات" }}
+          {{ assistant.detail_label|default:"جزئیات دستیار" }}
         </a>
       {% endif %}
 

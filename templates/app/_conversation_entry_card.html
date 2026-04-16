@@ -8,7 +8,7 @@
         {% elif entry_state == 'available' %}
           {% include 'app/_entitlement_status_badge.html' with entitlement_state='included' entitlement_tone='included' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'ورود از این مسیر ممکن است' entitlement_note=conversation_entry_context.reason|default:reason %}
         {% elif entry_state == 'locked' or entry_state == 'upgradeable' %}
-          {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'با ارتقا قابل ورود' entitlement_note=conversation_entry_context.reason|default:reason %}
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone='upgradeable' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'با ارتقا فعال می‌شود' entitlement_note=conversation_entry_context.reason|default:reason %}
         {% elif entry_state == 'policy' or entry_state == 'policy_restricted' %}
           {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_tone='policy' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'با سیاست این مسیر محدود است' entitlement_note=conversation_entry_context.reason|default:reason %}
         {% elif entry_state == 'workspace' or entry_state == 'restricted' %}
@@ -16,7 +16,7 @@
         {% elif entry_state == 'archived' %}
           {% include 'app/_entitlement_status_badge.html' with entitlement_state='disabled' entitlement_tone='default' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'آرشیوشده' entitlement_note=conversation_entry_context.reason|default:reason %}
         {% elif entry_state == 'migrated' or entry_state == 'legacy' %}
-          {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'منتقل‌شده از مسیر قبلی' entitlement_note=conversation_entry_context.reason|default:reason %}
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'به مسیر جدید منتقل شده' entitlement_note=conversation_entry_context.reason|default:reason %}
         {% else %}
           {% include 'app/_entitlement_status_badge.html' with entitlement_state='unavailable' entitlement_tone='default' entitlement_label=conversation_entry_context.state_label|default:state_label|default:'فعلاً قابل ورود نیست' entitlement_note=conversation_entry_context.reason|default:reason %}
         {% endif %}

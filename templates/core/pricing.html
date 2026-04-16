@@ -33,7 +33,7 @@
             <h2 class="text-2xl font-black">{{ plan.name }}</h2>
             {% if forloop.first %}<span class="badge">{% site_text 'pricing.popular_badge' 'پیشنهادی' title='برچسب پلن پیشنهادی در قیمت‌گذاری' group='pricing' %}</span>{% endif %}
           </div>
-          {% site_text 'pricing.default_description' 'پلن حرفه‌ای برای تجربه مداوم با مدل‌های AI.' title='توضیح پیش‌فرض پلن در قیمت‌گذاری' group='pricing' as pricing_default_description %}
+          {% site_text 'pricing.default_description' 'پلن حرفه‌ای برای تجربه مداوم با مدل‌های هوش مصنوعی.' title='توضیح پیش‌فرض پلن در قیمت‌گذاری' group='pricing' as pricing_default_description %}
           <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ plan.description|default:pricing_default_description }}</p>
           <div class="mt-6 text-4xl font-black">{{ plan.price|floatformat:0 }}</div>
           <div class="text-sm text-slate-500 dark:text-slate-400">{% site_text 'pricing.currency' 'تومان' title='واحد پول در قیمت‌گذاری' group='pricing' %}</div>

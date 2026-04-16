@@ -12,7 +12,7 @@
       <div class="flex flex-col gap-6 xl:grid xl:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
         <div class="min-w-0">
           <div class="surface-meta-list">
-            <span class="badge">FaralYar v1.5</span>
+            <span class="badge">کاتالوگ دستیارها</span>
             <span class="soft-chip px-3 py-1 text-[11px]">هویت‌های کاری قابل استفاده مجدد</span>
             {% if current_workspace.name %}
               <span class="soft-chip px-3 py-1 text-[11px]">ورک‌اسپیس: {{ current_workspace.name }}</span>
@@ -71,7 +71,7 @@
               </a>
             {% elif assistant_upgrade_url %}
               <a href="{{ assistant_upgrade_url }}" class="btn-secondary w-full">
-                {{ assistant_upgrade_label|default:"ارتقا برای ساخت دستیار" }}
+                {{ assistant_upgrade_label|default:"بررسی ارتقا" }}
               </a>
             {% endif %}
 

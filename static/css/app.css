@@ -362,13 +362,13 @@ textarea {
 }
 
 .message-banner {
-  border-radius: 1.35rem;
+  border-radius: 1.5rem;
   border: 1px solid rgba(203, 213, 225, 0.84);
   background: rgba(255, 255, 255, 0.94);
-  padding: 0.9rem 1rem;
+  padding: 0.95rem 1.05rem;
   font-size: 0.9rem;
   line-height: 1.9;
-  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
   backdrop-filter: blur(14px);
 }
 
@@ -2244,11 +2244,12 @@ table.responsive-table {
   border: 1px solid rgba(203, 213, 225, 0.82);
   border-radius: 999px;
   background: rgba(248, 250, 252, 0.92);
-  padding: 0.46rem 0.82rem;
+  padding: 0.44rem 0.8rem;
   font-size: 0.71rem;
   font-weight: 900;
   line-height: 1.1;
   color: rgb(71 85 105);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 .surface-state-badge__dot {
@@ -2301,6 +2302,7 @@ table.responsive-table {
   border-color: rgba(89, 107, 131, 0.48);
   background: rgba(11, 20, 35, 0.84);
   color: rgb(205 216 228);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .dark .surface-state-badge[data-tone="success"],
@@ -2584,8 +2586,8 @@ table.responsive-table {
 .catalog-item__support {
   border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 1.35rem;
-  background: rgba(248, 250, 252, 0.86);
-  padding: 0.95rem;
+  background: rgba(248, 250, 252, 0.9);
+  padding: 1rem;
 }
 
 .catalog-item__detail-label,
@@ -2641,8 +2643,8 @@ table.responsive-table {
 .state-legend__item {
   border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 1.3rem;
-  background: rgba(248, 250, 252, 0.86);
-  padding: 0.9rem 0.95rem;
+  background: rgba(248, 250, 252, 0.9);
+  padding: 0.95rem 1rem;
 }
 
 .state-legend__copy {
@@ -2664,8 +2666,8 @@ table.responsive-table {
   align-items: start;
   border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: 1.3rem;
-  background: rgba(248, 250, 252, 0.86);
-  padding: 0.95rem;
+  background: rgba(248, 250, 252, 0.9);
+  padding: 1rem;
 }
 
 .surface-flow__index {
@@ -6733,7 +6735,7 @@ select:focus {
   border: 1px solid rgba(208, 219, 232, 0.84);
   border-radius: 1.5rem;
   background: rgba(255, 255, 255, 0.8);
-  padding: 0.75rem 0.85rem;
+  padding: 0.8rem 0.9rem;
   text-align: right;
   box-shadow:
     0 12px 26px rgba(15, 23, 42, 0.04),
@@ -7194,6 +7196,10 @@ select:focus {
     padding-top: 0.75rem;
   }
 
+  .message-stack {
+    top: 0.5rem;
+  }
+
   .app-shell-title {
     font-size: 1.15rem;
   }
@@ -7207,6 +7213,14 @@ select:focus {
   .conversation-rail-surface,
   .empty-state {
     border-radius: 1.6rem;
+  }
+
+  .catalog-item,
+  .catalog-item__detail,
+  .catalog-item__support,
+  .state-legend__item,
+  .surface-flow__step {
+    border-radius: 1.45rem;
   }
 }
 

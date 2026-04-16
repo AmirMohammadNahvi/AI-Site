@@ -17,7 +17,7 @@
             {% elif model.name %}
               {{ model.name|slice:":2" }}
             {% else %}
-              AI
+              مد
             {% endif %}
           </div>
 
@@ -66,7 +66,7 @@
           <div class="surface-slab__eyebrow">چطور تصمیم بگیرید؟</div>
           <div class="surface-slab__title">اول تناسب کاری را ببینید، بعد دسترسی را</div>
           <p class="surface-slab__body">
-            مدل خوب در FaralYar مدلی است که برای نوع کار شما روشن باشد. اگر در این زمینه فعال نیست، همین صفحه باید دلیلش را بی‌ابهام توضیح دهد.
+            مدل خوب در FaralYar مدلی است که برای نوع کار شما روشن باشد. اگر در این ورک‌اسپیس یا این مسیر فعال نیست، همین صفحه باید دلیلش را بی‌ابهام توضیح دهد.
           </p>
           <div class="surface-bullet-list">
             <div class="surface-bullet">اگر برای شروع سریع می‌خواهید، به وضعیت و Fit Statement نگاه کنید.</div>
@@ -82,11 +82,11 @@
             </a>
           {% elif model.primary_cta_url and model_state == 'upgradeable' %}
             <a href="{{ model.primary_cta_url }}" class="btn-secondary w-full">
-              {{ model.primary_cta_label|default:"بررسی گزینه ارتقا" }}
+              {{ model.primary_cta_label|default:"بررسی ارتقا" }}
             </a>
           {% elif model.primary_cta_url and model_state == 'locked' %}
             <a href="{{ model.primary_cta_url }}" class="btn-secondary w-full">
-              {{ model.primary_cta_label|default:"بررسی گزینه ارتقا" }}
+              {{ model.primary_cta_label|default:"بررسی ارتقا" }}
             </a>
           {% endif %}
 

@@ -48,12 +48,12 @@
         </div>
 
         <div class="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[14rem]">
-          {% if model_use_context.primary_cta_url|default:primary_cta_url and use_state != 'policy' and use_state != 'policy_restricted' and use_state != 'workspace' and use_state != 'restricted' and use_state != 'unavailable' %}
-            <a href="{{ model_use_context.primary_cta_url|default:primary_cta_url }}" class="{% if use_state == 'available' or use_state == 'current' %}btn-primary{% else %}btn-secondary{% endif %} w-full">
-              {% if model_use_context.primary_cta_label or primary_cta_label %}
-                {{ model_use_context.primary_cta_label|default:primary_cta_label }}
-              {% elif use_state == 'locked' or use_state == 'upgradeable' %}
-                بررسی دسترسی
+        {% if model_use_context.primary_cta_url|default:primary_cta_url and use_state != 'policy' and use_state != 'policy_restricted' and use_state != 'workspace' and use_state != 'restricted' and use_state != 'unavailable' %}
+          <a href="{{ model_use_context.primary_cta_url|default:primary_cta_url }}" class="{% if use_state == 'available' or use_state == 'current' %}btn-primary{% else %}btn-secondary{% endif %} w-full">
+            {% if model_use_context.primary_cta_label or primary_cta_label %}
+              {{ model_use_context.primary_cta_label|default:primary_cta_label }}
+            {% elif use_state == 'locked' or use_state == 'upgradeable' %}
+              بررسی ارتقا
               {% elif use_state == 'archived' %}
                 مشاهده آرشیو
               {% elif use_state == 'legacy' or use_state == 'migrated' %}
@@ -63,20 +63,20 @@
               {% endif %}
             </a>
           {% else %}
-            <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-slate-100/90 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-500">
-              {% if use_state == 'locked' or use_state == 'upgradeable' %}
-                {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"نیازمند ارتقا یا دسترسی بیشتر" }}
-              {% elif use_state == 'policy' or use_state == 'policy_restricted' %}
-                {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"با سیاست دسترسی محدود شده" }}
-              {% elif use_state == 'workspace' or use_state == 'restricted' %}
-                {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"در این ورک‌اسپیس فعال نیست" }}
-              {% elif use_state == 'archived' %}
-                {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"این مسیر آرشیوشده است" }}
-              {% elif use_state == 'legacy' or use_state == 'migrated' %}
-                {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"در مسیر جایگزین ادامه دهید" }}
-              {% else %}
-                {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"فعلاً مسیر انتخاب مستقیمی ندارد" }}
-              {% endif %}
+          <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-slate-100/90 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-500">
+            {% if use_state == 'locked' or use_state == 'upgradeable' %}
+              {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"با ارتقا فعال می‌شود" }}
+            {% elif use_state == 'policy' or use_state == 'policy_restricted' %}
+              {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"با سیاست دسترسی محدود شده" }}
+            {% elif use_state == 'workspace' or use_state == 'restricted' %}
+              {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"در این ورک‌اسپیس فعال نیست" }}
+            {% elif use_state == 'archived' %}
+              {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"آرشیوشده" }}
+            {% elif use_state == 'legacy' or use_state == 'migrated' %}
+              {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"به مسیر جدید منتقل شده" }}
+            {% else %}
+              {{ model_use_context.primary_cta_label|default:primary_cta_label|default:"فعلاً مسیر انتخاب مستقیمی ندارد" }}
+            {% endif %}
             </span>
           {% endif %}
 

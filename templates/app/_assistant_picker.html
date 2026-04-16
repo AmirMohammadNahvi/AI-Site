@@ -57,9 +57,9 @@
                         <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">{{ assistant_option.scope_label }}</span>
                       {% endif %}
                       {% if assistant_option.state == 'locked' %}
-                        <span class="rounded-full bg-amber-100 px-2.5 py-1 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">با ارتقا قابل استفاده</span>
+                        <span class="rounded-full bg-amber-100 px-2.5 py-1 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">با ارتقا فعال می‌شود</span>
                       {% elif assistant_option.state == 'unavailable' %}
-                        <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">خارج از دسترس در این ورک‌اسپیس</span>
+                        <span class="rounded-full bg-slate-100 px-2.5 py-1 dark:bg-slate-800">در این ورک‌اسپیس فعال نیست</span>
                       {% endif %}
                     </div>
                     {% if assistant_option.reason %}
@@ -79,9 +79,9 @@
                     {% else %}
                       <span class="inline-flex items-center justify-center rounded-[0.9rem] border border-slate-200/80 bg-slate-100/90 px-4 py-2 text-xs font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-500">
                         {% if assistant_option.state == 'locked' %}
-                          {{ assistant_option.action_label|default:"نیازمند ارتقا" }}
+                          {{ assistant_option.action_label|default:"با ارتقا فعال می‌شود" }}
                         {% elif assistant_option.state == 'unavailable' %}
-                          {{ assistant_option.action_label|default:"غیرفعال در این فضا" }}
+                          {{ assistant_option.action_label|default:"در این ورک‌اسپیس فعال نیست" }}
                         {% else %}
                           {{ assistant_option.action_label|default:"قابل انتخاب نیست" }}
                         {% endif %}
@@ -90,7 +90,7 @@
 
                     {% if assistant_option.detail_url %}
                       <a href="{{ assistant_option.detail_url }}" class="btn-secondary !px-4 !py-2 text-xs">
-                        {{ assistant_option.detail_label|default:"جزئیات" }}
+                        {{ assistant_option.detail_label|default:"جزئیات دستیار" }}
                       </a>
                     {% endif %}
                   </div>

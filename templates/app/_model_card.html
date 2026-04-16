@@ -8,10 +8,10 @@
         <div class="catalog-item__mark">
           {% if model.initials %}
             {{ model.initials }}
-          {% elif model.name %}
-            {{ model.name|slice:":2" }}
-          {% else %}
-            AI
+        {% elif model.name %}
+          {{ model.name|slice:":2" }}
+        {% else %}
+          مد
           {% endif %}
         </div>
 
@@ -88,11 +88,11 @@
           </a>
         {% elif model.primary_cta_url and model_state == 'upgradeable' %}
           <a href="{{ model.primary_cta_url }}" class="btn-secondary w-full">
-            {{ model.primary_cta_label|default:"بررسی گزینه ارتقا" }}
+            {{ model.primary_cta_label|default:"بررسی ارتقا" }}
           </a>
         {% elif model.primary_cta_url and model_state == 'locked' %}
           <a href="{{ model.primary_cta_url }}" class="btn-secondary w-full">
-            {{ model.primary_cta_label|default:"بررسی گزینه ارتقا" }}
+            {{ model.primary_cta_label|default:"بررسی ارتقا" }}
           </a>
         {% else %}
           <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-slate-100/90 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-500">

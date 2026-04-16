@@ -4,15 +4,15 @@
       <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div class="min-w-0 max-w-3xl">
           <div class="flex flex-wrap items-center gap-2">
-            {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone=card_tone entitlement_label=entitlement_label|default:'با ارتقا قابل فعال‌سازی' entitlement_note=entitlement_note %}
+            {% include 'app/_entitlement_status_badge.html' with entitlement_state='upgradeable' entitlement_tone=card_tone entitlement_label=entitlement_label|default:'با ارتقا فعال می‌شود' entitlement_note=entitlement_note %}
             <span class="text-xs font-bold text-slate-500 dark:text-slate-400">مسیر ارتقا</span>
           </div>
 
           <h2 class="mt-3 text-base font-black text-slate-900 dark:text-white sm:text-lg">
-            {{ upgrade_title|default:'این بخش در سطح دسترسی فعلی کامل فعال نیست' }}
+            {{ upgrade_title|default:'این بخش در سطح فعلی فعال نیست' }}
           </h2>
           <p class="mt-2 text-sm leading-7 text-slate-700 dark:text-slate-200">
-            {{ upgrade_body|default:'این وضعیت به معنی خطا نیست. اگر بعداً به این بخش نیاز داشتید، می‌توانید گزینه مناسب‌تر را بررسی کنید. تغییر پلن فقط بخش‌های مرتبط با سطح دسترسی را تغییر می‌دهد.' }}
+            {{ upgrade_body|default:'این وضعیت خطا نیست. اگر بعداً به این بخش نیاز داشتید، می‌توانید ارتقا را بررسی کنید. تغییر پلن فقط دسترسی‌های مرتبط را تغییر می‌دهد.' }}
           </p>
         </div>
 
@@ -20,12 +20,12 @@
           <div class="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[13rem]">
             {% if upgrade_primary_url %}
               <a href="{{ upgrade_primary_url }}" class="btn-primary w-full sm:w-auto">
-                {{ upgrade_primary_label|default:'بررسی گزینه‌های ارتقا' }}
+                {{ upgrade_primary_label|default:'بررسی ارتقا' }}
               </a>
             {% endif %}
             {% if upgrade_secondary_url %}
               <a href="{{ upgrade_secondary_url }}" class="btn-secondary w-full sm:w-auto">
-                {{ upgrade_secondary_label|default:'اطلاعات بیشتر' }}
+                {{ upgrade_secondary_label|default:'مشاهده جزئیات' }}
               </a>
             {% endif %}
           </div>

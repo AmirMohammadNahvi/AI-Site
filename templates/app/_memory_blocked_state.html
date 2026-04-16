@@ -3,7 +3,7 @@
     <div class="min-w-0">
       <div class="surface-meta-list">
         {% if memory_state == 'locked' %}
-          {% include 'app/_entitlement_status_badge.html' with entitlement_state='locked' entitlement_label='با ارتقا قابل استفاده' %}
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state='locked' entitlement_label='با ارتقا فعال می‌شود' %}
         {% elif memory_state == 'policy_blocked' %}
           {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_label='با سیاست دسترسی محدود شده' %}
         {% else %}
@@ -53,7 +53,7 @@
         <div class="flex flex-col gap-2">
           {% if memory_blocked.primary_url %}
             <a href="{{ memory_blocked.primary_url }}" class="{% if memory_state == 'locked' %}btn-primary{% else %}btn-secondary{% endif %} w-full">
-              {{ memory_blocked.primary_label|default:"بررسی دسترسی" }}
+              {{ memory_blocked.primary_label|default:"بررسی ارتقا" }}
             </a>
           {% endif %}
           {% if memory_blocked.secondary_url %}

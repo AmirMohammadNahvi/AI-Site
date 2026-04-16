@@ -8,7 +8,7 @@
     <span class="mobile-dock-link-label">{% site_text 'nav.mobile.pricing' 'پلن‌ها' title='پلن‌ها در داک موبایل' group='navigation' %}</span>
   </a>
   <a href="{% url 'ai_platform:chat' %}" class="mobile-dock-core" aria-label="شروع گفتگو">
-    <span class="mobile-dock-core-label">AI</span>
+    <span class="mobile-dock-core-label">گفتگو</span>
   </a>
   {% if request.user.is_authenticated %}
     <a href="{% url 'ai_platform:chat' %}" class="mobile-dock-link {% if ns == 'ai_platform' or ns == 'billing' %}is-active{% endif %}">

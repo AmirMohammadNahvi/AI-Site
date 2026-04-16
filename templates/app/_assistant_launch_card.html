@@ -82,7 +82,7 @@
             {% if assistant_launch_context.primary_cta_label or primary_cta_label %}
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label }}
             {% elif launch_state == 'locked' or launch_state == 'upgradeable' %}
-              بررسی دسترسی
+              بررسی ارتقا
             {% elif launch_state == 'archived' %}
               مشاهده آرشیو
             {% elif launch_state == 'legacy' or launch_state == 'migrated' %}
@@ -94,15 +94,15 @@
         {% else %}
           <span class="inline-flex w-full items-center justify-center rounded-[1rem] border border-slate-200/80 bg-slate-100/90 px-4 py-3 text-sm font-bold text-slate-400 dark:border-slate-700/70 dark:bg-slate-800/70 dark:text-slate-500">
             {% if launch_state == 'locked' or launch_state == 'upgradeable' %}
-              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"نیازمند ارتقا یا دسترسی بیشتر" }}
+              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"با ارتقا فعال می‌شود" }}
             {% elif launch_state == 'policy' or launch_state == 'policy_restricted' %}
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"با سیاست دسترسی محدود شده" }}
             {% elif launch_state == 'workspace' or launch_state == 'restricted' %}
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"در این ورک‌اسپیس فعال نیست" }}
             {% elif launch_state == 'archived' %}
-              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"این مسیر آرشیوشده است" }}
+              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"آرشیوشده" }}
             {% elif launch_state == 'legacy' or launch_state == 'migrated' %}
-              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"در مسیر جایگزین ادامه دهید" }}
+              {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"به مسیر جدید منتقل شده" }}
             {% else %}
               {{ assistant_launch_context.primary_cta_label|default:primary_cta_label|default:"فعلاً مسیر اجرای مستقیمی ندارد" }}
             {% endif %}

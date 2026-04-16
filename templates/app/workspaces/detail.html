@@ -5,7 +5,7 @@
 {% block app_shell_header_extra %}
   <section class="app-shell-hero">
     <div class="app-shell-path">
-      <span class="app-shell-path-pill is-active">{{ workspace.name|default:current_workspace.name|default:"فضای کاری" }}</span>
+      <span class="app-shell-path-pill is-active">{{ workspace.name|default:current_workspace.name|default:"ورک‌اسپیس" }}</span>
       {% if current_workspace.badge %}
         <span class="app-shell-path-pill">{{ current_workspace.badge }}</span>
       {% endif %}

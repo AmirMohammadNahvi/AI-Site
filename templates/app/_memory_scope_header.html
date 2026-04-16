@@ -5,7 +5,7 @@
         {% if memory_scope.state == 'active' %}
           {% include 'app/_entitlement_status_badge.html' with entitlement_state='available' entitlement_label='حافظه فعال است' %}
         {% elif memory_scope.state == 'locked' %}
-          {% include 'app/_entitlement_status_badge.html' with entitlement_state='locked' entitlement_label='با ارتقا قابل استفاده' %}
+          {% include 'app/_entitlement_status_badge.html' with entitlement_state='locked' entitlement_label='با ارتقا فعال می‌شود' %}
         {% elif memory_scope.state == 'policy' or memory_scope.state == 'policy_blocked' %}
           {% include 'app/_entitlement_status_badge.html' with entitlement_state='policy' entitlement_label='با سیاست دسترسی محدود شده' %}
         {% else %}
