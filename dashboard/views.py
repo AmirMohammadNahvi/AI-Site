@@ -51,7 +51,7 @@ def admin_home(request):
 @staff_member_required
 def settings_edit(request):
     settings_obj = SiteSetting.get_solo()
-    form = SiteSettingForm(request.POST or None, instance=settings_obj)
+    form = SiteSettingForm(request.POST or None, request.FILES or None, instance=settings_obj)
     if request.method == "POST" and form.is_valid():
         form.save()
         messages.success(request, "تنظیمات سایت ذخیره شد.")

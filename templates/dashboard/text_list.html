@@ -1,21 +1,17 @@
 {% extends 'dashboard/base_dashboard.html' %}
 
 {% block dashboard_content %}
-  <div class="space-y-6" x-data="{ activeFilter: 'all' }">
-    {% include 'dashboard/_admin_page_header.html' with admin_badge='متن‌های سایت' admin_context_label='کنترل محتوای رابط' admin_meta_label='فهرست زنده' admin_title='متن‌های قابل ویرایش محصول' admin_intro='هر متنی که از سیستم قطعه‌متن در سطح محصول استفاده می‌کند، باید از اینجا با خوانایی و ریسک کم‌تر قابل مدیریت باشد. این فهرست برای اسکن سریع، تشخیص وضعیت و ورود مستقیم به ویرایش طراحی شده است.' admin_hint='برای تغییرهای جزئی متنی از همینجا استفاده کنید. اگر چیزی در این فهرست نیست، احتمالاً هنوز در محصول مصرف نشده یا باید از مسیر نگهداری عمیق بررسی شود.' admin_side_eyebrow='اقدام اصلی' admin_side_title='ثبت متن جدید' admin_side_body='اگر قطعه‌متن تازه‌ای لازم شده، رکورد جدید بسازید تا بعداً از همان کلید در قالب مناسب استفاده شود.' admin_primary_url='/dashboard/admin-panel/texts/new/' admin_primary_label='متن جدید' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
+  <div class="admin-surface-stack" x-data="{ activeFilter: 'all' }">
+    {% include 'dashboard/_admin_page_header.html' with admin_badge='متن‌های سایت' admin_context_label='کنترل محتوای رابط' admin_meta_label='فهرست زنده' admin_title='متن‌های قابل ویرایش محصول' admin_intro='این فهرست برای اسکن سریع و ورود امن‌تر به ویرایش طراحی شده است. هر رکورد باید طوری نمایش داده شود که تیم بدون باز کردن فرم هم بداند متن کجا مصرف می‌شود و چه وضعیتی دارد.' admin_hint='اگر چیزی در این فهرست نیست، احتمالاً هنوز در محصول مصرف نشده یا باید از مسیر نگهداری عمیق بررسی شود. این صفحه برای متن‌های زنده و تصمیم‌های سریع است.' admin_side_eyebrow='اقدام اصلی' admin_side_title='ثبت متن جدید' admin_side_body='وقتی به قطعه‌متن تازه نیاز دارید، همان‌جا رکورد جدید بسازید تا کلید، عنوان و وضعیت آن از ابتدا با همان استاندارد عملیاتی ثبت شود.' admin_primary_url='/dashboard/admin-panel/texts/new/' admin_primary_label='متن جدید' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
 
-    <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
-      <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">جست‌وجو و مرور</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">عنوان، کلید یا متن را پیدا کنید و بعد وضعیت را فیلتر کنید</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">جست‌وجو در داده‌های ثبت‌شده انجام می‌شود و فیلتر وضعیت فقط برای مرور راحت‌تر داخل همین صفحه است.</p>
-        </div>
-
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">تعداد فعلی: {{ snippets|length }}</div>
+    <section class="admin-toolbar">
+      <div class="admin-section-heading">
+        <div class="admin-section-heading__eyebrow">جست‌وجو و فیلتر</div>
+        <h2 class="admin-section-heading__title">اول رکورد مناسب را پیدا کنید، بعد وضعیت آن را کوتاه کنید</h2>
+        <p class="admin-section-heading__body">جست‌وجو روی داده‌های ثبت‌شده انجام می‌شود و فیلترها فقط نمایش محلی را تغییر می‌دهند. این نوار برای اسکن سریع و بدون شلوغی نگه داشته شده است.</p>
       </div>
 
-      <div class="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+      <div class="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
         <form class="min-w-0">
           <div class="flex flex-col gap-2 sm:flex-row">
             <input type="search" name="q" value="{{ query }}" class="input" placeholder="جست‌وجو در عنوان، کلید یا متن">
@@ -23,21 +19,28 @@
           </div>
         </form>
 
-        <div class="horizontal-scroll -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
-          <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeFilter === 'all' ? 'border-emerald-200 bg-emerald-50 text-slate-900 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeFilter = 'all'">همه</button>
-          <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeFilter === 'active' ? 'border-emerald-200 bg-emerald-50 text-slate-900 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeFilter = 'active'">فعال</button>
-          <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeFilter === 'inactive' ? 'border-rose-200 bg-rose-50 text-slate-900 dark:border-rose-500/25 dark:bg-rose-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeFilter = 'inactive'">غیرفعال</button>
+        <div class="admin-toolbar__actions">
+          <span class="soft-chip px-3 py-2 text-[11px]">{{ snippets|length }} رکورد</span>
         </div>
+      </div>
+
+      <div class="admin-filter-bar">
+        <button type="button" class="admin-filter-chip" :class="activeFilter === 'all' ? 'is-active' : ''" @click="activeFilter = 'all'">همه</button>
+        <button type="button" class="admin-filter-chip" :class="activeFilter === 'active' ? 'is-active' : ''" @click="activeFilter = 'active'">فعال</button>
+        <button type="button" class="admin-filter-chip" data-tone="danger" :class="activeFilter === 'inactive' ? 'is-active' : ''" @click="activeFilter = 'inactive'">غیرفعال</button>
       </div>
     </section>
 
-    <section class="grid gap-3">
+    <section class="admin-record-list">
       {% for snippet in snippets %}
-        <article class="rounded-[1.5rem] border border-slate-200/80 bg-white/85 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55" x-show="activeFilter === 'all' || (activeFilter === 'active' && {{ snippet.is_active|yesno:'true,false' }}) || (activeFilter === 'inactive' && {{ snippet.is_active|yesno:'false,true' }})" x-cloak>
-          <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <div class="min-w-0 flex-1">
-              <div class="flex flex-wrap items-center gap-2">
-                <div class="text-base font-black text-slate-900 dark:text-white">{{ snippet.title }}</div>
+        <article class="admin-record-card" x-show="activeFilter === 'all' || (activeFilter === 'active' && {{ snippet.is_active|yesno:'true,false' }}) || (activeFilter === 'inactive' && {{ snippet.is_active|yesno:'false,true' }})" x-cloak>
+          <div class="admin-record-card__meta">
+            <div class="admin-record-card__header">
+              <div class="min-w-0">
+                <div class="admin-card-title">{{ snippet.title }}</div>
+                <p class="admin-card-text">این کارت باید پیش از ورود به فرم بگوید متن برای چه چیزی است و آیا همین حالا در سطح زنده فعال است یا نه.</p>
+              </div>
+              <div class="admin-inline-list">
                 {% if snippet.is_active %}
                   {% include 'dashboard/_admin_status_badge.html' with tone='success' label='فعال' %}
                 {% else %}
@@ -45,26 +48,33 @@
                 {% endif %}
                 {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label=snippet.group %}
               </div>
+            </div>
 
-              <div class="mt-2 text-xs font-bold text-slate-500 dark:text-slate-400">کلید: <span class="break-all font-mono font-normal">{{ snippet.key }}</span></div>
+            <div class="admin-record-metric">
+              <div class="admin-record-metric__label">کلید مصرف</div>
+              <div class="admin-record-metric__value break-all font-mono text-sm">{{ snippet.key }}</div>
+            </div>
 
-              <div class="mt-3 rounded-[1.2rem] border border-slate-200/80 bg-slate-50/82 px-4 py-3 text-sm leading-7 text-slate-600 dark:border-slate-700/70 dark:bg-slate-950/35 dark:text-slate-300">
-                {{ snippet.text }}
+            <div class="admin-record-card__preview">
+              {{ snippet.text }}
+            </div>
+
+            {% if snippet.help_text %}
+              <div class="admin-record-metric">
+                <div class="admin-record-metric__label">راهنمای داخلی</div>
+                <div class="text-sm leading-7 text-slate-600 dark:text-slate-300">{{ snippet.help_text }}</div>
               </div>
+            {% endif %}
+          </div>
 
-              {% if snippet.help_text %}
-                <p class="mt-3 text-xs leading-6 text-slate-500 dark:text-slate-400">راهنمای داخلی: {{ snippet.help_text }}</p>
-              {% endif %}
-            </div>
-
-            <div class="w-full lg:w-auto lg:min-w-[11rem]">
-              <a href="{% url 'dashboard:admin_text_edit' snippet.id %}" class="btn-secondary w-full">ویرایش متن</a>
-            </div>
+          <div class="admin-record-card__actions">
+            <a href="{% url 'dashboard:admin_text_edit' snippet.id %}" class="btn-secondary w-full">ویرایش متن</a>
           </div>
         </article>
       {% empty %}
-        <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/85 p-5 text-sm leading-7 text-slate-500 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-300">
-          هنوز متنی ثبت نشده است. با بازشدن صفحات اصلی، قطعه‌متن‌ها خودکار ساخته می‌شوند یا می‌توانید از همینجا مورد تازه‌ای اضافه کنید.
+        <div class="admin-empty-state">
+          <div class="admin-empty-state__eyebrow">فهرست خالی است</div>
+          <p class="admin-empty-state__body">هنوز متن عملیاتی ثبت نشده است. با ساخت متن جدید یا مصرف یک کلید در محصول، این سطح به‌جای جدول خام به یک فهرست قابل تصمیم‌گیری تبدیل می‌شود.</p>
         </div>
       {% endfor %}
     </section>

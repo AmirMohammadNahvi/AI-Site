@@ -1,111 +1,144 @@
 {% extends 'dashboard/base_dashboard.html' %}
 
 {% block dashboard_content %}
-  <div class="space-y-6" x-data="{ activeStatus: 'all' }">
-    {% include 'dashboard/_admin_page_header.html' with admin_badge='تراکنش‌ها' admin_context_label='مرور پرداخت‌ها' admin_meta_label='۵۰ رکورد اخیر' admin_title='مرور وضعیت پرداخت و تراکنش‌ها' admin_intro='این صفحه برای پایش سریع وضعیت تراکنش‌ها ساخته شده است تا بدون رفتن به جزئیات فنی، بتوانید پرداخت‌های تاییدشده، شروع‌شده یا ناموفق را کنار هم ببینید.' admin_hint='تمرکز اینجا بر شفافیت وضعیت، مبلغ، کاربر و شناسه‌های پیگیری است. اگر نیاز به بررسی ثبت فنی یا نگهداری عمیق‌تر دارید، آن را بیرون از این سطح انجام دهید.' admin_side_eyebrow='ناوبری' admin_side_title='برگشت به مرکز کنترل' admin_side_body='اگر فقط می‌خواستید وضعیت کلی پرداخت‌ها را بررسی کنید، بعد از مرور این فهرست دوباره به کنترل‌سنتر اصلی برگردید.' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
+  <div class="admin-surface-stack" x-data="{ activeStatus: 'all' }">
+    {% include 'dashboard/_admin_page_header.html' with admin_badge='تراکنش‌ها' admin_context_label='مرور پرداخت‌ها' admin_meta_label='۵۰ رکورد اخیر' admin_title='مرور وضعیت پرداخت و تراکنش‌ها' admin_intro='این صفحه برای پایش سریع وضعیت تراکنش‌ها ساخته شده است تا بدون رفتن به جزئیات فنی، بتوانید پرداخت‌های تاییدشده، شروع‌شده یا ناموفق را کنار هم ببینید.' admin_hint='تمرکز اینجا بر شفافیت وضعیت، مبلغ، کاربر و شناسه‌های پیگیری است. اگر نیاز به بررسی ثبت فنی یا نگهداری عمیق‌تر دارید، آن را بیرون از این سطح انجام دهید.' admin_side_eyebrow='بررسی عمیق' admin_side_title='ثبت‌های خام پرداخت' admin_side_body='اگر لازم است رکوردها را به شکل خام ببینید یا وارد جزئیات مدیریتی شوید، از ادمین پایه استفاده کنید. این صفحه برای خواندن سریع وضعیت است.' admin_primary_url='/admin/billing/paymenttransaction/' admin_primary_label='بازکردن در ادمین پایه' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
 
-    <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
-      <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">فیلتر وضعیت</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">اول وضعیت را کوتاه کنید، بعد رکوردها را بخوانید</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">فیلترها فقط نمایش محلی را تغییر می‌دهند و برای مرور موبایل و صفحه‌های شلوغ ساده نگه داشته شده‌اند.</p>
-        </div>
+    <section class="admin-toolbar">
+      <div class="admin-section-heading">
+        <div class="admin-section-heading__eyebrow">فیلتر وضعیت</div>
+        <h2 class="admin-section-heading__title">اول وضعیت را کوتاه کنید، بعد رکوردها را بخوانید</h2>
+        <p class="admin-section-heading__body">فیلترها فقط نمایش محلی را تغییر می‌دهند و برای مرور موبایل و صفحه‌های شلوغ ساده نگه داشته شده‌اند.</p>
       </div>
 
-      <div class="horizontal-scroll -mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1">
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeStatus === 'all' ? 'border-emerald-200 bg-emerald-50 text-slate-900 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeStatus = 'all'">همه</button>
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeStatus === 'verified' ? 'border-emerald-200 bg-emerald-50 text-slate-900 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeStatus = 'verified'">تاییدشده</button>
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeStatus === 'initiated' ? 'border-amber-200 bg-amber-50 text-slate-900 dark:border-amber-500/25 dark:bg-amber-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeStatus = 'initiated'">شروع‌شده</button>
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeStatus === 'failed' ? 'border-rose-200 bg-rose-50 text-slate-900 dark:border-rose-500/25 dark:bg-rose-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeStatus = 'failed'">ناموفق</button>
+      <div class="admin-toolbar__actions">
+        <span class="soft-chip px-3 py-2 text-[11px]">۵۰ رکورد اخیر</span>
+      </div>
+
+      <div class="admin-filter-bar">
+        <button type="button" class="admin-filter-chip" :class="activeStatus === 'all' ? 'is-active' : ''" @click="activeStatus = 'all'">همه</button>
+        <button type="button" class="admin-filter-chip" :class="activeStatus === 'verified' ? 'is-active' : ''" @click="activeStatus = 'verified'">تاییدشده</button>
+        <button type="button" class="admin-filter-chip" data-tone="warning" :class="activeStatus === 'initiated' ? 'is-active' : ''" @click="activeStatus = 'initiated'">شروع‌شده</button>
+        <button type="button" class="admin-filter-chip" data-tone="danger" :class="activeStatus === 'failed' ? 'is-active' : ''" @click="activeStatus = 'failed'">ناموفق</button>
       </div>
     </section>
 
-    <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
-      <div class="hidden md:block">
-        <table class="responsive-table">
-          <thead>
-            <tr class="border-b border-slate-200/80 text-right text-xs font-bold text-slate-500 dark:border-slate-700/70 dark:text-slate-400">
-              <th class="px-3 py-3">کاربر</th>
-              <th class="px-3 py-3">پلن</th>
-              <th class="px-3 py-3">مبلغ</th>
-              <th class="px-3 py-3">وضعیت</th>
-              <th class="px-3 py-3">پیگیری</th>
-              <th class="px-3 py-3">زمان</th>
-            </tr>
-          </thead>
-          <tbody class="align-top text-sm text-slate-600 dark:text-slate-300">
-            {% for txn in transactions %}
-              <tr x-show="activeStatus === 'all' || activeStatus === '{{ txn.status }}'" x-cloak class="border-b border-slate-200/70 last:border-b-0 dark:border-slate-700/60">
-                <td class="px-3 py-4">
-                  <div class="font-black text-slate-900 dark:text-white">{{ txn.order.user.full_name|default:txn.order.user }}</div>
-                  <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ txn.provider }}</div>
-                </td>
-                <td class="px-3 py-4">{{ txn.order.plan.name }}</td>
-                <td class="px-3 py-4">{{ txn.order.amount|floatformat:0 }} تومان</td>
-                <td class="px-3 py-4">
-                  {% if txn.status == 'verified' %}
-                    {% include 'dashboard/_admin_status_badge.html' with tone='success' label=txn.get_status_display %}
-                  {% elif txn.status == 'failed' %}
-                    {% include 'dashboard/_admin_status_badge.html' with tone='danger' label=txn.get_status_display %}
-                  {% else %}
-                    {% include 'dashboard/_admin_status_badge.html' with tone='warning' label=txn.get_status_display %}
-                  {% endif %}
-                </td>
-                <td class="px-3 py-4 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                  {% if txn.reference_id %}
-                    <div>Ref: <span class="font-mono">{{ txn.reference_id }}</span></div>
-                  {% endif %}
-                  {% if txn.authority %}
-                    <div>Authority: <span class="font-mono">{{ txn.authority }}</span></div>
-                  {% endif %}
-                  {% if not txn.reference_id and not txn.authority %}
-                    <div>ثبت نشده</div>
-                  {% endif %}
-                </td>
-                <td class="px-3 py-4 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ txn.created_at|date:"Y/m/d H:i" }}</td>
-              </tr>
-            {% empty %}
-              <tr>
-                <td colspan="6" class="px-3 py-6 text-center text-sm text-slate-500 dark:text-slate-400">تراکنشی برای نمایش وجود ندارد.</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+    <section class="grid gap-3 md:grid-cols-3">
+      <div class="admin-guide-card">
+        {% include 'dashboard/_admin_status_badge.html' with tone='success' label='تاییدشده' %}
+        <p class="admin-guide-card__body">پرداخت‌هایی که موفق شده‌اند و باید برای پشتیبانی و تطبیق سفارش‌ها خوانا بمانند.</p>
+      </div>
+      <div class="admin-guide-card" data-tone="warning">
+        {% include 'dashboard/_admin_status_badge.html' with tone='warning' label='شروع‌شده' %}
+        <p class="admin-guide-card__body">پرداخت‌هایی که آغاز شده‌اند اما هنوز به تایید نهایی نرسیده‌اند و ممکن است نیاز به پیگیری داشته باشند.</p>
+      </div>
+      <div class="admin-guide-card" data-tone="warning">
+        {% include 'dashboard/_admin_status_badge.html' with tone='danger' label='ناموفق' %}
+        <p class="admin-guide-card__body">رکوردهایی که باید برای تشخیص خطا و پاسخ‌گویی به کاربر سریع‌تر از بقیه دیده شوند.</p>
+      </div>
+    </section>
+
+    <section class="admin-table-shell">
+      <div class="admin-table-shell__header mb-4">
+        <div>
+          <div class="admin-card-title">رکوردهای اخیر</div>
+          <p class="admin-card-text">نمایش دسکتاپ برای مقایسه سریع وضعیت‌ها و شناسه‌هاست؛ نمای موبایل همان داده را با تمرکز بر اقدام فوری نگه می‌دارد.</p>
+        </div>
       </div>
 
-      <div class="space-y-3 md:hidden">
-        {% for txn in transactions %}
-          <article class="rounded-[1.4rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-950/35" x-show="activeStatus === 'all' || activeStatus === '{{ txn.status }}'" x-cloak>
-            <div class="flex flex-wrap items-start justify-between gap-3">
-              <div class="min-w-0">
-                <div class="font-black text-slate-900 dark:text-white">{{ txn.order.user.full_name|default:txn.order.user }}</div>
-                <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ txn.order.plan.name }} • {{ txn.order.amount|floatformat:0 }} تومان</div>
+      {% if transactions %}
+        <div class="hidden md:block">
+          <table class="responsive-table admin-transaction-table">
+            <thead>
+              <tr class="border-b border-slate-200/80 text-right text-xs font-bold text-slate-500 dark:border-slate-700/70 dark:text-slate-400">
+                <th class="px-3 py-3">کاربر</th>
+                <th class="px-3 py-3">پلن</th>
+                <th class="px-3 py-3">مبلغ</th>
+                <th class="px-3 py-3">وضعیت</th>
+                <th class="px-3 py-3">پیگیری</th>
+                <th class="px-3 py-3">زمان</th>
+              </tr>
+            </thead>
+            <tbody class="align-top text-sm text-slate-600 dark:text-slate-300">
+              {% for txn in transactions %}
+                <tr x-show="activeStatus === 'all' || activeStatus === '{{ txn.status }}'" x-cloak class="border-b border-slate-200/70 last:border-b-0 dark:border-slate-700/60">
+                  <td class="px-3 py-4">
+                    <div class="font-black text-slate-900 dark:text-white">{{ txn.order.user.full_name|default:txn.order.user }}</div>
+                    <div class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ txn.provider }}</div>
+                  </td>
+                  <td class="px-3 py-4">{{ txn.order.plan.name }}</td>
+                  <td class="px-3 py-4">{{ txn.order.amount|floatformat:0 }} تومان</td>
+                  <td class="px-3 py-4">
+                    {% if txn.status == 'verified' %}
+                      {% include 'dashboard/_admin_status_badge.html' with tone='success' label=txn.get_status_display %}
+                    {% elif txn.status == 'failed' %}
+                      {% include 'dashboard/_admin_status_badge.html' with tone='danger' label=txn.get_status_display %}
+                    {% else %}
+                      {% include 'dashboard/_admin_status_badge.html' with tone='warning' label=txn.get_status_display %}
+                    {% endif %}
+                  </td>
+                  <td class="px-3 py-4 text-xs leading-6 text-slate-500 dark:text-slate-400">
+                    {% if txn.reference_id %}
+                      <div>Ref: <span class="font-mono">{{ txn.reference_id }}</span></div>
+                    {% endif %}
+                    {% if txn.authority %}
+                      <div>Authority: <span class="font-mono">{{ txn.authority }}</span></div>
+                    {% endif %}
+                    {% if not txn.reference_id and not txn.authority %}
+                      <div>ثبت نشده</div>
+                    {% endif %}
+                  </td>
+                  <td class="px-3 py-4 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ txn.created_at|date:"Y/m/d H:i" }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="space-y-3 md:hidden">
+          {% for txn in transactions %}
+            <article class="admin-transaction-card" x-show="activeStatus === 'all' || activeStatus === '{{ txn.status }}'" x-cloak>
+              <div class="admin-record-card__header">
+                <div class="min-w-0">
+                  <div class="admin-card-title">{{ txn.order.user.full_name|default:txn.order.user }}</div>
+                  <p class="admin-card-text">{{ txn.order.plan.name }} • {{ txn.order.amount|floatformat:0 }} تومان</p>
+                </div>
+                {% if txn.status == 'verified' %}
+                  {% include 'dashboard/_admin_status_badge.html' with tone='success' label=txn.get_status_display %}
+                {% elif txn.status == 'failed' %}
+                  {% include 'dashboard/_admin_status_badge.html' with tone='danger' label=txn.get_status_display %}
+                {% else %}
+                  {% include 'dashboard/_admin_status_badge.html' with tone='warning' label=txn.get_status_display %}
+                {% endif %}
               </div>
-              {% if txn.status == 'verified' %}
-                {% include 'dashboard/_admin_status_badge.html' with tone='success' label=txn.get_status_display %}
-              {% elif txn.status == 'failed' %}
-                {% include 'dashboard/_admin_status_badge.html' with tone='danger' label=txn.get_status_display %}
-              {% else %}
-                {% include 'dashboard/_admin_status_badge.html' with tone='warning' label=txn.get_status_display %}
-              {% endif %}
-            </div>
 
-            <div class="mt-3 grid gap-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-              <div>زمان: {{ txn.created_at|date:"Y/m/d H:i" }}</div>
-              <div>درگاه: {{ txn.provider }}</div>
-              {% if txn.reference_id %}
-                <div>Ref: <span class="font-mono">{{ txn.reference_id }}</span></div>
-              {% endif %}
-              {% if txn.authority %}
-                <div>Authority: <span class="font-mono">{{ txn.authority }}</span></div>
-              {% endif %}
-            </div>
-          </article>
-        {% empty %}
-          <div class="text-sm text-slate-500 dark:text-slate-400">تراکنشی برای نمایش وجود ندارد.</div>
-        {% endfor %}
-      </div>
+              <div class="admin-record-card__meta-grid mt-3">
+                <div class="admin-record-metric">
+                  <div class="admin-record-metric__label">زمان</div>
+                  <div class="admin-record-metric__value text-sm">{{ txn.created_at|date:"Y/m/d H:i" }}</div>
+                </div>
+                <div class="admin-record-metric">
+                  <div class="admin-record-metric__label">درگاه</div>
+                  <div class="admin-record-metric__value text-sm">{{ txn.provider }}</div>
+                </div>
+                <div class="admin-record-metric">
+                  <div class="admin-record-metric__label">Ref</div>
+                  <div class="admin-record-metric__value font-mono text-sm">{{ txn.reference_id|default:'ثبت نشده' }}</div>
+                </div>
+                <div class="admin-record-metric">
+                  <div class="admin-record-metric__label">Authority</div>
+                  <div class="admin-record-metric__value font-mono text-sm">{{ txn.authority|default:'ثبت نشده' }}</div>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="admin-empty-state">
+          <div class="admin-empty-state__eyebrow">رکوردی وجود ندارد</div>
+          <p class="admin-empty-state__body">فعلاً تراکنشی برای نمایش وجود ندارد. این سطح برای پایش وضعیت ساخته شده و وقتی رکوردها وارد شوند باید سریع و قابل اعتماد باقی بماند.</p>
+        </div>
+      {% endif %}
     </section>
   </div>
 {% endblock %}

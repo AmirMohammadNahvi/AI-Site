@@ -1,14 +1,14 @@
 {% extends 'dashboard/base_dashboard.html' %}
 
 {% block dashboard_content %}
-  <div class="space-y-6">
+  <div class="admin-surface-stack">
     {% if instance %}
-      {% include 'dashboard/_admin_page_header.html' with admin_badge='متن سایت' admin_context_label='ویرایش رکورد' admin_meta_label='سطح محتوایی' admin_title='ویرایش متن سایت' admin_intro='در این صفحه باید هم هویت قطعه‌متن روشن باشد و هم متن نهایی بدون خطای اپراتوری ویرایش شود. کلید و گروه را با دقت انتخاب کنید تا مصرف آن در قالب‌ها قابل پیگیری بماند.' admin_hint='تغییر در متن فعال معمولاً بلافاصله روی سطوحی که از آن استفاده می‌کنند دیده می‌شود. اگر فقط می‌خواهید چیزی را موقتاً کنار بگذارید، خاموش‌کردن رکورد امن‌تر از حذف‌کردن آن است.' admin_side_eyebrow='اقدام دوم' admin_side_title='بازگشت به فهرست متن‌ها' admin_side_body='اگر هنوز درباره کلید یا گروه مطمئن نیستید، ابتدا فهرست متن‌ها را مرور کنید تا نام‌گذاری‌ها یکدست بمانند.' admin_secondary_url='/dashboard/admin-panel/texts/' admin_secondary_label='بازگشت به فهرست' %}
+      {% include 'dashboard/_admin_page_header.html' with admin_badge='متن سایت' admin_context_label='ویرایش رکورد' admin_meta_label='سطح محتوایی' admin_title='ویرایش متن سایت' admin_intro='این صفحه باید هم هویت رکورد را روشن نگه دارد و هم ویرایش متن نهایی را امن‌تر کند. کلید و گروه باید پایدار بمانند تا مصرف متن در قالب‌ها قابل پیگیری باشد.' admin_hint='اگر فقط می‌خواهید مصرف یک متن را موقتاً متوقف کنید، غیرفعال‌کردن رکورد امن‌تر از حذف آن است. تغییر در متن فعال معمولاً بلافاصله روی سطح زنده دیده می‌شود.' admin_side_eyebrow='اقدام دوم' admin_side_title='بازگشت به فهرست متن‌ها' admin_side_body='اگر هنوز درباره کلید یا گروه مطمئن نیستید، اول فهرست را مرور کنید تا نام‌گذاری‌ها یکدست بمانند.' admin_secondary_url='/dashboard/admin-panel/texts/' admin_secondary_label='بازگشت به فهرست' %}
     {% else %}
-      {% include 'dashboard/_admin_page_header.html' with admin_badge='متن سایت' admin_context_label='رکورد جدید' admin_meta_label='سطح محتوایی' admin_title='ایجاد متن سایت' admin_intro='در این صفحه باید هم هویت قطعه‌متن روشن باشد و هم متن نهایی بدون خطای اپراتوری ویرایش شود. کلید و گروه را با دقت انتخاب کنید تا مصرف آن در قالب‌ها قابل پیگیری بماند.' admin_hint='تغییر در متن فعال معمولاً بلافاصله روی سطوحی که از آن استفاده می‌کنند دیده می‌شود. اگر فقط می‌خواهید چیزی را موقتاً کنار بگذارید، خاموش‌کردن رکورد امن‌تر از حذف‌کردن آن است.' admin_side_eyebrow='اقدام دوم' admin_side_title='بازگشت به فهرست متن‌ها' admin_side_body='اگر هنوز درباره کلید یا گروه مطمئن نیستید، ابتدا فهرست متن‌ها را مرور کنید تا نام‌گذاری‌ها یکدست بمانند.' admin_secondary_url='/dashboard/admin-panel/texts/' admin_secondary_label='بازگشت به فهرست' %}
+      {% include 'dashboard/_admin_page_header.html' with admin_badge='متن سایت' admin_context_label='رکورد جدید' admin_meta_label='سطح محتوایی' admin_title='ایجاد متن سایت' admin_intro='این صفحه باید هم هویت رکورد را روشن نگه دارد و هم ویرایش متن نهایی را امن‌تر کند. کلید و گروه باید پایدار تعریف شوند تا مصرف متن در قالب‌ها قابل پیگیری بماند.' admin_hint='اگر فقط می‌خواهید مصرف یک متن را موقتاً متوقف کنید، غیرفعال‌کردن رکورد امن‌تر از حذف آن است. تغییر در متن فعال معمولاً بلافاصله روی سطح زنده دیده می‌شود.' admin_side_eyebrow='اقدام دوم' admin_side_title='بازگشت به فهرست متن‌ها' admin_side_body='اگر هنوز درباره کلید یا گروه مطمئن نیستید، اول فهرست را مرور کنید تا نام‌گذاری‌ها یکدست بمانند.' admin_secondary_url='/dashboard/admin-panel/texts/' admin_secondary_label='بازگشت به فهرست' %}
     {% endif %}
 
-    <form method="post" class="space-y-4">
+    <form method="post" class="admin-form-shell">
       {% csrf_token %}
 
       {% for hidden in form.hidden_fields %}
@@ -16,17 +16,42 @@
       {% endfor %}
 
       {% if form.non_field_errors %}
-        <ul class="errorlist">{{ form.non_field_errors }}</ul>
+        <section class="admin-danger-zone">
+          {{ form.non_field_errors }}
+        </section>
       {% endif %}
 
-      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">هویت رکورد</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">گروه، کلید و عنوان مدیریتی</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این بخش برای پیدا کردن قطعه‌متن در آینده است. عنوان را طوری بنویسید که هدف متن را بدون بازکردن محتوا روشن کند.</p>
+      <section class="admin-form-section">
+        <div class="admin-section-heading">
+          <div class="admin-section-heading__eyebrow">مرور سریع</div>
+          <h2 class="admin-section-heading__title">قبل از ذخیره، هویت رکورد را از خود متن جدا ببینید</h2>
+          <p class="admin-section-heading__body">در این فرم اول باید رکورد را درست نام‌گذاری کنید و بعد متن نهایی را ویرایش کنید. این جداسازی خطای اپراتوری را کمتر می‌کند.</p>
         </div>
 
-        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+        <div class="admin-form-review">
+          <div class="admin-review-card">
+            <div class="admin-review-card__title">وضعیت</div>
+            <p class="admin-review-card__body">{% if instance and instance.is_active %}این رکورد هم‌اکنون فعال است و تغییر متن می‌تواند بلافاصله دیده شود.{% elif instance %}این رکورد هم‌اکنون غیرفعال است و بازفعال‌سازی باید آگاهانه انجام شود.{% else %}رکورد جدید را با وضعیت درست بسازید تا بعداً مجبور به جابه‌جایی پرریسک نشوید.{% endif %}</p>
+          </div>
+          <div class="admin-review-card">
+            <div class="admin-review-card__title">کلید و گروه</div>
+            <p class="admin-review-card__body">کلید باید پایدار بماند و گروه باید به پیدا کردن سریع مصرف متن کمک کند، نه این‌که مبهم‌ترش کند.</p>
+          </div>
+          <div class="admin-review-card">
+            <div class="admin-review-card__title">متن نهایی</div>
+            <p class="admin-review-card__body">متن اصلی را از راهنمای داخلی جدا نگه دارید؛ راهنما برای اپراتور است، نه برای کاربر نهایی.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-form-section">
+        <div class="admin-section-heading">
+          <div class="admin-section-heading__eyebrow">هویت رکورد</div>
+          <h2 class="admin-section-heading__title">گروه، کلید و عنوان مدیریتی</h2>
+          <p class="admin-section-heading__body">این بخش برای پیدا کردن قطعه‌متن در آینده است. عنوان را طوری بنویسید که هدف متن را بدون بازکردن محتوا روشن کند.</p>
+        </div>
+
+        <div class="admin-form-grid admin-form-grid--two">
           {% for field in form %}
             {% if field.name == 'group' or field.name == 'key' or field.name == 'title' or field.name == 'is_active' %}
               {% if field.name == 'key' %}
@@ -41,14 +66,14 @@
         </div>
       </section>
 
-      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">متن نهایی</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">چیزی که کاربر یا اپراتور واقعاً خواهد دید</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">متن اصلی را روشن و کوتاه نگه دارید. راهنمای داخلی فقط برای کاهش اشتباه اپراتور است و قرار نیست جای متن نهایی را بگیرد.</p>
+      <section class="admin-form-section">
+        <div class="admin-section-heading">
+          <div class="admin-section-heading__eyebrow">متن نهایی</div>
+          <h2 class="admin-section-heading__title">چیزی که کاربر یا اپراتور واقعاً خواهد دید</h2>
+          <p class="admin-section-heading__body">متن اصلی را روشن و کوتاه نگه دارید. راهنمای داخلی فقط برای کاهش خطای اپراتور است و قرار نیست جای متن نهایی را بگیرد.</p>
         </div>
 
-        <div class="mt-4 grid gap-4">
+        <div class="admin-form-grid">
           {% for field in form %}
             {% if field.name == 'text' or field.name == 'help_text' %}
               {% if field.name == 'text' %}
@@ -61,19 +86,19 @@
         </div>
       </section>
 
-      <div class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-900/45">
-        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div class="min-w-0">
-            <div class="text-sm font-black text-slate-900 dark:text-white">ثبت و بازگشت</div>
-            <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">این صفحه برای نوشتن متن است، نه نگهداری فنی. اگر کلید یا گروه مبهم است، اول به فهرست برگردید و الگوهای موجود را ببینید.</p>
+      <section class="admin-form-footer">
+        <div class="admin-form-footer__header">
+          <div>
+            <div class="admin-card-title">ثبت و بازگشت</div>
+            <p class="admin-card-text">اگر کلید یا گروه مبهم است، اول به فهرست برگردید و الگوهای موجود را ببینید. ناحیه ذخیره روی موبایل هم عمداً در دسترس نگه داشته شده است.</p>
           </div>
 
-          <div class="flex flex-col gap-2 sm:flex-row">
+          <div class="admin-form-footer__actions">
             <a href="{% url 'dashboard:admin_texts' %}" class="btn-secondary w-full sm:w-auto">انصراف</a>
             <button class="btn-primary w-full sm:w-auto" type="submit">ذخیره متن</button>
           </div>
         </div>
-      </div>
+      </section>
     </form>
   </div>
 {% endblock %}

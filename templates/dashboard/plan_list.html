@@ -1,35 +1,38 @@
 {% extends 'dashboard/base_dashboard.html' %}
 
 {% block dashboard_content %}
-  <div class="space-y-6" x-data="{ activeFilter: 'all' }">
-    {% include 'dashboard/_admin_page_header.html' with admin_badge='پلن‌ها' admin_context_label='قیمت‌گذاری و ظرفیت' admin_meta_label='فهرست مدیریتی' admin_title='مدیریت پلن‌های FaralYar' admin_intro='این فهرست باید به تیم کمک کند خیلی سریع بفهمد هر پلن در چه وضعیتی است، چه ظرفیتی می‌دهد و برای ویرایش کدام مورد باید وارد جزئیات شود.' admin_hint='قیمت، مدت، سهمیه و مدل‌های مجاز باید به‌صورت قابل اسکن دیده شوند تا صفحه فقط شبیه CRUD خام نباشد.' admin_side_eyebrow='اقدام اصلی' admin_side_title='ثبت پلن جدید' admin_side_body='پلن تازه را با هویت، قیمت و دسترسی‌های روشن بسازید تا بعداً ویرایش آن برای تیم ساده بماند.' admin_primary_url='/dashboard/admin-panel/plans/new/' admin_primary_label='پلن جدید' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
+  <div class="admin-surface-stack" x-data="{ activeFilter: 'all' }">
+    {% include 'dashboard/_admin_page_header.html' with admin_badge='پلن‌ها' admin_context_label='قیمت‌گذاری و ظرفیت' admin_meta_label='فهرست مدیریتی' admin_title='مدیریت پلن‌های FaralYar' admin_intro='این فهرست باید به تیم کمک کند در یک نگاه بفهمد هر پلن چه می‌فروشد، فعال است یا نه، چه ظرفیتی می‌دهد و آیا برای ویرایش باید وارد جزئیات شد.' admin_hint='قیمت، مدت، سهمیه و مدل‌های مجاز باید قابل اسکن دیده شوند تا این صفحه شبیه جدول خام CRUD نباشد. تصمیم روزانه اینجا باید خوانا بماند.' admin_side_eyebrow='اقدام اصلی' admin_side_title='ثبت پلن جدید' admin_side_body='پلن تازه را با هویت، قیمت و دسترسی‌های روشن بسازید تا بعداً ویرایش آن برای تیم ساده و امن‌تر بماند.' admin_primary_url='/dashboard/admin-panel/plans/new/' admin_primary_label='پلن جدید' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
 
-    <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
-      <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">فیلتر وضعیت</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">برای مرور روزانه، فهرست را کوتاه‌تر ببینید</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این فیلترها فقط برای خوانایی بهتر هستند و هیچ تغییر ذخیره‌شده‌ای ایجاد نمی‌کنند.</p>
-        </div>
-
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">تعداد پلن‌ها: {{ plans|length }}</div>
+    <section class="admin-toolbar">
+      <div class="admin-section-heading">
+        <div class="admin-section-heading__eyebrow">فیلتر وضعیت</div>
+        <h2 class="admin-section-heading__title">برای مرور روزانه، فهرست را کوتاه‌تر ببینید</h2>
+        <p class="admin-section-heading__body">فیلترها فقط برای خوانایی بهتر هستند و هیچ تغییری ذخیره نمی‌کنند. هدف این است که وضعیت فروش، رایگان یا پولی‌بودن، و آمادگی هر پلن سریع خوانده شود.</p>
       </div>
 
-      <div class="horizontal-scroll -mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1">
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeFilter === 'all' ? 'border-emerald-200 bg-emerald-50 text-slate-900 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeFilter = 'all'">همه</button>
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeFilter === 'active' ? 'border-emerald-200 bg-emerald-50 text-slate-900 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeFilter = 'active'">فعال</button>
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeFilter === 'inactive' ? 'border-rose-200 bg-rose-50 text-slate-900 dark:border-rose-500/25 dark:bg-rose-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeFilter = 'inactive'">غیرفعال</button>
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeFilter === 'paid' ? 'border-sky-200 bg-sky-50 text-slate-900 dark:border-sky-500/25 dark:bg-sky-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeFilter = 'paid'">غیررایگان</button>
+      <div class="admin-toolbar__actions">
+        <span class="soft-chip px-3 py-2 text-[11px]">{{ plans|length }} پلن</span>
+      </div>
+
+      <div class="admin-filter-bar">
+        <button type="button" class="admin-filter-chip" :class="activeFilter === 'all' ? 'is-active' : ''" @click="activeFilter = 'all'">همه</button>
+        <button type="button" class="admin-filter-chip" :class="activeFilter === 'active' ? 'is-active' : ''" @click="activeFilter = 'active'">فعال</button>
+        <button type="button" class="admin-filter-chip" data-tone="danger" :class="activeFilter === 'inactive' ? 'is-active' : ''" @click="activeFilter = 'inactive'">غیرفعال</button>
+        <button type="button" class="admin-filter-chip" data-tone="info" :class="activeFilter === 'paid' ? 'is-active' : ''" @click="activeFilter = 'paid'">غیررایگان</button>
       </div>
     </section>
 
-    <section class="grid gap-3">
+    <section class="admin-record-list">
       {% for plan in plans %}
-        <article class="rounded-[1.5rem] border border-slate-200/80 bg-white/85 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55" x-show="activeFilter === 'all' || (activeFilter === 'active' && {{ plan.is_active|yesno:'true,false' }}) || (activeFilter === 'inactive' && {{ plan.is_active|yesno:'false,true' }}) || (activeFilter === 'paid' && {% if plan.price > 0 %}true{% else %}false{% endif %})" x-cloak>
-          <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <div class="min-w-0 flex-1">
-              <div class="flex flex-wrap items-center gap-2">
-                <div class="text-base font-black text-slate-900 dark:text-white">{{ plan.name }}</div>
+        <article class="admin-record-card" x-show="activeFilter === 'all' || (activeFilter === 'active' && {{ plan.is_active|yesno:'true,false' }}) || (activeFilter === 'inactive' && {{ plan.is_active|yesno:'false,true' }}) || (activeFilter === 'paid' && {% if plan.price > 0 %}true{% else %}false{% endif %})" x-cloak>
+          <div class="admin-record-card__meta">
+            <div class="admin-record-card__header">
+              <div class="min-w-0">
+                <div class="admin-card-title">{{ plan.name }}</div>
+                <p class="admin-card-text">این کارت باید به اپراتور بگوید پلن دقیقاً چه ارزش تجاری و چه محدودیتی را در لحظه عرضه نمایندگی می‌کند.</p>
+              </div>
+              <div class="admin-inline-list">
                 {% if plan.is_active %}
                   {% include 'dashboard/_admin_status_badge.html' with tone='success' label='فعال' %}
                 {% else %}
@@ -41,47 +44,53 @@
                   {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label='رایگان' %}
                 {% endif %}
               </div>
+            </div>
 
-              <div class="mt-3 grid gap-2 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:grid-cols-2 xl:grid-cols-4">
-                <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/82 px-3 py-2 dark:border-slate-700/70 dark:bg-slate-950/35">
-                  <div class="text-xs font-bold text-slate-500 dark:text-slate-400">قیمت</div>
-                  <div class="mt-1 font-black text-slate-900 dark:text-white">{{ plan.price|floatformat:0 }} تومان</div>
-                </div>
-                <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/82 px-3 py-2 dark:border-slate-700/70 dark:bg-slate-950/35">
-                  <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مدت اعتبار</div>
-                  <div class="mt-1 font-black text-slate-900 dark:text-white">{{ plan.duration_days }} روز</div>
-                </div>
-                <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/82 px-3 py-2 dark:border-slate-700/70 dark:bg-slate-950/35">
-                  <div class="text-xs font-bold text-slate-500 dark:text-slate-400">سهمیه هر بازه</div>
-                  <div class="mt-1 font-black text-slate-900 dark:text-white">{{ plan.token_limit_per_window }}</div>
-                </div>
-                <div class="rounded-[1.1rem] border border-slate-200/80 bg-slate-50/82 px-3 py-2 dark:border-slate-700/70 dark:bg-slate-950/35">
-                  <div class="text-xs font-bold text-slate-500 dark:text-slate-400">ریست سهمیه</div>
-                  <div class="mt-1 font-black text-slate-900 dark:text-white">هر {{ plan.reset_interval_hours }} ساعت</div>
-                </div>
+            <div class="admin-record-card__meta-grid admin-record-card__meta-grid--four">
+              <div class="admin-record-metric">
+                <div class="admin-record-metric__label">قیمت</div>
+                <div class="admin-record-metric__value">{{ plan.price|floatformat:0 }} تومان</div>
               </div>
-
-              {% if plan.description %}
-                <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ plan.description }}</p>
-              {% endif %}
-
-              <div class="mt-3 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                Slug: <span class="font-mono">{{ plan.slug }}</span>
-                <span class="mx-2">•</span>
-                ترتیب نمایش: {{ plan.display_order }}
-                <span class="mx-2">•</span>
-                مدل‌های مجاز: {{ plan.allowed_models.count }}
+              <div class="admin-record-metric">
+                <div class="admin-record-metric__label">مدت اعتبار</div>
+                <div class="admin-record-metric__value">{{ plan.duration_days }} روز</div>
+              </div>
+              <div class="admin-record-metric">
+                <div class="admin-record-metric__label">سهمیه هر بازه</div>
+                <div class="admin-record-metric__value">{{ plan.token_limit_per_window }}</div>
+              </div>
+              <div class="admin-record-metric">
+                <div class="admin-record-metric__label">ریست سهمیه</div>
+                <div class="admin-record-metric__value">هر {{ plan.reset_interval_hours }} ساعت</div>
               </div>
             </div>
 
-            <div class="w-full lg:w-auto lg:min-w-[11rem]">
-              <a href="{% url 'dashboard:admin_plan_edit' plan.id %}" class="btn-secondary w-full">ویرایش پلن</a>
+            {% if plan.description %}
+              <div class="admin-record-card__preview">
+                {{ plan.description }}
+              </div>
+            {% endif %}
+
+            <div class="admin-record-card__meta-grid">
+              <div class="admin-record-metric">
+                <div class="admin-record-metric__label">Slug</div>
+                <div class="admin-record-metric__value font-mono text-sm">{{ plan.slug }}</div>
+              </div>
+              <div class="admin-record-metric">
+                <div class="admin-record-metric__label">مدل‌های مجاز</div>
+                <div class="admin-record-metric__value">{{ plan.allowed_models.count }}</div>
+              </div>
             </div>
+          </div>
+
+          <div class="admin-record-card__actions">
+            <a href="{% url 'dashboard:admin_plan_edit' plan.id %}" class="btn-secondary w-full">ویرایش پلن</a>
           </div>
         </article>
       {% empty %}
-        <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/85 p-5 text-sm leading-7 text-slate-500 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-300">
-          پلنی وجود ندارد. اگر قرار است مسیر خرید محصول شفاف بماند، بهتر است تعریف پلن‌ها از همین‌جا و با همین ساختار انجام شود.
+        <div class="admin-empty-state">
+          <div class="admin-empty-state__eyebrow">فهرست خالی است</div>
+          <p class="admin-empty-state__body">هنوز پلنی وجود ندارد. اگر قرار است مسیر خرید محصول شفاف بماند، تعریف پلن‌ها باید از همین سطح و با همین ریتم انجام شود.</p>
         </div>
       {% endfor %}
     </section>

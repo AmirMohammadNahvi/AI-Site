@@ -2,114 +2,142 @@
 {% load site_text %}
 
 {% block dashboard_content %}
-  <div class="space-y-6">
-    {% include 'dashboard/_admin_page_header.html' with admin_badge='FaralYar v1.5' admin_context_label='مرکز کنترل عملیات' admin_meta_label='کار روزانه' admin_meta_label_two='کنترل روزانه محصول' admin_title='مرکز کنترل FaralYar' admin_intro='این فضا برای کنترل روزانه محصول ساخته شده است: تنظیم تجربه عمومی، مدیریت متن‌ها، پلن‌ها، مدل‌ها و مرور وضعیت پرداخت‌ها. کارهای عمیق‌تر و نگهداری فنی همچنان جدا از این سطح نگه داشته می‌شوند.' admin_hint='هدف این صفحه سرعت در تصمیم‌گیری عملیاتی است، نه انبوهی از فرم‌های خام. ابتدا چیزی را که نیاز به توجه دارد ببینید، بعد سراغ بخش مناسب بروید.' admin_side_eyebrow='شروع سریع' admin_side_title='از همان کاری شروع کنید که امروز باید جلو برود' admin_side_body='اگر قرار است فقط یک کار انجام دهید، از تنظیمات، متن‌ها، پلن‌ها یا مرور تراکنش‌ها شروع کنید. لینک‌های ادمین پایه پایین صفحه فقط برای نگهداری عمیق‌تر هستند.' admin_primary_url='/dashboard/admin-panel/settings/' admin_primary_label='تنظیمات سایت' admin_secondary_url='/dashboard/admin-panel/transactions/' admin_secondary_label='مرور تراکنش‌ها' %}
+  <div class="admin-surface-stack">
+    {% include 'dashboard/_admin_page_header.html' with admin_badge='FaralYar v1.5' admin_context_label='مرکز کنترل عملیات' admin_meta_label='کار روزانه' admin_meta_label_two='محصول و پرداخت' admin_title='مرکز کنترل FaralYar' admin_intro='این سطح برای هدایت کارهای روزانه تیم طراحی شده است: تنظیم تجربه عمومی، مدیریت متن‌ها، کنترل عرضه مدل‌ها و پلن‌ها، و پایش پرداخت‌ها. هر چیزی که به نگهداری عمیق‌تر یا ثبت خام مربوط است هنوز عمداً بیرون از این سطح نگه داشته می‌شود.' admin_hint='اول چیزهایی را ببینید که نیاز به توجه دارند، بعد وارد همان مسیری شوید که تصمیم امروز شما را جلو می‌برد. این صفحه قرار نیست پر از کنترل‌های هم‌ارزش باشد.' admin_side_eyebrow='شروع سریع' admin_side_title='از همان کاری شروع کنید که روی تجربه زنده اثر می‌گذارد' admin_side_body='اگر فقط قرار است یک تصمیم بگیرید، از تنظیمات سایت، متن‌ها، پلن‌ها یا مرور پرداخت‌ها شروع کنید. لینک‌های پایین صفحه فقط برای نگهداری عمیق‌تر هستند.' admin_primary_url='/dashboard/admin-panel/settings/' admin_primary_label='تنظیمات سایت' admin_secondary_url='/dashboard/admin-panel/transactions/' admin_secondary_label='مرور تراکنش‌ها' %}
 
-    <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-      <div class="stats-card p-4" data-tone="warning">
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{% site_text 'admin.stats.users' 'کاربران' title='آمار کاربران در ادمین' group='admin' %}</div>
-        <div class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ user_count }}</div>
-        <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">نمای کلی از حجم استفاده فعال در محصول.</p>
+    <section class="admin-summary-grid">
+      <article class="admin-summary-card">
+        <div class="admin-summary-card__eyebrow">{% site_text 'admin.stats.users' 'کاربران' title='آمار کاربران در ادمین' group='admin' %}</div>
+        <div class="admin-summary-card__value">{{ user_count }}</div>
+        <p class="admin-summary-card__body">نمای کلی از دامنه استفاده محصول و حجم کاربرانی که تصمیم‌های این سطح روی آن‌ها اثر می‌گذارد.</p>
+      </article>
+
+      <article class="admin-summary-card">
+        <div class="admin-summary-card__eyebrow">{% site_text 'admin.stats.models' 'مدل‌ها' title='آمار مدل‌ها در ادمین' group='admin' %}</div>
+        <div class="admin-summary-card__value">{{ model_count }}</div>
+        <p class="admin-summary-card__body">برای کنترل عرضه، وضعیت فعال‌بودن، و این‌که چه مدل‌هایی در مسیر اصلی محصول دیده می‌شوند.</p>
+      </article>
+
+      <article class="admin-summary-card">
+        <div class="admin-summary-card__eyebrow">{% site_text 'admin.stats.plans' 'پلن‌ها' title='آمار پلن‌ها در ادمین' group='admin' %}</div>
+        <div class="admin-summary-card__value">{{ plan_count }}</div>
+        <p class="admin-summary-card__body">تصویر سریع از تعداد بسته‌هایی که قیمت، ظرفیت و دسترسی مدل‌ها را تعریف می‌کنند.</p>
+      </article>
+
+      <article class="admin-summary-card">
+        <div class="admin-summary-card__eyebrow">{% site_text 'admin.stats.transactions' 'تراکنش‌ها' title='آمار تراکنش‌ها در ادمین' group='admin' %}</div>
+        <div class="admin-summary-card__value">{{ transaction_count }}</div>
+        <p class="admin-summary-card__body">برای پایش شفافیت جریان پرداخت و این‌که تیم بتواند وضعیت سفارش‌ها را سریع بخواند.</p>
+      </article>
+
+      <article class="admin-summary-card" data-tone="warning">
+        <div class="admin-summary-card__eyebrow text-amber-700 dark:text-amber-300">{% site_text 'admin.stats.messages' 'پیام‌های جدید' title='آمار پیام‌های جدید در ادمین' group='admin' %}</div>
+        <div class="admin-summary-card__value">{{ contact_count }}</div>
+        <p class="admin-summary-card__body">این بخش عمداً جدا آمده تا تیم چیزهایی را که نیاز به پاسخ انسانی دارند با کارت‌های عملیاتی اشتباه نگیرد.</p>
+      </article>
+    </section>
+
+    <section class="admin-task-grid">
+      <div class="admin-task-card">
+        <div class="admin-section-heading">
+          <div class="admin-section-heading__eyebrow">مسیرهای اصلی</div>
+          <h2 class="admin-section-heading__title">کار روزانه را با چهار مسیر روشن جلو ببرید</h2>
+          <p class="admin-section-heading__body">هر کارت بر اساس نوع تصمیم مرتب شده است، نه بر اساس مدل داده. هدف این است که تیم بداند برای هر مسئله عملیاتی دقیقاً باید از کجا شروع کند.</p>
+        </div>
+
+        <div class="admin-task-list mt-4">
+          <a href="{% url 'dashboard:admin_settings' %}" class="admin-task-card block transition hover:-translate-y-0.5">
+            <div class="admin-task-card__header">
+              <div>
+                <div class="admin-card-title">تنظیمات سایت</div>
+                <p class="admin-card-text">هویت برند، مسیرهای پشتیبانی، توضیح پرداخت و تنظیمات مهمی که بلافاصله در تجربه عمومی دیده می‌شوند.</p>
+              </div>
+              {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label='برند و عملیات' %}
+            </div>
+          </a>
+
+          <a href="{% url 'dashboard:admin_texts' %}" class="admin-task-card block transition hover:-translate-y-0.5" data-tone="info">
+            <div class="admin-task-card__header">
+              <div>
+                <div class="admin-card-title">متن‌های سایت</div>
+                <p class="admin-card-text">برای بازبینی یا اصلاح متن‌هایی که واقعاً در صفحات زنده مصرف می‌شوند و باید با لحن محصول هم‌راستا بمانند.</p>
+              </div>
+              {% include 'dashboard/_admin_status_badge.html' with tone='info' label='محتوا' %}
+            </div>
+          </a>
+
+          <a href="{% url 'dashboard:admin_models' %}" class="admin-task-card block transition hover:-translate-y-0.5">
+            <div class="admin-task-card__header">
+              <div>
+                <div class="admin-card-title">مدیریت مدل‌ها</div>
+                <p class="admin-card-text">وضعیت عرضه، برجسته‌سازی، ترتیب نمایش و قابلیت‌هایی که تیم باید پیش از ارائه مدل‌ها ببیند.</p>
+              </div>
+              {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label='عرضه و دسترسی' %}
+            </div>
+          </a>
+
+          <a href="{% url 'dashboard:admin_plans' %}" class="admin-task-card block transition hover:-translate-y-0.5">
+            <div class="admin-task-card__header">
+              <div>
+                <div class="admin-card-title">مدیریت پلن‌ها</div>
+                <p class="admin-card-text">برای هم‌راستا نگه‌داشتن قیمت، مدت، سهمیه و مدل‌های مجاز در قالبی که برای تصمیم‌گیری خواناست.</p>
+              </div>
+              {% include 'dashboard/_admin_status_badge.html' with tone='warning' label='قیمت‌گذاری' %}
+            </div>
+          </a>
+        </div>
       </div>
 
-      <div class="stats-card p-4">
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{% site_text 'admin.stats.models' 'مدل‌ها' title='آمار مدل‌ها در ادمین' group='admin' %}</div>
-        <div class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ model_count }}</div>
-        <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">برای کنترل عرضه، ترتیب نمایش و وضعیت فعال‌بودن.</p>
-      </div>
+      <div class="admin-attention-list">
+        <section class="admin-attention-card" data-tone="warning">
+          <div class="admin-task-card__header">
+            <div>
+              <div class="admin-card-title">نیاز به توجه</div>
+              <p class="admin-card-text">سیگنال‌های فوری عمداً آرام و جدا نشان داده شده‌اند تا با فرم‌های اصلی مخلوط نشوند.</p>
+            </div>
+            {% include 'dashboard/_admin_status_badge.html' with tone='warning' label='اول بررسی شود' %}
+          </div>
 
-      <div class="stats-card p-4">
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{% site_text 'admin.stats.plans' 'پلن‌ها' title='آمار پلن‌ها در ادمین' group='admin' %}</div>
-        <div class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ plan_count }}</div>
-        <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">برای تصمیم‌های قیمت‌گذاری، ظرفیت و دسترسی.</p>
-      </div>
+          <div class="admin-attention-list mt-4">
+            <div class="admin-guide-card" data-tone="warning">
+              <div class="admin-task-card__header">
+                <div>
+                  <div class="admin-card-title">پیام‌های تماس بررسی‌نشده</div>
+                  <p class="admin-card-text">اگر این عدد بالا بماند، اعتماد در بیرون از کنترل‌سنتر عقب می‌افتد و تجربه پشتیبانی فرسوده می‌شود.</p>
+                </div>
+                {% include 'dashboard/_admin_status_badge.html' with tone='warning' label=contact_count %}
+              </div>
+              <a href="/admin/core/contactmessage/" class="btn-secondary mt-4 w-full">بازکردن پیام‌ها در ادمین پایه</a>
+            </div>
 
-      <div class="stats-card p-4">
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">{% site_text 'admin.stats.transactions' 'تراکنش‌ها' title='آمار تراکنش‌ها در ادمین' group='admin' %}</div>
-        <div class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ transaction_count }}</div>
-        <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">برای اطمینان از شفاف‌بودن جریان پرداخت و پیگیری خطاها.</p>
-      </div>
+            <div class="admin-guide-card">
+              <div class="admin-task-card__header">
+                <div>
+                  <div class="admin-card-title">مرور وضعیت پرداخت‌ها</div>
+                  <p class="admin-card-text">برای تشخیص سریع وضعیت سفارش‌ها، همین مسیر سفارشی از مرور خام رکوردها خواناتر است.</p>
+                </div>
+                {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label=transaction_count %}
+              </div>
+              <a href="{% url 'dashboard:admin_transactions' %}" class="btn-primary mt-4 w-full">رفتن به تراکنش‌ها</a>
+            </div>
+          </div>
+        </section>
 
-      <div class="stats-card p-4">
-        <div class="text-xs font-bold text-amber-700 dark:text-amber-300">{% site_text 'admin.stats.messages' 'پیام‌های جدید' title='آمار پیام‌های جدید در ادمین' group='admin' %}</div>
-        <div class="mt-3 text-2xl font-black text-slate-900 dark:text-white">{{ contact_count }}</div>
-        <p class="mt-2 text-xs leading-6 text-amber-800/90 dark:text-amber-100">چیزهایی که احتمالاً به بررسی انسانی سریع نیاز دارند.</p>
+        <section class="admin-guide-card">
+          <div class="admin-section-heading">
+            <div class="admin-section-heading__eyebrow">قاعده عملیاتی</div>
+            <h2 class="admin-section-heading__title">این سطح برای تصمیم است، نه برای نگهداری خام</h2>
+            <p class="admin-section-heading__body">هر چیزی که نیاز به ثبت‌های خام، مدیریت گسترده محتوا یا ویرایش‌های فنی‌تر دارد پایین نگه داشته شده تا صفحه اصلی شلوغ نشود.</p>
+          </div>
+        </section>
       </div>
     </section>
 
-    <div class="grid gap-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-      <section class="page-section-card p-4 sm:p-5">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">کنترل‌های روزانه</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">چیزهایی که بیشترین تماس را با تجربه محصول دارند</h2>
-        </div>
-
-        <div class="mt-4 grid gap-3 md:grid-cols-2">
-          <a href="{% url 'dashboard:admin_settings' %}" class="tile-card p-4 transition hover:-translate-y-0.5">
-            <div class="flex items-center justify-between gap-3">
-              <div class="text-sm font-black text-slate-900 dark:text-white">تنظیمات سایت</div>
-              {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label='برند و عملیات' %}
-            </div>
-            <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">نام‌ها، هویت برند، مسیرهای پشتیبانی، پرداخت و تنظیمات مهمی که تجربه عمومی را شکل می‌دهند.</p>
-          </a>
-
-          <a href="{% url 'dashboard:admin_texts' %}" class="tile-card p-4 transition hover:-translate-y-0.5">
-            <div class="flex items-center justify-between gap-3">
-              <div class="text-sm font-black text-slate-900 dark:text-white">متن‌های سایت</div>
-              {% include 'dashboard/_admin_status_badge.html' with tone='info' label='محتوا' %}
-            </div>
-            <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">برای ویرایش متن‌های محصولی و توضیحاتی که روی صفحات زنده دیده می‌شوند.</p>
-          </a>
-
-          <a href="{% url 'dashboard:admin_models' %}" class="tile-card p-4 transition hover:-translate-y-0.5">
-            <div class="flex items-center justify-between gap-3">
-              <div class="text-sm font-black text-slate-900 dark:text-white">مدیریت مدل‌ها</div>
-              {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label='عرضه و دسترسی' %}
-            </div>
-            <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">ترتیب نمایش، فعال‌بودن، قابلیت‌ها و جزئیات لازم برای عرضه کنترل‌شده مدل‌ها.</p>
-          </a>
-
-          <a href="{% url 'dashboard:admin_plans' %}" class="tile-card p-4 transition hover:-translate-y-0.5">
-            <div class="flex items-center justify-between gap-3">
-              <div class="text-sm font-black text-slate-900 dark:text-white">مدیریت پلن‌ها</div>
-              {% include 'dashboard/_admin_status_badge.html' with tone='warning' label='قیمت‌گذاری' %}
-            </div>
-            <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">برای نگه‌داشتن نسبت قیمت، ظرفیت و دسترسی مدل‌ها در یک قاب روشن و قابل تصمیم‌گیری.</p>
-          </a>
-        </div>
-      </section>
-
-      <section class="page-section-card p-4 sm:p-5">
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">نیاز به توجه</div>
-        <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">سیگنال‌هایی که بهتر است زودتر دیده شوند</h2>
-
-        <div class="mt-4 space-y-3">
-          <div class="info-panel p-4">
-            <div class="flex items-center justify-between gap-3">
-              <div class="text-sm font-black text-slate-900 dark:text-white">پیام‌های تماس بررسی‌نشده</div>
-              {% include 'dashboard/_admin_status_badge.html' with tone='warning' label=contact_count %}
-            </div>
-            <p class="mt-2 text-sm leading-7 text-amber-800/90 dark:text-amber-100">اگر این عدد بالا بماند، تجربه پشتیبانی بیرون از کنترل‌سنتر عقب می‌افتد و حس اعتماد کم می‌شود.</p>
-            <a href="/admin/core/contactmessage/" class="btn-secondary mt-3 w-full">بازکردن پیام‌های تماس در ادمین پایه</a>
-          </div>
-
-          <div class="info-panel p-4">
-            <div class="flex items-center justify-between gap-3">
-              <div class="text-sm font-black text-slate-900 dark:text-white">مرور تراکنش‌ها</div>
-              {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label=transaction_count %}
-            </div>
-            <p class="mt-2 text-sm leading-7 text-slate-500 dark:text-slate-400">برای تشخیص سریع وضعیت پرداخت‌ها، همین مسیر سفارشی خواناتر از مرور خام رکوردهاست.</p>
-            <a href="{% url 'dashboard:admin_transactions' %}" class="btn-primary mt-3 w-full">رفتن به تراکنش‌ها</a>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <section class="page-section-card p-4 sm:p-5">
-      <div class="min-w-0">
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">نگهداری عمیق</div>
-        <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">هر چیزی که بهتر است هنوز بیرون از کنترل‌سنتر روزانه بماند</h2>
-        <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این لینک‌ها عمداً در بخش جداگانه آمده‌اند تا عملیات روزانه با نگهداری فنی یا مدیریتی عمیق مخلوط نشود.</p>
+    <section class="admin-task-card">
+      <div class="admin-section-heading">
+        <div class="admin-section-heading__eyebrow">نگهداری عمیق</div>
+        <h2 class="admin-section-heading__title">چیزهایی که بهتر است هنوز خارج از مسیر روزانه بمانند</h2>
+        <p class="admin-section-heading__body">این لینک‌ها عمداً در یک بخش فرعی آمده‌اند تا عملیات روزانه با نگهداری فنی یا محتوایی عمیق‌تر قاطی نشود.</p>
       </div>
 
       <div class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">

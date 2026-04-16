@@ -1,29 +1,31 @@
-<div class="{{ field_class|default:'' }}">
+<div class="admin-field {{ field_class|default:'' }}" {% if field.errors %}data-invalid="true"{% endif %}>
   {% if field.field.widget.input_type == 'checkbox' %}
-    <div class="form-field-panel p-4">
-      <label class="flex items-start justify-between gap-4">
+    <div class="form-field-panel admin-field-panel admin-field-panel--toggle p-4">
+      <label for="{{ field.id_for_label }}" class="flex items-start justify-between gap-4">
         <div class="min-w-0">
-          <span class="block text-sm font-black text-slate-900 dark:text-white">{{ field.label }}</span>
+          <span class="admin-field__label block text-sm font-black text-slate-900 dark:text-white">{{ field.label }}</span>
           {% if field_note %}
-            <span class="mt-1 block text-xs leading-6 text-slate-500 dark:text-slate-400">{{ field_note }}</span>
+            <span class="admin-field__note mt-1 block text-xs leading-6 text-slate-500 dark:text-slate-400">{{ field_note }}</span>
           {% endif %}
           {% if field.help_text %}
-            <span class="mt-1 block text-xs leading-6 text-slate-500 dark:text-slate-400">{{ field.help_text }}</span>
+            <span class="admin-field__help mt-1 block text-xs leading-6 text-slate-500 dark:text-slate-400">{{ field.help_text }}</span>
           {% endif %}
         </div>
-        <span class="shrink-0 pt-1">{{ field }}</span>
+        <span class="admin-field__toggle shrink-0 pt-1">{{ field }}</span>
       </label>
-      {{ field.errors }}
+      <div class="admin-field__errors">{{ field.errors }}</div>
     </div>
   {% else %}
-    <label class="mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ field.label }}</label>
-    {{ field }}
-    {% if field_note %}
-      <p class="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ field_note }}</p>
-    {% endif %}
-    {% if field.help_text %}
-      <p class="helptext">{{ field.help_text }}</p>
-    {% endif %}
-    {{ field.errors }}
+    <div class="form-field-panel admin-field-panel p-4">
+      <label for="{{ field.id_for_label }}" class="admin-field__label mb-2 block text-sm font-bold text-slate-900 dark:text-white">{{ field.label }}</label>
+      {% if field_note %}
+        <p class="admin-field__note mb-3 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ field_note }}</p>
+      {% endif %}
+      {% if field.help_text %}
+        <p class="admin-field__help mb-3 text-xs leading-6 text-slate-500 dark:text-slate-400">{{ field.help_text }}</p>
+      {% endif %}
+      <div class="admin-field__control">{{ field }}</div>
+      <div class="admin-field__errors">{{ field.errors }}</div>
+    </div>
   {% endif %}
 </div>

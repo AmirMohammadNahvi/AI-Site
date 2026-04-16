@@ -1,35 +1,38 @@
 {% extends 'dashboard/base_dashboard.html' %}
 
 {% block dashboard_content %}
-  <div class="space-y-6" x-data="{ activeFilter: 'all' }">
-    {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل‌ها' admin_context_label='عرضه و دسترسی' admin_meta_label='فهرست مدیریتی' admin_title='مدیریت مدل‌های قابل عرضه' admin_intro='این صفحه برای مرور سریع وضعیت مدل‌ها، تشخیص مدل‌های فعال یا برجسته و ورود امن‌تر به ویرایش طراحی شده است. تصمیم روزانه اینجا بیشتر درباره عرضه و وضوح است تا نگهداری فنی عمیق.' admin_hint='اگر قرار است اتصال فنی یا قالب درخواست را تغییر دهید، از صفحه ویرایش استفاده کنید. در این فهرست تمرکز روی خواندن وضعیت و تصمیم‌گیری سریع نگه داشته شده است.' admin_side_eyebrow='اقدام اصلی' admin_side_title='ثبت مدل جدید' admin_side_body='مدل تازه را ابتدا با اطلاعات هویتی و عرضه‌ای وارد کنید. جزئیات فنی اتصال در صفحه ویرایش جداگانه قابل تکمیل است.' admin_primary_url='/dashboard/admin-panel/models/new/' admin_primary_label='مدل جدید' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
+  <div class="admin-surface-stack" x-data="{ activeFilter: 'all' }">
+    {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل‌ها' admin_context_label='عرضه و دسترسی' admin_meta_label='فهرست مدیریتی' admin_title='مدیریت مدل‌های قابل عرضه' admin_intro='این فهرست باید به تیم کمک کند خیلی سریع بفهمد هر مدل در چه وضعیتی است، آیا برجسته شده، چه قابلیت‌هایی دارد و برای ویرایش کدام مورد باید وارد جزئیات شد.' admin_hint='این صفحه برای خواندن وضعیت و تصمیم عرضه ساخته شده است. اگر قصد تغییر اتصال فنی دارید، آن تصمیم در فرم هر مدل و در بخش جداگانه خودش انجام می‌شود.' admin_side_eyebrow='اقدام اصلی' admin_side_title='ثبت مدل جدید' admin_side_body='مدل تازه را اول با هویت محصولی و وضعیت عرضه بسازید. جزئیات فنی اتصال در فرم ویرایش قابل تکمیل است تا صفحه فهرست شلوغ نشود.' admin_primary_url='/dashboard/admin-panel/models/new/' admin_primary_label='مدل جدید' admin_secondary_url='/dashboard/admin-panel/' admin_secondary_label='بازگشت به مرکز کنترل' %}
 
-    <section class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/72 p-4 dark:border-slate-700/70 dark:bg-slate-900/45 sm:p-5">
-      <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">مرور سریع</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">فهرست را بر اساس وضعیت عرضه ببینید</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">فیلترها فقط برای اسکن سریع داخل همین صفحه‌اند و چیزی را ذخیره یا تغییر نمی‌دهند.</p>
-        </div>
-
-        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">تعداد مدل‌ها: {{ models|length }}</div>
+    <section class="admin-toolbar">
+      <div class="admin-section-heading">
+        <div class="admin-section-heading__eyebrow">مرور سریع</div>
+        <h2 class="admin-section-heading__title">فهرست را بر اساس وضعیت عرضه کوتاه کنید</h2>
+        <p class="admin-section-heading__body">فیلترها فقط برای خوانایی بهتر همین صفحه‌اند و چیزی را ذخیره یا تغییر نمی‌دهند. هدف، تشخیص سریع مدل‌های فعال، برجسته و خارج از عرضه است.</p>
       </div>
 
-      <div class="horizontal-scroll -mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-1">
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeFilter === 'all' ? 'border-emerald-200 bg-emerald-50 text-slate-900 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeFilter = 'all'">همه</button>
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeFilter === 'active' ? 'border-emerald-200 bg-emerald-50 text-slate-900 dark:border-emerald-500/25 dark:bg-emerald-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeFilter = 'active'">فعال</button>
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeFilter === 'featured' ? 'border-sky-200 bg-sky-50 text-slate-900 dark:border-sky-500/25 dark:bg-sky-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeFilter = 'featured'">منتخب</button>
-        <button type="button" class="shrink-0 rounded-[1.1rem] border px-4 py-2 text-sm font-bold transition" :class="activeFilter === 'inactive' ? 'border-rose-200 bg-rose-50 text-slate-900 dark:border-rose-500/25 dark:bg-rose-500/10 dark:text-white' : 'border-slate-200/80 bg-white/90 text-slate-600 dark:border-slate-700/70 dark:bg-slate-900/70 dark:text-slate-300'" @click="activeFilter = 'inactive'">غیرفعال</button>
+      <div class="admin-toolbar__actions">
+        <span class="soft-chip px-3 py-2 text-[11px]">{{ models|length }} مدل</span>
+      </div>
+
+      <div class="admin-filter-bar">
+        <button type="button" class="admin-filter-chip" :class="activeFilter === 'all' ? 'is-active' : ''" @click="activeFilter = 'all'">همه</button>
+        <button type="button" class="admin-filter-chip" :class="activeFilter === 'active' ? 'is-active' : ''" @click="activeFilter = 'active'">فعال</button>
+        <button type="button" class="admin-filter-chip" data-tone="info" :class="activeFilter === 'featured' ? 'is-active' : ''" @click="activeFilter = 'featured'">منتخب</button>
+        <button type="button" class="admin-filter-chip" data-tone="danger" :class="activeFilter === 'inactive' ? 'is-active' : ''" @click="activeFilter = 'inactive'">غیرفعال</button>
       </div>
     </section>
 
-    <section class="grid gap-3">
+    <section class="admin-record-list">
       {% for model in models %}
-        <article class="rounded-[1.5rem] border border-slate-200/80 bg-white/85 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55" x-show="activeFilter === 'all' || (activeFilter === 'active' && {{ model.is_active|yesno:'true,false' }}) || (activeFilter === 'inactive' && {{ model.is_active|yesno:'false,true' }}) || (activeFilter === 'featured' && {{ model.is_featured|yesno:'true,false' }})" x-cloak>
-          <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <div class="min-w-0 flex-1">
-              <div class="flex flex-wrap items-center gap-2">
-                <div class="text-base font-black text-slate-900 dark:text-white">{{ model.name }}</div>
+        <article class="admin-record-card" x-show="activeFilter === 'all' || (activeFilter === 'active' && {{ model.is_active|yesno:'true,false' }}) || (activeFilter === 'inactive' && {{ model.is_active|yesno:'false,true' }}) || (activeFilter === 'featured' && {{ model.is_featured|yesno:'true,false' }})" x-cloak>
+          <div class="admin-record-card__meta">
+            <div class="admin-record-card__header">
+              <div class="min-w-0">
+                <div class="admin-card-title">{{ model.name }}</div>
+                <p class="admin-card-text">این کارت باید بدون باز کردن فرم بگوید مدل کجا می‌ایستد، چگونه عرضه می‌شود و آیا برای مسیر اصلی محصول مناسب است یا نه.</p>
+              </div>
+              <div class="admin-inline-list">
                 {% if model.is_active %}
                   {% include 'dashboard/_admin_status_badge.html' with tone='success' label='فعال' %}
                 {% else %}
@@ -40,37 +43,52 @@
                 {% endif %}
                 {% include 'dashboard/_admin_status_badge.html' with tone='neutral' label=model.provider_label %}
               </div>
+            </div>
 
-              <div class="mt-2 grid gap-2 text-xs leading-6 text-slate-500 dark:text-slate-400 sm:grid-cols-2 xl:grid-cols-4">
-                <div>Slug: <span class="font-mono">{{ model.slug }}</span></div>
-                <div>شناسه مدل: <span class="font-mono">{{ model.model_identifier }}</span></div>
-                <div>ترتیب نمایش: {{ model.display_order }}</div>
-                <div>نوع درخواست: {{ model.get_request_format_display }}</div>
+            <div class="admin-record-card__meta-grid admin-record-card__meta-grid--four">
+              <div class="admin-record-metric">
+                <div class="admin-record-metric__label">Slug</div>
+                <div class="admin-record-metric__value font-mono text-sm">{{ model.slug }}</div>
               </div>
-
-              {% if model.summary %}
-                <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{{ model.summary }}</p>
-              {% endif %}
-
-              <div class="mt-3 flex flex-wrap gap-2 text-[11px] font-bold">
-                {% for capability in model.capabilities.all %}
-                  {% if capability.is_enabled %}
-                    <span class="rounded-full bg-slate-100 px-3 py-1.5 text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ capability.get_capability_type_display }}</span>
-                  {% endif %}
-                {% empty %}
-                  <span class="rounded-full bg-slate-100 px-3 py-1.5 text-slate-600 dark:bg-slate-800 dark:text-slate-300">قابلیت ثبت نشده</span>
-                {% endfor %}
+              <div class="admin-record-metric">
+                <div class="admin-record-metric__label">شناسه مدل</div>
+                <div class="admin-record-metric__value font-mono text-sm">{{ model.model_identifier }}</div>
+              </div>
+              <div class="admin-record-metric">
+                <div class="admin-record-metric__label">ترتیب نمایش</div>
+                <div class="admin-record-metric__value">{{ model.display_order }}</div>
+              </div>
+              <div class="admin-record-metric">
+                <div class="admin-record-metric__label">نوع درخواست</div>
+                <div class="admin-record-metric__value">{{ model.get_request_format_display }}</div>
               </div>
             </div>
 
-            <div class="w-full lg:w-auto lg:min-w-[11rem]">
-              <a href="{% url 'dashboard:admin_model_edit' model.id %}" class="btn-secondary w-full">ویرایش مدل</a>
+            {% if model.summary %}
+              <div class="admin-record-card__preview">
+                {{ model.summary }}
+              </div>
+            {% endif %}
+
+            <div class="admin-inline-list">
+              {% for capability in model.capabilities.all %}
+                {% if capability.is_enabled %}
+                  <span class="status-pill px-3 py-1 text-[11px]">{{ capability.get_capability_type_display }}</span>
+                {% endif %}
+              {% empty %}
+                <span class="status-pill px-3 py-1 text-[11px]">قابلیت ثبت نشده</span>
+              {% endfor %}
             </div>
+          </div>
+
+          <div class="admin-record-card__actions">
+            <a href="{% url 'dashboard:admin_model_edit' model.id %}" class="btn-secondary w-full">ویرایش مدل</a>
           </div>
         </article>
       {% empty %}
-        <div class="rounded-[1.6rem] border border-slate-200/80 bg-white/85 p-5 text-sm leading-7 text-slate-500 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-300">
-          هیچ مدلی ثبت نشده است. مدل تازه را ابتدا از همین بخش بسازید تا کنترل عرضه و پیکربندی‌اش در یک مسیر روشن انجام شود.
+        <div class="admin-empty-state">
+          <div class="admin-empty-state__eyebrow">فهرست خالی است</div>
+          <p class="admin-empty-state__body">هنوز هیچ مدلی برای عرضه ثبت نشده است. مدل جدید را از همین سطح بسازید تا عرضه، وضعیت و پیکربندی آن در یک مسیر روشن شروع شود.</p>
         </div>
       {% endfor %}
     </section>

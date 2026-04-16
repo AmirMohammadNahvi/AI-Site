@@ -1,14 +1,14 @@
 {% extends 'dashboard/base_dashboard.html' %}
 
 {% block dashboard_content %}
-  <div class="space-y-6" x-data="{ technicalOpen: false }">
+  <div class="admin-surface-stack" x-data="{ technicalOpen: false }">
     {% if instance %}
-      {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل' admin_context_label='ویرایش مدل' admin_meta_label='عرضه و نگهداری' admin_title='ویرایش مدل' admin_intro='این صفحه بین کنترل عرضه و نگهداری فنی مرز می‌گذارد: اطلاعات عمومی و وضعیت مدل بالا آمده‌اند و تنظیمات اتصال فنی پایین‌تر و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='اگر فقط می‌خواهید مدل را فعال، غیرفعال یا برجسته کنید، لازم نیست سراغ بخش فنی بروید. آن بخش فقط برای اتصال واقعی مدل است.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست مدل‌ها' admin_side_body='بعد از ذخیره به فهرست مدل‌ها برمی‌گردید تا بتوانید وضعیت عرضه را در یک نگاه مرور کنید.' admin_secondary_url='/dashboard/admin-panel/models/' admin_secondary_label='بازگشت به مدل‌ها' %}
+      {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل' admin_context_label='ویرایش مدل' admin_meta_label='عرضه و نگهداری' admin_title='ویرایش مدل' admin_intro='این صفحه بین کنترل عرضه و نگهداری فنی مرز می‌گذارد: اطلاعات عمومی و وضعیت مدل بالا آمده‌اند و تنظیمات اتصال فنی پایین‌تر و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='اگر فقط می‌خواهید مدل را فعال، غیرفعال یا برجسته کنید، لازم نیست سراغ بخش فنی بروید. آن بخش فقط برای اتصال واقعی مدل است.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست مدل‌ها' admin_side_body='بعد از ذخیره به فهرست مدل‌ها برگردید تا وضعیت عرضه را دوباره در یک نگاه مرور کنید.' admin_secondary_url='/dashboard/admin-panel/models/' admin_secondary_label='بازگشت به مدل‌ها' %}
     {% else %}
-      {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل' admin_context_label='مدل جدید' admin_meta_label='عرضه و نگهداری' admin_title='ایجاد مدل' admin_intro='این صفحه بین کنترل عرضه و نگهداری فنی مرز می‌گذارد: اطلاعات عمومی و وضعیت مدل بالا آمده‌اند و تنظیمات اتصال فنی پایین‌تر و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='اگر فقط می‌خواهید مدل را فعال، غیرفعال یا برجسته کنید، لازم نیست سراغ بخش فنی بروید. آن بخش فقط برای اتصال واقعی مدل است.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست مدل‌ها' admin_side_body='بعد از ذخیره به فهرست مدل‌ها برمی‌گردید تا بتوانید وضعیت عرضه را در یک نگاه مرور کنید.' admin_secondary_url='/dashboard/admin-panel/models/' admin_secondary_label='بازگشت به مدل‌ها' %}
+      {% include 'dashboard/_admin_page_header.html' with admin_badge='مدل' admin_context_label='مدل جدید' admin_meta_label='عرضه و نگهداری' admin_title='ایجاد مدل' admin_intro='این صفحه بین کنترل عرضه و نگهداری فنی مرز می‌گذارد: اطلاعات عمومی و وضعیت مدل بالا آمده‌اند و تنظیمات اتصال فنی پایین‌تر و جمع‌شدنی نگه داشته شده‌اند.' admin_hint='اگر فقط می‌خواهید مدل را فعال، غیرفعال یا برجسته کنید، لازم نیست سراغ بخش فنی بروید. آن بخش فقط برای اتصال واقعی مدل است.' admin_side_eyebrow='بازگشت' admin_side_title='فهرست مدل‌ها' admin_side_body='بعد از ذخیره به فهرست مدل‌ها برگردید تا وضعیت عرضه را دوباره در یک نگاه مرور کنید.' admin_secondary_url='/dashboard/admin-panel/models/' admin_secondary_label='بازگشت به مدل‌ها' %}
     {% endif %}
 
-    <form method="post" class="space-y-4">
+    <form method="post" class="admin-form-shell">
       {% csrf_token %}
 
       {% for hidden in form.hidden_fields %}
@@ -16,21 +16,46 @@
       {% endfor %}
 
       {% if form.non_field_errors %}
-        <ul class="errorlist">{{ form.non_field_errors }}</ul>
+        <section class="admin-danger-zone">
+          {{ form.non_field_errors }}
+        </section>
       {% endif %}
 
-      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">هویت و جایگاه</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">چیزی که اپراتور برای عرضه مدل باید ببیند</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">نام، ارائه‌دهنده، slug و ترتیب نمایش باید به اپراتور بگویند این مدل در فهرست محصول کجا می‌ایستد.</p>
+      <section class="admin-form-section">
+        <div class="admin-section-heading">
+          <div class="admin-section-heading__eyebrow">قبل از ذخیره</div>
+          <h2 class="admin-section-heading__title">اطلاعات عرضه را از اتصال فنی جدا نگه دارید</h2>
+          <p class="admin-section-heading__body">این فرم برای این طراحی شده که اپراتور اول جایگاه مدل را در محصول تعیین کند و فقط اگر لازم بود وارد بخش فنی اتصال شود.</p>
         </div>
 
-        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+        <div class="admin-form-review">
+          <div class="admin-review-card">
+            <div class="admin-review-card__title">جایگاه مدل</div>
+            <p class="admin-review-card__body">نام، ارائه‌دهنده، slug و ترتیب نمایش باید مشخص کنند مدل کجا در فهرست محصول می‌ایستد.</p>
+          </div>
+          <div class="admin-review-card">
+            <div class="admin-review-card__title">قابلیت‌ها و وضعیت</div>
+            <p class="admin-review-card__body">ورودی‌های مجاز، فعال‌بودن و برجسته‌سازی را جدا از اتصال فنی تصمیم بگیرید.</p>
+          </div>
+          <div class="admin-review-card">
+            <div class="admin-review-card__title">اتصال فنی</div>
+            <p class="admin-review-card__body">این بخش فقط برای نگهداری اجرای زنده است و نباید با کار روزمره عرضه قاطی شود.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-form-section">
+        <div class="admin-section-heading">
+          <div class="admin-section-heading__eyebrow">هویت و جایگاه</div>
+          <h2 class="admin-section-heading__title">چیزی که اپراتور برای عرضه مدل باید ببیند</h2>
+          <p class="admin-section-heading__body">نام، ارائه‌دهنده، slug و ترتیب نمایش باید به اپراتور بگویند این مدل در فهرست محصول کجا می‌ایستد.</p>
+        </div>
+
+        <div class="admin-form-grid admin-form-grid--two">
           {% for field in form %}
             {% if field.name == 'name' or field.name == 'slug' or field.name == 'provider_label' or field.name == 'display_order' %}
               {% if field.name == 'slug' %}
-                {% include 'dashboard/_admin_form_field.html' with field=field field_note='slug پایدار نگه داشته شود تا اشاره‌های داخلی و لینک‌های احتمالی بی‌دلیل نشکنند.' %}
+                {% include 'dashboard/_admin_form_field.html' with field=field field_note='slug بهتر است پایدار بماند تا اشاره‌های داخلی و لینک‌های احتمالی بی‌دلیل نشکنند.' %}
               {% else %}
                 {% include 'dashboard/_admin_form_field.html' with field=field %}
               {% endif %}
@@ -39,14 +64,14 @@
         </div>
       </section>
 
-      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">معرفی محصولی</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">خلاصه، توضیح و محدودیت‌ها</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این متن‌ها برای تصمیم‌گیری بهتر تیم داخلی و سطوحی هستند که قرار است مدل را به زبان محصولی توضیح دهند.</p>
+      <section class="admin-form-section">
+        <div class="admin-section-heading">
+          <div class="admin-section-heading__eyebrow">معرفی محصولی</div>
+          <h2 class="admin-section-heading__title">خلاصه، توضیح و محدودیت‌ها</h2>
+          <p class="admin-section-heading__body">این متن‌ها برای تصمیم‌گیری بهتر تیم داخلی و سطحی هستند که قرار است مدل را به زبان محصولی توضیح دهند.</p>
         </div>
 
-        <div class="mt-4 grid gap-4">
+        <div class="admin-form-grid">
           {% for field in form %}
             {% if field.name == 'summary' or field.name == 'description' or field.name == 'limitations' %}
               {% include 'dashboard/_admin_form_field.html' with field=field %}
@@ -55,14 +80,14 @@
         </div>
       </section>
 
-      <section class="rounded-[1.8rem] border border-slate-200/80 bg-white/82 p-4 shadow-sm shadow-slate-900/5 dark:border-slate-700/70 dark:bg-slate-900/55 sm:p-5">
-        <div class="min-w-0">
-          <div class="text-xs font-bold text-slate-500 dark:text-slate-400">قابلیت‌ها و وضعیت</div>
-          <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">چیزی که برای اپراتور و کاربر نهایی مهم است</h2>
-          <p class="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">این بخش مشخص می‌کند مدل چه ورودی‌هایی را می‌پذیرد و آیا قرار است در سطوح محصول برجسته یا فعال باشد.</p>
+      <section class="admin-form-section">
+        <div class="admin-section-heading">
+          <div class="admin-section-heading__eyebrow">قابلیت‌ها و وضعیت</div>
+          <h2 class="admin-section-heading__title">چیزی که برای اپراتور و کاربر نهایی مهم است</h2>
+          <p class="admin-section-heading__body">این بخش مشخص می‌کند مدل چه ورودی‌هایی را می‌پذیرد و آیا قرار است در سطوح محصول برجسته یا فعال باشد.</p>
         </div>
 
-        <div class="mt-4 grid gap-4 lg:grid-cols-2">
+        <div class="admin-form-grid admin-form-grid--two">
           {% for field in form %}
             {% if field.name == 'text_enabled' or field.name == 'image_enabled' or field.name == 'file_enabled' or field.name == 'is_featured' or field.name == 'is_active' %}
               {% if field.name == 'is_active' %}
@@ -77,12 +102,12 @@
         </div>
       </section>
 
-      <section class="rounded-[1.8rem] border border-amber-200/80 bg-amber-50/75 p-4 shadow-sm shadow-amber-100/60 dark:border-amber-500/20 dark:bg-amber-500/10 sm:p-5">
-        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div class="min-w-0">
-            <div class="text-xs font-bold text-amber-700 dark:text-amber-300">تنظیمات فنی اتصال</div>
-            <h2 class="mt-1 text-base font-black text-slate-900 dark:text-white">فقط برای نگهداری اجرای زنده و مسیر پاسخ</h2>
-            <p class="mt-1 text-sm leading-7 text-amber-800/90 dark:text-amber-100">این بخش عمداً جمع‌شونده است تا کنترل روزانه با نگهداری فنی یکی نشود. تغییر در این فیلدها می‌تواند روی پاسخ زنده مدل اثر مستقیم بگذارد.</p>
+      <section class="admin-danger-zone">
+        <div class="admin-danger-zone__toggle">
+          <div class="admin-section-heading">
+            <div class="admin-section-heading__eyebrow">تنظیمات فنی اتصال</div>
+            <h2 class="admin-section-heading__title">فقط برای نگهداری اجرای زنده و مسیر پاسخ</h2>
+            <p class="admin-section-heading__body">این بخش عمداً جمع‌شونده است تا کنترل روزانه با نگهداری فنی یکی نشود. تغییر در این فیلدها می‌تواند روی پاسخ زنده مدل اثر مستقیم بگذارد.</p>
           </div>
 
           <button type="button" class="btn-secondary w-full sm:w-auto" @click="technicalOpen = !technicalOpen" :aria-expanded="technicalOpen.toString()">
@@ -90,7 +115,7 @@
           </button>
         </div>
 
-        <div class="mt-4 grid gap-4 lg:grid-cols-2" x-show="technicalOpen" x-cloak>
+        <div class="admin-form-grid admin-form-grid--two mt-4" x-show="technicalOpen" x-cloak>
           {% for field in form %}
             {% if field.name == 'endpoint_url' or field.name == 'http_method' or field.name == 'headers' or field.name == 'api_key' or field.name == 'model_identifier' or field.name == 'timeout_seconds' or field.name == 'request_format' or field.name == 'response_text_path' or field.name == 'system_prompt' %}
               {% if field.name == 'headers' or field.name == 'system_prompt' %}
@@ -107,19 +132,19 @@
         </div>
       </section>
 
-      <div class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50/82 p-4 dark:border-slate-700/70 dark:bg-slate-900/45">
-        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div class="min-w-0">
-            <div class="text-sm font-black text-slate-900 dark:text-white">ذخیره مدل</div>
-            <p class="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">اگر فقط وضعیت عرضه را تغییر داده‌اید، بخش فنی را بازبینی اضافه نکنید. اگر بخش فنی را تغییر داده‌اید، همه مقادیر حساس را دوباره چک کنید.</p>
+      <section class="admin-form-footer">
+        <div class="admin-form-footer__header">
+          <div>
+            <div class="admin-card-title">ذخیره مدل</div>
+            <p class="admin-card-text">اگر فقط وضعیت عرضه را تغییر داده‌اید، سراغ بخش فنی نروید. اگر بخش فنی را تغییر داده‌اید، همه مقادیر حساس را دوباره چک کنید.</p>
           </div>
 
-          <div class="flex flex-col gap-2 sm:flex-row">
+          <div class="admin-form-footer__actions">
             <a href="{% url 'dashboard:admin_models' %}" class="btn-secondary w-full sm:w-auto">انصراف</a>
             <button class="btn-primary w-full sm:w-auto" type="submit">ذخیره مدل</button>
           </div>
         </div>
-      </div>
+      </section>
     </form>
   </div>
 {% endblock %}

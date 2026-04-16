@@ -1,11 +1,11 @@
 {% if tone == 'success' %}
-  <span class="status-pill px-3 py-1 text-[11px]" data-tone="success">{{ label }}</span>
+  <span class="status-pill admin-status-badge px-3 py-1 text-[11px]" data-tone="success"><span class="admin-status-badge__dot"></span><span>{{ label }}</span></span>
 {% elif tone == 'warning' %}
-  <span class="status-pill px-3 py-1 text-[11px]" data-tone="warning">{{ label }}</span>
+  <span class="status-pill admin-status-badge px-3 py-1 text-[11px]" data-tone="warning"><span class="admin-status-badge__dot"></span><span>{{ label }}</span></span>
 {% elif tone == 'danger' %}
-  <span class="status-pill px-3 py-1 text-[11px]" data-tone="danger">{{ label }}</span>
+  <span class="status-pill admin-status-badge px-3 py-1 text-[11px]" data-tone="danger"><span class="admin-status-badge__dot"></span><span>{{ label }}</span></span>
 {% elif tone == 'info' %}
-  <span class="status-pill px-3 py-1 text-[11px]" data-tone="info">{{ label }}</span>
+  <span class="status-pill admin-status-badge px-3 py-1 text-[11px]" data-tone="info"><span class="admin-status-badge__dot"></span><span>{{ label }}</span></span>
 {% else %}
-  <span class="status-pill px-3 py-1 text-[11px]">{{ label }}</span>
+  <span class="status-pill admin-status-badge px-3 py-1 text-[11px]"><span class="admin-status-badge__dot"></span><span>{{ label }}</span></span>
 {% endif %}
